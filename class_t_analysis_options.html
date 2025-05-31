@@ -102,6 +102,7 @@ $(function(){initNavTree('class_t_analysis_options.html',''); initResizable(true
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="#friends">Friends</a> &#124;
 <a href="class_t_analysis_options-members.html">List of all members</a>  </div>
@@ -129,6 +130,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a6e3463f470141fc702409f47ba328746"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af236f439e88329c95f78f151dc102707" id="r_af236f439e88329c95f78f151dc102707"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af236f439e88329c95f78f151dc102707">IsWaveformFitting</a> () const</td></tr>
 <tr class="separator:af236f439e88329c95f78f151dc102707"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abfe179bb15efb2eb78f2aa184d81d893" id="r_abfe179bb15efb2eb78f2aa184d81d893"><td class="memItemLeft" align="right" valign="top">Long64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abfe179bb15efb2eb78f2aa184d81d893">Merge</a> (TCollection *list)</td></tr>
+<tr class="separator:abfe179bb15efb2eb78f2aa184d81d893"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a6388caaf17b32c5ce280247407ab92" id="r_a2a6388caaf17b32c5ce280247407ab92"><td class="memItemLeft" align="right" valign="top">Long64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2a6388caaf17b32c5ce280247407ab92">Merge</a> (TCollection *list, Option_t *)</td></tr>
+<tr class="separator:a2a6388caaf17b32c5ce280247407ab92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a811ad045bde15e83df0791d7422462aa" id="r_a811ad045bde15e83df0791d7422462aa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a811ad045bde15e83df0791d7422462aa">Print</a> (Option_t *opt=&quot;&quot;) const override</td></tr>
 <tr class="separator:a811ad045bde15e83df0791d7422462aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af2e748272090c5fd7818aaa26e4971ba" id="r_af2e748272090c5fd7818aaa26e4971ba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af2e748272090c5fd7818aaa26e4971ba">ReadFromFile</a> (const std::string &amp;file)</td></tr>
@@ -159,6 +164,11 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a4f7c2c63b60b7e11564b0385d091db80"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acccb1243f8b29b9a64b6f874cedcec30" id="r_acccb1243f8b29b9a64b6f874cedcec30"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acccb1243f8b29b9a64b6f874cedcec30">WriteToFile</a> (TFile *file=nullptr)</td></tr>
 <tr class="separator:acccb1243f8b29b9a64b6f874cedcec30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:ae46de044ca688f44ee7db2fde25bd531" id="r_ae46de044ca688f44ee7db2fde25bd531"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae46de044ca688f44ee7db2fde25bd531">Compare</a> (const <a class="el" href="class_t_analysis_options.html">TAnalysisOptions</a> *options) const</td></tr>
+<tr class="separator:ae46de044ca688f44ee7db2fde25bd531"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -250,7 +260,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_analysis_options_8h_source.html#l00052">52</a> of file <a class="el" href="_t_analysis_options_8h_source.html">TAnalysisOptions.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_analysis_options_8h_source.html#l00069">fAddbackWindow</a>.</p>
+<p class="reference">References <a class="el" href="_t_analysis_options_8h_source.html#l00075">fAddbackWindow</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_fipps_8cxx_source.html#l00521">TFipps::CTCorrectedEnergy()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00410">TGriffin::CTCorrectedEnergy()</a>, <a class="el" href="_t_ifin_8cxx_source.html#l00534">TIfin::CTCorrectedEnergy()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00019">DefaultAddback()</a>, <a class="el" href="_t_tdr_clover_8cxx_source.html#l00028">DefaultAddback()</a>, <a class="el" href="_t_tdr_tigress_8cxx_source.html#l00028">DefaultAddback()</a>, <a class="el" href="_t_fipps_8cxx_source.html#l00019">DefaultFippsAddback()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00024">DefaultGriffinAddback()</a>, and <a class="el" href="_t_ifin_8cxx_source.html#l00019">DefaultIfinAddback()</a>.</p>
 
@@ -281,7 +291,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_analysis_options_8h_source.html#l00051">51</a> of file <a class="el" href="_t_analysis_options_8h_source.html">TAnalysisOptions.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_analysis_options_8h_source.html#l00068">fBuildEventsByTimeStamp</a>.</p>
+<p class="reference">References <a class="el" href="_t_analysis_options_8h_source.html#l00074">fBuildEventsByTimeStamp</a>.</p>
 
 </div>
 </div>
@@ -310,7 +320,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_analysis_options_8h_source.html#l00050">50</a> of file <a class="el" href="_t_analysis_options_8h_source.html">TAnalysisOptions.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_analysis_options_8h_source.html#l00067">fBuildWindow</a>.</p>
+<p class="reference">References <a class="el" href="_t_analysis_options_8h_source.html#l00073">fBuildWindow</a>.</p>
 
 </div>
 </div>
@@ -340,9 +350,40 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_analysis_options_8cxx_source.html#l00015">15</a> of file <a class="el" href="_t_analysis_options_8cxx_source.html">TAnalysisOptions.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_analysis_options_8h_source.html#l00069">fAddbackWindow</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00068">fBuildEventsByTimeStamp</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00067">fBuildWindow</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00072">fIsCorrectingCrossTalk</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00074">fStaticWindow</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00071">fSuppressionEnergy</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00070">fSuppressionWindow</a>, and <a class="el" href="_t_analysis_options_8h_source.html#l00073">fWaveformFitting</a>.</p>
+<p class="reference">References <a class="el" href="_t_analysis_options_8h_source.html#l00075">fAddbackWindow</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00074">fBuildEventsByTimeStamp</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00073">fBuildWindow</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00078">fIsCorrectingCrossTalk</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00080">fStaticWindow</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00077">fSuppressionEnergy</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00076">fSuppressionWindow</a>, and <a class="el" href="_t_analysis_options_8h_source.html#l00079">fWaveformFitting</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00040">TGRSIOptions::Clear()</a>.</p>
+
+</div>
+</div>
+<a id="ae46de044ca688f44ee7db2fde25bd531" name="ae46de044ca688f44ee7db2fde25bd531"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae46de044ca688f44ee7db2fde25bd531">&#9670;&#160;</a></span>Compare()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TAnalysisOptions::Compare </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_t_analysis_options.html">TAnalysisOptions</a> *</td>          <td class="paramname"><span class="paramname"><em>options</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_t_analysis_options_8cxx_source.html#l00139">139</a> of file <a class="el" href="_t_analysis_options_8cxx_source.html">TAnalysisOptions.cxx</a>.</p>
+
+<p class="reference">References <a class="el" href="_t_analysis_options_8h_source.html#l00075">fAddbackWindow</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00074">fBuildEventsByTimeStamp</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00073">fBuildWindow</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00078">fIsCorrectingCrossTalk</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00080">fStaticWindow</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00077">fSuppressionEnergy</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00076">fSuppressionWindow</a>, and <a class="el" href="_t_analysis_options_8h_source.html#l00079">fWaveformFitting</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_analysis_options_8cxx_source.html#l00178">Merge()</a>.</p>
 
 </div>
 </div>
@@ -371,7 +412,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_analysis_options_8h_source.html#l00048">48</a> of file <a class="el" href="_t_analysis_options_8h_source.html">TAnalysisOptions.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_analysis_options_8h_source.html#l00072">fIsCorrectingCrossTalk</a>.</p>
+<p class="reference">References <a class="el" href="_t_analysis_options_8h_source.html#l00078">fIsCorrectingCrossTalk</a>.</p>
 
 </div>
 </div>
@@ -400,9 +441,65 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_analysis_options_8h_source.html#l00045">45</a> of file <a class="el" href="_t_analysis_options_8h_source.html">TAnalysisOptions.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_analysis_options_8h_source.html#l00073">fWaveformFitting</a>.</p>
+<p class="reference">References <a class="el" href="_t_analysis_options_8h_source.html#l00079">fWaveformFitting</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00188">TTigress::BuildHits()</a>.</p>
+
+</div>
+</div>
+<a id="abfe179bb15efb2eb78f2aa184d81d893" name="abfe179bb15efb2eb78f2aa184d81d893"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abfe179bb15efb2eb78f2aa184d81d893">&#9670;&#160;</a></span>Merge() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Long64_t TAnalysisOptions::Merge </td>
+          <td>(</td>
+          <td class="paramtype">TCollection *</td>          <td class="paramname"><span class="paramname"><em>list</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_t_analysis_options_8h_source.html#l00065">65</a> of file <a class="el" href="_t_analysis_options_8h_source.html">TAnalysisOptions.h</a>.</p>
+
+<p class="reference">References <a class="el" href="_t_analysis_options_8h_source.html#l00065">Merge()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_analysis_options_8h_source.html#l00065">Merge()</a>.</p>
+
+</div>
+</div>
+<a id="a2a6388caaf17b32c5ce280247407ab92" name="a2a6388caaf17b32c5ce280247407ab92"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a6388caaf17b32c5ce280247407ab92">&#9670;&#160;</a></span>Merge() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Long64_t TAnalysisOptions::Merge </td>
+          <td>(</td>
+          <td class="paramtype">TCollection *</td>          <td class="paramname"><span class="paramname"><em>list</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Option_t *</td>          <td class="paramname"><span class="paramname"><em></em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_t_analysis_options_8cxx_source.html#l00178">178</a> of file <a class="el" href="_t_analysis_options_8cxx_source.html">TAnalysisOptions.cxx</a>.</p>
+
+<p class="reference">References <a class="el" href="_t_analysis_options_8cxx_source.html#l00139">Compare()</a>.</p>
 
 </div>
 </div>
@@ -432,7 +529,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_analysis_options_8cxx_source.html#l00028">28</a> of file <a class="el" href="_t_analysis_options_8cxx_source.html">TAnalysisOptions.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_globals_8h_source.html#l00006">BLUE</a>, <a class="el" href="_globals_8h_source.html#l00021">DCYAN</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00069">fAddbackWindow</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00068">fBuildEventsByTimeStamp</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00067">fBuildWindow</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00072">fIsCorrectingCrossTalk</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00074">fStaticWindow</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00071">fSuppressionEnergy</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00070">fSuppressionWindow</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00073">fWaveformFitting</a>, and <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>.</p>
+<p class="reference">References <a class="el" href="_globals_8h_source.html#l00006">BLUE</a>, <a class="el" href="_globals_8h_source.html#l00021">DCYAN</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00075">fAddbackWindow</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00074">fBuildEventsByTimeStamp</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00073">fBuildWindow</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00078">fIsCorrectingCrossTalk</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00080">fStaticWindow</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00077">fSuppressionEnergy</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00076">fSuppressionWindow</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00079">fWaveformFitting</a>, and <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00135">TGRSIOptions::Print()</a>, and <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00399">TGRSIint::SetupPipeline()</a>.</p>
 
@@ -507,7 +604,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_analysis_options_8h_source.html#l00040">40</a> of file <a class="el" href="_t_analysis_options_8h_source.html">TAnalysisOptions.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_analysis_options_8h_source.html#l00069">fAddbackWindow</a>.</p>
+<p class="reference">References <a class="el" href="_t_analysis_options_8h_source.html#l00075">fAddbackWindow</a>.</p>
 
 </div>
 </div>
@@ -536,7 +633,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_analysis_options_8h_source.html#l00039">39</a> of file <a class="el" href="_t_analysis_options_8h_source.html">TAnalysisOptions.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_analysis_options_8h_source.html#l00068">fBuildEventsByTimeStamp</a>.</p>
+<p class="reference">References <a class="el" href="_t_analysis_options_8h_source.html#l00074">fBuildEventsByTimeStamp</a>.</p>
 
 </div>
 </div>
@@ -565,7 +662,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_analysis_options_8h_source.html#l00038">38</a> of file <a class="el" href="_t_analysis_options_8h_source.html">TAnalysisOptions.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_analysis_options_8h_source.html#l00067">fBuildWindow</a>.</p>
+<p class="reference">References <a class="el" href="_t_analysis_options_8h_source.html#l00073">fBuildWindow</a>.</p>
 
 </div>
 </div>
@@ -590,7 +687,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_analysis_options_8cxx_source.html#l00127">127</a> of file <a class="el" href="_t_analysis_options_8cxx_source.html">TAnalysisOptions.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_analysis_options_8h_source.html#l00072">fIsCorrectingCrossTalk</a>.</p>
+<p class="reference">References <a class="el" href="_t_analysis_options_8h_source.html#l00078">fIsCorrectingCrossTalk</a>.</p>
 
 </div>
 </div>
@@ -619,7 +716,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_analysis_options_8h_source.html#l00042">42</a> of file <a class="el" href="_t_analysis_options_8h_source.html">TAnalysisOptions.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_analysis_options_8h_source.html#l00071">fSuppressionEnergy</a>.</p>
+<p class="reference">References <a class="el" href="_t_analysis_options_8h_source.html#l00077">fSuppressionEnergy</a>.</p>
 
 </div>
 </div>
@@ -648,7 +745,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_analysis_options_8h_source.html#l00041">41</a> of file <a class="el" href="_t_analysis_options_8h_source.html">TAnalysisOptions.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_analysis_options_8h_source.html#l00070">fSuppressionWindow</a>.</p>
+<p class="reference">References <a class="el" href="_t_analysis_options_8h_source.html#l00076">fSuppressionWindow</a>.</p>
 
 </div>
 </div>
@@ -677,7 +774,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_analysis_options_8h_source.html#l00044">44</a> of file <a class="el" href="_t_analysis_options_8h_source.html">TAnalysisOptions.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_analysis_options_8h_source.html#l00073">fWaveformFitting</a>.</p>
+<p class="reference">References <a class="el" href="_t_analysis_options_8h_source.html#l00079">fWaveformFitting</a>.</p>
 
 </div>
 </div>
@@ -706,7 +803,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_analysis_options_8h_source.html#l00063">63</a> of file <a class="el" href="_t_analysis_options_8h_source.html">TAnalysisOptions.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_analysis_options_8h_source.html#l00074">fStaticWindow</a>.</p>
+<p class="reference">References <a class="el" href="_t_analysis_options_8h_source.html#l00080">fStaticWindow</a>.</p>
 
 </div>
 </div>
@@ -735,7 +832,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_analysis_options_8h_source.html#l00061">61</a> of file <a class="el" href="_t_analysis_options_8h_source.html">TAnalysisOptions.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_analysis_options_8h_source.html#l00071">fSuppressionEnergy</a>.</p>
+<p class="reference">References <a class="el" href="_t_analysis_options_8h_source.html#l00077">fSuppressionEnergy</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_fipps_8cxx_source.html#l00027">DefaultFippsSuppression()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00032">DefaultGriffinSuppression()</a>, <a class="el" href="_t_ifin_8cxx_source.html#l00027">DefaultIfinSuppression()</a>, <a class="el" href="_t_la_br_8cxx_source.html#l00008">DefaultLaBrSuppression()</a>, <a class="el" href="_t_tdr_clover_8cxx_source.html#l00036">DefaultSuppression()</a>, and <a class="el" href="_t_tdr_tigress_8cxx_source.html#l00036">DefaultSuppression()</a>.</p>
 
@@ -766,7 +863,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_analysis_options_8h_source.html#l00060">60</a> of file <a class="el" href="_t_analysis_options_8h_source.html">TAnalysisOptions.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_analysis_options_8h_source.html#l00070">fSuppressionWindow</a>.</p>
+<p class="reference">References <a class="el" href="_t_analysis_options_8h_source.html#l00076">fSuppressionWindow</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_fipps_8cxx_source.html#l00027">DefaultFippsSuppression()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00032">DefaultGriffinSuppression()</a>, <a class="el" href="_t_ifin_8cxx_source.html#l00027">DefaultIfinSuppression()</a>, <a class="el" href="_t_la_br_8cxx_source.html#l00008">DefaultLaBrSuppression()</a>, <a class="el" href="_t_tdr_clover_8cxx_source.html#l00036">DefaultSuppression()</a>, and <a class="el" href="_t_tdr_tigress_8cxx_source.html#l00036">DefaultSuppression()</a>.</p>
 
@@ -865,9 +962,9 @@ Friends</h2></td></tr>
 
 <p>Time used to build Addback-Ge-Events for TIGRESS/GRIFFIN. (default = 300 ns (300)) </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_analysis_options_8h_source.html#l00069">69</a> of file <a class="el" href="_t_analysis_options_8h_source.html">TAnalysisOptions.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_analysis_options_8h_source.html#l00075">75</a> of file <a class="el" href="_t_analysis_options_8h_source.html">TAnalysisOptions.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_analysis_options_8h_source.html#l00052">AddbackWindow()</a>, <a class="el" href="_t_analysis_options_8cxx_source.html#l00015">Clear()</a>, <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00203">TGRSIOptions::Load()</a>, <a class="el" href="_t_analysis_options_8cxx_source.html#l00028">Print()</a>, and <a class="el" href="_t_analysis_options_8h_source.html#l00040">SetAddbackWindow()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_analysis_options_8h_source.html#l00052">AddbackWindow()</a>, <a class="el" href="_t_analysis_options_8cxx_source.html#l00015">Clear()</a>, <a class="el" href="_t_analysis_options_8cxx_source.html#l00139">Compare()</a>, <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00203">TGRSIOptions::Load()</a>, <a class="el" href="_t_analysis_options_8cxx_source.html#l00028">Print()</a>, and <a class="el" href="_t_analysis_options_8h_source.html#l00040">SetAddbackWindow()</a>.</p>
 
 </div>
 </div>
@@ -893,9 +990,9 @@ Friends</h2></td></tr>
 
 <p>use time stamps instead of time (including CFD) to build events </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_analysis_options_8h_source.html#l00068">68</a> of file <a class="el" href="_t_analysis_options_8h_source.html">TAnalysisOptions.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_analysis_options_8h_source.html#l00074">74</a> of file <a class="el" href="_t_analysis_options_8h_source.html">TAnalysisOptions.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_analysis_options_8h_source.html#l00051">BuildEventsByTimeStamp()</a>, <a class="el" href="_t_analysis_options_8cxx_source.html#l00015">Clear()</a>, <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00203">TGRSIOptions::Load()</a>, <a class="el" href="_t_analysis_options_8cxx_source.html#l00028">Print()</a>, and <a class="el" href="_t_analysis_options_8h_source.html#l00039">SetBuildEventsByTimeStamp()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_analysis_options_8h_source.html#l00051">BuildEventsByTimeStamp()</a>, <a class="el" href="_t_analysis_options_8cxx_source.html#l00015">Clear()</a>, <a class="el" href="_t_analysis_options_8cxx_source.html#l00139">Compare()</a>, <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00203">TGRSIOptions::Load()</a>, <a class="el" href="_t_analysis_options_8cxx_source.html#l00028">Print()</a>, and <a class="el" href="_t_analysis_options_8h_source.html#l00039">SetBuildEventsByTimeStamp()</a>.</p>
 
 </div>
 </div>
@@ -921,9 +1018,9 @@ Friends</h2></td></tr>
 
 <p>if building with a window(GRIFFIN) this is the size of the window. (default = 2us (2000)) </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_analysis_options_8h_source.html#l00067">67</a> of file <a class="el" href="_t_analysis_options_8h_source.html">TAnalysisOptions.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_analysis_options_8h_source.html#l00073">73</a> of file <a class="el" href="_t_analysis_options_8h_source.html">TAnalysisOptions.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_analysis_options_8h_source.html#l00050">BuildWindow()</a>, <a class="el" href="_t_analysis_options_8cxx_source.html#l00015">Clear()</a>, <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00203">TGRSIOptions::Load()</a>, <a class="el" href="_t_analysis_options_8cxx_source.html#l00028">Print()</a>, and <a class="el" href="_t_analysis_options_8h_source.html#l00038">SetBuildWindow()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_analysis_options_8h_source.html#l00050">BuildWindow()</a>, <a class="el" href="_t_analysis_options_8cxx_source.html#l00015">Clear()</a>, <a class="el" href="_t_analysis_options_8cxx_source.html#l00139">Compare()</a>, <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00203">TGRSIOptions::Load()</a>, <a class="el" href="_t_analysis_options_8cxx_source.html#l00028">Print()</a>, and <a class="el" href="_t_analysis_options_8h_source.html#l00038">SetBuildWindow()</a>.</p>
 
 </div>
 </div>
@@ -949,9 +1046,9 @@ Friends</h2></td></tr>
 
 <p>True if we are correcting for cross-talk in GRIFFIN at analysis-level. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_analysis_options_8h_source.html#l00072">72</a> of file <a class="el" href="_t_analysis_options_8h_source.html">TAnalysisOptions.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_analysis_options_8h_source.html#l00078">78</a> of file <a class="el" href="_t_analysis_options_8h_source.html">TAnalysisOptions.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_analysis_options_8cxx_source.html#l00015">Clear()</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00048">IsCorrectingCrossTalk()</a>, <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00203">TGRSIOptions::Load()</a>, <a class="el" href="_t_analysis_options_8cxx_source.html#l00028">Print()</a>, and <a class="el" href="_t_analysis_options_8cxx_source.html#l00127">SetCorrectCrossTalk()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_analysis_options_8cxx_source.html#l00015">Clear()</a>, <a class="el" href="_t_analysis_options_8cxx_source.html#l00139">Compare()</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00048">IsCorrectingCrossTalk()</a>, <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00203">TGRSIOptions::Load()</a>, <a class="el" href="_t_analysis_options_8cxx_source.html#l00028">Print()</a>, and <a class="el" href="_t_analysis_options_8cxx_source.html#l00127">SetCorrectCrossTalk()</a>.</p>
 
 </div>
 </div>
@@ -977,9 +1074,9 @@ Friends</h2></td></tr>
 
 <p>Flag to use static window (default moving) </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_analysis_options_8h_source.html#l00074">74</a> of file <a class="el" href="_t_analysis_options_8h_source.html">TAnalysisOptions.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_analysis_options_8h_source.html#l00080">80</a> of file <a class="el" href="_t_analysis_options_8h_source.html">TAnalysisOptions.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_analysis_options_8cxx_source.html#l00015">Clear()</a>, <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00203">TGRSIOptions::Load()</a>, <a class="el" href="_t_analysis_options_8cxx_source.html#l00028">Print()</a>, and <a class="el" href="_t_analysis_options_8h_source.html#l00063">StaticWindow()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_analysis_options_8cxx_source.html#l00015">Clear()</a>, <a class="el" href="_t_analysis_options_8cxx_source.html#l00139">Compare()</a>, <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00203">TGRSIOptions::Load()</a>, <a class="el" href="_t_analysis_options_8cxx_source.html#l00028">Print()</a>, and <a class="el" href="_t_analysis_options_8h_source.html#l00063">StaticWindow()</a>.</p>
 
 </div>
 </div>
@@ -1005,9 +1102,9 @@ Friends</h2></td></tr>
 
 <p>Minimum energy used to suppress Ge-Events. (default = 0 keV) </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_analysis_options_8h_source.html#l00071">71</a> of file <a class="el" href="_t_analysis_options_8h_source.html">TAnalysisOptions.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_analysis_options_8h_source.html#l00077">77</a> of file <a class="el" href="_t_analysis_options_8h_source.html">TAnalysisOptions.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_analysis_options_8cxx_source.html#l00015">Clear()</a>, <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00203">TGRSIOptions::Load()</a>, <a class="el" href="_t_analysis_options_8cxx_source.html#l00028">Print()</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00042">SetSuppressionEnergy()</a>, and <a class="el" href="_t_analysis_options_8h_source.html#l00061">SuppressionEnergy()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_analysis_options_8cxx_source.html#l00015">Clear()</a>, <a class="el" href="_t_analysis_options_8cxx_source.html#l00139">Compare()</a>, <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00203">TGRSIOptions::Load()</a>, <a class="el" href="_t_analysis_options_8cxx_source.html#l00028">Print()</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00042">SetSuppressionEnergy()</a>, and <a class="el" href="_t_analysis_options_8h_source.html#l00061">SuppressionEnergy()</a>.</p>
 
 </div>
 </div>
@@ -1033,9 +1130,9 @@ Friends</h2></td></tr>
 
 <p>Time used to suppress Ge-Events. (default = 300 ns (300)) </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_analysis_options_8h_source.html#l00070">70</a> of file <a class="el" href="_t_analysis_options_8h_source.html">TAnalysisOptions.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_analysis_options_8h_source.html#l00076">76</a> of file <a class="el" href="_t_analysis_options_8h_source.html">TAnalysisOptions.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_analysis_options_8cxx_source.html#l00015">Clear()</a>, <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00203">TGRSIOptions::Load()</a>, <a class="el" href="_t_analysis_options_8cxx_source.html#l00028">Print()</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00041">SetSuppressionWindow()</a>, and <a class="el" href="_t_analysis_options_8h_source.html#l00060">SuppressionWindow()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_analysis_options_8cxx_source.html#l00015">Clear()</a>, <a class="el" href="_t_analysis_options_8cxx_source.html#l00139">Compare()</a>, <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00203">TGRSIOptions::Load()</a>, <a class="el" href="_t_analysis_options_8cxx_source.html#l00028">Print()</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00041">SetSuppressionWindow()</a>, and <a class="el" href="_t_analysis_options_8h_source.html#l00060">SuppressionWindow()</a>.</p>
 
 </div>
 </div>
@@ -1061,9 +1158,9 @@ Friends</h2></td></tr>
 
 <p>If true, waveform fitting with SFU algorithm will be performed. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_analysis_options_8h_source.html#l00073">73</a> of file <a class="el" href="_t_analysis_options_8h_source.html">TAnalysisOptions.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_analysis_options_8h_source.html#l00079">79</a> of file <a class="el" href="_t_analysis_options_8h_source.html">TAnalysisOptions.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_analysis_options_8cxx_source.html#l00015">Clear()</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00045">IsWaveformFitting()</a>, <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00203">TGRSIOptions::Load()</a>, <a class="el" href="_t_analysis_options_8cxx_source.html#l00028">Print()</a>, and <a class="el" href="_t_analysis_options_8h_source.html#l00044">SetWaveformFitting()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_analysis_options_8cxx_source.html#l00015">Clear()</a>, <a class="el" href="_t_analysis_options_8cxx_source.html#l00139">Compare()</a>, <a class="el" href="_t_analysis_options_8h_source.html#l00045">IsWaveformFitting()</a>, <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00203">TGRSIOptions::Load()</a>, <a class="el" href="_t_analysis_options_8cxx_source.html#l00028">Print()</a>, and <a class="el" href="_t_analysis_options_8h_source.html#l00044">SetWaveformFitting()</a>.</p>
 
 </div>
 </div>
@@ -1074,7 +1171,7 @@ Friends</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_t_analysis_options.html">TAnalysisOptions</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu May 29 2025 17:22:27.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Sat May 31 2025 23:10:05.</li>
   </ul>
 </div>
 </body>
