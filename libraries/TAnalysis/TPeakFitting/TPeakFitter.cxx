@@ -80,6 +80,9 @@ void TPeakFitter::SetRange(const Double_t& low, const Double_t& high)
 {
    fRangeLow  = low;
    fRangeHigh = high;
+   if(fTotalFitFunction != nullptr) {
+      fTotalFitFunction->SetTitle(Form("total_fit_%.0f_%.0f", fRangeLow, fRangeHigh));
+   }
 }
 
 TFitResultPtr TPeakFitter::Fit(TH1* fit_hist, Option_t* opt)
@@ -113,7 +116,7 @@ TFitResultPtr TPeakFitter::Fit(TH1* fit_hist, Option_t* opt)
    TVirtualFitter::SetMaxIterations(100000);
    TVirtualFitter::SetPrecision(1e-4);
    if(fTotalFitFunction == nullptr) {
-      fTotalFitFunction = new TF1("total_fit", this, &TPeakFitter::FitFunction, fRangeLow, fRangeHigh, GetNParameters(), "TPeakFitter", "FitFunction");
+      fTotalFitFunction = new TF1(Form("total_fit_%.0f_%.0f", fRangeLow, fRangeHigh), this, &TPeakFitter::FitFunction, fRangeLow, fRangeHigh, GetNParameters(), "TPeakFitter", "FitFunction");
    }
    fTotalFitFunction->SetLineColor(static_cast<Color_t>(kMagenta + fColorIndex));
    fTotalFitFunction->SetRange(fRangeLow, fRangeHigh);
