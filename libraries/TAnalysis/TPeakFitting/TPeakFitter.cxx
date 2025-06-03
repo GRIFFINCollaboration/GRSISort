@@ -255,7 +255,7 @@ void TPeakFitter::UpdatePeakParameters(const TFitResultPtr& fit_res, TH1* fit_hi
          p_it->SetArea(total_function_copy->Integral(p_it->Centroid() - p_it->Width() * 5., p_it->Centroid() + p_it->Width() * 5., 1e-8) / fit_hist->GetBinWidth(1));
          if(goodCovarianceMatrix) {
             p_it->SetAreaErr(total_function_copy->IntegralError(p_it->Centroid() - p_it->Width() * 5., p_it->Centroid() + p_it->Width() * 5., total_function_copy->GetParameters(), covariance_matrix.GetMatrixArray(), 1E-5) / fit_hist->GetBinWidth(1));
-         } else {
+         } else if(fVerboseLevel != EVerbosity::kQuiet) {
             std::cout << "Not setting area error because we don't have a good covariance matrix!" << std::endl;
          }
       }
