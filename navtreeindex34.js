@@ -98,7 +98,7 @@ var NAVTREEINDEX34 =
 "class_t_g_r_s_i_fit.html#ac2c725a228aeedfee165c394179ee948":[8,3,12,6],
 "class_t_g_r_s_i_fit.html#ac94666a66130c2eb3874d0148c6164c4":[8,3,12,22],
 "class_t_g_r_s_i_frame.html":[8,4,0],
-"class_t_g_r_s_i_frame.html#a0d0e05018efa413ac13fd0cdee57d84d":[8,4,0,8],
+"class_t_g_r_s_i_frame.html#a0d9f55f9e7c044f74b85e4359e236dfe":[8,4,0,8],
 "class_t_g_r_s_i_frame.html#a10b0b09a75926371f54041f2a938f611":[8,4,0,6],
 "class_t_g_r_s_i_frame.html#a51785de670a34b4e44844c9c89adf5b9":[8,4,0,0],
 "class_t_g_r_s_i_frame.html#a5f4f9205fca3fae7829ebdf7c83402a6":[8,4,0,5],

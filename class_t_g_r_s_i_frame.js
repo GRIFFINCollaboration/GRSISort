@@ -8,5 +8,5 @@ var class_t_g_r_s_i_frame =
     [ "fOutputPrefix", "class_t_g_r_s_i_frame.html#a5f4f9205fca3fae7829ebdf7c83402a6", null ],
     [ "fPpg", "class_t_g_r_s_i_frame.html#a10b0b09a75926371f54041f2a938f611", null ],
     [ "fTotalEntries", "class_t_g_r_s_i_frame.html#a82bfdf7ee5b528349ac68314f8bdfe04", null ],
-    [ "fVerbosity", "class_t_g_r_s_i_frame.html#a0d0e05018efa413ac13fd0cdee57d84d", null ]
+    [ "fVerbosity", "class_t_g_r_s_i_frame.html#a0d9f55f9e7c044f74b85e4359e236dfe", null ]
 ];

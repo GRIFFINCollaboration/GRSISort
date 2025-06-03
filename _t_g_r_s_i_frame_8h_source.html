@@ -156,27 +156,31 @@ $(function(){initNavTree('_t_g_r_s_i_frame_8h_source.html',''); initResizable(tr
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="class_t_g_r_s_i_frame.html#a82bfdf7ee5b528349ac68314f8bdfe04">   50</a></span>   Long64_t          <a class="code hl_variable" href="class_t_g_r_s_i_frame.html#a82bfdf7ee5b528349ac68314f8bdfe04">fTotalEntries</a>{0};</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="preprocessor">#if ROOT_VERSION_CODE &gt;= ROOT_VERSION(6, 24, 0)</span></div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="class_t_g_r_s_i_frame.html#a0d0e05018efa413ac13fd0cdee57d84d">   53</a></span>   ROOT::Experimental::RLogScopedVerbosity* <a class="code hl_variable" href="class_t_g_r_s_i_frame.html#a0d0e05018efa413ac13fd0cdee57d84d">fVerbosity</a>{<span class="keyword">nullptr</span>};</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>};</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="preprocessor">#if ROOT_VERSION_CODE &gt;= ROOT_VERSION(6, 36, 0)</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="class_t_g_r_s_i_frame.html#a0d9f55f9e7c044f74b85e4359e236dfe">   54</a></span>   ROOT::RLogScopedVerbosity* <a class="code hl_variable" href="class_t_g_r_s_i_frame.html#a0d9f55f9e7c044f74b85e4359e236dfe">fVerbosity</a>{<span class="keyword">nullptr</span>};</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>   ROOT::Experimental::RLogScopedVerbosity* <a class="code hl_variable" href="class_t_g_r_s_i_frame.html#a0d9f55f9e7c044f74b85e4359e236dfe">fVerbosity</a>{<span class="keyword">nullptr</span>};</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>};</div>
 </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="comment"></span> </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="comment">/*! @} */</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="keywordtype">void</span> <a class="code hl_function" href="_t_g_r_s_i_frame_8h.html#a2f729147420c4adc01d397fa945f4bcf">DummyFunctionToLocateTGRSIFrameLibrary</a>();</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="a_t_g_r_s_i_frame_8h_html_a2f729147420c4adc01d397fa945f4bcf"><div class="ttname"><a href="_t_g_r_s_i_frame_8h.html#a2f729147420c4adc01d397fa945f4bcf">DummyFunctionToLocateTGRSIFrameLibrary</a></div><div class="ttdeci">void DummyFunctionToLocateTGRSIFrameLibrary()</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_frame_8cxx_source.html#l00203">TGRSIFrame.cxx:203</a></div></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="comment"></span> </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="comment">/*! @} */</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="keywordtype">void</span> <a class="code hl_function" href="_t_g_r_s_i_frame_8h.html#a2f729147420c4adc01d397fa945f4bcf">DummyFunctionToLocateTGRSIFrameLibrary</a>();</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="a_t_g_r_s_i_frame_8h_html_a2f729147420c4adc01d397fa945f4bcf"><div class="ttname"><a href="_t_g_r_s_i_frame_8h.html#a2f729147420c4adc01d397fa945f4bcf">DummyFunctionToLocateTGRSIFrameLibrary</a></div><div class="ttdeci">void DummyFunctionToLocateTGRSIFrameLibrary()</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_frame_8cxx_source.html#l00207">TGRSIFrame.cxx:207</a></div></div>
 <div class="ttc" id="a_t_g_r_s_i_options_8h_html"><div class="ttname"><a href="_t_g_r_s_i_options_8h.html">TGRSIOptions.h</a></div></div>
 <div class="ttc" id="a_t_p_p_g_8h_html"><div class="ttname"><a href="_t_p_p_g_8h.html">TPPG.h</a></div></div>
 <div class="ttc" id="a_t_redirect_8h_html"><div class="ttname"><a href="_t_redirect_8h.html">TRedirect.h</a></div></div>
 <div class="ttc" id="aclass_t_g_r_s_i_frame_html"><div class="ttname"><a href="class_t_g_r_s_i_frame.html">TGRSIFrame</a></div><div class="ttdef"><b>Definition</b> <a href="#l00036">TGRSIFrame.h:36</a></div></div>
-<div class="ttc" id="aclass_t_g_r_s_i_frame_html_a0d0e05018efa413ac13fd0cdee57d84d"><div class="ttname"><a href="class_t_g_r_s_i_frame.html#a0d0e05018efa413ac13fd0cdee57d84d">TGRSIFrame::fVerbosity</a></div><div class="ttdeci">ROOT::Experimental::RLogScopedVerbosity * fVerbosity</div><div class="ttdef"><b>Definition</b> <a href="#l00053">TGRSIFrame.h:53</a></div></div>
+<div class="ttc" id="aclass_t_g_r_s_i_frame_html_a0d9f55f9e7c044f74b85e4359e236dfe"><div class="ttname"><a href="class_t_g_r_s_i_frame.html#a0d9f55f9e7c044f74b85e4359e236dfe">TGRSIFrame::fVerbosity</a></div><div class="ttdeci">ROOT::RLogScopedVerbosity * fVerbosity</div><div class="ttdef"><b>Definition</b> <a href="#l00054">TGRSIFrame.h:54</a></div></div>
 <div class="ttc" id="aclass_t_g_r_s_i_frame_html_a10b0b09a75926371f54041f2a938f611"><div class="ttname"><a href="class_t_g_r_s_i_frame.html#a10b0b09a75926371f54041f2a938f611">TGRSIFrame::fPpg</a></div><div class="ttdeci">TPPG * fPpg</div><div class="ttdef"><b>Definition</b> <a href="#l00047">TGRSIFrame.h:47</a></div></div>
 <div class="ttc" id="aclass_t_g_r_s_i_frame_html_a51785de670a34b4e44844c9c89adf5b9"><div class="ttname"><a href="class_t_g_r_s_i_frame.html#a51785de670a34b4e44844c9c89adf5b9">TGRSIFrame::TGRSIFrame</a></div><div class="ttdeci">TGRSIFrame()</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_frame_8cxx_source.html#l00019">TGRSIFrame.cxx:19</a></div></div>
 <div class="ttc" id="aclass_t_g_r_s_i_frame_html_a5f4f9205fca3fae7829ebdf7c83402a6"><div class="ttname"><a href="class_t_g_r_s_i_frame.html#a5f4f9205fca3fae7829ebdf7c83402a6">TGRSIFrame::fOutputPrefix</a></div><div class="ttdeci">std::string fOutputPrefix</div><div class="ttdef"><b>Definition</b> <a href="#l00043">TGRSIFrame.h:43</a></div></div>
 <div class="ttc" id="aclass_t_g_r_s_i_frame_html_a6eef1a4d231fc55cbdfc25416645eefa"><div class="ttname"><a href="class_t_g_r_s_i_frame.html#a6eef1a4d231fc55cbdfc25416645eefa">TGRSIFrame::fOptions</a></div><div class="ttdeci">TGRSIOptions * fOptions</div><div class="ttdef"><b>Definition</b> <a href="#l00046">TGRSIFrame.h:46</a></div></div>
-<div class="ttc" id="aclass_t_g_r_s_i_frame_html_a7eaf53b485032857b19c68144d9d6ea0"><div class="ttname"><a href="class_t_g_r_s_i_frame.html#a7eaf53b485032857b19c68144d9d6ea0">TGRSIFrame::Run</a></div><div class="ttdeci">void Run(TRedirect *&amp;redirect)</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_frame_8cxx_source.html#l00114">TGRSIFrame.cxx:114</a></div></div>
+<div class="ttc" id="aclass_t_g_r_s_i_frame_html_a7eaf53b485032857b19c68144d9d6ea0"><div class="ttname"><a href="class_t_g_r_s_i_frame.html#a7eaf53b485032857b19c68144d9d6ea0">TGRSIFrame::Run</a></div><div class="ttdeci">void Run(TRedirect *&amp;redirect)</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_frame_8cxx_source.html#l00118">TGRSIFrame.cxx:118</a></div></div>
 <div class="ttc" id="aclass_t_g_r_s_i_frame_html_a82bfdf7ee5b528349ac68314f8bdfe04"><div class="ttname"><a href="class_t_g_r_s_i_frame.html#a82bfdf7ee5b528349ac68314f8bdfe04">TGRSIFrame::fTotalEntries</a></div><div class="ttdeci">Long64_t fTotalEntries</div><div class="ttdef"><b>Definition</b> <a href="#l00050">TGRSIFrame.h:50</a></div></div>
 <div class="ttc" id="aclass_t_g_r_s_i_frame_html_a9197e8fe257d4c378b645c7d6a0bc826"><div class="ttname"><a href="class_t_g_r_s_i_frame.html#a9197e8fe257d4c378b645c7d6a0bc826">TGRSIFrame::fDataFrame</a></div><div class="ttdeci">ROOT::RDataFrame * fDataFrame</div><div class="ttdef"><b>Definition</b> <a href="#l00049">TGRSIFrame.h:49</a></div></div>
 <div class="ttc" id="aclass_t_g_r_s_i_frame_html_abf2f3fb79b9b56b4fc54eb6fdb06f88f"><div class="ttname"><a href="class_t_g_r_s_i_frame.html#abf2f3fb79b9b56b4fc54eb6fdb06f88f">TGRSIFrame::fOutput</a></div><div class="ttdeci">ROOT::RDF::RResultPtr&lt; std::map&lt; std::string, TList &gt; &gt; fOutput</div><div class="ttdef"><b>Definition</b> <a href="#l00044">TGRSIFrame.h:44</a></div></div>
@@ -190,7 +194,7 @@ $(function(){initNavTree('_t_g_r_s_i_frame_8h_source.html',''); initResizable(tr
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="_t_g_r_s_i_frame_8h.html">TGRSIFrame.h</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Sat May 31 2025 23:10:02.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jun 3 2025 19:17:10.</li>
   </ul>
 </div>
 </body>
