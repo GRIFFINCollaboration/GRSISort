@@ -50,7 +50,11 @@ private:
    Long64_t          fTotalEntries{0};
 
 #if ROOT_VERSION_CODE >= ROOT_VERSION(6, 24, 0)
+#if ROOT_VERSION_CODE >= ROOT_VERSION(6, 36, 0)
+   ROOT::RLogScopedVerbosity* fVerbosity{nullptr};
+#else
    ROOT::Experimental::RLogScopedVerbosity* fVerbosity{nullptr};
+#endif
 #endif
 };
 
