@@ -144,9 +144,8 @@ public:
       if(fSingleton == nullptr) {
          return Get();
       }
-      // if we do have an instance and changed into another directory
-      // we want to add the object read from the current directory
-      if(fSingleton != nullptr && fDir != gDirectory) {
+      // if we changed into another directory we want to add the object read from the current directory
+      if(fDir != gDirectory) {
          if((gDirectory->GetFile()) != nullptr) {
             TList* list = gDirectory->GetFile()->GetListOfKeys();
             TIter  iter(list);
@@ -162,7 +161,7 @@ public:
                fSingleton->Add(tmpSingleton);
                fDir = gDirectory;   // update the directory to gDirectory so we don't read from this file again
             }
-            std::cout << std::endl;
+				std::cout << std::endl;
          }
       }
       return fSingleton;
