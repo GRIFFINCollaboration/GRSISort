@@ -181,7 +181,7 @@ Long64_t TAnalysisOptions::Merge(TCollection* list, Option_t*)
    if(list == nullptr) {
       return 0;
    }
-   // TH1 returns GetEntries if the list is empty, we just retrn 1?
+   // TH1 returns GetEntries if the list is empty, we just return 1?
    if(list->IsEmpty()) {
       return 1;
    }

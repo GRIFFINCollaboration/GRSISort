@@ -222,7 +222,7 @@ private:
    std::vector<ULong64_t> fDurations{0, 0, 0, 0};          //!<! duration of ppg state calculated from data
 
    /// \cond CLASSIMP
-   ClassDefOverride(TPPG, 5)   // NOLINT(readability-else-after-return)
+   ClassDefOverride(TPPG, 6)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */

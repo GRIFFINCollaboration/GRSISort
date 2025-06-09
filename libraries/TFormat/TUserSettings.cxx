@@ -274,3 +274,68 @@ void TUserSettings::Print(Option_t*) const
       std::cout << std::endl;
    }
 }
+
+Long64_t TUserSettings::Merge(TCollection* list, Option_t*)
+{
+   // Attempting to copy what TH1 is doing.
+   if(list == nullptr) {
+      return 0;
+   }
+   // TH1 returns GetEntries if the list is empty, we just return 1?
+   if(list->IsEmpty()) {
+      return 1;
+   }
+   // TH1 uses TH1Merger with fH0 set to this, adding list to fInputList.
+   // The functor compares the histograms, and if they are compatible merges them by looping over all histograms in the input list and adding them to fH0, i.e. this
+   // So we just loop over all user settings in the list and compare their values.
+   // If there's a mismatch, Compare prints that to stdout.
+   for(auto* option : *list) {
+      if(option->IsA() != TUserSettings::Class()) {
+         std::cout << "Don't know how to merge object of class \"" << option->ClassName() << "\" with TUserSettings, skipping it!" << std::endl;
+         continue;
+      }
+      if(!Compare(static_cast<TUserSettings*>(option))) {
+         continue;
+      }
+   }
+
+   return 1;
+}
+
+bool TUserSettings::Compare(const TUserSettings* settings) const
+{
+   bool match = true;
+   if(fBool != settings->fBool) {
+      std::cout << "boolean settings do not match" << std::endl;
+      match = false;
+   }
+   if(fInt != settings->fInt) {
+      std::cout << "integer settings do not match" << std::endl;
+      match = false;
+   }
+   if(fDouble != settings->fDouble) {
+      std::cout << "double settings do not match" << std::endl;
+      match = false;
+   }
+   if(fString != settings->fString) {
+      std::cout << "string settings do not match" << std::endl;
+      match = false;
+   }
+   if(fBoolVector != settings->fBoolVector) {
+      std::cout << "boolean vector settings do not match" << std::endl;
+      match = false;
+   }
+   if(fIntVector != settings->fIntVector) {
+      std::cout << "integer vector settings do not match" << std::endl;
+      match = false;
+   }
+   if(fDoubleVector != settings->fDoubleVector) {
+      std::cout << "double vector settings do not match" << std::endl;
+      match = false;
+   }
+   if(fStringVector != settings->fStringVector) {
+      std::cout << "string vector settings do not match" << std::endl;
+      match = false;
+   }
+   return match;
+}

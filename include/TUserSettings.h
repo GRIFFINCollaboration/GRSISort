@@ -8,6 +8,7 @@
 #include <stdexcept>
 
 #include "TNamed.h"
+#include "TCollection.h"
 
 /** \addtogroup Sorting
  *  @{
@@ -153,7 +154,12 @@ public:
       SetName("");
    }
 
+   Long64_t Merge(TCollection* list, Option_t* = "");
+
 private:
+   using TObject::Compare;
+   bool Compare(const TUserSettings* settings) const;
+
    void ParseValue(const std::string& name, const std::string& value, bool vector);
 
    std::map<std::string, bool>                     fBool;
