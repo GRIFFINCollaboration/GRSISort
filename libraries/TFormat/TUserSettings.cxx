@@ -306,36 +306,36 @@ bool TUserSettings::Compare(const TUserSettings* settings) const
 {
    bool match = true;
    if(fBool != settings->fBool) {
-		std::cout << "boolean settings do not match" << std::endl;
-		match = false;
-	}
+      std::cout << "boolean settings do not match" << std::endl;
+      match = false;
+   }
    if(fInt != settings->fInt) {
-		std::cout << "integer settings do not match" << std::endl;
-		match = false;
-	}
+      std::cout << "integer settings do not match" << std::endl;
+      match = false;
+   }
    if(fDouble != settings->fDouble) {
-		std::cout << "double settings do not match" << std::endl;
-		match = false;
-	}
+      std::cout << "double settings do not match" << std::endl;
+      match = false;
+   }
    if(fString != settings->fString) {
-		std::cout << "string settings do not match" << std::endl;
-		match = false;
-	}
+      std::cout << "string settings do not match" << std::endl;
+      match = false;
+   }
    if(fBoolVector != settings->fBoolVector) {
-		std::cout << "boolean vector settings do not match" << std::endl;
-		match = false;
-	}
+      std::cout << "boolean vector settings do not match" << std::endl;
+      match = false;
+   }
    if(fIntVector != settings->fIntVector) {
-		std::cout << "integer vector settings do not match" << std::endl;
-		match = false;
-	}
+      std::cout << "integer vector settings do not match" << std::endl;
+      match = false;
+   }
    if(fDoubleVector != settings->fDoubleVector) {
-		std::cout << "double vector settings do not match" << std::endl;
-		match = false;
-	}
+      std::cout << "double vector settings do not match" << std::endl;
+      match = false;
+   }
    if(fStringVector != settings->fStringVector) {
-		std::cout << "string vector settings do not match" << std::endl;
-		match = false;
-	}
-	return match;
+      std::cout << "string vector settings do not match" << std::endl;
+      match = false;
+   }
+   return match;
 }

@@ -35,7 +35,7 @@
 ///
 /// If all files are from one run, and the subruns are added in order
 /// without any missing, the information changes to reflect this:
-/// 
+///
 /// \code
 /// GRSI [0] TRunInfo::Get()->Print()
 /// Singleton 0x55ab20f209a0 was read from Final21950_000-028.root
@@ -48,7 +48,7 @@
 /// 		RunLength:          3599 s
 /// GRSI [1]
 /// \endcode
-/// 
+///
 /// Internally this is signaled by the subrun number having been
 /// set to -1, while the run number is still nonzero, and the run
 /// start and run stop are set as well as the numbers of the first
@@ -67,7 +67,7 @@
 ///
 /// If the files are from multiple runs that are all in consecutive
 /// order without any missing ones, the run info will say:
-/// 
+///
 /// \code
 /// Singleton 0x563c6c1c3a30 was read from Final21950-21980.root
 /// Title: 100Zr_beam_with_PACES_lasers_on
@@ -232,15 +232,15 @@ public:
    static inline void SetRunStart(double tmp) { Get()->fRunStart = tmp; }
    static inline void SetRunStop(double tmp) { Get()->fRunStop = tmp; }
    static inline void SetRunLength(double tmp) { Get()->fRunLength = tmp; }
-	static inline void SetRunLength()
-	{
-		// if this is a single sub run or consecutive sub runs of a single run we can calculate the run length from the stop and start times
-		if(RunNumber() != 0) {
-			Get()->fRunLength = Get()->fRunStop - Get()->fRunStart;
-		}
-		// otherwise we have no idea how to calculate the run length (it should be summed up by the Add function)
-		// so we do nothing
-	}
+   static inline void SetRunLength()
+   {
+      // if this is a single sub run or consecutive sub runs of a single run we can calculate the run length from the stop and start times
+      if(RunNumber() != 0) {
+         Get()->fRunLength = Get()->fRunStop - Get()->fRunStart;
+      }
+      // otherwise we have no idea how to calculate the run length (it should be summed up by the Add function)
+      // so we do nothing
+   }
 
    static inline double RunStart() { return Get()->fRunStart; }
    static inline double RunStop() { return Get()->fRunStop; }
