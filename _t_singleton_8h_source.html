@@ -257,100 +257,99 @@ $(function(){initNavTree('_t_singleton_8h_source.html',''); initResizable(true);
 <div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>      <span class="keywordflow">if</span>(<a class="code hl_variable" href="group___sorting.html#ga4a3540330119eb2bba0bf90b85fb55ad">fSingleton</a> == <span class="keyword">nullptr</span>) {</div>
 <div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>         <span class="keywordflow">return</span> <a class="code hl_function" href="class_t_singleton.html#a58e2a8e03fa6a7c20638044626add93a">Get</a>();</div>
 <div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>      }</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>      <span class="comment">// if we do have an instance and changed into another directory</span></div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>      <span class="comment">// we want to add the object read from the current directory</span></div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>      <span class="keywordflow">if</span>(<a class="code hl_variable" href="group___sorting.html#ga4a3540330119eb2bba0bf90b85fb55ad">fSingleton</a> != <span class="keyword">nullptr</span> &amp;&amp; <a class="code hl_variable" href="group___sorting.html#ga9513ce653b3004bfc4511c2b8c3312b8">fDir</a> != gDirectory) {</div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>         <span class="keywordflow">if</span>((gDirectory-&gt;GetFile()) != <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>            TList* list = gDirectory-&gt;GetFile()-&gt;GetListOfKeys();</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>            TIter  iter(list);</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>            std::cout &lt;&lt; R<span class="stringliteral">&quot;(Reading from file &quot;)&quot; &lt;&lt; <a class="code hl_define" href="_globals_8h.html#ad243f93c16bc4c1d3e0a13b84421d760">CYAN</a> &lt;&lt; gDirectory-&gt;GetFile()-&gt;GetName() &lt;&lt; <a class="code hl_define" href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a> &lt;&lt; R</span><span class="stringliteral">&quot;(&quot;: )&quot; &lt;&lt; std::flush;</span></div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span><span class="stringliteral">            </span><span class="keywordflow">while</span>(TKey* key = <span class="keyword">static_cast&lt;</span>TKey*<span class="keyword">&gt;</span>(iter.Next())) {</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>               <span class="keywordflow">if</span>(strcmp(key-&gt;GetClassName(), T::Class()-&gt;GetName()) != 0) {</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>                  <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>               }</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>               <span class="comment">// we found the object in the file, so we use it as our singleton</span></div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>               <span class="comment">// this automatically deletes the old singleton if we just switched files</span></div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>               std::cout &lt;&lt; <span class="stringliteral">&quot;adding &quot;</span> &lt;&lt; T::Class()-&gt;GetName() &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; std::flush;</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>               T* tmpSingleton = <span class="keyword">static_cast&lt;</span>T*<span class="keyword">&gt;</span>(key-&gt;ReadObj());</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>               <a class="code hl_variable" href="group___sorting.html#ga4a3540330119eb2bba0bf90b85fb55ad">fSingleton</a>-&gt;Add(tmpSingleton);</div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>               <a class="code hl_variable" href="group___sorting.html#ga9513ce653b3004bfc4511c2b8c3312b8">fDir</a> = gDirectory;   <span class="comment">// update the directory to gDirectory so we don&#39;t read from this file again</span></div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>            }</div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>            std::cout &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>         }</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>      }</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>      <span class="keywordflow">return</span> <a class="code hl_variable" href="group___sorting.html#ga4a3540330119eb2bba0bf90b85fb55ad">fSingleton</a>;</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>   }</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>      <span class="comment">// if we changed into another directory we want to add the object read from the current directory</span></div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>      <span class="keywordflow">if</span>(<a class="code hl_variable" href="group___sorting.html#ga9513ce653b3004bfc4511c2b8c3312b8">fDir</a> != gDirectory) {</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>         <span class="keywordflow">if</span>((gDirectory-&gt;GetFile()) != <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>            TList* list = gDirectory-&gt;GetFile()-&gt;GetListOfKeys();</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>            TIter  iter(list);</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>            std::cout &lt;&lt; R<span class="stringliteral">&quot;(Reading from file &quot;)&quot; &lt;&lt; <a class="code hl_define" href="_globals_8h.html#ad243f93c16bc4c1d3e0a13b84421d760">CYAN</a> &lt;&lt; gDirectory-&gt;GetFile()-&gt;GetName() &lt;&lt; <a class="code hl_define" href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a> &lt;&lt; R</span><span class="stringliteral">&quot;(&quot;: )&quot; &lt;&lt; std::flush;</span></div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span><span class="stringliteral">            </span><span class="keywordflow">while</span>(TKey* key = <span class="keyword">static_cast&lt;</span>TKey*<span class="keyword">&gt;</span>(iter.Next())) {</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>               <span class="keywordflow">if</span>(strcmp(key-&gt;GetClassName(), T::Class()-&gt;GetName()) != 0) {</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>                  <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>               }</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>               <span class="comment">// we found the object in the file, so we use it as our singleton</span></div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>               <span class="comment">// this automatically deletes the old singleton if we just switched files</span></div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>               std::cout &lt;&lt; <span class="stringliteral">&quot;adding &quot;</span> &lt;&lt; T::Class()-&gt;GetName() &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; std::flush;</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>               T* tmpSingleton = <span class="keyword">static_cast&lt;</span>T*<span class="keyword">&gt;</span>(key-&gt;ReadObj());</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>               <a class="code hl_variable" href="group___sorting.html#ga4a3540330119eb2bba0bf90b85fb55ad">fSingleton</a>-&gt;Add(tmpSingleton);</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>               <a class="code hl_variable" href="group___sorting.html#ga9513ce653b3004bfc4511c2b8c3312b8">fDir</a> = gDirectory;   <span class="comment">// update the directory to gDirectory so we don&#39;t read from this file again</span></div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>            }</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>            std::cout &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>         }</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>      }</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>      <span class="keywordflow">return</span> <a class="code hl_variable" href="group___sorting.html#ga4a3540330119eb2bba0bf90b85fb55ad">fSingleton</a>;</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>   }</div>
 </div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> </div>
-<div class="foldopen" id="foldopen00171" data-start="{" data-end="}">
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno"><a class="line" href="class_t_singleton.html#a2f3382a25957ab5bad96a9f083d6e176">  171</a></span>   <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code hl_function" href="class_t_singleton.html#a2f3382a25957ab5bad96a9f083d6e176">PrintDirectory</a>()</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>   {</div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;Singleton &quot;</span> &lt;&lt; <a class="code hl_variable" href="group___sorting.html#ga4a3540330119eb2bba0bf90b85fb55ad">fSingleton</a> &lt;&lt; <span class="stringliteral">&quot; was read from &quot;</span> &lt;&lt; (<a class="code hl_variable" href="group___sorting.html#ga9513ce653b3004bfc4511c2b8c3312b8">fDir</a> != <span class="keyword">nullptr</span> ? <a class="code hl_variable" href="group___sorting.html#ga9513ce653b3004bfc4511c2b8c3312b8">fDir</a>-&gt;GetName() : <span class="stringliteral">&quot;N/A&quot;</span>) &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>   }</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span> </div>
+<div class="foldopen" id="foldopen00170" data-start="{" data-end="}">
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno"><a class="line" href="class_t_singleton.html#a2f3382a25957ab5bad96a9f083d6e176">  170</a></span>   <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code hl_function" href="class_t_singleton.html#a2f3382a25957ab5bad96a9f083d6e176">PrintDirectory</a>()</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>   {</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;Singleton &quot;</span> &lt;&lt; <a class="code hl_variable" href="group___sorting.html#ga4a3540330119eb2bba0bf90b85fb55ad">fSingleton</a> &lt;&lt; <span class="stringliteral">&quot; was read from &quot;</span> &lt;&lt; (<a class="code hl_variable" href="group___sorting.html#ga9513ce653b3004bfc4511c2b8c3312b8">fDir</a> != <span class="keyword">nullptr</span> ? <a class="code hl_variable" href="group___sorting.html#ga9513ce653b3004bfc4511c2b8c3312b8">fDir</a>-&gt;GetName() : <span class="stringliteral">&quot;N/A&quot;</span>) &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>   }</div>
 </div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span> </div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span><span class="keyword">protected</span>:</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno"><a class="line" href="class_t_singleton.html#a9e87f957fa03d50928ed42d71d6bad22">  177</a></span>   <a class="code hl_function" href="class_t_singleton.html#a9e87f957fa03d50928ed42d71d6bad22">TSingleton</a>()                                 = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno"><a class="line" href="class_t_singleton.html#a1480c9f8d5c60085be38c0e6c13b98c8">  178</a></span>   <a class="code hl_function" href="class_t_singleton.html#a1480c9f8d5c60085be38c0e6c13b98c8">TSingleton</a>(<span class="keyword">const</span> <a class="code hl_class" href="class_t_singleton.html">TSingleton</a>&amp;)                = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno"><a class="line" href="class_t_singleton.html#a69290248b9d5961dcb384c4542010c8f">  179</a></span>   <a class="code hl_function" href="class_t_singleton.html#a69290248b9d5961dcb384c4542010c8f">TSingleton</a>(<a class="code hl_class" href="class_t_singleton.html">TSingleton</a>&amp;&amp;) noexcept            = default;</div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno"><a class="line" href="class_t_singleton.html#a3704865096c97ca923ee01c798b06121">  180</a></span>   <a class="code hl_class" href="class_t_singleton.html">TSingleton</a>&amp; operator=(const <a class="code hl_class" href="class_t_singleton.html">TSingleton</a>&amp;)     = default;</div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno"><a class="line" href="class_t_singleton.html#a5e0ab653293a00e9b2bc76117ca19ef0">  181</a></span>   <a class="code hl_class" href="class_t_singleton.html">TSingleton</a>&amp; operator=(<a class="code hl_class" href="class_t_singleton.html">TSingleton</a>&amp;&amp;) noexcept = default;</div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>   <span class="comment">// seems like clang-tidy thinks this destructor is protected and virtual?</span></div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno"><a class="line" href="class_t_singleton.html#a8d0a2d35245cf6186e32bcd902734027">  183</a></span>   ~<a class="code hl_class" href="class_t_singleton.html">TSingleton</a>() = default;   <span class="comment">// NOLINT(cppcoreguidelines-virtual-class-destructor)</span></div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span> </div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>private:</div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno"><a class="line" href="group___sorting.html#ga4a3540330119eb2bba0bf90b85fb55ad">  186</a></span>   static T*          <a class="code hl_variable" href="group___sorting.html#ga4a3540330119eb2bba0bf90b85fb55ad">fSingleton</a>;</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno"><a class="line" href="group___sorting.html#ga9513ce653b3004bfc4511c2b8c3312b8">  187</a></span>   static TDirectory* <a class="code hl_variable" href="group___sorting.html#ga9513ce653b3004bfc4511c2b8c3312b8">fDir</a>;</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span><span class="comment"></span> </div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span><span class="comment">   /// \cond CLASSIMP</span></div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span><span class="comment"></span>   ClassDef(<a class="code hl_class" href="class_t_singleton.html">TSingleton</a>, 1)   <span class="comment">// NOLINT(readability-else-after-return)</span><span class="comment"></span></div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span><span class="comment">   /// \endcond</span></div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span><span class="comment"></span>};</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span> </div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span><span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno"><a class="line" href="class_t_singleton.html#a9e87f957fa03d50928ed42d71d6bad22">  176</a></span>   <a class="code hl_function" href="class_t_singleton.html#a9e87f957fa03d50928ed42d71d6bad22">TSingleton</a>()                                 = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno"><a class="line" href="class_t_singleton.html#a1480c9f8d5c60085be38c0e6c13b98c8">  177</a></span>   <a class="code hl_function" href="class_t_singleton.html#a1480c9f8d5c60085be38c0e6c13b98c8">TSingleton</a>(<span class="keyword">const</span> <a class="code hl_class" href="class_t_singleton.html">TSingleton</a>&amp;)                = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno"><a class="line" href="class_t_singleton.html#a69290248b9d5961dcb384c4542010c8f">  178</a></span>   <a class="code hl_function" href="class_t_singleton.html#a69290248b9d5961dcb384c4542010c8f">TSingleton</a>(<a class="code hl_class" href="class_t_singleton.html">TSingleton</a>&amp;&amp;) noexcept            = default;</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno"><a class="line" href="class_t_singleton.html#a3704865096c97ca923ee01c798b06121">  179</a></span>   <a class="code hl_class" href="class_t_singleton.html">TSingleton</a>&amp; operator=(const <a class="code hl_class" href="class_t_singleton.html">TSingleton</a>&amp;)     = default;</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno"><a class="line" href="class_t_singleton.html#a5e0ab653293a00e9b2bc76117ca19ef0">  180</a></span>   <a class="code hl_class" href="class_t_singleton.html">TSingleton</a>&amp; operator=(<a class="code hl_class" href="class_t_singleton.html">TSingleton</a>&amp;&amp;) noexcept = default;</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>   <span class="comment">// seems like clang-tidy thinks this destructor is protected and virtual?</span></div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno"><a class="line" href="class_t_singleton.html#a8d0a2d35245cf6186e32bcd902734027">  182</a></span>   ~<a class="code hl_class" href="class_t_singleton.html">TSingleton</a>() = default;   <span class="comment">// NOLINT(cppcoreguidelines-virtual-class-destructor)</span></div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span> </div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>private:</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno"><a class="line" href="group___sorting.html#ga4a3540330119eb2bba0bf90b85fb55ad">  185</a></span>   static T*          <a class="code hl_variable" href="group___sorting.html#ga4a3540330119eb2bba0bf90b85fb55ad">fSingleton</a>;</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno"><a class="line" href="group___sorting.html#ga9513ce653b3004bfc4511c2b8c3312b8">  186</a></span>   static TDirectory* <a class="code hl_variable" href="group___sorting.html#ga9513ce653b3004bfc4511c2b8c3312b8">fDir</a>;</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span><span class="comment"></span> </div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span><span class="comment">   /// \cond CLASSIMP</span></div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span><span class="comment"></span>   ClassDef(<a class="code hl_class" href="class_t_singleton.html">TSingleton</a>, 1)   <span class="comment">// NOLINT(readability-else-after-return)</span><span class="comment"></span></div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span><span class="comment">   /// \endcond</span></div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span><span class="comment"></span>};</div>
 </div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span><span class="comment"></span> </div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span><span class="comment">/// \cond CLASSIMP</span></div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span><span class="comment"></span>templateClassImp(<a class="code hl_class" href="class_t_singleton.html">TSingleton</a>)<span class="comment"></span></div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span><span class="comment">/// \endcond</span></div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span><span class="comment"></span> </div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>template &lt;class T&gt;</div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>T* <a class="code hl_class" href="class_t_singleton.html">TSingleton</a>&lt;T&gt;::<a class="code hl_variable" href="group___sorting.html#ga4a3540330119eb2bba0bf90b85fb55ad">fSingleton</a> = <span class="keywordtype">nullptr</span>;</div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span> </div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>template &lt;class T&gt;</div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>TDirectory* <a class="code hl_class" href="class_t_singleton.html">TSingleton</a>&lt;T&gt;::<a class="code hl_variable" href="group___sorting.html#ga9513ce653b3004bfc4511c2b8c3312b8">fDir</a> = <span class="keywordtype">nullptr</span>;</div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span> </div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>template &lt;class T&gt;</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span><span class="keywordtype">void</span> <a class="code hl_class" href="class_t_singleton.html">TSingleton</a>&lt;T&gt;::Streamer(TBuffer&amp; R__b)</div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>{<span class="comment"></span></div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span><span class="comment">   /// Stream an object of class T.</span></div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span><span class="comment"></span>   <span class="keywordflow">if</span>(R__b.IsReading()) {</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>      <span class="comment">// R__b.ReadClassBuffer(T::Class(), &amp;(Get()));</span></div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>      <span class="comment">// Set(static_cast&lt;T*&gt;(this));</span></div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>   } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>      <span class="comment">// R__b.WriteClassBuffer(T::Class(), &amp;(Get()));</span></div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>   }</div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>}</div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span> </div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>TClass* <a class="code hl_class" href="class_t_singleton.html">TSingleton&lt;T&gt;::Class</a>()</div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>{</div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>   <span class="keywordflow">return</span> T::Class();</div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>}<span class="comment"></span></div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span><span class="comment">/*! @} */</span></div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span><span class="comment"></span> </div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span><span class="comment">/// \cond CLASSIMP</span></div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span><span class="comment"></span>templateClassImp(<a class="code hl_class" href="class_t_singleton.html">TSingleton</a>)<span class="comment"></span></div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span><span class="comment">/// \endcond</span></div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span><span class="comment"></span> </div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>template &lt;class T&gt;</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>T* <a class="code hl_class" href="class_t_singleton.html">TSingleton</a>&lt;T&gt;::<a class="code hl_variable" href="group___sorting.html#ga4a3540330119eb2bba0bf90b85fb55ad">fSingleton</a> = <span class="keywordtype">nullptr</span>;</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span> </div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>template &lt;class T&gt;</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>TDirectory* <a class="code hl_class" href="class_t_singleton.html">TSingleton</a>&lt;T&gt;::<a class="code hl_variable" href="group___sorting.html#ga9513ce653b3004bfc4511c2b8c3312b8">fDir</a> = <span class="keywordtype">nullptr</span>;</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span> </div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>template &lt;class T&gt;</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span><span class="keywordtype">void</span> <a class="code hl_class" href="class_t_singleton.html">TSingleton</a>&lt;T&gt;::Streamer(TBuffer&amp; R__b)</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>{<span class="comment"></span></div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span><span class="comment">   /// Stream an object of class T.</span></div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span><span class="comment"></span>   <span class="keywordflow">if</span>(R__b.IsReading()) {</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>      <span class="comment">// R__b.ReadClassBuffer(T::Class(), &amp;(Get()));</span></div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>      <span class="comment">// Set(static_cast&lt;T*&gt;(this));</span></div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>   } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>      <span class="comment">// R__b.WriteClassBuffer(T::Class(), &amp;(Get()));</span></div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>   }</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>}</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span> </div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>TClass* <a class="code hl_class" href="class_t_singleton.html">TSingleton&lt;T&gt;::Class</a>()</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>{</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>   <span class="keywordflow">return</span> T::Class();</div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>}<span class="comment"></span></div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span><span class="comment">/*! @} */</span></div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="a_globals_8h_html"><div class="ttname"><a href="_globals_8h.html">Globals.h</a></div></div>
 <div class="ttc" id="a_globals_8h_html_ad243f93c16bc4c1d3e0a13b84421d760"><div class="ttname"><a href="_globals_8h.html#ad243f93c16bc4c1d3e0a13b84421d760">CYAN</a></div><div class="ttdeci">#define CYAN</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00012">Globals.h:12</a></div></div>
 <div class="ttc" id="a_globals_8h_html_ad7c3b975e5552a122f836b02fa138502"><div class="ttname"><a href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a></div><div class="ttdeci">#define RESET_COLOR</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00005">Globals.h:5</a></div></div>
 <div class="ttc" id="aclass_t_singleton_html"><div class="ttname"><a href="class_t_singleton.html">TSingleton</a></div><div class="ttdef"><b>Definition</b> <a href="#l00031">TSingleton.h:31</a></div></div>
 <div class="ttc" id="aclass_t_singleton_html_a1480c9f8d5c60085be38c0e6c13b98c8"><div class="ttname"><a href="class_t_singleton.html#a1480c9f8d5c60085be38c0e6c13b98c8">TSingleton::TSingleton</a></div><div class="ttdeci">TSingleton(const TSingleton &amp;)=default</div></div>
 <div class="ttc" id="aclass_t_singleton_html_a25568e49214ec73aa40a19f7da64870f"><div class="ttname"><a href="class_t_singleton.html#a25568e49214ec73aa40a19f7da64870f">TSingleton::AddCurrent</a></div><div class="ttdeci">static T * AddCurrent()</div><div class="ttdef"><b>Definition</b> <a href="#l00141">TSingleton.h:141</a></div></div>
-<div class="ttc" id="aclass_t_singleton_html_a2f3382a25957ab5bad96a9f083d6e176"><div class="ttname"><a href="class_t_singleton.html#a2f3382a25957ab5bad96a9f083d6e176">TSingleton::PrintDirectory</a></div><div class="ttdeci">static void PrintDirectory()</div><div class="ttdef"><b>Definition</b> <a href="#l00171">TSingleton.h:171</a></div></div>
+<div class="ttc" id="aclass_t_singleton_html_a2f3382a25957ab5bad96a9f083d6e176"><div class="ttname"><a href="class_t_singleton.html#a2f3382a25957ab5bad96a9f083d6e176">TSingleton::PrintDirectory</a></div><div class="ttdeci">static void PrintDirectory()</div><div class="ttdef"><b>Definition</b> <a href="#l00170">TSingleton.h:170</a></div></div>
 <div class="ttc" id="aclass_t_singleton_html_a58e2a8e03fa6a7c20638044626add93a"><div class="ttname"><a href="class_t_singleton.html#a58e2a8e03fa6a7c20638044626add93a">TSingleton::Get</a></div><div class="ttdeci">static T * Get(bool verbose=false)</div><div class="ttdef"><b>Definition</b> <a href="#l00033">TSingleton.h:33</a></div></div>
 <div class="ttc" id="aclass_t_singleton_html_a69290248b9d5961dcb384c4542010c8f"><div class="ttname"><a href="class_t_singleton.html#a69290248b9d5961dcb384c4542010c8f">TSingleton::TSingleton</a></div><div class="ttdeci">TSingleton(TSingleton &amp;&amp;) noexcept=default</div></div>
 <div class="ttc" id="aclass_t_singleton_html_a6a8cba893da4114aa47cf7bdf24c853a"><div class="ttname"><a href="class_t_singleton.html#a6a8cba893da4114aa47cf7bdf24c853a">TSingleton::GetAll</a></div><div class="ttdeci">static T * GetAll()</div><div class="ttdef"><b>Definition</b> <a href="#l00066">TSingleton.h:66</a></div></div>
 <div class="ttc" id="aclass_t_singleton_html_a9e87f957fa03d50928ed42d71d6bad22"><div class="ttname"><a href="class_t_singleton.html#a9e87f957fa03d50928ed42d71d6bad22">TSingleton::TSingleton</a></div><div class="ttdeci">TSingleton()=default</div></div>
 <div class="ttc" id="aclass_t_singleton_html_ab3f625c1553ed57a8af3eae3bb92781c"><div class="ttname"><a href="class_t_singleton.html#ab3f625c1553ed57a8af3eae3bb92781c">TSingleton::Set</a></div><div class="ttdeci">static void Set(T *val)</div><div class="ttdef"><b>Definition</b> <a href="#l00133">TSingleton.h:133</a></div></div>
-<div class="ttc" id="agroup___sorting_html_ga4a3540330119eb2bba0bf90b85fb55ad"><div class="ttname"><a href="group___sorting.html#ga4a3540330119eb2bba0bf90b85fb55ad">TSingleton::fSingleton</a></div><div class="ttdeci">static T * fSingleton</div><div class="ttdef"><b>Definition</b> <a href="#l00186">TSingleton.h:186</a></div></div>
-<div class="ttc" id="agroup___sorting_html_ga9513ce653b3004bfc4511c2b8c3312b8"><div class="ttname"><a href="group___sorting.html#ga9513ce653b3004bfc4511c2b8c3312b8">TSingleton::fDir</a></div><div class="ttdeci">static TDirectory * fDir</div><div class="ttdef"><b>Definition</b> <a href="#l00187">TSingleton.h:187</a></div></div>
+<div class="ttc" id="agroup___sorting_html_ga4a3540330119eb2bba0bf90b85fb55ad"><div class="ttname"><a href="group___sorting.html#ga4a3540330119eb2bba0bf90b85fb55ad">TSingleton::fSingleton</a></div><div class="ttdeci">static T * fSingleton</div><div class="ttdef"><b>Definition</b> <a href="#l00185">TSingleton.h:185</a></div></div>
+<div class="ttc" id="agroup___sorting_html_ga9513ce653b3004bfc4511c2b8c3312b8"><div class="ttname"><a href="group___sorting.html#ga9513ce653b3004bfc4511c2b8c3312b8">TSingleton::fDir</a></div><div class="ttdeci">static TDirectory * fDir</div><div class="ttdef"><b>Definition</b> <a href="#l00186">TSingleton.h:186</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.9.8-->
@@ -358,7 +357,7 @@ $(function(){initNavTree('_t_singleton_8h_source.html',''); initResizable(true);
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="_t_singleton_8h.html">TSingleton.h</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jun 3 2025 19:17:11.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Mon Jun 9 2025 20:19:03.</li>
   </ul>
 </div>
 </body>

@@ -112,7 +112,7 @@ $(function(){initNavTree('class_t_run_info.html',''); initResizable(true); });
 <div class="contents">
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This Class is designed to store run dependent information. It is used to store run numbers, GRSISort version, existence of detector systems, etc. The <a class="el" href="class_t_run_info.html">TRunInfo</a> is written to both the fragment and analysis trees, as well as to files create by grsiframe.</p>
-<p><a class="el" href="class_t_run_info.html">TRunInfo</a> designed to be made as the FragmentTree is created. Right now, it simple remembers the run and subrunnumber and sets which systems are present in the odb.</p>
+<p>An example run info looks like this:</p>
 <div class="fragment"><div class="line">GRSI [0] <a class="code hl_function" href="class_t_singleton.html#a58e2a8e03fa6a7c20638044626add93a">TRunInfo::Get</a>()-&gt;<a class="code hl_function" href="#a6f4b87b7830a3a52af27f6f852085954">Print</a>()</div>
 <div class="line">Singleton 0x5651a3d5dc10 was read from analysis22151_000.root</div>
 <div class="line">Title: All-singles-ZDF-off 133Ba_R0794</div>
@@ -124,15 +124,16 @@ $(function(){initNavTree('class_t_run_info.html',''); initResizable(true); });
 <div class="line">      <a class="code hl_function" href="#a7eee7560c250e452c5f3ec8a0d005dc3">RunLength</a>:          1871 <a class="code hl_variable" href="_make_griffin_histograms_8cxx.html#ac9f781c0a1f40b02ce4266f1add0feb9">s</a></div>
 <div class="line">GRSI [1]</div>
 <div class="ttc" id="a_make_griffin_histograms_8cxx_html_ac9f781c0a1f40b02ce4266f1add0feb9"><div class="ttname"><a href="_make_griffin_histograms_8cxx.html#ac9f781c0a1f40b02ce4266f1add0feb9">s</a></div><div class="ttdeci">const Double_t s</div><div class="ttdef"><b>Definition</b> <a href="_make_griffin_histograms_8cxx_source.html#l00015">MakeGriffinHistograms.cxx:15</a></div></div>
-<div class="ttc" id="aclass_t_run_info_html_a1d47de727895cde30c1cc875447f7581"><div class="ttname"><a href="#a1d47de727895cde30c1cc875447f7581">TRunInfo::RunStop</a></div><div class="ttdeci">static double RunStop()</div><div class="ttdef"><b>Definition</b> <a href="_t_run_info_8h_source.html#l00228">TRunInfo.h:228</a></div></div>
-<div class="ttc" id="aclass_t_run_info_html_a24a0b890d8f71133bffabba431e9cad8"><div class="ttname"><a href="#a24a0b890d8f71133bffabba431e9cad8">TRunInfo::RunStart</a></div><div class="ttdeci">static double RunStart()</div><div class="ttdef"><b>Definition</b> <a href="_t_run_info_8h_source.html#l00227">TRunInfo.h:227</a></div></div>
-<div class="ttc" id="aclass_t_run_info_html_a3cd9ba734843cc6185730aa31db236d3"><div class="ttname"><a href="#a3cd9ba734843cc6185730aa31db236d3">TRunInfo::SubRunNumber</a></div><div class="ttdeci">static int SubRunNumber()</div><div class="ttdef"><b>Definition</b> <a href="_t_run_info_8h_source.html#l00202">TRunInfo.h:202</a></div></div>
-<div class="ttc" id="aclass_t_run_info_html_a58ad08b4a74a64a1af8a7adab027def3"><div class="ttname"><a href="#a58ad08b4a74a64a1af8a7adab027def3">TRunInfo::RunNumber</a></div><div class="ttdeci">static int RunNumber()</div><div class="ttdef"><b>Definition</b> <a href="_t_run_info_8h_source.html#l00201">TRunInfo.h:201</a></div></div>
+<div class="ttc" id="aclass_t_run_info_html_a1d47de727895cde30c1cc875447f7581"><div class="ttname"><a href="#a1d47de727895cde30c1cc875447f7581">TRunInfo::RunStop</a></div><div class="ttdeci">static double RunStop()</div><div class="ttdef"><b>Definition</b> <a href="_t_run_info_8h_source.html#l00246">TRunInfo.h:246</a></div></div>
+<div class="ttc" id="aclass_t_run_info_html_a24a0b890d8f71133bffabba431e9cad8"><div class="ttname"><a href="#a24a0b890d8f71133bffabba431e9cad8">TRunInfo::RunStart</a></div><div class="ttdeci">static double RunStart()</div><div class="ttdef"><b>Definition</b> <a href="_t_run_info_8h_source.html#l00245">TRunInfo.h:245</a></div></div>
+<div class="ttc" id="aclass_t_run_info_html_a3cd9ba734843cc6185730aa31db236d3"><div class="ttname"><a href="#a3cd9ba734843cc6185730aa31db236d3">TRunInfo::SubRunNumber</a></div><div class="ttdeci">static int SubRunNumber()</div><div class="ttdef"><b>Definition</b> <a href="_t_run_info_8h_source.html#l00212">TRunInfo.h:212</a></div></div>
+<div class="ttc" id="aclass_t_run_info_html_a58ad08b4a74a64a1af8a7adab027def3"><div class="ttname"><a href="#a58ad08b4a74a64a1af8a7adab027def3">TRunInfo::RunNumber</a></div><div class="ttdeci">static int RunNumber()</div><div class="ttdef"><b>Definition</b> <a href="_t_run_info_8h_source.html#l00211">TRunInfo.h:211</a></div></div>
 <div class="ttc" id="aclass_t_run_info_html_a6f4b87b7830a3a52af27f6f852085954"><div class="ttname"><a href="#a6f4b87b7830a3a52af27f6f852085954">TRunInfo::Print</a></div><div class="ttdeci">void Print(Option_t *opt=&quot;&quot;) const override</div><div class="ttdef"><b>Definition</b> <a href="_t_run_info_8cxx_source.html#l00072">TRunInfo.cxx:72</a></div></div>
-<div class="ttc" id="aclass_t_run_info_html_a7eee7560c250e452c5f3ec8a0d005dc3"><div class="ttname"><a href="#a7eee7560c250e452c5f3ec8a0d005dc3">TRunInfo::RunLength</a></div><div class="ttdeci">static double RunLength()</div><div class="ttdef"><b>Definition</b> <a href="_t_run_info_8h_source.html#l00229">TRunInfo.h:229</a></div></div>
+<div class="ttc" id="aclass_t_run_info_html_a7eee7560c250e452c5f3ec8a0d005dc3"><div class="ttname"><a href="#a7eee7560c250e452c5f3ec8a0d005dc3">TRunInfo::RunLength</a></div><div class="ttdeci">static double RunLength()</div><div class="ttdef"><b>Definition</b> <a href="_t_run_info_8h_source.html#l00247">TRunInfo.h:247</a></div></div>
 <div class="ttc" id="aclass_t_singleton_html_a58e2a8e03fa6a7c20638044626add93a"><div class="ttname"><a href="class_t_singleton.html#a58e2a8e03fa6a7c20638044626add93a">TSingleton&lt; TRunInfo &gt;::Get</a></div><div class="ttdeci">static TRunInfo * Get(bool verbose=false)</div><div class="ttdef"><b>Definition</b> <a href="_t_singleton_8h_source.html#l00033">TSingleton.h:33</a></div></div>
 </div><!-- fragment --><p>When subruns/runs are added together using gadd or when multiple subruns/runs are used in grsiframe, their TRunInfos get merged.</p>
-<p>If all files are from one run, and the subruns are added in order without any missing, the information changes to reflect this: </p><div class="fragment"><div class="line">GRSI [0] <a class="code hl_function" href="class_t_singleton.html#a58e2a8e03fa6a7c20638044626add93a">TRunInfo::Get</a>()-&gt;<a class="code hl_function" href="#a6f4b87b7830a3a52af27f6f852085954">Print</a>()</div>
+<p>If all files are from one run, and the subruns are added in order without any missing, the information changes to reflect this:</p>
+<div class="fragment"><div class="line">GRSI [0] <a class="code hl_function" href="class_t_singleton.html#a58e2a8e03fa6a7c20638044626add93a">TRunInfo::Get</a>()-&gt;<a class="code hl_function" href="#a6f4b87b7830a3a52af27f6f852085954">Print</a>()</div>
 <div class="line">Singleton 0x55ab20f209a0 was read from Final21950_000-028.root</div>
 <div class="line">Title: 100Zr_beam_with_PACES_lasers_on</div>
 <div class="line">Comment: 100Zr_beam_with_PACES_lasers_on</div>
@@ -142,10 +143,11 @@ $(function(){initNavTree('class_t_run_info.html',''); initResizable(true); });
 <div class="line">      <a class="code hl_function" href="#a1d47de727895cde30c1cc875447f7581">RunStop</a>:            Thu Dec 14 14:37:14 2023</div>
 <div class="line">      <a class="code hl_function" href="#a7eee7560c250e452c5f3ec8a0d005dc3">RunLength</a>:          3599 <a class="code hl_variable" href="_make_griffin_histograms_8cxx.html#ac9f781c0a1f40b02ce4266f1add0feb9">s</a></div>
 <div class="line">GRSI [1]</div>
-</div><!-- fragment --><p> Internally this is signaled by the subrun number having been set to -1, while the run number is still nonzero, and the run start and run stop are set as well as the numbers of the first and last subrun.</p>
+</div><!-- fragment --><p>Internally this is signaled by the subrun number having been set to -1, while the run number is still nonzero, and the run start and run stop are set as well as the numbers of the first and last subrun.</p>
 <p>If the subruns are not in order or a subrun is missing from the range added, the number of the first and last subrun are both set to -1, changing the line </p><div class="fragment"><div class="line">SubRunNumbers:      000-028</div>
 </div><!-- fragment --><p> to </p><div class="fragment"><div class="line">SubRunNumbers:      -1--1</div>
-</div><!-- fragment --><p>If the files are from multiple runs that are all in consecutive order without any missing ones, the run info will say: </p><div class="fragment"><div class="line">Singleton 0x563c6c1c3a30 was read from Final21950-21980.root</div>
+</div><!-- fragment --><p>If the files are from multiple runs that are all in consecutive order without any missing ones, the run info will say:</p>
+<div class="fragment"><div class="line">Singleton 0x563c6c1c3a30 was read from Final21950-21980.root</div>
 <div class="line">Title: 100Zr_beam_with_PACES_lasers_on</div>
 <div class="line">Comment: 100Zr_beam_with_PACES_lasers_on</div>
 <div class="line">      RunNumbers:         21950-21980</div>
@@ -160,10 +162,23 @@ $(function(){initNavTree('class_t_run_info.html',''); initResizable(true); });
 <div class="line">      Missing runs:       21952, 21953</div>
 <div class="line">      Combined <a class="code hl_function" href="#a7eee7560c250e452c5f3ec8a0d005dc3">RunLength</a>: 10794 <a class="code hl_variable" href="_make_griffin_histograms_8cxx.html#ac9f781c0a1f40b02ce4266f1add0feb9">s</a></div>
 </div><!-- fragment --><p>From version 18 on <a class="el" href="class_t_run_info.html">TRunInfo</a> also stores information about the GRSISort version used to sort the data. This can be accessed via </p><div class="fragment"><div class="line"><a class="code hl_function" href="class_t_singleton.html#a58e2a8e03fa6a7c20638044626add93a">TRunInfo::Get</a>()-&gt;<a class="code hl_function" href="#abe83368d782dfd171294ce980fdab449">PrintVersion</a>();</div>
-<div class="ttc" id="aclass_t_run_info_html_abe83368d782dfd171294ce980fdab449"><div class="ttname"><a href="#abe83368d782dfd171294ce980fdab449">TRunInfo::PrintVersion</a></div><div class="ttdeci">void PrintVersion() const</div><div class="ttdef"><b>Definition</b> <a href="_t_run_info_8cxx_source.html#l00570">TRunInfo.cxx:570</a></div></div>
-</div><!-- fragment --><p>Using a newer version of grsiframe on data created with an older version of GRSISort should not overwrite the version reported. </p>
+<div class="ttc" id="aclass_t_run_info_html_abe83368d782dfd171294ce980fdab449"><div class="ttname"><a href="#abe83368d782dfd171294ce980fdab449">TRunInfo::PrintVersion</a></div><div class="ttdeci">void PrintVersion() const</div><div class="ttdef"><b>Definition</b> <a href="_t_run_info_8cxx_source.html#l00571">TRunInfo.cxx:571</a></div></div>
+</div><!-- fragment --><p>Using a newer version of grsiframe on data created with an older version of GRSISort should not overwrite the version reported.</p>
+<p>Summary of different states the run info can be in:</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">state   </th><th class="markdownTableHeadNone">identifying markers    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">single sub run   </td><td class="markdownTableBodyNone">non-zero run number and sub run number != -1    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">consecutive sub runs of a single run (from <a class="el" href="#a69af3e626f9d8ab249237b1cb7f879a3">FirstSubRunNumber()</a> to <a class="el" href="#a4edee99716a0e561383427e944adf82e">LastSubRunNumber()</a>)   </td><td class="markdownTableBodyNone">non-zero run number and sub run number == -1    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">consecutive runs (from <a class="el" href="#a7c7b3ce2e166b2424a7408fc8d871a6d">FirstRunNumber()</a> to <a class="el" href="#a20cccf816529378a4c343f4ef6eb11bf">LastRunNumber()</a>)   </td><td class="markdownTableBodyNone">zero run number and <a class="el" href="#a7c7b3ce2e166b2424a7408fc8d871a6d">FirstRunNumber()</a> != <a class="el" href="#a20cccf816529378a4c343f4ef6eb11bf">LastRunNumber()</a>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">non-consecutive runs   </td><td class="markdownTableBodyNone">zero run number and non-empty run list   </td></tr>
+</table>
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00118">118</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00128">128</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -547,7 +562,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_run_info_8cxx_source.html#l00387">387</a> of file <a class="el" href="_t_run_info_8cxx_source.html">TRunInfo.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_globals_8h_source.html#l00016">DYELLOW</a>, <a class="el" href="_t_run_info_8h_source.html#l00286">fFirstRunNumber</a>, <a class="el" href="_t_run_info_8h_source.html#l00287">fFirstSubRunNumber</a>, <a class="el" href="_t_run_info_8h_source.html#l00288">fLastRunNumber</a>, <a class="el" href="_t_run_info_8h_source.html#l00289">fLastSubRunNumber</a>, <a class="el" href="_t_run_info_8h_source.html#l00294">fRunLength</a>, <a class="el" href="_t_run_info_8h_source.html#l00290">fRunList</a>, <a class="el" href="_t_run_info_8h_source.html#l00284">fRunNumber</a>, <a class="el" href="_t_run_info_8h_source.html#l00292">fRunStart</a>, <a class="el" href="_t_run_info_8h_source.html#l00293">fRunStop</a>, <a class="el" href="_t_run_info_8h_source.html#l00285">fSubRunNumber</a>, and <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>.</p>
+<p class="reference">References <a class="el" href="_globals_8h_source.html#l00016">DYELLOW</a>, <a class="el" href="_t_run_info_8h_source.html#l00304">fFirstRunNumber</a>, <a class="el" href="_t_run_info_8h_source.html#l00305">fFirstSubRunNumber</a>, <a class="el" href="_t_run_info_8h_source.html#l00306">fLastRunNumber</a>, <a class="el" href="_t_run_info_8h_source.html#l00307">fLastSubRunNumber</a>, <a class="el" href="_t_run_info_8h_source.html#l00312">fRunLength</a>, <a class="el" href="_t_run_info_8h_source.html#l00308">fRunList</a>, <a class="el" href="_t_run_info_8h_source.html#l00302">fRunNumber</a>, <a class="el" href="_t_run_info_8h_source.html#l00310">fRunStart</a>, <a class="el" href="_t_run_info_8h_source.html#l00311">fRunStop</a>, <a class="el" href="_t_run_info_8h_source.html#l00303">fSubRunNumber</a>, and <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00263">Merge()</a>.</p>
 
@@ -578,7 +593,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_run_info_8cxx_source.html#l00290">290</a> of file <a class="el" href="_t_run_info_8cxx_source.html">TRunInfo.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00317">fBadCycleList</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00335">fBadCycleList</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00207">ParseInputData()</a>.</p>
 
@@ -667,7 +682,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_run_info_8cxx_source.html#l00122">122</a> of file <a class="el" href="_t_run_info_8cxx_source.html">TRunInfo.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00317">fBadCycleList</a>, <a class="el" href="_t_run_info_8h_source.html#l00319">fDetectorInformation</a>, and <a class="el" href="_t_run_info_8h_source.html#l00315">fHPGeArrayPosition</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00335">fBadCycleList</a>, <a class="el" href="_t_run_info_8h_source.html#l00337">fDetectorInformation</a>, and <a class="el" href="_t_run_info_8h_source.html#l00333">fHPGeArrayPosition</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00063">TRunInfo()</a>.</p>
 
@@ -696,9 +711,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00160">160</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00170">170</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00298">fDate</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00316">fDate</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00090">TGRSIint::ApplyOptions()</a>, and <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>.</p>
 
@@ -727,9 +742,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00148">148</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00158">158</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00297">fFullVersion</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00315">fFullVersion</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00090">TGRSIint::ApplyOptions()</a>, and <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>.</p>
 
@@ -758,9 +773,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00184">184</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00194">194</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00300">fLibraryPath</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00318">fLibraryPath</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 </div>
 </div>
@@ -787,9 +802,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00172">172</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00182">182</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00299">fLibraryVersion</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00317">fLibraryVersion</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_midas_file_8cxx_source.html#l00095">TMidasFile::Open()</a>.</p>
 
@@ -818,9 +833,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00136">136</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00146">146</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00296">fVersion</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00314">fVersion</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00090">TGRSIint::ApplyOptions()</a>, <a class="el" href="_t_lst_file_8cxx_source.html#l00083">TLstFile::Open()</a>, <a class="el" href="_t_rlmd_file_8cxx_source.html#l00081">TRlmdFile::Open()</a>, <a class="el" href="_t_tdr_file_8cxx_source.html#l00061">TTdrFile::Open()</a>, and <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>.</p>
 
@@ -850,9 +865,9 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 <p>This function creates a label/string based on the run number and the subrun number.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8cxx_source.html#l00581">581</a> of file <a class="el" href="_t_run_info_8cxx_source.html">TRunInfo.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8cxx_source.html#l00582">582</a> of file <a class="el" href="_t_run_info_8cxx_source.html">TRunInfo.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00204">FirstRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00205">FirstSubRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00207">LastRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00208">LastSubRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00201">RunNumber()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00202">SubRunNumber()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00214">FirstRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00215">FirstSubRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00217">LastRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00218">LastSubRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00211">RunNumber()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00212">SubRunNumber()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_frame_8cxx_source.html#l00118">TGRSIFrame::Run()</a>.</p>
 
@@ -881,11 +896,11 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00204">204</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00214">214</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00286">fFirstRunNumber</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00304">fFirstRunNumber</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00107">AtExitHandler()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00581">CreateLabel()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00219">TGRSISelector::Terminate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00107">AtExitHandler()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00582">CreateLabel()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00219">TGRSISelector::Terminate()</a>.</p>
 
 </div>
 </div>
@@ -912,11 +927,11 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00205">205</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00215">215</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00287">fFirstSubRunNumber</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00305">fFirstSubRunNumber</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00107">AtExitHandler()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00581">CreateLabel()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00219">TGRSISelector::Terminate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00107">AtExitHandler()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00582">CreateLabel()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00219">TGRSISelector::Terminate()</a>.</p>
 
 </div>
 </div>
@@ -945,7 +960,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_singleton_8h_source.html#l00033">33</a> of file <a class="el" href="_t_singleton_8h_source.html">TSingleton.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00290">AddBadCycle()</a>, <a class="el" href="grsiproof_8cxx_source.html#l00037">Analyze()</a>, <a class="el" href="_t_run_info_8h_source.html#l00160">ClearDate()</a>, <a class="el" href="_t_run_info_8h_source.html#l00148">ClearFullVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00184">ClearLibraryPath()</a>, <a class="el" href="_t_run_info_8h_source.html#l00172">ClearLibraryVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00136">ClearVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00204">FirstRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00205">FirstSubRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00238">GetCalFileData()</a>, <a class="el" href="_t_run_info_8h_source.html#l00237">GetCalFileName()</a>, <a class="el" href="_t_run_info_8h_source.html#l00159">GetDate()</a>, <a class="el" href="_t_run_info_8h_source.html#l00272">GetDetectorInformation()</a>, <a class="el" href="_t_run_info_8h_source.html#l00147">GetFullVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00183">GetLibraryPath()</a>, <a class="el" href="_t_run_info_8h_source.html#l00171">GetLibraryVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00244">GetRunInfoFileData()</a>, <a class="el" href="_t_run_info_8h_source.html#l00243">GetRunInfoFileName()</a>, <a class="el" href="_t_run_info_8h_source.html#l00135">GetVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00241">GetXMLODBFileData()</a>, <a class="el" href="_t_run_info_8h_source.html#l00240">GetXMLODBFileName()</a>, <a class="el" href="_t_run_info_8h_source.html#l00253">HPGeArrayPosition()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00304">IsBadCycle()</a>, <a class="el" href="_t_run_info_8h_source.html#l00207">LastRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00208">LastSubRunNumber()</a>, <a class="el" href="_fix_run_info_8cxx_source.html#l00010">main()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00277">PrintBadCycles()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00363">PrintToString()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00015">ReadInfoFromFile()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00298">RemoveBadCycle()</a>, <a class="el" href="_t_g_r_s_i_frame_8cxx_source.html#l00118">TGRSIFrame::Run()</a>, <a class="el" href="_t_run_info_8h_source.html#l00220">RunComment()</a>, <a class="el" href="_t_run_info_8h_source.html#l00229">RunLength()</a>, <a class="el" href="_t_run_info_8h_source.html#l00201">RunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00227">RunStart()</a>, <a class="el" href="_t_run_info_8h_source.html#l00228">RunStop()</a>, <a class="el" href="_t_run_info_8h_source.html#l00219">RunTitle()</a>, <a class="el" href="_t_run_info_8h_source.html#l00232">SetCalFileData()</a>, <a class="el" href="_t_run_info_8h_source.html#l00231">SetCalFileName()</a>, <a class="el" href="_t_run_info_8h_source.html#l00162">SetDate()</a>, <a class="el" href="_t_run_info_8h_source.html#l00271">SetDetectorInformation()</a>, <a class="el" href="_t_run_info_8h_source.html#l00150">SetFullVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00252">SetHPGeArrayPosition()</a>, <a class="el" href="_t_run_info_8h_source.html#l00186">SetLibraryPath()</a>, <a class="el" href="_t_run_info_8h_source.html#l00174">SetLibraryVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00214">SetRunComment()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>, <a class="el" href="_t_run_info_8h_source.html#l00250">SetRunInfoFile()</a>, <a class="el" href="_t_run_info_8h_source.html#l00249">SetRunInfoFileName()</a>, <a class="el" href="_t_run_info_8h_source.html#l00225">SetRunLength()</a>, <a class="el" href="_t_run_info_8h_source.html#l00224">SetRunLength()</a>, <a class="el" href="_t_run_info_8h_source.html#l00198">SetRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00222">SetRunStart()</a>, <a class="el" href="_t_run_info_8h_source.html#l00223">SetRunStop()</a>, <a class="el" href="_t_run_info_8h_source.html#l00210">SetRunTitle()</a>, <a class="el" href="_t_run_info_8h_source.html#l00199">SetSubRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00138">SetVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00235">SetXMLODBFileData()</a>, <a class="el" href="_t_run_info_8h_source.html#l00234">SetXMLODBFileName()</a>, <a class="el" href="_t_run_info_8h_source.html#l00202">SubRunNumber()</a>, <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00219">TGRSISelector::Terminate()</a>, and <a class="el" href="_t_run_info_8cxx_source.html#l00309">WriteToRoot()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00290">AddBadCycle()</a>, <a class="el" href="grsiproof_8cxx_source.html#l00037">Analyze()</a>, <a class="el" href="_t_run_info_8h_source.html#l00170">ClearDate()</a>, <a class="el" href="_t_run_info_8h_source.html#l00158">ClearFullVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00194">ClearLibraryPath()</a>, <a class="el" href="_t_run_info_8h_source.html#l00182">ClearLibraryVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00146">ClearVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00214">FirstRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00215">FirstSubRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00256">GetCalFileData()</a>, <a class="el" href="_t_run_info_8h_source.html#l00255">GetCalFileName()</a>, <a class="el" href="_t_run_info_8h_source.html#l00169">GetDate()</a>, <a class="el" href="_t_run_info_8h_source.html#l00290">GetDetectorInformation()</a>, <a class="el" href="_t_run_info_8h_source.html#l00157">GetFullVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00193">GetLibraryPath()</a>, <a class="el" href="_t_run_info_8h_source.html#l00181">GetLibraryVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00262">GetRunInfoFileData()</a>, <a class="el" href="_t_run_info_8h_source.html#l00261">GetRunInfoFileName()</a>, <a class="el" href="_t_run_info_8h_source.html#l00145">GetVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00259">GetXMLODBFileData()</a>, <a class="el" href="_t_run_info_8h_source.html#l00258">GetXMLODBFileName()</a>, <a class="el" href="_t_run_info_8h_source.html#l00271">HPGeArrayPosition()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00304">IsBadCycle()</a>, <a class="el" href="_t_run_info_8h_source.html#l00217">LastRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00218">LastSubRunNumber()</a>, <a class="el" href="_fix_run_info_8cxx_source.html#l00010">main()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00277">PrintBadCycles()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00363">PrintToString()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00015">ReadInfoFromFile()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00298">RemoveBadCycle()</a>, <a class="el" href="_t_g_r_s_i_frame_8cxx_source.html#l00118">TGRSIFrame::Run()</a>, <a class="el" href="_t_run_info_8h_source.html#l00230">RunComment()</a>, <a class="el" href="_t_run_info_8h_source.html#l00247">RunLength()</a>, <a class="el" href="_t_run_info_8h_source.html#l00211">RunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00245">RunStart()</a>, <a class="el" href="_t_run_info_8h_source.html#l00246">RunStop()</a>, <a class="el" href="_t_run_info_8h_source.html#l00229">RunTitle()</a>, <a class="el" href="_t_run_info_8h_source.html#l00250">SetCalFileData()</a>, <a class="el" href="_t_run_info_8h_source.html#l00249">SetCalFileName()</a>, <a class="el" href="_t_run_info_8h_source.html#l00172">SetDate()</a>, <a class="el" href="_t_run_info_8h_source.html#l00289">SetDetectorInformation()</a>, <a class="el" href="_t_run_info_8h_source.html#l00160">SetFullVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00270">SetHPGeArrayPosition()</a>, <a class="el" href="_t_run_info_8h_source.html#l00196">SetLibraryPath()</a>, <a class="el" href="_t_run_info_8h_source.html#l00184">SetLibraryVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00224">SetRunComment()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>, <a class="el" href="_t_run_info_8h_source.html#l00268">SetRunInfoFile()</a>, <a class="el" href="_t_run_info_8h_source.html#l00267">SetRunInfoFileName()</a>, <a class="el" href="_t_run_info_8h_source.html#l00235">SetRunLength()</a>, <a class="el" href="_t_run_info_8h_source.html#l00234">SetRunLength()</a>, <a class="el" href="_t_run_info_8h_source.html#l00208">SetRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00232">SetRunStart()</a>, <a class="el" href="_t_run_info_8h_source.html#l00233">SetRunStop()</a>, <a class="el" href="_t_run_info_8h_source.html#l00220">SetRunTitle()</a>, <a class="el" href="_t_run_info_8h_source.html#l00209">SetSubRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00148">SetVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00253">SetXMLODBFileData()</a>, <a class="el" href="_t_run_info_8h_source.html#l00252">SetXMLODBFileName()</a>, <a class="el" href="_t_run_info_8h_source.html#l00212">SubRunNumber()</a>, <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00219">TGRSISelector::Terminate()</a>, and <a class="el" href="_t_run_info_8cxx_source.html#l00309">WriteToRoot()</a>.</p>
 
 </div>
 </div>
@@ -999,9 +1014,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00238">238</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00256">256</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00303">fCalFile</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00321">fCalFile</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 </div>
 </div>
@@ -1028,9 +1043,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00237">237</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00255">255</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00302">fCalFileName</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00320">fCalFileName</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 </div>
 </div>
@@ -1057,9 +1072,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00159">159</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00169">169</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00298">fDate</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00316">fDate</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 </div>
 </div>
@@ -1086,9 +1101,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00272">272</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00290">290</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00319">fDetectorInformation</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00337">fDetectorInformation</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_descant_8cxx_source.html#l00152">TDescant::GetPosition()</a>, and <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00399">TGRSIint::SetupPipeline()</a>.</p>
 
@@ -1117,9 +1132,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00147">147</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00157">157</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00297">fFullVersion</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00315">fFullVersion</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 </div>
 </div>
@@ -1146,9 +1161,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00183">183</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00193">193</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00300">fLibraryPath</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00318">fLibraryPath</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 </div>
 </div>
@@ -1175,9 +1190,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00171">171</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00181">181</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00299">fLibraryVersion</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00317">fLibraryVersion</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 </div>
 </div>
@@ -1204,9 +1219,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00244">244</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00262">262</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00313">fRunInfoFile</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00331">fRunInfoFile</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 </div>
 </div>
@@ -1233,9 +1248,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00243">243</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00261">261</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00312">fRunInfoFileName</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00330">fRunInfoFileName</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 </div>
 </div>
@@ -1262,9 +1277,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00135">135</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00145">145</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00296">fVersion</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00314">fVersion</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 </div>
 </div>
@@ -1291,9 +1306,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00241">241</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00259">259</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00306">fXMLODBFile</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00324">fXMLODBFile</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 </div>
 </div>
@@ -1320,9 +1335,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00240">240</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00258">258</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00305">fXMLODBFileName</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00323">fXMLODBFileName</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 </div>
 </div>
@@ -1349,9 +1364,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00253">253</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00271">271</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00315">fHPGeArrayPosition</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00333">fHPGeArrayPosition</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00207">ParseInputData()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>, and <a class="el" href="_t_run_info_8cxx_source.html#l00363">PrintToString()</a>.</p>
 
@@ -1382,7 +1397,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_run_info_8cxx_source.html#l00304">304</a> of file <a class="el" href="_t_run_info_8cxx_source.html">TRunInfo.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00317">fBadCycleList</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00335">fBadCycleList</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 </div>
 </div>
@@ -1409,11 +1424,11 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00207">207</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00217">217</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00288">fLastRunNumber</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00306">fLastRunNumber</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00107">AtExitHandler()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00581">CreateLabel()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00219">TGRSISelector::Terminate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00107">AtExitHandler()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00582">CreateLabel()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00219">TGRSISelector::Terminate()</a>.</p>
 
 </div>
 </div>
@@ -1440,11 +1455,11 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00208">208</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00218">218</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00289">fLastSubRunNumber</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00307">fLastSubRunNumber</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00107">AtExitHandler()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00581">CreateLabel()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00219">TGRSISelector::Terminate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00107">AtExitHandler()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00582">CreateLabel()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00219">TGRSISelector::Terminate()</a>.</p>
 
 </div>
 </div>
@@ -1464,9 +1479,9 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 <p>Outputs a comma separated list of all runs missing between fFirstRunNumber and fLastRunNumber. If no runs are missing prints "none".</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8cxx_source.html#l00532">532</a> of file <a class="el" href="_t_run_info_8cxx_source.html">TRunInfo.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8cxx_source.html#l00533">533</a> of file <a class="el" href="_t_run_info_8cxx_source.html">TRunInfo.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00290">fRunList</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00308">fRunList</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>.</p>
 
@@ -1572,7 +1587,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_run_info_8cxx_source.html#l00207">207</a> of file <a class="el" href="_t_run_info_8cxx_source.html">TRunInfo.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8cxx_source.html#l00290">AddBadCycle()</a>, <a class="el" href="_globals_8h_source.html#l00015">DBLUE</a>, <a class="el" href="_globals_8h_source.html#l00018">DRED</a>, <a class="el" href="_t_run_info_8h_source.html#l00253">HPGeArrayPosition()</a>, <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>, <a class="el" href="_t_run_info_8h_source.html#l00252">SetHPGeArrayPosition()</a>, and <a class="el" href="_t_g_r_s_i_utilities_8cxx_source.html#l00044">trim()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8cxx_source.html#l00290">AddBadCycle()</a>, <a class="el" href="_globals_8h_source.html#l00015">DBLUE</a>, <a class="el" href="_globals_8h_source.html#l00018">DRED</a>, <a class="el" href="_t_run_info_8h_source.html#l00271">HPGeArrayPosition()</a>, <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>, <a class="el" href="_t_run_info_8h_source.html#l00270">SetHPGeArrayPosition()</a>, and <a class="el" href="_t_g_r_s_i_utilities_8cxx_source.html#l00044">trim()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00174">ReadInfoFile()</a>, and <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>.</p>
 
@@ -1604,7 +1619,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_run_info_8cxx_source.html#l00072">72</a> of file <a class="el" href="_t_run_info_8cxx_source.html">TRunInfo.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_globals_8h_source.html#l00015">DBLUE</a>, <a class="el" href="_globals_8h_source.html#l00018">DRED</a>, <a class="el" href="_t_run_info_8h_source.html#l00319">fDetectorInformation</a>, <a class="el" href="_t_run_info_8h_source.html#l00204">FirstRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00205">FirstSubRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00290">fRunList</a>, <a class="el" href="_t_run_info_8h_source.html#l00253">HPGeArrayPosition()</a>, <a class="el" href="_t_run_info_8h_source.html#l00207">LastRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00208">LastSubRunNumber()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00532">ListOfMissingRuns()</a>, <a class="el" href="_t_detector_information_8h_source.html#l00033">TDetectorInformation::Print()</a>, <a class="el" href="_t_singleton_8h_source.html#l00171">TSingleton&lt; T &gt;::PrintDirectory()</a>, <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>, <a class="el" href="_t_run_info_8h_source.html#l00220">RunComment()</a>, <a class="el" href="_t_run_info_8h_source.html#l00229">RunLength()</a>, <a class="el" href="_t_run_info_8h_source.html#l00201">RunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00227">RunStart()</a>, <a class="el" href="_t_run_info_8h_source.html#l00228">RunStop()</a>, <a class="el" href="_t_run_info_8h_source.html#l00219">RunTitle()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00202">SubRunNumber()</a>.</p>
+<p class="reference">References <a class="el" href="_globals_8h_source.html#l00015">DBLUE</a>, <a class="el" href="_globals_8h_source.html#l00018">DRED</a>, <a class="el" href="_t_run_info_8h_source.html#l00337">fDetectorInformation</a>, <a class="el" href="_t_run_info_8h_source.html#l00214">FirstRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00215">FirstSubRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00308">fRunList</a>, <a class="el" href="_t_run_info_8h_source.html#l00271">HPGeArrayPosition()</a>, <a class="el" href="_t_run_info_8h_source.html#l00217">LastRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00218">LastSubRunNumber()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00533">ListOfMissingRuns()</a>, <a class="el" href="_t_detector_information_8h_source.html#l00033">TDetectorInformation::Print()</a>, <a class="el" href="_t_singleton_8h_source.html#l00170">TSingleton&lt; T &gt;::PrintDirectory()</a>, <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>, <a class="el" href="_t_run_info_8h_source.html#l00230">RunComment()</a>, <a class="el" href="_t_run_info_8h_source.html#l00247">RunLength()</a>, <a class="el" href="_t_run_info_8h_source.html#l00211">RunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00245">RunStart()</a>, <a class="el" href="_t_run_info_8h_source.html#l00246">RunStop()</a>, <a class="el" href="_t_run_info_8h_source.html#l00229">RunTitle()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00212">SubRunNumber()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00037">Analyze()</a>, <a class="el" href="_fix_run_info_8cxx_source.html#l00010">main()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00219">TGRSISelector::Terminate()</a>.</p>
 
@@ -1635,7 +1650,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_run_info_8cxx_source.html#l00277">277</a> of file <a class="el" href="_t_run_info_8cxx_source.html">TRunInfo.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00317">fBadCycleList</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00335">fBadCycleList</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 </div>
 </div>
@@ -1662,7 +1677,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_singleton_8h_source.html#l00171">171</a> of file <a class="el" href="_t_singleton_8h_source.html">TSingleton.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_singleton_8h_source.html#l00170">170</a> of file <a class="el" href="_t_singleton_8h_source.html">TSingleton.h</a>.</p>
 
 </div>
 </div>
@@ -1681,9 +1696,9 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8cxx_source.html#l00520">520</a> of file <a class="el" href="_t_run_info_8cxx_source.html">TRunInfo.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8cxx_source.html#l00521">521</a> of file <a class="el" href="_t_run_info_8cxx_source.html">TRunInfo.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00290">fRunList</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00308">fRunList</a>.</p>
 
 </div>
 </div>
@@ -1712,7 +1727,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_run_info_8cxx_source.html#l00363">363</a> of file <a class="el" href="_t_run_info_8cxx_source.html">TRunInfo.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00317">fBadCycleList</a>, <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00253">HPGeArrayPosition()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00335">fBadCycleList</a>, <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00271">HPGeArrayPosition()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00344">WriteInfoFile()</a>.</p>
 
@@ -1733,9 +1748,9 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8cxx_source.html#l00570">570</a> of file <a class="el" href="_t_run_info_8cxx_source.html">TRunInfo.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8cxx_source.html#l00571">571</a> of file <a class="el" href="_t_run_info_8cxx_source.html">TRunInfo.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00298">fDate</a>, <a class="el" href="_t_run_info_8h_source.html#l00297">fFullVersion</a>, <a class="el" href="_t_run_info_8h_source.html#l00300">fLibraryPath</a>, <a class="el" href="_t_run_info_8h_source.html#l00299">fLibraryVersion</a>, <a class="el" href="_t_run_info_8h_source.html#l00296">fVersion</a>, <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>, and <a class="el" href="_globals_8h_source.html#l00007">YELLOW</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00316">fDate</a>, <a class="el" href="_t_run_info_8h_source.html#l00315">fFullVersion</a>, <a class="el" href="_t_run_info_8h_source.html#l00318">fLibraryPath</a>, <a class="el" href="_t_run_info_8h_source.html#l00317">fLibraryVersion</a>, <a class="el" href="_t_run_info_8h_source.html#l00314">fVersion</a>, <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>, and <a class="el" href="_globals_8h_source.html#l00007">YELLOW</a>.</p>
 
 </div>
 </div>
@@ -1765,7 +1780,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_run_info_8cxx_source.html#l00174">174</a> of file <a class="el" href="_t_run_info_8cxx_source.html">TRunInfo.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_globals_8h_source.html#l00012">CYAN</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00207">ParseInputData()</a>, <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>, <a class="el" href="_t_run_info_8h_source.html#l00250">SetRunInfoFile()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00249">SetRunInfoFileName()</a>.</p>
+<p class="reference">References <a class="el" href="_globals_8h_source.html#l00012">CYAN</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00207">ParseInputData()</a>, <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>, <a class="el" href="_t_run_info_8h_source.html#l00268">SetRunInfoFile()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00267">SetRunInfoFileName()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00399">TGRSIint::SetupPipeline()</a>.</p>
 
@@ -1796,7 +1811,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_run_info_8cxx_source.html#l00015">15</a> of file <a class="el" href="_t_run_info_8cxx_source.html">TRunInfo.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00319">fDetectorInformation</a>, <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>, and <a class="el" href="_t_singleton_8h_source.html#l00133">TSingleton&lt; TRunInfo &gt;::Set()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00337">fDetectorInformation</a>, <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>, and <a class="el" href="_t_singleton_8h_source.html#l00133">TSingleton&lt; TRunInfo &gt;::Set()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00299">TGRSIint::OpenRootFile()</a>.</p>
 
@@ -1827,7 +1842,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_run_info_8cxx_source.html#l00298">298</a> of file <a class="el" href="_t_run_info_8cxx_source.html">TRunInfo.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00317">fBadCycleList</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00335">fBadCycleList</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 </div>
 </div>
@@ -1854,9 +1869,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00220">220</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00230">230</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00283">fRunComment</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00301">fRunComment</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>.</p>
 
@@ -1885,9 +1900,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00229">229</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00247">247</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00294">fRunLength</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00312">fRunLength</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>.</p>
 
@@ -1916,11 +1931,11 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00201">201</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00211">211</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00284">fRunNumber</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00302">fRunNumber</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00107">AtExitHandler()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00581">CreateLabel()</a>, <a class="el" href="_fix_run_info_8cxx_source.html#l00010">main()</a>, <a class="el" href="_make_griffin_histograms_8cxx_source.html#l00053">MakeAnalysisHistograms()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>, <a class="el" href="_t_g_r_s_i_sort_info_8cxx_source.html#l00083">TGRSISortInfo::SetRunInfo()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>, <a class="el" href="_t_p_p_g_8cxx_source.html#l00460">TPPG::Setup()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00219">TGRSISelector::Terminate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00107">AtExitHandler()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00582">CreateLabel()</a>, <a class="el" href="_fix_run_info_8cxx_source.html#l00010">main()</a>, <a class="el" href="_make_griffin_histograms_8cxx_source.html#l00053">MakeAnalysisHistograms()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>, <a class="el" href="_t_g_r_s_i_sort_info_8cxx_source.html#l00083">TGRSISortInfo::SetRunInfo()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>, <a class="el" href="_t_run_info_8h_source.html#l00235">SetRunLength()</a>, <a class="el" href="_t_p_p_g_8cxx_source.html#l00460">TPPG::Setup()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00219">TGRSISelector::Terminate()</a>.</p>
 
 </div>
 </div>
@@ -1947,9 +1962,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00227">227</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00245">245</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00292">fRunStart</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00310">fRunStart</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_epics_frag_8cxx_source.html#l00091">TEpicsFrag::BuildScalerMap()</a>, and <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>.</p>
 
@@ -1978,9 +1993,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00228">228</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00246">246</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00293">fRunStop</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00311">fRunStop</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>.</p>
 
@@ -2009,9 +2024,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00219">219</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00229">229</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00282">fRunTitle</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00300">fRunTitle</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>.</p>
 
@@ -2096,9 +2111,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00232">232</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00250">250</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00303">fCalFile</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00321">fCalFile</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 </div>
 </div>
@@ -2125,9 +2140,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00231">231</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00249">249</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00302">fCalFileName</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00320">fCalFileName</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 </div>
 </div>
@@ -2154,11 +2169,11 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00161">161</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00171">171</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00161">SetDate()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00171">SetDate()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00090">TGRSIint::ApplyOptions()</a>, <a class="el" href="_t_run_info_8h_source.html#l00161">SetDate()</a>, and <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00090">TGRSIint::ApplyOptions()</a>, <a class="el" href="_t_run_info_8h_source.html#l00171">SetDate()</a>, and <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>.</p>
 
 </div>
 </div>
@@ -2185,9 +2200,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00162">162</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00172">172</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_globals_8h_source.html#l00035">ALERTTEXT</a>, <a class="el" href="_t_run_info_8h_source.html#l00298">fDate</a>, <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>, and <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>.</p>
+<p class="reference">References <a class="el" href="_globals_8h_source.html#l00035">ALERTTEXT</a>, <a class="el" href="_t_run_info_8h_source.html#l00316">fDate</a>, <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>, and <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>.</p>
 
 </div>
 </div>
@@ -2214,9 +2229,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00271">271</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00289">289</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00319">fDetectorInformation</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00337">fDetectorInformation</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_lst_file_8cxx_source.html#l00083">TLstFile::Open()</a>, <a class="el" href="_t_midas_file_8cxx_source.html#l00095">TMidasFile::Open()</a>, <a class="el" href="_t_rlmd_file_8cxx_source.html#l00081">TRlmdFile::Open()</a>, and <a class="el" href="_t_tdr_file_8cxx_source.html#l00061">TTdrFile::Open()</a>.</p>
 
@@ -2245,11 +2260,11 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00149">149</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00159">159</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00149">SetFullVersion()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00159">SetFullVersion()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00090">TGRSIint::ApplyOptions()</a>, <a class="el" href="_t_run_info_8h_source.html#l00149">SetFullVersion()</a>, and <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00090">TGRSIint::ApplyOptions()</a>, <a class="el" href="_t_run_info_8h_source.html#l00159">SetFullVersion()</a>, and <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>.</p>
 
 </div>
 </div>
@@ -2276,9 +2291,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00150">150</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00160">160</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_globals_8h_source.html#l00035">ALERTTEXT</a>, <a class="el" href="_t_run_info_8h_source.html#l00297">fFullVersion</a>, <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>, and <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>.</p>
+<p class="reference">References <a class="el" href="_globals_8h_source.html#l00035">ALERTTEXT</a>, <a class="el" href="_t_run_info_8h_source.html#l00315">fFullVersion</a>, <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>, and <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>.</p>
 
 </div>
 </div>
@@ -2305,9 +2320,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00252">252</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00270">270</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00315">fHPGeArrayPosition</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00333">fHPGeArrayPosition</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00207">ParseInputData()</a>.</p>
 
@@ -2336,11 +2351,11 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00185">185</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00195">195</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00185">SetLibraryPath()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00195">SetLibraryPath()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_parser_library_8cxx_source.html#l00021">TParserLibrary::Load()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00185">SetLibraryPath()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_parser_library_8cxx_source.html#l00021">TParserLibrary::Load()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00195">SetLibraryPath()</a>.</p>
 
 </div>
 </div>
@@ -2367,9 +2382,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00186">186</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00196">196</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_globals_8h_source.html#l00035">ALERTTEXT</a>, <a class="el" href="_t_run_info_8h_source.html#l00300">fLibraryPath</a>, <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>, and <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>.</p>
+<p class="reference">References <a class="el" href="_globals_8h_source.html#l00035">ALERTTEXT</a>, <a class="el" href="_t_run_info_8h_source.html#l00318">fLibraryPath</a>, <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>, and <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>.</p>
 
 </div>
 </div>
@@ -2396,11 +2411,11 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00173">173</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00183">183</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00173">SetLibraryVersion()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00183">SetLibraryVersion()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_parser_library_8cxx_source.html#l00021">TParserLibrary::Load()</a>, <a class="el" href="_t_midas_file_8cxx_source.html#l00095">TMidasFile::Open()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00173">SetLibraryVersion()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_parser_library_8cxx_source.html#l00021">TParserLibrary::Load()</a>, <a class="el" href="_t_midas_file_8cxx_source.html#l00095">TMidasFile::Open()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00183">SetLibraryVersion()</a>.</p>
 
 </div>
 </div>
@@ -2427,9 +2442,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00174">174</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00184">184</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_globals_8h_source.html#l00035">ALERTTEXT</a>, <a class="el" href="_t_run_info_8h_source.html#l00299">fLibraryVersion</a>, <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>, and <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>.</p>
+<p class="reference">References <a class="el" href="_globals_8h_source.html#l00035">ALERTTEXT</a>, <a class="el" href="_t_run_info_8h_source.html#l00317">fLibraryVersion</a>, <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>, and <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>.</p>
 
 </div>
 </div>
@@ -2456,9 +2471,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00214">214</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00224">224</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00283">fRunComment</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00301">fRunComment</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_fix_run_info_8cxx_source.html#l00010">main()</a>, and <a class="el" href="_t_midas_file_8cxx_source.html#l00700">TMidasFile::SetRunInfo()</a>.</p>
 
@@ -2494,7 +2509,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_run_info_8cxx_source.html#l00135">135</a> of file <a class="el" href="_t_run_info_8cxx_source.html">TRunInfo.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00160">ClearDate()</a>, <a class="el" href="_t_run_info_8h_source.html#l00148">ClearFullVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00136">ClearVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00313">fRunInfoFile</a>, <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>, <a class="el" href="_t_channel_8h_source.html#l00068">TChannel::GetNumberOfChannels()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00207">ParseInputData()</a>, <a class="el" href="_t_run_info_8h_source.html#l00201">RunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00161">SetDate()</a>, <a class="el" href="_t_run_info_8h_source.html#l00149">SetFullVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00198">SetRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00199">SetSubRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00137">SetVersion()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00202">SubRunNumber()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00170">ClearDate()</a>, <a class="el" href="_t_run_info_8h_source.html#l00158">ClearFullVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00146">ClearVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00331">fRunInfoFile</a>, <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>, <a class="el" href="_t_channel_8h_source.html#l00068">TChannel::GetNumberOfChannels()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00207">ParseInputData()</a>, <a class="el" href="_t_run_info_8h_source.html#l00211">RunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00171">SetDate()</a>, <a class="el" href="_t_run_info_8h_source.html#l00159">SetFullVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00208">SetRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00209">SetSubRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00147">SetVersion()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00212">SubRunNumber()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_lst_file_8cxx_source.html#l00083">TLstFile::Open()</a>, <a class="el" href="_t_midas_file_8cxx_source.html#l00095">TMidasFile::Open()</a>, <a class="el" href="_t_rlmd_file_8cxx_source.html#l00081">TRlmdFile::Open()</a>, <a class="el" href="_t_tdr_file_8cxx_source.html#l00061">TTdrFile::Open()</a>, and <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00399">TGRSIint::SetupPipeline()</a>.</p>
 
@@ -2523,9 +2538,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00250">250</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00268">268</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00313">fRunInfoFile</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00331">fRunInfoFile</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00174">ReadInfoFile()</a>.</p>
 
@@ -2554,9 +2569,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00249">249</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00267">267</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00312">fRunInfoFileName</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00330">fRunInfoFileName</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00174">ReadInfoFile()</a>.</p>
 
@@ -2585,9 +2600,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00225">225</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00235">235</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00294">fRunLength</a>, <a class="el" href="_t_run_info_8h_source.html#l00292">fRunStart</a>, <a class="el" href="_t_run_info_8h_source.html#l00293">fRunStop</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00312">fRunLength</a>, <a class="el" href="_t_run_info_8h_source.html#l00310">fRunStart</a>, <a class="el" href="_t_run_info_8h_source.html#l00311">fRunStop</a>, <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00211">RunNumber()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_fix_run_info_8cxx_source.html#l00010">main()</a>, <a class="el" href="_t_lst_file_8cxx_source.html#l00083">TLstFile::Open()</a>, <a class="el" href="_t_rlmd_file_8cxx_source.html#l00081">TRlmdFile::Open()</a>, <a class="el" href="_t_g_r_s_i_data_parser_8cxx_source.html#l00025">TGRSIDataParser::Process()</a>, and <a class="el" href="_t_rlmd_file_8cxx_source.html#l00140">TRlmdFile::Read()</a>.</p>
 
@@ -2616,9 +2631,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00224">224</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00234">234</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00294">fRunLength</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00312">fRunLength</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 </div>
 </div>
@@ -2645,9 +2660,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00198">198</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00208">208</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00284">fRunNumber</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00302">fRunNumber</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_fix_run_info_8cxx_source.html#l00010">main()</a>, and <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>.</p>
 
@@ -2676,9 +2691,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00222">222</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00232">232</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00292">fRunStart</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00310">fRunStart</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_fix_run_info_8cxx_source.html#l00010">main()</a>, <a class="el" href="_t_rlmd_file_8cxx_source.html#l00140">TRlmdFile::Read()</a>, and <a class="el" href="_t_midas_file_8cxx_source.html#l00700">TMidasFile::SetRunInfo()</a>.</p>
 
@@ -2707,9 +2722,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00223">223</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00233">233</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00293">fRunStop</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00311">fRunStop</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_fix_run_info_8cxx_source.html#l00010">main()</a>, <a class="el" href="_t_g_r_s_i_data_parser_8cxx_source.html#l00025">TGRSIDataParser::Process()</a>, and <a class="el" href="_t_rlmd_file_8cxx_source.html#l00140">TRlmdFile::Read()</a>.</p>
 
@@ -2738,9 +2753,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00210">210</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00220">220</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00282">fRunTitle</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00300">fRunTitle</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_fix_run_info_8cxx_source.html#l00010">main()</a>, and <a class="el" href="_t_midas_file_8cxx_source.html#l00700">TMidasFile::SetRunInfo()</a>.</p>
 
@@ -2769,9 +2784,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00199">199</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00209">209</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00285">fSubRunNumber</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00303">fSubRunNumber</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_fix_run_info_8cxx_source.html#l00010">main()</a>, and <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>.</p>
 
@@ -2800,11 +2815,11 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00137">137</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00147">147</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00137">SetVersion()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00147">SetVersion()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00090">TGRSIint::ApplyOptions()</a>, <a class="el" href="_t_lst_file_8cxx_source.html#l00083">TLstFile::Open()</a>, <a class="el" href="_t_rlmd_file_8cxx_source.html#l00081">TRlmdFile::Open()</a>, <a class="el" href="_t_tdr_file_8cxx_source.html#l00061">TTdrFile::Open()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00137">SetVersion()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00090">TGRSIint::ApplyOptions()</a>, <a class="el" href="_t_lst_file_8cxx_source.html#l00083">TLstFile::Open()</a>, <a class="el" href="_t_rlmd_file_8cxx_source.html#l00081">TRlmdFile::Open()</a>, <a class="el" href="_t_tdr_file_8cxx_source.html#l00061">TTdrFile::Open()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00147">SetVersion()</a>.</p>
 
 </div>
 </div>
@@ -2831,9 +2846,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00138">138</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00148">148</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_globals_8h_source.html#l00035">ALERTTEXT</a>, <a class="el" href="_t_run_info_8h_source.html#l00296">fVersion</a>, <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>, and <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>.</p>
+<p class="reference">References <a class="el" href="_globals_8h_source.html#l00035">ALERTTEXT</a>, <a class="el" href="_t_run_info_8h_source.html#l00314">fVersion</a>, <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>, and <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>.</p>
 
 </div>
 </div>
@@ -2860,9 +2875,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00235">235</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00253">253</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00306">fXMLODBFile</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00324">fXMLODBFile</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 </div>
 </div>
@@ -2889,9 +2904,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00234">234</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00252">252</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00305">fXMLODBFileName</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00323">fXMLODBFileName</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 </div>
 </div>
@@ -2918,11 +2933,11 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00202">202</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00212">212</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00285">fSubRunNumber</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00303">fSubRunNumber</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00107">AtExitHandler()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00581">CreateLabel()</a>, <a class="el" href="_lean_compton_matrices_8cxx_source.html#l00074">main()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>, <a class="el" href="_t_g_r_s_i_sort_info_8cxx_source.html#l00083">TGRSISortInfo::SetRunInfo()</a>, <a class="el" href="_t_midas_file_8cxx_source.html#l00700">TMidasFile::SetRunInfo()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>, <a class="el" href="_t_p_p_g_8cxx_source.html#l00460">TPPG::Setup()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00219">TGRSISelector::Terminate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00107">AtExitHandler()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00582">CreateLabel()</a>, <a class="el" href="_lean_compton_matrices_8cxx_source.html#l00074">main()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>, <a class="el" href="_t_g_r_s_i_sort_info_8cxx_source.html#l00083">TGRSISortInfo::SetRunInfo()</a>, <a class="el" href="_t_midas_file_8cxx_source.html#l00700">TMidasFile::SetRunInfo()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>, <a class="el" href="_t_p_p_g_8cxx_source.html#l00460">TPPG::Setup()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00219">TGRSISelector::Terminate()</a>.</p>
 
 </div>
 </div>
@@ -2981,7 +2996,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_run_info_8cxx_source.html#l00309">309</a> of file <a class="el" href="_t_run_info_8cxx_source.html">TRunInfo.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00319">fDetectorInformation</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00337">fDetectorInformation</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_analysis_write_loop_8cxx_source.html#l00120">TAnalysisWriteLoop::Write()</a>, and <a class="el" href="_t_frag_write_loop_8cxx_source.html#l00131">TFragWriteLoop::Write()</a>.</p>
 
@@ -3035,7 +3050,7 @@ Friends</h2></td></tr>
 
 <p>!List of bad cycles to be used for cycle rejection </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00317">317</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00335">335</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00290">AddBadCycle()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00122">Clear()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00304">IsBadCycle()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00277">PrintBadCycles()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00363">PrintToString()</a>, and <a class="el" href="_t_run_info_8cxx_source.html#l00298">RemoveBadCycle()</a>.</p>
 
@@ -3063,9 +3078,9 @@ Friends</h2></td></tr>
 
 <p>Cal File to load into Cal of tree. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00303">303</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00321">321</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_run_info_8h_source.html#l00238">GetCalFileData()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00232">SetCalFileData()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_run_info_8h_source.html#l00256">GetCalFileData()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00250">SetCalFileData()</a>.</p>
 
 </div>
 </div>
@@ -3091,9 +3106,9 @@ Friends</h2></td></tr>
 
 <p>Name of calfile that generated cal. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00302">302</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00320">320</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_run_info_8h_source.html#l00237">GetCalFileName()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00231">SetCalFileName()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_run_info_8h_source.html#l00255">GetCalFileName()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00249">SetCalFileName()</a>.</p>
 
 </div>
 </div>
@@ -3119,9 +3134,9 @@ Friends</h2></td></tr>
 
 <p>The date of the last commit used in this version - GRSI_GIT_COMMIT_TIME from GVersion.h. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00298">298</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00316">316</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_run_info_8h_source.html#l00160">ClearDate()</a>, <a class="el" href="_t_run_info_8h_source.html#l00159">GetDate()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00570">PrintVersion()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00162">SetDate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_run_info_8h_source.html#l00170">ClearDate()</a>, <a class="el" href="_t_run_info_8h_source.html#l00169">GetDate()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00571">PrintVersion()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00172">SetDate()</a>.</p>
 
 </div>
 </div>
@@ -3147,9 +3162,9 @@ Friends</h2></td></tr>
 
 <p>! pointer to detector specific information (set by each parser library) </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00319">319</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00337">337</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00122">Clear()</a>, <a class="el" href="_t_run_info_8h_source.html#l00272">GetDetectorInformation()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00015">ReadInfoFromFile()</a>, <a class="el" href="_t_run_info_8h_source.html#l00271">SetDetectorInformation()</a>, and <a class="el" href="_t_run_info_8cxx_source.html#l00309">WriteToRoot()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00122">Clear()</a>, <a class="el" href="_t_run_info_8h_source.html#l00290">GetDetectorInformation()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00015">ReadInfoFromFile()</a>, <a class="el" href="_t_run_info_8h_source.html#l00289">SetDetectorInformation()</a>, and <a class="el" href="_t_run_info_8cxx_source.html#l00309">WriteToRoot()</a>.</p>
 
 </div>
 </div>
@@ -3173,7 +3188,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_singleton_8h_source.html#l00187">187</a> of file <a class="el" href="_t_singleton_8h_source.html">TSingleton.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_singleton_8h_source.html#l00186">186</a> of file <a class="el" href="_t_singleton_8h_source.html">TSingleton.h</a>.</p>
 
 </div>
 </div>
@@ -3199,9 +3214,9 @@ Friends</h2></td></tr>
 
 <p>The first run number (for combined runs) </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00286">286</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00304">304</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00387">Add()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00204">FirstRunNumber()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00387">Add()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00214">FirstRunNumber()</a>.</p>
 
 </div>
 </div>
@@ -3227,9 +3242,9 @@ Friends</h2></td></tr>
 
 <p>The first sub run number (for combined subruns) </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00287">287</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00305">305</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00387">Add()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00205">FirstSubRunNumber()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00387">Add()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00215">FirstSubRunNumber()</a>.</p>
 
 </div>
 </div>
@@ -3255,9 +3270,9 @@ Friends</h2></td></tr>
 
 <p>The full version of GRSISort that generated the file (includes last commit) - GRSI_GIT_COMMIT from GVersion.h. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00297">297</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00315">315</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_run_info_8h_source.html#l00148">ClearFullVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00147">GetFullVersion()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00570">PrintVersion()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00150">SetFullVersion()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_run_info_8h_source.html#l00158">ClearFullVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00157">GetFullVersion()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00571">PrintVersion()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00160">SetFullVersion()</a>.</p>
 
 </div>
 </div>
@@ -3283,9 +3298,9 @@ Friends</h2></td></tr>
 
 <p>Position of the HPGe Array (default = 110.0 mm );. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00315">315</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00333">333</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00122">Clear()</a>, <a class="el" href="_t_run_info_8h_source.html#l00253">HPGeArrayPosition()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00252">SetHPGeArrayPosition()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00122">Clear()</a>, <a class="el" href="_t_run_info_8h_source.html#l00271">HPGeArrayPosition()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00270">SetHPGeArrayPosition()</a>.</p>
 
 </div>
 </div>
@@ -3311,9 +3326,9 @@ Friends</h2></td></tr>
 
 <p>The last run number (for combined runs) </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00288">288</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00306">306</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00387">Add()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00207">LastRunNumber()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00387">Add()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00217">LastRunNumber()</a>.</p>
 
 </div>
 </div>
@@ -3339,9 +3354,9 @@ Friends</h2></td></tr>
 
 <p>The last sub run number (for combined subruns) </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00289">289</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00307">307</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00387">Add()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00208">LastSubRunNumber()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00387">Add()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00218">LastSubRunNumber()</a>.</p>
 
 </div>
 </div>
@@ -3367,9 +3382,9 @@ Friends</h2></td></tr>
 
 <p>The path of the parser/file library that generated the file. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00300">300</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00318">318</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_run_info_8h_source.html#l00184">ClearLibraryPath()</a>, <a class="el" href="_t_run_info_8h_source.html#l00183">GetLibraryPath()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00570">PrintVersion()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00186">SetLibraryPath()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_run_info_8h_source.html#l00194">ClearLibraryPath()</a>, <a class="el" href="_t_run_info_8h_source.html#l00193">GetLibraryPath()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00571">PrintVersion()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00196">SetLibraryPath()</a>.</p>
 
 </div>
 </div>
@@ -3395,9 +3410,9 @@ Friends</h2></td></tr>
 
 <p>The version of the parser/file library that generated the file. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00299">299</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00317">317</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_run_info_8h_source.html#l00172">ClearLibraryVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00171">GetLibraryVersion()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00570">PrintVersion()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00174">SetLibraryVersion()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_run_info_8h_source.html#l00182">ClearLibraryVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00181">GetLibraryVersion()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00571">PrintVersion()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00184">SetLibraryVersion()</a>.</p>
 
 </div>
 </div>
@@ -3423,9 +3438,9 @@ Friends</h2></td></tr>
 
 <p>The comment on the run. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00283">283</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00301">301</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_run_info_8h_source.html#l00220">RunComment()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00214">SetRunComment()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_run_info_8h_source.html#l00230">RunComment()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00224">SetRunComment()</a>.</p>
 
 </div>
 </div>
@@ -3451,9 +3466,9 @@ Friends</h2></td></tr>
 
 <p>The contents of the run info file. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00313">313</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00331">331</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_run_info_8h_source.html#l00244">GetRunInfoFileData()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00250">SetRunInfoFile()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_run_info_8h_source.html#l00262">GetRunInfoFileData()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00268">SetRunInfoFile()</a>.</p>
 
 </div>
 </div>
@@ -3479,9 +3494,9 @@ Friends</h2></td></tr>
 
 <p>The name of the Run info file. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00312">312</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00330">330</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_run_info_8h_source.html#l00243">GetRunInfoFileName()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00249">SetRunInfoFileName()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_run_info_8h_source.html#l00261">GetRunInfoFileName()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00267">SetRunInfoFileName()</a>.</p>
 
 </div>
 </div>
@@ -3507,9 +3522,9 @@ Friends</h2></td></tr>
 
 <p>The length of the current run in seconds - no idea why we store this as double? </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00294">294</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00312">312</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00387">Add()</a>, <a class="el" href="_t_run_info_8h_source.html#l00229">RunLength()</a>, <a class="el" href="_t_run_info_8h_source.html#l00225">SetRunLength()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00224">SetRunLength()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00387">Add()</a>, <a class="el" href="_t_run_info_8h_source.html#l00247">RunLength()</a>, <a class="el" href="_t_run_info_8h_source.html#l00235">SetRunLength()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00234">SetRunLength()</a>.</p>
 
 </div>
 </div>
@@ -3535,9 +3550,9 @@ Friends</h2></td></tr>
 
 <p>List of all runs added to this run info. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00290">290</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00308">308</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00387">Add()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00532">ListOfMissingRuns()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>, and <a class="el" href="_t_run_info_8cxx_source.html#l00520">PrintRunList()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00387">Add()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00533">ListOfMissingRuns()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>, and <a class="el" href="_t_run_info_8cxx_source.html#l00521">PrintRunList()</a>.</p>
 
 </div>
 </div>
@@ -3563,9 +3578,9 @@ Friends</h2></td></tr>
 
 <p>The current run number. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00284">284</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00302">302</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00387">Add()</a>, <a class="el" href="_t_run_info_8h_source.html#l00201">RunNumber()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00198">SetRunNumber()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00387">Add()</a>, <a class="el" href="_t_run_info_8h_source.html#l00211">RunNumber()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00208">SetRunNumber()</a>.</p>
 
 </div>
 </div>
@@ -3591,9 +3606,9 @@ Friends</h2></td></tr>
 
 <p>The start of the current run in seconds - no idea why we store this as double? </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00292">292</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00310">310</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00387">Add()</a>, <a class="el" href="_t_run_info_8h_source.html#l00227">RunStart()</a>, <a class="el" href="_t_run_info_8h_source.html#l00225">SetRunLength()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00222">SetRunStart()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00387">Add()</a>, <a class="el" href="_t_run_info_8h_source.html#l00245">RunStart()</a>, <a class="el" href="_t_run_info_8h_source.html#l00235">SetRunLength()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00232">SetRunStart()</a>.</p>
 
 </div>
 </div>
@@ -3619,9 +3634,9 @@ Friends</h2></td></tr>
 
 <p>The stop of the current run in seconds - no idea why we store this as double? </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00293">293</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00311">311</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00387">Add()</a>, <a class="el" href="_t_run_info_8h_source.html#l00228">RunStop()</a>, <a class="el" href="_t_run_info_8h_source.html#l00225">SetRunLength()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00223">SetRunStop()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00387">Add()</a>, <a class="el" href="_t_run_info_8h_source.html#l00246">RunStop()</a>, <a class="el" href="_t_run_info_8h_source.html#l00235">SetRunLength()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00233">SetRunStop()</a>.</p>
 
 </div>
 </div>
@@ -3647,9 +3662,9 @@ Friends</h2></td></tr>
 
 <p>The title of the run. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00282">282</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00300">300</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_run_info_8h_source.html#l00219">RunTitle()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00210">SetRunTitle()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_run_info_8h_source.html#l00229">RunTitle()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00220">SetRunTitle()</a>.</p>
 
 </div>
 </div>
@@ -3673,7 +3688,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_singleton_8h_source.html#l00186">186</a> of file <a class="el" href="_t_singleton_8h_source.html">TSingleton.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_singleton_8h_source.html#l00185">185</a> of file <a class="el" href="_t_singleton_8h_source.html">TSingleton.h</a>.</p>
 
 </div>
 </div>
@@ -3699,9 +3714,9 @@ Friends</h2></td></tr>
 
 <p>The current sub run number. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00285">285</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00303">303</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00387">Add()</a>, <a class="el" href="_t_run_info_8h_source.html#l00199">SetSubRunNumber()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00202">SubRunNumber()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00387">Add()</a>, <a class="el" href="_t_run_info_8h_source.html#l00209">SetSubRunNumber()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00212">SubRunNumber()</a>.</p>
 
 </div>
 </div>
@@ -3727,9 +3742,9 @@ Friends</h2></td></tr>
 
 <p>The version of GRSISort that generated the file - GRSI_RELEASE from GVersion.h. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00296">296</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00314">314</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_run_info_8h_source.html#l00136">ClearVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00135">GetVersion()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00570">PrintVersion()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00138">SetVersion()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_run_info_8h_source.html#l00146">ClearVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00145">GetVersion()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00571">PrintVersion()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00148">SetVersion()</a>.</p>
 
 </div>
 </div>
@@ -3755,9 +3770,9 @@ Friends</h2></td></tr>
 
 <p>The odb. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00306">306</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00324">324</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_run_info_8h_source.html#l00241">GetXMLODBFileData()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00235">SetXMLODBFileData()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_run_info_8h_source.html#l00259">GetXMLODBFileData()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00253">SetXMLODBFileData()</a>.</p>
 
 </div>
 </div>
@@ -3783,9 +3798,9 @@ Friends</h2></td></tr>
 
 <p>Name of XML Odb file. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00305">305</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00323">323</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_run_info_8h_source.html#l00240">GetXMLODBFileName()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00234">SetXMLODBFileName()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_run_info_8h_source.html#l00258">GetXMLODBFileName()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00252">SetXMLODBFileName()</a>.</p>
 
 </div>
 </div>
@@ -3796,7 +3811,7 @@ Friends</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_t_run_info.html">TRunInfo</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jun 3 2025 19:17:17.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Mon Jun 9 2025 20:19:10.</li>
   </ul>
 </div>
 </body>

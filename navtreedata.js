@@ -164,13 +164,13 @@ var NAVTREEINDEX =
 "class_t_tigress_hit.html#a3c925c5bd01fd15d0428d21427e00abf",
 "class_t_tip_hit.html#ac9202e62116783982bac618bea13cbb7",
 "class_t_trific_hit.html#aaeab2baeb491623c484a26367830c7b9",
-"class_t_zero_degree_hit.html#a11c24388428c49033d914f9cebf75e98",
-"classpygui_1_1_ansi_color_text_1_1_ansi_color_text.html#a12da6bda587d04f61ffebbcb00ba973b",
-"classpygui_1_1tcut__tab_1_1_t_cut_tab.html#a09ca95954c7b5608335d1cf1b2db58e6",
-"functions_func_v.html",
-"group___fitting.html#gae6789b5563959a769c1abc7a4a710fe4",
-"namespace_t_g_r_s_i_functions.html#ab33ee795defdb33b5041e4b3388a8205",
-"struct_t_pulse_analyzer_1_1_wave_form_par.html#a89f6f39d0b338e9299019ca489053f9c"
+"class_t_zero_degree_hit.html#a0e5059ff8d1f8974aed11d3271bec52d",
+"classpygui_1_1_ansi_color_text_1_1_ansi_color_text.html#a118cbd669a72a2c3ba825abce94a8479",
+"classpygui_1_1tcut__tab_1_1_t_cut_tab.html#a078fd779e4f4642df0c4b8b09307dc00",
+"functions_func_t.html",
+"group___fitting.html#gae056bf53a279b93404c287d8b2ddf82a",
+"namespace_t_g_r_s_i_functions.html#a9b9b5e8719f58aa84d25f39bdf30ec49",
+"struct_t_pulse_analyzer_1_1_wave_form_par.html#a7e7ecd005e562e2af19fe108813a9b61"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
