@@ -386,7 +386,7 @@ TEventBuildingLoop::EBuildMode TRunInfo::BuildMode() const
 
 void TRunInfo::Add(TRunInfo* runinfo, bool verbose)
 {
-	if(verbose) { std::cout << "TRunInfo::Add(" << runinfo << ", " << (verbose ? "true" : "false") << "), this = " << this << std::endl; }
+   if(verbose) { std::cout << "TRunInfo::Add(" << runinfo << ", " << (verbose ? "true" : "false") << "), this = " << this << std::endl; }
    std::pair<int, int> newPair = std::make_pair(runinfo->fRunNumber, runinfo->fSubRunNumber);
    // check for dual entries
    if(fRunList.find(newPair) != fRunList.end()) {
@@ -395,9 +395,10 @@ void TRunInfo::Add(TRunInfo* runinfo, bool verbose)
    }
    fRunList.insert(newPair);
 
-   if(verbose) { std::cout << std::endl << "adding run " << runinfo->fRunNumber << ", sub run " << runinfo->fSubRunNumber << " (" << runinfo << ") to run " << fRunNumber << ", sub run " << fSubRunNumber << " (" << this << ")" << std::endl; }
+   if(verbose) { std::cout << std::endl
+                           << "adding run " << runinfo->fRunNumber << ", sub run " << runinfo->fSubRunNumber << " (" << runinfo << ") to run " << fRunNumber << ", sub run " << fSubRunNumber << " (" << this << ")" << std::endl; }
    // add the run length together
-	if(verbose) { std::cout << "adding new run length " << runinfo->fRunLength << " to old run length " << fRunLength; }
+   if(verbose) { std::cout << "adding new run length " << runinfo->fRunLength << " to old run length " << fRunLength; }
    if(runinfo->fRunLength > 0) {
       if(fRunLength > 0) {
          fRunLength += runinfo->fRunLength;
@@ -405,7 +406,7 @@ void TRunInfo::Add(TRunInfo* runinfo, bool verbose)
          fRunLength = runinfo->fRunLength;
       }
    }
-	if(verbose) { std::cout << ": " << fRunLength << std::endl; }
+   if(verbose) { std::cout << ": " << fRunLength << std::endl; }
 
    if(runinfo->fRunNumber != fRunNumber) {
       // check if the added run is an increment of the current run number (if the run number is set)
@@ -514,7 +515,7 @@ void TRunInfo::Add(TRunInfo* runinfo, bool verbose)
          fLastSubRunNumber  = -1;
       }
    }
-	if(verbose) { std::cout << "TRunInfo::Add(" << runinfo << ", " << (verbose ? "true" : "false") << "), done, this = " << this << std::endl; }
+   if(verbose) { std::cout << "TRunInfo::Add(" << runinfo << ", " << (verbose ? "true" : "false") << "), done, this = " << this << std::endl; }
 }
 
 void TRunInfo::PrintRunList() const
