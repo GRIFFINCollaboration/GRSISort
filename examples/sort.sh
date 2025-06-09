@@ -55,8 +55,5 @@ for run in `seq $firstRun $lastRun` ; do
       chmod 664 analysis${run}_${subrun}.root $logFile
 		# moved the output files into the right directories, or if that fails, remove the file we touched at the beginning
 		mv analysis${run}_${subrun}.root $analysisFile || rm $analysisFile
-		if [ -e fragment${run}_${subrun}.root ] ; then
-			mv fragment${run}_${subrun}.root ${FRAGMENTTREES}/fragment${run}_${subrun}.root
-		fi
    done
 done
