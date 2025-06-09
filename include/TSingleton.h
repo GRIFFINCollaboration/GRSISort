@@ -161,7 +161,7 @@ public:
                fSingleton->Add(tmpSingleton);
                fDir = gDirectory;   // update the directory to gDirectory so we don't read from this file again
             }
-				std::cout << std::endl;
+            std::cout << std::endl;
          }
       }
       return fSingleton;
