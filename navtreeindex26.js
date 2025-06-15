@@ -1,5 +1,14 @@
 var NAVTREEINDEX26 =
 {
+"class_t_detector_hit.html#ada323f08a38cd73186465ecb4f9b72eba39a6ce5f6b4b66bc2bf85f3ae6c40817":[8,2,11,0,9],
+"class_t_detector_hit.html#ada323f08a38cd73186465ecb4f9b72eba41cb5aedd98614cd326ab6348400df82":[8,2,11,0,12],
+"class_t_detector_hit.html#ada323f08a38cd73186465ecb4f9b72eba59d97a49ea9366a78241ca68d8bfb0b2":[8,2,11,0,10],
+"class_t_detector_hit.html#ada323f08a38cd73186465ecb4f9b72eba642cd2e286b8be8deaf8a9ce839969de":[8,2,11,0,6],
+"class_t_detector_hit.html#ada323f08a38cd73186465ecb4f9b72eba7433dc57f9db1fc472789e8796527f19":[8,2,11,0,0],
+"class_t_detector_hit.html#ada323f08a38cd73186465ecb4f9b72eba75a188ec1639bee31019afaa2bb5607a":[8,2,11,0,13],
+"class_t_detector_hit.html#ada323f08a38cd73186465ecb4f9b72eba8ae5d0cf4967beedfb2b3937b4855ed3":[8,2,11,0,17],
+"class_t_detector_hit.html#ada323f08a38cd73186465ecb4f9b72ebaa0ac660d426d24973e8e577cbbd2956d":[8,2,11,0,8],
+"class_t_detector_hit.html#ada323f08a38cd73186465ecb4f9b72ebacc77ad5a75191c50f792a9e981af004f":[8,2,11,0,15],
 "class_t_detector_hit.html#ada323f08a38cd73186465ecb4f9b72ebad4826be5c215ecd23478e9a4c7dcbe01":[8,2,11,0,7],
 "class_t_detector_hit.html#ada323f08a38cd73186465ecb4f9b72ebad972115f06325253781715b97744abdd":[8,2,11,0,16],
 "class_t_detector_hit.html#ada323f08a38cd73186465ecb4f9b72ebada12718f81ebb26c5299da96b70a03bf":[8,2,11,0,4],
@@ -240,14 +249,5 @@ var NAVTREEINDEX26 =
 "class_t_efficiency_calibration.html#aad8f7ce1e66165e438e5931b50a78f51":[8,1,8,22],
 "class_t_efficiency_calibration.html#abb79aaf69557db55534205ff1fbc9755":[8,1,8,27],
 "class_t_efficiency_calibration.html#ac59428bba867bdd0913016e14225187d":[8,1,8,0],
-"class_t_efficiency_calibration.html#ae7aff1d5bd4aae3788fd00b7f61f4b7b":[8,1,8,8],
-"class_t_efficiency_calibration.html#aec279330c664967728b1f0fc9cd9580b":[8,1,8,10],
-"class_t_efficiency_calibration.html#aec40470e2ced7038382d03df1cad7eae":[8,1,8,13],
-"class_t_efficiency_calibration.html#af474afb469ca527e42b53234717971e1":[8,1,8,4],
-"class_t_efficiency_calibration.html#af64165e769ca45f40bfc5d4552b00be8":[8,1,8,19],
-"class_t_efficiency_graph.html":[8,1,9],
-"class_t_efficiency_graph.html#a01d42b53b3393ed273dc2db3899a6e20":[8,1,9,1],
-"class_t_efficiency_graph.html#a076801f0675d1c30c166edb6be5ae9d2":[8,1,9,15],
-"class_t_efficiency_graph.html#a0cea67523dfe706d74e99ee86697b7e0":[8,1,9,0],
-"class_t_efficiency_graph.html#a18e8b637414c8b6f2c698a3ce9208460":[8,1,9,12]
+"class_t_efficiency_calibration.html#ae7aff1d5bd4aae3788fd00b7f61f4b7b":[8,1,8,8]
 };

@@ -372,7 +372,7 @@ $(function(){initNavTree('_t_detector_hit_8cxx_source.html',''); initResizable(t
 <div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>   <span class="keywordflow">if</span>(tmpChan == <span class="keyword">nullptr</span>) {</div>
 <div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>      <span class="keywordflow">return</span> <a class="code hl_function" href="class_t_detector_hit.html#a2d0ccf28cbe0792ebdf0987d47c14997">GetTimeStamp</a>();   <span class="comment">// GetTimeStampUnit returns 1 of there is no channel</span></div>
 <div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>   }</div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>   <span class="keywordflow">return</span> <a class="code hl_function" href="class_t_detector_hit.html#a2d0ccf28cbe0792ebdf0987d47c14997">GetTimeStamp</a>() * <a class="code hl_function" href="class_t_detector_hit.html#a760e30787813be2fb2659b1ab357fab6">GetTimeStampUnit</a>() * <span class="keyword">static_cast&lt;</span>Long64_t<span class="keyword">&gt;</span>((1.0 - tmpChan-&gt;<a class="code hl_function" href="class_t_channel.html#a9bc944dc6167f6be374c5af19b674027">GetTimeDrift</a>()) - <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(tmpChan-&gt;<a class="code hl_function" href="class_t_channel.html#a95e4fe8957f4a4a7aa407a83d39250fd">GetTimeOffset</a>()));</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>   <span class="keywordflow">return</span> <a class="code hl_function" href="class_t_detector_hit.html#a2d0ccf28cbe0792ebdf0987d47c14997">GetTimeStamp</a>() * <a class="code hl_function" href="class_t_detector_hit.html#a760e30787813be2fb2659b1ab357fab6">GetTimeStampUnit</a>() * <span class="keyword">static_cast&lt;</span>Long64_t<span class="keyword">&gt;</span>((1.0 - tmpChan-&gt;<a class="code hl_function" href="class_t_channel.html#a9bc944dc6167f6be374c5af19b674027">GetTimeDrift</a>())) - <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(tmpChan-&gt;<a class="code hl_function" href="class_t_channel.html#a95e4fe8957f4a4a7aa407a83d39250fd">GetTimeOffset</a>());</div>
 <div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>}</div>
 </div>
 <div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span> </div>
@@ -519,7 +519,7 @@ $(function(){initNavTree('_t_detector_hit_8cxx_source.html',''); initResizable(t
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_2b08b36851fcb6a7439555c8d93f536c.html">TFormat</a></li><li class="navelem"><a class="el" href="_t_detector_hit_8cxx.html">TDetectorHit.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Mon Jun 9 2025 20:19:04.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Sun Jun 15 2025 22:31:21.</li>
   </ul>
 </div>
 </body>

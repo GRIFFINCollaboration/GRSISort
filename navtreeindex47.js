@@ -1,5 +1,14 @@
 var NAVTREEINDEX47 =
 {
+"class_t_peak_fitter.html#a962a48aa3ff884b52611ebdae821f80c":[8,3,18,32],
+"class_t_peak_fitter.html#a99ed80cc6424549739cbccb8d5be9c97":[8,3,18,38],
+"class_t_peak_fitter.html#ab01279610797823455db2240052aa060":[8,3,18,25],
+"class_t_peak_fitter.html#ab4a8f50ffa063744edd20108060e9ce0":[8,3,18,6],
+"class_t_peak_fitter.html#abcbb69b750154441a8286aa0bd3fcbdc":[8,3,18,27],
+"class_t_peak_fitter.html#abfab15c36c5aad7aaa9b3b7647d9abb4":[8,3,18,36],
+"class_t_peak_fitter.html#ac81f2c0ac8c29a707bdb17c5fa1c6747":[8,3,18,26],
+"class_t_peak_fitter.html#ac95f697190030e49b5cf941dcc826d49":[8,3,18,12],
+"class_t_peak_fitter.html#aceca2f7274ec1ff158a2a63b82b35964":[8,3,18,39],
 "class_t_peak_fitter.html#acf4e5439a0e86dc1869b49090e129321":[8,3,18,5],
 "class_t_peak_fitter.html#ad082e8559264e84afeab0940c35bf474":[8,3,18,42],
 "class_t_peak_fitter.html#ad935d4d851ac3bbe0fe0ba95285aed27":[8,3,18,9],
@@ -240,14 +249,5 @@ var NAVTREEINDEX47 =
 "class_t_pulse_analyzer.html#ab8b78ced8e0b487f104a890712dabe7f":[8,3,19,50],
 "class_t_pulse_analyzer.html#abdc85117404bf7adef8da166c93abdac":[8,3,19,63],
 "class_t_pulse_analyzer.html#ac162c1d6816941f815df1268b1ba7e75":[8,3,19,101],
-"class_t_pulse_analyzer.html#acc2cf2ed021957db3f846a40cc87dfcf":[8,3,19,79],
-"class_t_pulse_analyzer.html#aced5a344199af32b9267ac60ce6d833c":[8,3,19,82],
-"class_t_pulse_analyzer.html#ad3452d149e31b5fe8c22e4e78edd1c16":[8,3,19,67],
-"class_t_pulse_analyzer.html#ad403a83726c9c7baec052493416ca916":[8,3,19,28],
-"class_t_pulse_analyzer.html#ad7608b409dc8a3542c2c0fea9147e89f":[8,3,19,107],
-"class_t_pulse_analyzer.html#ad8d122ed9aef1375a99a0a743fcff0ef":[8,3,19,58],
-"class_t_pulse_analyzer.html#ada895b1ccf02df1569a4b2b9540a9326":[8,3,19,55],
-"class_t_pulse_analyzer.html#ae27289ae1ad19f0c6e9e91da45fb2129":[8,3,19,42],
-"class_t_pulse_analyzer.html#aeafece2d08e2751a1263e6d34f870386":[8,3,19,38],
-"class_t_pulse_analyzer.html#af5af748f8a748c91e657981bc6efc58d":[8,3,19,43]
+"class_t_pulse_analyzer.html#acc2cf2ed021957db3f846a40cc87dfcf":[8,3,19,79]
 };

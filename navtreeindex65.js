@@ -1,5 +1,14 @@
 var NAVTREEINDEX65 =
 {
+"class_t_zero_degree.html#af36ac3430a80198ea0d614ce0a43463f":[8,2,77,3],
+"class_t_zero_degree.html#af611fc33dcbaabe2218e4ae2c5fc4f63":[8,2,77,19],
+"class_t_zero_degree.html#af83ad943618a30f7d1639675e18fc5b8":[8,2,77,5],
+"class_t_zero_degree.html#af8bdc102f03523258e502a60ae45185d":[8,2,77,22],
+"class_t_zero_degree_hit.html":[8,2,78],
+"class_t_zero_degree_hit.html#a02b70f42273d716fc29b8fa873a31a9a":[8,2,78,73],
+"class_t_zero_degree_hit.html#a046b293a9eb63a3808165a4f4af1f131":[8,2,78,38],
+"class_t_zero_degree_hit.html#a06d9223e37addbeaf8d70541234e950a":[8,2,78,2],
+"class_t_zero_degree_hit.html#a0e3ad92b0bfaca380c610918e7b8b42a":[8,2,78,32],
 "class_t_zero_degree_hit.html#a0e5059ff8d1f8974aed11d3271bec52d":[8,2,78,29],
 "class_t_zero_degree_hit.html#a10a2ab91352f84dc207b11c71cbc0130":[8,2,78,13],
 "class_t_zero_degree_hit.html#a11c24388428c49033d914f9cebf75e98":[8,2,78,70],
@@ -240,14 +249,5 @@ var NAVTREEINDEX65 =
 "classcombinations_1_1iterator.html":[10,0,12,0],
 "classcombinations_1_1iterator.html#a217a328ca30ad5232c55021c719d2402":[10,0,12,0,8],
 "classcombinations_1_1iterator.html#a33548e1f8759532d9309a9529888e2b8":[10,0,12,0,3],
-"classcombinations_1_1iterator.html#a513089e93283a6b08529716216b175fa":[10,0,12,0,5],
-"classcombinations_1_1iterator.html#a9a6749e53da40aee344fc1ff53bfa644":[10,0,12,0,0],
-"classcombinations_1_1iterator.html#a9e011b6db9c23c12283985960a82b343":[10,0,12,0,7],
-"classcombinations_1_1iterator.html#aca68df075d771728aef4221e8ef1506d":[10,0,12,0,4],
-"classcombinations_1_1iterator.html#acbbce32dee45d1e03f4992e6da2a457e":[10,0,12,0,1],
-"classcombinations_1_1iterator.html#aeeedc620c446b6357a9e7821b1951f76":[10,0,12,0,2],
-"classcombinations_1_1iterator.html#afb8ed395f89c4a34d6bc4fe39b3ac33f":[10,0,12,0,6],
-"classes.html":[10,1],
-"classpygui_1_1_ansi_color_text_1_1_ansi_color_text.html":[9,0,5,0,0],
-"classpygui_1_1_ansi_color_text_1_1_ansi_color_text.html":[10,0,1,0,0]
+"classcombinations_1_1iterator.html#a513089e93283a6b08529716216b175fa":[10,0,12,0,5]
 };

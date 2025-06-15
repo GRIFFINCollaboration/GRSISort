@@ -14,7 +14,8 @@ var class_t_demand =
     [ "GetHit", "class_t_demand.html#a9fb5bed513f435084094b92fb6a5b296", null ],
     [ "GetHitVector", "class_t_demand.html#ac5a25bee6d5fff8d30f929f3aaceb2db", null ],
     [ "GetMultiplicity", "class_t_demand.html#a9d5c07abd73ec148fe0adbee0c7c1eec", null ],
-    [ "GetPosition", "class_t_demand.html#acd8db503bf9c2f6916c956679d112160", null ],
+    [ "GetPosition", "class_t_demand.html#ab754914e7da0e0ff78747bbe8b7114eb", null ],
+    [ "GetPosition", "class_t_demand.html#a583e6c2e33004fa1ff533eb74d31fddf", null ],
     [ "Hits", "class_t_demand.html#acbf359f899b738719e19bb326e45c790", null ],
     [ "Hits", "class_t_demand.html#ab907981ce861ab147879469064748ae2", null ],
     [ "NoHits", "class_t_demand.html#a64ad8e69427c3719f15c3d400021ab1f", null ],
@@ -23,7 +24,9 @@ var class_t_demand =
     [ "Print", "class_t_demand.html#a60c78f3e9a4ce0a5348e36e9c68beba8", null ],
     [ "Print", "class_t_demand.html#aa2b924ce6391cae7d1dce3f691c72163", null ],
     [ "SetCoreWave", "class_t_demand.html#ae65f82be647970f83752f1e6a8715281", null ],
-    [ "fDetectorPosition", "class_t_demand.html#afc411b3f977dc9e01d749c0bd0ac84f8", null ],
     [ "fHits", "class_t_demand.html#a13ea06ba385aabcf09c1ea5a70d8145b", null ],
-    [ "fSetCoreWave", "class_t_demand.html#a8e5735b7c745afe53a867da6951f3492", null ]
+    [ "fSetCoreWave", "class_t_demand.html#a8e5735b7c745afe53a867da6951f3492", null ],
+    [ "fXPositions", "class_t_demand.html#ac941d66420854d222be54f2794207478", null ],
+    [ "fYPositions", "class_t_demand.html#a3a8cd960d653b7680e5ba9d7c09a3ad5", null ],
+    [ "fZPositions", "class_t_demand.html#ab9e83c723c2f8f82aa817df7b9753735", null ]
 ];
