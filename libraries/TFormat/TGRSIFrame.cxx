@@ -47,10 +47,13 @@ TGRSIFrame::TGRSIFrame()
       throw std::runtime_error(str.str());
    }
 
-   // only enable multi threading if number of threads isn't zero
-   if(fOptions->GetMaxWorkers() > 0) {
+   // only enable multi threading if number of threads isn't one
+   if(fOptions->GetMaxWorkers() == 1) {
+      ROOT::DisableImplicitMT();
+   } else {
+		// if the number of threads is set to zero, the number of threads used is automatically decided by the implementation
       ROOT::EnableImplicitMT(fOptions->GetMaxWorkers());
-   }
+	}
 
    auto* chain = new TChain(treeName.c_str());
 
