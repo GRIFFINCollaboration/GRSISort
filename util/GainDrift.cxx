@@ -15,7 +15,7 @@
 #include "TPeakFitter.h"
 #include "TRWPeak.h"
 
-void FindGainDrift(TH2* hist, std::vector<double> energies, double range, std::string prefix, std::string label, TFile* output);
+void FindGainDrift(TH2* hist, std::vector<double> energies, double range, const std::string& prefix, const std::string& label, TFile* output);
 
 int main(int argc, char** argv)
 {
