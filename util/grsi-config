@@ -165,7 +165,7 @@ while test $# -gt 0; do
 			if [ -e "$GRSISYS/$lib/util/config" ] ; then
 				out="$out $("$GRSISYS/$lib/util/config" --cflags)"
 			else 
-				lib=$(echo $lib | tr '[:upper:]' '[:lower:]')
+				lib=$(echo "$lib" | tr '[:upper:]' '[:lower:]')
 				if [ -e "$GRSISYS/_deps/$lib-src/util/config" ] ; then
 					out="$out $("$GRSISYS/_deps/$lib-src/util/config" --cflags)"
 				fi
@@ -178,7 +178,7 @@ while test $# -gt 0; do
 			if [ -e "$GRSISYS/$lib/util/config" ] ; then
 				out="$out $("$GRSISYS/$lib/util/config" --incdir)"
 			else 
-				lib=$(echo $lib | tr '[:upper:]' '[:lower:]')
+				lib=$(echo "$lib" | tr '[:upper:]' '[:lower:]')
 				if [ -e "$GRSISYS/_deps/$lib-src/util/config" ] ; then
 					out="$out $("$GRSISYS/_deps/$lib-src/util/config" --incdir)"
 				fi
@@ -191,7 +191,7 @@ while test $# -gt 0; do
 			if [ -e "$GRSISYS/$lib/util/config" ] ; then
 				out="$out $("$GRSISYS/$lib/util/config" --libs)"
 			else 
-				lib=$(echo $lib | tr '[:upper:]' '[:lower:]')
+				lib=$(echo "$lib" | tr '[:upper:]' '[:lower:]')
 				if [ -e "$GRSISYS/_deps/$lib-src/util/config" ] ; then
 					out="$out $("$GRSISYS/_deps/$lib-src/util/config" --libs)"
 				fi
