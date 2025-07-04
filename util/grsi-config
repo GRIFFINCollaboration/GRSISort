@@ -164,8 +164,11 @@ while test $# -gt 0; do
 			# check that the config script exists
 			if [ -e "$GRSISYS/$lib/util/config" ] ; then
 				out="$out $("$GRSISYS/$lib/util/config" --cflags)"
-			elif [ -e "$GRSISYS/_deps/$lib-src/util/config" ] ; then
-				out="$out $("$GRSISYS/_deps/$lib-src/util/config" --cflags)"
+			else 
+				lib=$(echo $lib | tr '[:upper:]' '[:lower:]')
+				if [ -e "$GRSISYS/_deps/$lib-src/util/config" ] ; then
+					out="$out $("$GRSISYS/_deps/$lib-src/util/config" --cflags)"
+				fi
 			fi
 			;;
 		--*-incdir)
@@ -174,8 +177,11 @@ while test $# -gt 0; do
 			# check that the config script exists
 			if [ -e "$GRSISYS/$lib/util/config" ] ; then
 				out="$out $("$GRSISYS/$lib/util/config" --incdir)"
-			elif [ -e "$GRSISYS/_deps/$lib-src/util/config" ] ; then
-				out="$out $("$GRSISYS/_deps/$lib-src/util/config" --incdir)"
+			else 
+				lib=$(echo $lib | tr '[:upper:]' '[:lower:]')
+				if [ -e "$GRSISYS/_deps/$lib-src/util/config" ] ; then
+					out="$out $("$GRSISYS/_deps/$lib-src/util/config" --incdir)"
+				fi
 			fi
 			;;
 		--*-libs)
@@ -184,8 +190,11 @@ while test $# -gt 0; do
 			# check that the config script exists
 			if [ -e "$GRSISYS/$lib/util/config" ] ; then
 				out="$out $("$GRSISYS/$lib/util/config" --libs)"
-			elif [ -e "$GRSISYS/_deps/$lib-src/util/config" ] ; then
-				out="$out $("$GRSISYS/_deps/$lib-src/util/config" --libs)"
+			else 
+				lib=$(echo $lib | tr '[:upper:]' '[:lower:]')
+				if [ -e "$GRSISYS/_deps/$lib-src/util/config" ] ; then
+					out="$out $("$GRSISYS/_deps/$lib-src/util/config" --libs)"
+				fi
 			fi
 			;;
 		--root)
