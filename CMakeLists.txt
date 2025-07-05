@@ -376,6 +376,12 @@ add_custom_target(GVersion
 						  #WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
   )
 
+add_custom_command(TARGET GVersion POST_BUILD
+	  COMMAND ${CMAKE_COMMAND} -E copy
+	  ${CMAKE_SOURCE_DIR}/include/GVersion.h
+	  ${CMAKE_CURRENT_BINARY_DIR}/include/GVersion.h
+)
+
 #----------------------------------------------------------------------------
 # add grsiproof (but exclude it from target all)
 if(${ROOT_proof_FOUND})
