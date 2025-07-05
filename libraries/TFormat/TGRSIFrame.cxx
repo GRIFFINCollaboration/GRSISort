@@ -51,9 +51,9 @@ TGRSIFrame::TGRSIFrame()
    if(fOptions->GetMaxWorkers() == 1) {
       ROOT::DisableImplicitMT();
    } else {
-		// if the number of threads is set to zero, the number of threads used is automatically decided by the implementation
+      // if the number of threads is set to zero, the number of threads used is automatically decided by the implementation
       ROOT::EnableImplicitMT(fOptions->GetMaxWorkers());
-	}
+   }
 
    auto* chain = new TChain(treeName.c_str());
 
