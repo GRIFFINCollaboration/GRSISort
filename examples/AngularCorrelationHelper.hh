@@ -13,6 +13,7 @@ private:
    bool             fFolding{false};
    bool             fGrouping{false};
    bool             fAddback{true};
+	bool			     fSingleCrystal{false};
    std::vector<int> fExcludedDetectors;
    std::vector<int> fExcludedCrystals;
 
@@ -20,6 +21,10 @@ private:
    double fTimeRandomLow{400.};    // Minimum time difference for gamma-gamma time random background
    double fTimeRandomHigh{600.};   // Maximum time difference for gamma-gamma time random background
 
+	Long64_t fCycleLength{0};
+   double fCycleTimeLow{-1.};    // Minimum time in the cycle in s (if both are -1 we ignore it)
+   double fCycleTimeHigh{-1.};   // Maximum time in the cycle in s (if both are -1 we ignore it)
+											  
    int    fBins{3000};
    double fMinEnergy{0.};
    double fMaxEnergy{3000.};
@@ -38,6 +43,25 @@ private:
       return std::binary_search(fExcludedCrystals.begin(), fExcludedCrystals.end(), arraynumber);
    }
 
+	bool GoodCycleTime(double timeInCycle) {
+		// check if the timeInCycle (in microseconds!) falls within the limits
+		// this could be done much smarter, but this might be easier to read
+		// if no limits are set we always are within the limits
+		if(fCycleTimeLow == -1. && fCycleTimeHigh == -1.) {
+			return true;
+		}
+		if(fCycleTimeLow == -1. && timeInCycle/1e6 < fCycleTimeHigh) {
+			return true;
+		}
+		if(fCycleTimeLow < timeInCycle/1e6 && fCycleTimeHigh == -1.) {
+			return true;
+		}
+		if(fCycleTimeLow < timeInCycle/1e6 && timeInCycle/1e6 < fCycleTimeHigh) {
+			return true;
+		}
+		return false;
+	}
+
 public:
    explicit AngularCorrelationHelper(TList* list)
       : TGRSIHelper(list)
@@ -48,6 +72,7 @@ public:
          fNofMixedEvents  = fUserSettings->GetInt("NumberOfMixedEvents", 10);
          fGriffinDistance = fUserSettings->GetDouble("GriffinDistance", 145.);
          fAddback         = fUserSettings->GetBool("Addback", true);
+         fSingleCrystal   = fUserSettings->GetBool("SingleCrystal", true);
          fFolding         = fUserSettings->GetBool("Folding", false);
          fGrouping        = fUserSettings->GetBool("Grouping", false);
 
@@ -66,13 +91,20 @@ public:
          fTimeRandomLow  = fUserSettings->GetDouble("TimeRandom.Low", 400.);
          fTimeRandomHigh = fUserSettings->GetDouble("TimeRandom.High", 600.);
 
+         fCycleTimeLow  = fUserSettings->GetDouble("CycleTime.Low", -1.);
+         fCycleTimeHigh = fUserSettings->GetDouble("CycleTime.High", -1.);
+
          fBins      = fUserSettings->GetInt("NumberOfBins", 3000);
          fMinEnergy = fUserSettings->GetDouble("MinimumEnergy", 0.);
          fMaxEnergy = fUserSettings->GetDouble("MaximumEnergy", 3000.);
       } else {
          std::cout << "No user settings provided, using default settings: ";
       }
-      std::cout << std::boolalpha << "# of mixed events " << fNofMixedEvents << ", distance " << fGriffinDistance << " mm, addback " << fAddback << ", folding " << fFolding << ", and grouping " << fGrouping << std::endl;
+		if(fSingleCrystal && !fAddback) {
+			std::cerr << "Error, can't use single crystal method if not using addback! Setting addback to true!" << std::endl;
+			fAddback = true;
+		}
+      std::cout << std::boolalpha << "# of mixed events " << fNofMixedEvents << ", distance " << fGriffinDistance << " mm, single crystal " << fSingleCrystal << ", addback " << fAddback << ", folding " << fFolding << ", and grouping " << fGrouping << std::endl;
 
       fAngles = new TGriffinAngles(fGriffinDistance, fFolding, fGrouping, fAddback);
       fAngles->Print();
