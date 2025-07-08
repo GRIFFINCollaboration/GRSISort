@@ -40,6 +40,6 @@ var searchData=
   ['buildvectors_37',['BuildVectors',['../class_t_tigress.html#ab774cc7daacc045fdb30a26a21775eec',1,'TTigress']]],
   ['buildvh_38',['BuildVH',['../class_t_c_s_m.html#a09f0a3d8af67af3bee8f9125f84caa67',1,'TCSM']]],
   ['buildwindow_39',['BuildWindow',['../class_t_analysis_options.html#a0de189c874d9d90885f61b17e1e50621',1,'TAnalysisOptions']]],
-  ['bytesread_40',['BytesRead',['../class_t_raw_file.html#aa8ab628f45f6416de2654d38afb339ef',1,'TRawFile']]],
+  ['bytesread_40',['BytesRead',['../class_t_raw_file.html#aa8ab628f45f6416de2654d38afb339ef',1,'TRawFile::BytesRead()'],['../class_t_raw_file.html#a27294c52c7fee552d63e39334cc0097a',1,'TRawFile::BytesRead(size_t bytesRead)']]],
   ['byteswap_41',['ByteSwap',['../class_t_h_i_l_data_parser.html#a4dcf2a6bd3df3eacdb395926547ad9e6',1,'THILDataParser']]]
 ];

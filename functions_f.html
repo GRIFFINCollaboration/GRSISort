@@ -333,9 +333,11 @@ $(function(){initNavTree('functions_f.html',''); initResizable(true); });
 <li>fCutName&#160;:&#160;<a class="el" href="class_g_canvas.html#a69c7a85c2d7c2ec47911166fa77a308c">GCanvas</a></li>
 <li>fCutoff&#160;:&#160;<a class="el" href="class_t_calibrate_descant.html#ae4b7a507b4b4df59b7b9b1a42d99a5f6">TCalibrateDescant</a></li>
 <li>fCuts&#160;:&#160;<a class="el" href="class_g_canvas.html#a29218126392fbea3333c288004d0726f">GCanvas</a>, <a class="el" href="class_t_g_r_s_i_helper.html#a106305b1b18827f1f5ec4952b63b54f3">TGRSIHelper</a>, <a class="el" href="class_t_g_r_s_i_selector.html#a9682bae598efaab0cd904ae74204e167">TGRSISelector</a></li>
-<li>fCycleLength&#160;:&#160;<a class="el" href="class_efficiency_helper.html#aa27e0a6e839fa3ef9384a55dcb6c4d58">EfficiencyHelper</a>, <a class="el" href="class_example_event_helper.html#a2e76aa6b80ae50e4942c1bff1e922adf">ExampleEventHelper</a>, <a class="el" href="class_t_p_p_g.html#a3cc714471721d672ace1bdb50345582e">TPPG</a></li>
+<li>fCycleLength&#160;:&#160;<a class="el" href="class_angular_correlation_helper.html#ae1db18b96c0eace59772d7e11970985d">AngularCorrelationHelper</a>, <a class="el" href="class_efficiency_helper.html#aa27e0a6e839fa3ef9384a55dcb6c4d58">EfficiencyHelper</a>, <a class="el" href="class_example_event_helper.html#a2e76aa6b80ae50e4942c1bff1e922adf">ExampleEventHelper</a>, <a class="el" href="class_t_p_p_g.html#a3cc714471721d672ace1bdb50345582e">TPPG</a></li>
 <li>fCycleSet&#160;:&#160;<a class="el" href="class_t_p_p_g.html#a024970199561f5db11c2c575d27b6cc9">TPPG</a></li>
 <li>fCycleStart&#160;:&#160;<a class="el" href="class_t_griffin.html#a480cf2e139842a2c6e97a9b24d57c800">TGriffin</a>, <a class="el" href="class_t_tdr_clover.html#aca2fbe39c2fe32cf451a572c9e6db51d">TTdrClover</a>, <a class="el" href="class_t_tdr_tigress.html#a5898f1ef62e0d0acd7587a3e411ddf24">TTdrTigress</a></li>
+<li>fCycleTimeHigh&#160;:&#160;<a class="el" href="class_angular_correlation_helper.html#ae89672ee09f913d5434f27b749a0b318">AngularCorrelationHelper</a></li>
+<li>fCycleTimeLow&#160;:&#160;<a class="el" href="class_angular_correlation_helper.html#ad76b570c6289ab760931a5904fc7f182">AngularCorrelationHelper</a></li>
 <li>fCycleTimeStamp&#160;:&#160;<a class="el" href="class_t_detector_hit.html#a50959f166bad0de769a417318b061e63">TDetectorHit</a></li>
 <li>fDante&#160;:&#160;<a class="el" href="class_t_g_r_s_i_detector_information.html#ab2d5ff004add3726794c2cde88cf4696">TGRSIDetectorInformation</a></li>
 <li>fDaqId&#160;:&#160;<a class="el" href="class_t_epics_frag.html#a91bdeb4457aa61de8578bb4871487c7a">TEpicsFrag</a>, <a class="el" href="class_t_fragment.html#a07ca34da755347964d659d46b57075c9">TFragment</a></li>
@@ -1218,6 +1220,7 @@ $(function(){initNavTree('functions_f.html',''); initResizable(true); });
 <li>fSiLiHitBits&#160;:&#160;<a class="el" href="class_t_si_li_hit.html#aa9e62c7494df2e70cff26a79b94a4bff">TSiLiHit</a></li>
 <li>fSiLiNoiseFac&#160;:&#160;<a class="el" href="class_t_si_li.html#a64401a568de533399eec7f5384dfb3e7">TSiLi</a></li>
 <li>fSingFragments&#160;:&#160;<a class="el" href="class_t_trific.html#a8702377a72299bac78c78300202892d1">TTrific</a></li>
+<li>fSingleCrystal&#160;:&#160;<a class="el" href="class_angular_correlation_helper.html#a1ab18eeea01751c9eaf47e2c256da2bc">AngularCorrelationHelper</a></li>
 <li>fSingleton&#160;:&#160;<a class="el" href="group___sorting.html#ga4a3540330119eb2bba0bf90b85fb55ad">TSingleton&lt; T &gt;</a></li>
 <li>fSizeLimit&#160;:&#160;<a class="el" href="class_t_g_r_s_i_helper.html#adba49a09a6ebe50ebb9b33e051c0a3c0">TGRSIHelper</a>, <a class="el" href="class_t_g_r_s_i_selector.html#a613ab2575ae93c6001aa09235c454546">TGRSISelector</a></li>
 <li>fSkipInputSort&#160;:&#160;<a class="el" href="class_t_event_building_loop.html#a0a9f44372777b75a240f9d6646aad94c">TEventBuildingLoop</a>, <a class="el" href="class_t_g_r_s_i_options.html#a53559befd039514f942cee0cbb78f137">TGRSIOptions</a></li>
@@ -1511,7 +1514,7 @@ $(function(){initNavTree('functions_f.html',''); initResizable(true); });
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jul 8 2025 17:02:02.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jul 8 2025 22:10:03.</li>
   </ul>
 </div>
 </body>

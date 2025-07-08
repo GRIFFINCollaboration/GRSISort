@@ -111,6 +111,7 @@ $(function(){initNavTree('_angular_correlations_8cxx.html',''); initResizable(tr
 <code>#include &lt;vector&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
 <code>#include &lt;cassert&gt;</code><br />
+<code>#include &lt;fstream&gt;</code><br />
 <code>#include &quot;TFile.h&quot;</code><br />
 <code>#include &quot;TH2.h&quot;</code><br />
 <code>#include &quot;TH1.h&quot;</code><br />
@@ -127,6 +128,7 @@ $(function(){initNavTree('_angular_correlations_8cxx.html',''); initResizable(tr
 <code>#include &quot;<a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_t_peak_fitter_8h_source.html">TPeakFitter.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_t_r_w_peak_8h_source.html">TRWPeak.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_t_redirect_8h_source.html">TRedirect.h</a>&quot;</code><br />
 </div><div class="textblock"><div id="dynsection-0" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Include dependency graph for AngularCorrelations.cxx:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
@@ -183,11 +185,11 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_angular_correlations_8cxx_source.html#l00836">836</a> of file <a class="el" href="_angular_correlations_8cxx_source.html">AngularCorrelations.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_angular_correlations_8cxx_source.html#l00887">887</a> of file <a class="el" href="_angular_correlations_8cxx_source.html">AngularCorrelations.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_g_r_s_i_functions_8cxx_source.html#l00377">TGRSIFunctions::LegendrePolynomial()</a>, and <a class="el" href="_angular_correlations_8cxx_source.html#l00683">Ac::Np()</a>.</p>
+<p class="reference">References <a class="el" href="_t_g_r_s_i_functions_8cxx_source.html#l00377">TGRSIFunctions::LegendrePolynomial()</a>, and <a class="el" href="_angular_correlations_8cxx_source.html#l00734">Ac::Np()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_angular_correlations_8cxx_source.html#l00054">main()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_angular_correlations_8cxx_source.html#l00056">main()</a>.</p>
 
 </div>
 </div>
@@ -211,9 +213,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>general function to get the error of a graph at point x (takes the maximum of the errors of the bracketing points)</p>
 
-<p class="definition">Definition at line <a class="el" href="_angular_correlations_8cxx_source.html#l00028">28</a> of file <a class="el" href="_angular_correlations_8cxx_source.html">AngularCorrelations.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_angular_correlations_8cxx_source.html#l00030">30</a> of file <a class="el" href="_angular_correlations_8cxx_source.html">AngularCorrelations.cxx</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_angular_correlations_8cxx_source.html#l00054">main()</a>, and <a class="el" href="_angular_correlations_8cxx_source.html#l00685">Ac::operator()()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_angular_correlations_8cxx_source.html#l00056">main()</a>, and <a class="el" href="_angular_correlations_8cxx_source.html#l00736">Ac::operator()()</a>.</p>
 
 </div>
 </div>
@@ -237,9 +239,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>program to read in 2D matrices from <a class="el" href="class_angular_correlation_helper.html">AngularCorrelationHelper</a> project and fit peaks to create angular correlation plots and to create chi-square plots </p>
 
-<p class="definition">Definition at line <a class="el" href="_angular_correlations_8cxx_source.html#l00054">54</a> of file <a class="el" href="_angular_correlations_8cxx_source.html">AngularCorrelations.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_angular_correlations_8cxx_source.html#l00056">56</a> of file <a class="el" href="_angular_correlations_8cxx_source.html">AngularCorrelations.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_angular_correlations_8cxx_source.html#l00836">A2a4Method()</a>, <a class="el" href="_t_peak_fitter_8h_source.html#l00041">TPeakFitter::AddPeak()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00057">TSinglePeak::Area()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00058">TSinglePeak::AreaErr()</a>, <a class="el" href="_efficiency_helper_8cxx_source.html#l00011">bgHigh</a>, <a class="el" href="_efficiency_helper_8cxx_source.html#l00010">bgLow</a>, <a class="el" href="_t_peak_fitter_8cxx_source.html#l00088">TPeakFitter::Fit()</a>, <a class="el" href="_t_peak_fitter_8h_source.html#l00076">TPeakFitter::GetBackground()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00078">TSinglePeak::GetFitFunction()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00093">TSinglePeak::GetReducedChi2()</a>, <a class="el" href="_angular_correlations_8cxx_source.html#l00028">GetYError()</a>, <a class="el" href="_angular_correlations_8cxx_source.html#l00714">MixingMethod()</a>, <a class="el" href="_arg_parser_8h_source.html#l00412">ArgParser::option()</a>, and <a class="el" href="_arg_parser_8h_source.html#l00333">ArgParser::parse()</a>.</p>
+<p class="reference">References <a class="el" href="_angular_correlations_8cxx_source.html#l00887">A2a4Method()</a>, <a class="el" href="_t_peak_fitter_8h_source.html#l00041">TPeakFitter::AddPeak()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00057">TSinglePeak::Area()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00058">TSinglePeak::AreaErr()</a>, <a class="el" href="_efficiency_helper_8cxx_source.html#l00011">bgHigh</a>, <a class="el" href="_efficiency_helper_8cxx_source.html#l00010">bgLow</a>, <a class="el" href="_t_r_w_peak_8cxx_source.html#l00003">TRWPeak::Centroid()</a>, <a class="el" href="_t_r_w_peak_8cxx_source.html#l00065">TRWPeak::CentroidErr()</a>, <a class="el" href="_t_peak_fitter_8cxx_source.html#l00088">TPeakFitter::Fit()</a>, <a class="el" href="_t_single_peak_8cxx_source.html#l00077">TSinglePeak::FWHM()</a>, <a class="el" href="_t_single_peak_8cxx_source.html#l00092">TSinglePeak::FWHMErr()</a>, <a class="el" href="_t_peak_fitter_8h_source.html#l00076">TPeakFitter::GetBackground()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00078">TSinglePeak::GetFitFunction()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00093">TSinglePeak::GetReducedChi2()</a>, <a class="el" href="_angular_correlations_8cxx_source.html#l00030">GetYError()</a>, <a class="el" href="_angular_correlations_8cxx_source.html#l00765">MixingMethod()</a>, <a class="el" href="_arg_parser_8h_source.html#l00412">ArgParser::option()</a>, and <a class="el" href="_arg_parser_8h_source.html#l00333">ArgParser::parse()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_g_root_canvas_8cxx_source.html#l01365">GRootCanvas::ShowEditor()</a>.</p>
 
@@ -294,11 +296,11 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_angular_correlations_8cxx_source.html#l00714">714</a> of file <a class="el" href="_angular_correlations_8cxx_source.html">AngularCorrelations.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_angular_correlations_8cxx_source.html#l00765">765</a> of file <a class="el" href="_angular_correlations_8cxx_source.html">AngularCorrelations.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_g_r_s_i_functions_8cxx_source.html#l00533">TGRSIFunctions::CalculateA2()</a>, <a class="el" href="_t_g_r_s_i_functions_8cxx_source.html#l00538">TGRSIFunctions::CalculateA4()</a>, and <a class="el" href="_angular_correlations_8cxx_source.html#l00683">Ac::Np()</a>.</p>
+<p class="reference">References <a class="el" href="_t_g_r_s_i_functions_8cxx_source.html#l00533">TGRSIFunctions::CalculateA2()</a>, <a class="el" href="_t_g_r_s_i_functions_8cxx_source.html#l00538">TGRSIFunctions::CalculateA4()</a>, and <a class="el" href="_angular_correlations_8cxx_source.html#l00734">Ac::Np()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_angular_correlations_8cxx_source.html#l00054">main()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_angular_correlations_8cxx_source.html#l00056">main()</a>.</p>
 
 </div>
 </div>
@@ -309,7 +311,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_1d7397b112c23d4eb2fe49dc66ace00a.html">GRSIData</a></li><li class="navelem"><a class="el" href="dir_8965781c9f424dd985c8251b0fe5e6e9.html">util</a></li><li class="navelem"><a class="el" href="_angular_correlations_8cxx.html">AngularCorrelations.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jul 8 2025 17:01:55.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jul 8 2025 22:09:56.</li>
   </ul>
 </div>
 </body>
