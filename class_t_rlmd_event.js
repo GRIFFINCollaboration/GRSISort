@@ -12,7 +12,7 @@ var class_t_rlmd_event =
     [ "IncrementGoodFrags", "class_t_rlmd_event.html#a013c2c0ba3b6f8bcca749b55522c64d9", null ],
     [ "operator=", "class_t_rlmd_event.html#a9bf1697ebf993fc0258c33cfc400221d", null ],
     [ "Print", "class_t_rlmd_event.html#a9098ec55e76394d351137d52210c3dec", null ],
-    [ "SetData", "class_t_rlmd_event.html#a86e10ffd4f27b33619aacef7c480e34a", null ],
+    [ "SetData", "class_t_rlmd_event.html#a4c2804f60ef68428fed643861cc80d63", null ],
     [ "SwapBytes", "class_t_rlmd_event.html#a046ec24701992ac5e05e118ac5525526", null ],
     [ "fData", "class_t_rlmd_event.html#a8b2f8e6ee8a18bc771cfc77704c9470e", null ],
     [ "fGoodFrags", "class_t_rlmd_event.html#a842ee9d55ece75f079c259bb8f7f8fa2", null ]

@@ -1,8 +1,5 @@
 var NAVTREEINDEX70 =
 {
-"namespace_t_g_r_s_i_functions.html#a558f80b4965f5038faf44c4ebebcb556":[9,0,6,5],
-"namespace_t_g_r_s_i_functions.html#a582ecd5ae604a5f080302a50004db5a5":[9,0,6,9],
-"namespace_t_g_r_s_i_functions.html#a594aa61e8ea3e3400918af9b5ae223e4":[9,0,6,2],
 "namespace_t_g_r_s_i_functions.html#a608e2b1aa6bb92909af5c231c585fe1b":[9,0,6,15],
 "namespace_t_g_r_s_i_functions.html#a6b8b8466516fb370fdcb15bed55e09cf":[9,0,6,4],
 "namespace_t_g_r_s_i_functions.html#a6f5b91453a1c24a1b52541da1393f522":[9,0,6,25],
@@ -249,5 +246,8 @@ var NAVTREEINDEX70 =
 "struct_t_pulse_analyzer_1_1_wave_form_par.html#a2c66c9ec22b43d7e6ca54e0582617b4e":[8,3,19,4,40],
 "struct_t_pulse_analyzer_1_1_wave_form_par.html#a44e84c241a2dd09197eba21b7766851a":[8,3,19,4,6],
 "struct_t_pulse_analyzer_1_1_wave_form_par.html#a4d20d8b313eafd25cd87ff69104dbf90":[8,3,19,4,20],
-"struct_t_pulse_analyzer_1_1_wave_form_par.html#a507c5fc66cc42303e7f298cf1e999264":[8,3,19,4,0]
+"struct_t_pulse_analyzer_1_1_wave_form_par.html#a507c5fc66cc42303e7f298cf1e999264":[8,3,19,4,0],
+"struct_t_pulse_analyzer_1_1_wave_form_par.html#a5cebc48b6067dbd97a1a5184be502447":[8,3,19,4,24],
+"struct_t_pulse_analyzer_1_1_wave_form_par.html#a637d71085eb9aee1429ebcf41184f6ac":[8,3,19,4,38],
+"struct_t_pulse_analyzer_1_1_wave_form_par.html#a6b839e0d0005f5b732d480276ddc4e85":[8,3,19,4,27]
 };

@@ -1,7 +1,5 @@
 var NAVTREEINDEX5 =
 {
-"_t_ifin_8h_source.html":[11,0,6,0,11],
-"_t_ifin_bgo_8cxx.html":[11,0,6,1,0,4,2],
 "_t_ifin_bgo_8cxx_source.html":[11,0,6,1,0,4,2],
 "_t_ifin_bgo_8h.html":[11,0,6,0,12],
 "_t_ifin_bgo_8h_source.html":[11,0,6,0,12],
@@ -249,5 +247,7 @@ var NAVTREEINDEX5 =
 "_t_suppressed_8cxx_source.html":[11,0,9,1,10,1],
 "_t_suppressed_8h.html":[11,0,7,113],
 "_t_suppressed_8h_source.html":[11,0,7,113],
-"_t_t_a_c_8cxx.html":[11,0,2,2,0,17,1]
+"_t_t_a_c_8cxx.html":[11,0,2,2,0,17,1],
+"_t_t_a_c_8cxx_source.html":[11,0,2,2,0,17,1],
+"_t_t_a_c_8h.html":[11,0,2,1,45]
 };

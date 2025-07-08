@@ -126,258 +126,245 @@ $(function(){initNavTree('_t_tdr_file_8cxx_source.html',''); initResizable(true)
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &quot;<a class="code" href="_t_tdr_detector_information_8h.html">TTdrDetectorInformation.h</a>&quot;</span></div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &quot;<a class="code" href="_t_tdr_mnemonic_8h.html">TTdrMnemonic.h</a>&quot;</span></div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &quot;iThembaDataVersion.h&quot;</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment"></span> </div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment">/// \cond CLASSIMP</span></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment"></span><a class="code hl_function" href="_t_h_i_l_mnemonic_8cxx.html#a1777b69706fe45dae662c2e33fb027f2">ClassImp</a>(<a class="code hl_class" href="class_t_tdr_file.html">TTdrFile</a>)<span class="comment"></span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment">/// \endcond</span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment"></span> </div>
-<div class="foldopen" id="foldopen00029" data-start="{" data-end="}">
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="class_t_tdr_file.html#a881add6c1cd983ad68904e7020f34ef8">   29</a></span><a class="code hl_class" href="class_t_tdr_file.html">TTdrFile</a>::<a class="code hl_class" href="class_t_tdr_file.html">TTdrFile</a>()</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>{</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>   <span class="comment">// Default Constructor</span></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>   fBytesRead = 0;</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>   fFileSize  = 0;</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>}</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="foldopen" id="foldopen00025" data-start="{" data-end="}">
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="class_t_tdr_file.html#a14700d47abc1ec2c587b15bb4a931a84">   25</a></span><a class="code hl_function" href="class_t_tdr_file.html#af755613ee356e20237c5475727b72e6a">TTdrFile::TTdrFile</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* filename, <a class="code hl_enumeration" href="class_t_raw_file.html#a4ef0129feb73111852d5592fdeb4fff2">TRawFile::EOpenType</a> open_type) : <a class="code hl_class" href="class_t_tdr_file.html">TTdrFile</a>()</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>{</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>   <span class="keywordflow">switch</span>(open_type) {</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>   <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="class_t_raw_file.html#a4ef0129feb73111852d5592fdeb4fff2a8604cf55a79d6bfdcb30f77d1622839b">TRawFile::EOpenType::kRead</a>: <a class="code hl_function" href="class_t_tdr_file.html#a56124106fd48c5c83d973b1e2cf80eaa">Open</a>(filename); <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>   <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="class_t_raw_file.html#a4ef0129feb73111852d5592fdeb4fff2ad3ac0ba447a9859ad2db8e498056429f">TRawFile::EOpenType::kWrite</a>: <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>   }</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>}</div>
 </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
-<div class="foldopen" id="foldopen00036" data-start="{" data-end="}">
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="class_t_tdr_file.html#a14700d47abc1ec2c587b15bb4a931a84">   36</a></span><a class="code hl_function" href="class_t_tdr_file.html#a881add6c1cd983ad68904e7020f34ef8">TTdrFile::TTdrFile</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* filename, <a class="code hl_enumeration" href="class_t_raw_file.html#a4ef0129feb73111852d5592fdeb4fff2">TRawFile::EOpenType</a> open_type) : <a class="code hl_class" href="class_t_tdr_file.html">TTdrFile</a>()</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>{</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>   <span class="keywordflow">switch</span>(open_type) {</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>   <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="class_t_raw_file.html#a4ef0129feb73111852d5592fdeb4fff2a8604cf55a79d6bfdcb30f77d1622839b">TRawFile::EOpenType::kRead</a>: <a class="code hl_function" href="class_t_tdr_file.html#a56124106fd48c5c83d973b1e2cf80eaa">Open</a>(filename); <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>   <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="class_t_raw_file.html#a4ef0129feb73111852d5592fdeb4fff2ad3ac0ba447a9859ad2db8e498056429f">TRawFile::EOpenType::kWrite</a>: <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>   }</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>}</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="foldopen" id="foldopen00034" data-start="{" data-end="}">
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="class_t_tdr_file.html#af6c157a4ec12d1c81de50368115bddff">   34</a></span><a class="code hl_function" href="class_t_tdr_file.html#af6c157a4ec12d1c81de50368115bddff">TTdrFile::~TTdrFile</a>()</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>{</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>   <span class="comment">// Default dtor. It closes the read in midas file as well as the output midas file.</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>   <a class="code hl_function" href="class_t_tdr_file.html#a2fba26dd0195e4870ff20b4a4db9b247">Close</a>();</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>}</div>
 </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
-<div class="foldopen" id="foldopen00045" data-start="{" data-end="}">
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="class_t_tdr_file.html#af6c157a4ec12d1c81de50368115bddff">   45</a></span><a class="code hl_function" href="class_t_tdr_file.html#af6c157a4ec12d1c81de50368115bddff">TTdrFile::~TTdrFile</a>()</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>{</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>   <span class="comment">// Default dtor. It closes the read in midas file as well as the output midas file.</span></div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>   <a class="code hl_function" href="class_t_tdr_file.html#a2fba26dd0195e4870ff20b4a4db9b247">Close</a>();</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>}</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="foldopen" id="foldopen00040" data-start="{" data-end="}">
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="class_t_tdr_file.html#a42f8fbab6f3053550f3c23f4b71d0126">   40</a></span>std::string <a class="code hl_function" href="class_t_tdr_file.html#a42f8fbab6f3053550f3c23f4b71d0126">TTdrFile::Status</a>(<span class="keywordtype">bool</span>)</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>{</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>   <span class="keywordflow">return</span> Form(<a class="code hl_define" href="_globals_8h.html#ad40305115a1eba76faa49995740aec80">HIDE_CURSOR</a> <span class="stringliteral">&quot; Processed event, have processed %.2fMB/%.2f MB              &quot;</span> <a class="code hl_define" href="_globals_8h.html#a09ec0b302bee7262f9959add53ccd0c4">SHOW_CURSOR</a> <span class="stringliteral">&quot;\r&quot;</span>,</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>               (<a class="code hl_function" href="class_t_raw_file.html#aa8ab628f45f6416de2654d38afb339ef">BytesRead</a>() / 1000000.0), (<a class="code hl_function" href="class_t_raw_file.html#a92f7f63635aa48319bd2d055116e82e8">FileSize</a>() / 1000000.0));</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>}</div>
 </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
-<div class="foldopen" id="foldopen00051" data-start="{" data-end="}">
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="class_t_tdr_file.html#a42f8fbab6f3053550f3c23f4b71d0126">   51</a></span>std::string <a class="code hl_function" href="class_t_tdr_file.html#a42f8fbab6f3053550f3c23f4b71d0126">TTdrFile::Status</a>(<span class="keywordtype">bool</span>)</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>{</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>   <span class="keywordflow">return</span> Form(<a class="code hl_define" href="_globals_8h.html#ad40305115a1eba76faa49995740aec80">HIDE_CURSOR</a> <span class="stringliteral">&quot; Processed event, have processed %.2fMB/%.2f MB              &quot;</span> <a class="code hl_define" href="_globals_8h.html#a09ec0b302bee7262f9959add53ccd0c4">SHOW_CURSOR</a> <span class="stringliteral">&quot;\r&quot;</span>,</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>               (<a class="code hl_variable" href="class_t_raw_file.html#a763e3e596b45ef81e1762894adb99dd0">fBytesRead</a> / 1000000.0), (<a class="code hl_variable" href="class_t_raw_file.html#a07b8745110f5b35e60ccec07070ac557">fFileSize</a> / 1000000.0));</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>}</div>
-</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="comment"></span> </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="comment">/// Open a tdr file with given file name.</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="comment">///</span></div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="comment">/// \param[in] filename The file to open.</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="comment">/// \returns &quot;true&quot; for succes, &quot;false&quot; for error, use GetLastError() to see why</span></div>
-<div class="foldopen" id="foldopen00061" data-start="{" data-end="}">
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="class_t_tdr_file.html#a56124106fd48c5c83d973b1e2cf80eaa">   61</a></span><span class="comment"></span><span class="keywordtype">bool</span> <a class="code hl_function" href="class_t_tdr_file.html#a56124106fd48c5c83d973b1e2cf80eaa">TTdrFile::Open</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* filename)</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>{</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>   <a class="code hl_variable" href="class_t_raw_file.html#aa67a2b187d313e70935b834f72b11c31">fFilename</a> = filename;</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>   <span class="keywordflow">try</span> {</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>      <a class="code hl_variable" href="class_t_tdr_file.html#a70c4dc998a405a9bec4e35f881d3d9ba">fInputFile</a>.open(<a class="code hl_function" href="class_t_raw_file.html#a37d73ab1087c2a9c8df0bc838010e688">GetFilename</a>(), std::ifstream::in | std::ifstream::binary);</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>      <a class="code hl_variable" href="class_t_tdr_file.html#a70c4dc998a405a9bec4e35f881d3d9ba">fInputFile</a>.seekg(0, std::ifstream::end);</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>      <span class="keywordflow">if</span>(<a class="code hl_variable" href="class_t_tdr_file.html#a70c4dc998a405a9bec4e35f881d3d9ba">fInputFile</a>.tellg() &lt; 0) {</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>         std::cout&lt;&lt;R<span class="stringliteral">&quot;(Failed to open &quot;)&quot;&lt;&lt;<a class="code hl_function" href="class_t_raw_file.html#a37d73ab1087c2a9c8df0bc838010e688">GetFilename</a>()&lt;&lt;</span><span class="stringliteral">&quot;/&quot;</span>&lt;&lt;<a class="code hl_variable" href="class_t_raw_file.html#aa67a2b187d313e70935b834f72b11c31">fFilename</a>&lt;&lt;R<span class="stringliteral">&quot;(&quot;!)&quot;&lt;&lt;std::endl;</span></div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="stringliteral">         </span><span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>      }</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>      <a class="code hl_variable" href="class_t_raw_file.html#a07b8745110f5b35e60ccec07070ac557">fFileSize</a> = <a class="code hl_variable" href="class_t_tdr_file.html#a70c4dc998a405a9bec4e35f881d3d9ba">fInputFile</a>.tellg();</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>      <a class="code hl_variable" href="class_t_tdr_file.html#a70c4dc998a405a9bec4e35f881d3d9ba">fInputFile</a>.seekg(0, std::ifstream::beg);</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>      <a class="code hl_variable" href="class_t_raw_file.html#a8ae6c0e5b3f20eff5031bb0a017eed9c">fReadBuffer</a>.resize(0x10000);</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>   } <span class="keywordflow">catch</span>(std::exception&amp; e) {</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>      std::cout&lt;&lt;<span class="stringliteral">&quot;Caught &quot;</span>&lt;&lt;e.what()&lt;&lt;std::endl;</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>   }</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="comment">// Do we need these?</span></div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="comment">// signal(SIGPIPE,SIG_IGN); // crash if reading from closed pipe</span></div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="comment">// signal(SIGXFSZ,SIG_IGN); // crash if reading from file &gt;2GB without O_LARGEFILE</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="comment"></span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment">/// Open a tdr file with given file name.</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="comment">///</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment">/// \param[in] filename The file to open.</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="comment">/// \returns &quot;true&quot; for succes, &quot;false&quot; for error, use GetLastError() to see why</span></div>
+<div class="foldopen" id="foldopen00050" data-start="{" data-end="}">
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="class_t_tdr_file.html#a56124106fd48c5c83d973b1e2cf80eaa">   50</a></span><span class="comment"></span><span class="keywordtype">bool</span> <a class="code hl_function" href="class_t_tdr_file.html#a56124106fd48c5c83d973b1e2cf80eaa">TTdrFile::Open</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* filename)</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>{</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>   <a class="code hl_function" href="class_t_raw_file.html#aa4d8c634b3290d6891bd300a9be9bf62">Filename</a>(filename);</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>   <span class="keywordflow">try</span> {</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>      <a class="code hl_variable" href="class_t_tdr_file.html#a70c4dc998a405a9bec4e35f881d3d9ba">fInputFile</a>.open(<a class="code hl_function" href="class_t_raw_file.html#a37d73ab1087c2a9c8df0bc838010e688">GetFilename</a>(), std::ifstream::in | std::ifstream::binary);</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>      <a class="code hl_variable" href="class_t_tdr_file.html#a70c4dc998a405a9bec4e35f881d3d9ba">fInputFile</a>.seekg(0, std::ifstream::end);</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>      <span class="keywordflow">if</span>(<a class="code hl_variable" href="class_t_tdr_file.html#a70c4dc998a405a9bec4e35f881d3d9ba">fInputFile</a>.tellg() &lt; 0) {</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>         std::cout &lt;&lt; R<span class="stringliteral">&quot;(Failed to open &quot;)&quot; &lt;&lt; <a class="code hl_function" href="class_t_raw_file.html#a37d73ab1087c2a9c8df0bc838010e688">GetFilename</a>() &lt;&lt; </span><span class="stringliteral">&quot;/&quot;</span> &lt;&lt; <a class="code hl_function" href="class_t_raw_file.html#aa4d8c634b3290d6891bd300a9be9bf62">Filename</a>() &lt;&lt; R<span class="stringliteral">&quot;(&quot;!)&quot; &lt;&lt; std::endl;</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="stringliteral">         </span><span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>      }</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>      <a class="code hl_function" href="class_t_raw_file.html#a92f7f63635aa48319bd2d055116e82e8">FileSize</a>(<a class="code hl_variable" href="class_t_tdr_file.html#a70c4dc998a405a9bec4e35f881d3d9ba">fInputFile</a>.tellg());</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>      <a class="code hl_variable" href="class_t_tdr_file.html#a70c4dc998a405a9bec4e35f881d3d9ba">fInputFile</a>.seekg(0, std::ifstream::beg);</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>      <a class="code hl_function" href="class_t_raw_file.html#ac930b008d5305c325ac4c0bcc27bcb22">ResizeBuffer</a>(0x10000);</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>   } <span class="keywordflow">catch</span>(std::exception&amp; e) {</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;Caught &quot;</span> &lt;&lt; e.what() &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>   }</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>   <span class="comment">// Do we need these?</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>   <span class="comment">// signal(SIGPIPE,SIG_IGN); // crash if reading from closed pipe</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>   <span class="comment">// signal(SIGXFSZ,SIG_IGN); // crash if reading from file &gt;2GB without O_LARGEFILE</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="preprocessor">#ifndef O_LARGEFILE</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="preprocessor">#define O_LARGEFILE 0</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>   <span class="comment">// setup TChannel to use our mnemonics</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>   <a class="code hl_function" href="class_t_channel.html#a19c7ccabdc0c3420b71bff4a2a78f401">TChannel::SetMnemonicClass</a>(TTdrMnemonic::Class());</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>   <a class="code hl_function" href="class_t_run_info.html#a96a1b319c7477dc90697f3c6189a9bc6">TRunInfo::SetRunInfo</a>(<a class="code hl_function" href="class_t_tdr_file.html#a968404f8c481ae7bb1ce735953c38716">GetRunNumber</a>(), <a class="code hl_function" href="class_t_tdr_file.html#ad520fe049804b291f87813c9b6ac137f">GetSubRunNumber</a>());</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>   <a class="code hl_function" href="class_t_run_info.html#a02306257da1fb2d836db98a088ac00d0">TRunInfo::ClearVersion</a>();</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>   <a class="code hl_function" href="class_t_run_info.html#ab9e4d3719241db6b367fcf135e2b0322">TRunInfo::SetVersion</a>(ITHEMBADATA_RELEASE);</div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="preprocessor">#ifndef O_LARGEFILE</span></div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="preprocessor">#define O_LARGEFILE 0</span></div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>   <span class="comment">// setup TChannel to use our mnemonics</span></div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>   <a class="code hl_function" href="class_t_channel.html#a19c7ccabdc0c3420b71bff4a2a78f401">TChannel::SetMnemonicClass</a>(TTdrMnemonic::Class());</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>   <a class="code hl_function" href="class_t_run_info.html#a96a1b319c7477dc90697f3c6189a9bc6">TRunInfo::SetRunInfo</a>(<a class="code hl_function" href="class_t_tdr_file.html#a968404f8c481ae7bb1ce735953c38716">GetRunNumber</a>(), <a class="code hl_function" href="class_t_tdr_file.html#ad520fe049804b291f87813c9b6ac137f">GetSubRunNumber</a>());</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>   <a class="code hl_function" href="class_t_run_info.html#a02306257da1fb2d836db98a088ac00d0">TRunInfo::ClearVersion</a>();</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>   <a class="code hl_function" href="class_t_run_info.html#ab9e4d3719241db6b367fcf135e2b0322">TRunInfo::SetVersion</a>(ITHEMBADATA_RELEASE);</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>   std::cout&lt;&lt;<span class="stringliteral">&quot;Successfully opened file with &quot;</span>&lt;&lt;<a class="code hl_variable" href="class_t_raw_file.html#a07b8745110f5b35e60ccec07070ac557">fFileSize</a>&lt;&lt;<span class="stringliteral">&quot; bytes!&quot;</span>&lt;&lt;std::endl;</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>   <span class="comment">//std::cout&lt;&lt;std::hex&lt;&lt;std::setfill(&#39;0&#39;);</span></div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>   <span class="comment">//for(size_t i = 0; i &lt; fReadBuffer.size() &amp;&amp; i &lt; 256; ++i) {</span></div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>   <span class="comment">// std::cout&lt;&lt;std::setw(2)&lt;&lt;(static_cast&lt;int16_t&gt;(fReadBuffer[i])&amp;0xff)&lt;&lt;&quot; &quot;;</span></div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>   <span class="comment">// if(i%16 == 15) std::cout&lt;&lt;std::endl;</span></div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>   <span class="comment">//}</span></div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>   <span class="comment">//std::cout&lt;&lt;std::dec&lt;&lt;std::setfill(&#39; &#39;);</span></div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>   <a class="code hl_class" href="class_t_tdr_detector_information.html">TTdrDetectorInformation</a>* detInfo = <span class="keyword">new</span> <a class="code hl_class" href="class_t_tdr_detector_information.html">TTdrDetectorInformation</a>();</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>   <a class="code hl_function" href="class_t_run_info.html#abd97f906fea00eb3e186008256986f23">TRunInfo::SetDetectorInformation</a>(detInfo);</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>   <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>}</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>   std::cout &lt;&lt; <span class="stringliteral">&quot;Successfully opened file with &quot;</span> &lt;&lt; <a class="code hl_function" href="class_t_raw_file.html#a92f7f63635aa48319bd2d055116e82e8">FileSize</a>() &lt;&lt; <span class="stringliteral">&quot; bytes!&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>   <span class="comment">//std::cout&lt;&lt;std::hex&lt;&lt;std::setfill(&#39;0&#39;);</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>   <span class="comment">//for(size_t i = 0; i &lt; fReadBuffer.size() &amp;&amp; i &lt; 256; ++i) {</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>   <span class="comment">// std::cout&lt;&lt;std::setw(2)&lt;&lt;(static_cast&lt;int16_t&gt;(fReadBuffer[i])&amp;0xff)&lt;&lt;&quot; &quot;;</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>   <span class="comment">// if(i%16 == 15) std::cout&lt;&lt;std::endl;</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>   <span class="comment">//}</span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>   <span class="comment">//std::cout&lt;&lt;std::dec&lt;&lt;std::setfill(&#39; &#39;);</span></div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>   <a class="code hl_class" href="class_t_tdr_detector_information.html">TTdrDetectorInformation</a>* detInfo = <span class="keyword">new</span> <a class="code hl_class" href="class_t_tdr_detector_information.html">TTdrDetectorInformation</a>();</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>   <a class="code hl_function" href="class_t_run_info.html#abd97f906fea00eb3e186008256986f23">TRunInfo::SetDetectorInformation</a>(detInfo);</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>   <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>}</div>
 </div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
-<div class="foldopen" id="foldopen00107" data-start="{" data-end="}">
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno"><a class="line" href="class_t_tdr_file.html#a2fba26dd0195e4870ff20b4a4db9b247">  107</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_tdr_file.html#a2fba26dd0195e4870ff20b4a4db9b247">TTdrFile::Close</a>()</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>{</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>}</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
+<div class="foldopen" id="foldopen00096" data-start="{" data-end="}">
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno"><a class="line" href="class_t_tdr_file.html#a2fba26dd0195e4870ff20b4a4db9b247">   96</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_tdr_file.html#a2fba26dd0195e4870ff20b4a4db9b247">TTdrFile::Close</a>()</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>{</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>}</div>
 </div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="comment"></span> </div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="comment">/// \param [in] tdrEvent Pointer to an empty TTdrEvent</span></div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="comment">/// \returns &quot;true&quot; for success, &quot;false&quot; for failure, see GetLastError() to see why</span></div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span><span class="comment">///</span></div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span><span class="comment">///  EDITED FROM THE ORIGINAL TO RETURN TOTAL SUCESSFULLY BYTES READ INSTEAD OF TRUE/FALSE,  PCB</span></div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span><span class="comment">///</span></div>
-<div class="foldopen" id="foldopen00116" data-start="{" data-end="}">
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno"><a class="line" href="class_t_tdr_file.html#a20258d00ba10388c3c99df42ffb4ec12">  116</a></span><span class="comment"></span><span class="keywordtype">int</span> <a class="code hl_function" href="class_t_tdr_file.html#a20258d00ba10388c3c99df42ffb4ec12">TTdrFile::Read</a>(std::shared_ptr&lt;TRawEvent&gt; tdrEvent)</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>{</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>   <span class="keywordflow">if</span>(!<a class="code hl_variable" href="class_t_tdr_file.html#a70c4dc998a405a9bec4e35f881d3d9ba">fInputFile</a>.is_open()) {</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>      <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>   }</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>   <span class="comment">// try to read next 64k buffer</span></div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>   <a class="code hl_variable" href="class_t_tdr_file.html#a70c4dc998a405a9bec4e35f881d3d9ba">fInputFile</a>.read(<a class="code hl_variable" href="class_t_raw_file.html#a8ae6c0e5b3f20eff5031bb0a017eed9c">fReadBuffer</a>.data(), 0x10000);</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>   <span class="keywordflow">if</span>(!<a class="code hl_variable" href="class_t_tdr_file.html#a70c4dc998a405a9bec4e35f881d3d9ba">fInputFile</a>.good()) {</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>      std::cout&lt;&lt;<span class="stringliteral">&quot;Failed to read next 64k buffer, currently at &quot;</span>&lt;&lt;<a class="code hl_variable" href="class_t_raw_file.html#a763e3e596b45ef81e1762894adb99dd0">fBytesRead</a>&lt;&lt;<span class="stringliteral">&quot;/&quot;</span>&lt;&lt;<a class="code hl_variable" href="class_t_raw_file.html#a07b8745110f5b35e60ccec07070ac557">fFileSize</a>&lt;&lt;std::endl;</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>      <a class="code hl_variable" href="class_t_tdr_file.html#a70c4dc998a405a9bec4e35f881d3d9ba">fInputFile</a>.close();</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>      <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>   }</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>   <span class="comment">//read 24 byte header</span></div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>   <span class="keywordflow">if</span>(strncmp(<a class="code hl_variable" href="class_t_raw_file.html#a8ae6c0e5b3f20eff5031bb0a017eed9c">fReadBuffer</a>.data(), <span class="stringliteral">&quot;EBYEDATA&quot;</span>, 8) != 0) {</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>      std::cerr&lt;&lt;<a class="code hl_variable" href="class_t_raw_file.html#a763e3e596b45ef81e1762894adb99dd0">fBytesRead</a>&lt;&lt;<span class="stringliteral">&quot;: Failed to find &#39;EBYEDATA&#39; (or 0x45 42 59 45 44 41 54 41) at beginning of header (0x&quot;</span>&lt;&lt;std::hex&lt;&lt;std::setfill(&#39;0&#39;)&lt;&lt;std::setw(8)&lt;&lt;*reinterpret_cast&lt;uint64_t*&gt;(<a class="code hl_variable" href="class_t_raw_file.html#a8ae6c0e5b3f20eff5031bb0a017eed9c">fReadBuffer</a>.data())&lt;&lt;std::hex&lt;&lt;std::setfill(<span class="charliteral">&#39; &#39;</span>)&lt;&lt;<span class="stringliteral">&quot;)&quot;</span>&lt;&lt;std::endl;</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>      <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>   }</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>   <span class="keywordflow">try</span> {</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>      std::static_pointer_cast&lt;TTdrEvent&gt;(tdrEvent)-&gt;SetHeader(<a class="code hl_variable" href="class_t_raw_file.html#a8ae6c0e5b3f20eff5031bb0a017eed9c">fReadBuffer</a>.data());</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>   } <span class="keywordflow">catch</span>(std::exception&amp; e) {</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>      std::cout&lt;&lt;e.what()&lt;&lt;std::endl;</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>   }</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>   uint32_t dataSize = std::static_pointer_cast&lt;TTdrEvent&gt;(tdrEvent)-&gt;GetHeader().fDataLength;</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>   <span class="keywordflow">if</span>(24 + dataSize &lt; 0x10000) {</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>      <span class="keywordflow">try</span> {</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>         std::static_pointer_cast&lt;TTdrEvent&gt;(tdrEvent)-&gt;SetData(std::vector&lt;char&gt;(<a class="code hl_variable" href="class_t_raw_file.html#a8ae6c0e5b3f20eff5031bb0a017eed9c">fReadBuffer</a>.begin() + 24, <a class="code hl_variable" href="class_t_raw_file.html#a8ae6c0e5b3f20eff5031bb0a017eed9c">fReadBuffer</a>.begin() + 24 + dataSize));</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>      } <span class="keywordflow">catch</span>(std::exception&amp; e) {</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>         std::cout&lt;&lt;e.what()&lt;&lt;std::endl;</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>      }</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>      <a class="code hl_variable" href="class_t_raw_file.html#a763e3e596b45ef81e1762894adb99dd0">fBytesRead</a> = <a class="code hl_variable" href="class_t_tdr_file.html#a70c4dc998a405a9bec4e35f881d3d9ba">fInputFile</a>.tellg();</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>      <span class="keywordflow">if</span>(<a class="code hl_variable" href="class_t_raw_file.html#a763e3e596b45ef81e1762894adb99dd0">fBytesRead</a> == <a class="code hl_variable" href="class_t_raw_file.html#a07b8745110f5b35e60ccec07070ac557">fFileSize</a>) {</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>         <a class="code hl_variable" href="class_t_tdr_file.html#a70c4dc998a405a9bec4e35f881d3d9ba">fInputFile</a>.close();</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>      }</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>      <span class="keywordflow">return</span> 0x10000;</div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>   }</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>   <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>}</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="comment"></span> </div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="comment">/// \param [in] tdrEvent Pointer to an empty TTdrEvent</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="comment">/// \returns &quot;true&quot; for success, &quot;false&quot; for failure, see GetLastError() to see why</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="comment">///</span></div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="comment">///  EDITED FROM THE ORIGINAL TO RETURN TOTAL SUCESSFULLY BYTES READ INSTEAD OF TRUE/FALSE,  PCB</span></div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="comment">///</span></div>
+<div class="foldopen" id="foldopen00105" data-start="{" data-end="}">
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno"><a class="line" href="class_t_tdr_file.html#a20258d00ba10388c3c99df42ffb4ec12">  105</a></span><span class="comment"></span><span class="keywordtype">int</span> <a class="code hl_function" href="class_t_tdr_file.html#a20258d00ba10388c3c99df42ffb4ec12">TTdrFile::Read</a>(std::shared_ptr&lt;TRawEvent&gt; tdrEvent)</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>{</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>   <span class="keywordflow">if</span>(!<a class="code hl_variable" href="class_t_tdr_file.html#a70c4dc998a405a9bec4e35f881d3d9ba">fInputFile</a>.is_open()) {</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>      <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>   }</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>   <span class="comment">// try to read next 64k buffer</span></div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>   <a class="code hl_variable" href="class_t_tdr_file.html#a70c4dc998a405a9bec4e35f881d3d9ba">fInputFile</a>.read(<a class="code hl_function" href="class_t_raw_file.html#a7e9bc2e6c2cec7c8a756fc83bfafab7c">BufferData</a>(), 0x10000);</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>   <span class="keywordflow">if</span>(!<a class="code hl_variable" href="class_t_tdr_file.html#a70c4dc998a405a9bec4e35f881d3d9ba">fInputFile</a>.good()) {</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;Failed to read next 64k buffer, currently at &quot;</span> &lt;&lt; <a class="code hl_function" href="class_t_raw_file.html#aa8ab628f45f6416de2654d38afb339ef">BytesRead</a>() &lt;&lt; <span class="stringliteral">&quot;/&quot;</span> &lt;&lt; <a class="code hl_function" href="class_t_raw_file.html#a92f7f63635aa48319bd2d055116e82e8">FileSize</a>() &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>      <a class="code hl_variable" href="class_t_tdr_file.html#a70c4dc998a405a9bec4e35f881d3d9ba">fInputFile</a>.close();</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>      <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>   }</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>   <span class="comment">//read 24 byte header</span></div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>   <span class="keywordflow">if</span>(strncmp(<a class="code hl_function" href="class_t_raw_file.html#a7e9bc2e6c2cec7c8a756fc83bfafab7c">BufferData</a>(), <span class="stringliteral">&quot;EBYEDATA&quot;</span>, 8) != 0) {</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>      std::cerr &lt;&lt; <a class="code hl_function" href="class_t_raw_file.html#aa8ab628f45f6416de2654d38afb339ef">BytesRead</a>() &lt;&lt; <span class="stringliteral">&quot;: Failed to find &#39;EBYEDATA&#39; (or 0x45 42 59 45 44 41 54 41) at beginning of header (0x&quot;</span> &lt;&lt; std::hex &lt;&lt; std::setfill(&#39;0&#39;) &lt;&lt; std::setw(8) &lt;&lt; *reinterpret_cast&lt;uint64_t*&gt;(<a class="code hl_function" href="class_t_raw_file.html#a7e9bc2e6c2cec7c8a756fc83bfafab7c">BufferData</a>()) &lt;&lt; std::hex &lt;&lt; std::setfill(<span class="charliteral">&#39; &#39;</span>) &lt;&lt; <span class="stringliteral">&quot;)&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>      <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>   }</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>   <span class="keywordflow">try</span> {</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>      std::static_pointer_cast&lt;TTdrEvent&gt;(tdrEvent)-&gt;SetHeader(<a class="code hl_function" href="class_t_raw_file.html#a7e9bc2e6c2cec7c8a756fc83bfafab7c">BufferData</a>());</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>   } <span class="keywordflow">catch</span>(std::exception&amp; e) {</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>      std::cout &lt;&lt; e.what() &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>   }</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>   uint32_t dataSize = std::static_pointer_cast&lt;TTdrEvent&gt;(tdrEvent)-&gt;GetHeader().fDataLength;</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>   <span class="keywordflow">if</span>(24 + dataSize &lt; 0x10000) {</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>      <span class="keywordflow">try</span> {</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>         std::static_pointer_cast&lt;TTdrEvent&gt;(tdrEvent)-&gt;SetData(std::vector&lt;char&gt;(ReadBuffer().begin() + 24, ReadBuffer().begin() + 24 + dataSize));</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>      } <span class="keywordflow">catch</span>(std::exception&amp; e) {</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>         std::cout &lt;&lt; e.what() &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>      }</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>      <a class="code hl_function" href="class_t_raw_file.html#aa8ab628f45f6416de2654d38afb339ef">BytesRead</a>(<a class="code hl_variable" href="class_t_tdr_file.html#a70c4dc998a405a9bec4e35f881d3d9ba">fInputFile</a>.tellg());</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>      <span class="keywordflow">if</span>(<a class="code hl_function" href="class_t_raw_file.html#aa8ab628f45f6416de2654d38afb339ef">BytesRead</a>() == <a class="code hl_function" href="class_t_raw_file.html#a92f7f63635aa48319bd2d055116e82e8">FileSize</a>()) {</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>         <a class="code hl_variable" href="class_t_tdr_file.html#a70c4dc998a405a9bec4e35f881d3d9ba">fInputFile</a>.close();</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>      }</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>      <span class="keywordflow">return</span> 0x10000;</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>   }</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>   <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>}</div>
 </div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span> </div>
-<div class="foldopen" id="foldopen00154" data-start="{" data-end="}">
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno"><a class="line" href="class_t_tdr_file.html#af4fbabcf4ff8ac7b67a8fc991941acc6">  154</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_tdr_file.html#af4fbabcf4ff8ac7b67a8fc991941acc6">TTdrFile::Skip</a>(<span class="keywordtype">size_t</span> nofEvents)</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>{</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>   <span class="keywordflow">if</span>(!<a class="code hl_variable" href="class_t_tdr_file.html#a70c4dc998a405a9bec4e35f881d3d9ba">fInputFile</a>.is_open()) {</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>      std::cerr&lt;&lt;__PRETTY_FUNCTION__&lt;&lt;<span class="stringliteral">&quot;: input file is not open!&quot;</span>&lt;&lt;std::endl;</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>   }</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>   <span class="comment">// try to skip next nofEvents 64k buffer</span></div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>   <a class="code hl_variable" href="class_t_tdr_file.html#a70c4dc998a405a9bec4e35f881d3d9ba">fInputFile</a>.seekg(nofEvents * 0x10000, std::ifstream::cur);</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>   <span class="keywordflow">if</span>(!<a class="code hl_variable" href="class_t_tdr_file.html#a70c4dc998a405a9bec4e35f881d3d9ba">fInputFile</a>.good()) {</div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>      std::cout&lt;&lt;<span class="stringliteral">&quot;Failed to skip next &quot;</span>&lt;&lt;nofEvents&lt;&lt;<span class="stringliteral">&quot; 64k buffer(s), currently at &quot;</span>&lt;&lt;<a class="code hl_variable" href="class_t_raw_file.html#a763e3e596b45ef81e1762894adb99dd0">fBytesRead</a>&lt;&lt;<span class="stringliteral">&quot;/&quot;</span>&lt;&lt;<a class="code hl_variable" href="class_t_raw_file.html#a07b8745110f5b35e60ccec07070ac557">fFileSize</a>&lt;&lt;std::endl;</div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>      <a class="code hl_variable" href="class_t_tdr_file.html#a70c4dc998a405a9bec4e35f881d3d9ba">fInputFile</a>.close();</div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>   }</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>}</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
+<div class="foldopen" id="foldopen00143" data-start="{" data-end="}">
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno"><a class="line" href="class_t_tdr_file.html#af4fbabcf4ff8ac7b67a8fc991941acc6">  143</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_tdr_file.html#af4fbabcf4ff8ac7b67a8fc991941acc6">TTdrFile::Skip</a>(<span class="keywordtype">size_t</span> nofEvents)</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>{</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>   <span class="keywordflow">if</span>(!<a class="code hl_variable" href="class_t_tdr_file.html#a70c4dc998a405a9bec4e35f881d3d9ba">fInputFile</a>.is_open()) {</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>      std::cerr &lt;&lt; __PRETTY_FUNCTION__ &lt;&lt; <span class="stringliteral">&quot;: input file is not open!&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>   }</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>   <span class="comment">// try to skip next nofEvents 64k buffer</span></div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>   <a class="code hl_variable" href="class_t_tdr_file.html#a70c4dc998a405a9bec4e35f881d3d9ba">fInputFile</a>.seekg(nofEvents * 0x10000, std::ifstream::cur);</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>   <span class="keywordflow">if</span>(!<a class="code hl_variable" href="class_t_tdr_file.html#a70c4dc998a405a9bec4e35f881d3d9ba">fInputFile</a>.good()) {</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;Failed to skip next &quot;</span> &lt;&lt; nofEvents &lt;&lt; <span class="stringliteral">&quot; 64k buffer(s), currently at &quot;</span> &lt;&lt; <a class="code hl_function" href="class_t_raw_file.html#aa8ab628f45f6416de2654d38afb339ef">BytesRead</a>() &lt;&lt; <span class="stringliteral">&quot;/&quot;</span> &lt;&lt; <a class="code hl_function" href="class_t_raw_file.html#a92f7f63635aa48319bd2d055116e82e8">FileSize</a>() &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>      <a class="code hl_variable" href="class_t_tdr_file.html#a70c4dc998a405a9bec4e35f881d3d9ba">fInputFile</a>.close();</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>   }</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>}</div>
 </div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span> </div>
-<div class="foldopen" id="foldopen00168" data-start="{" data-end="}">
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno"><a class="line" href="class_t_tdr_file.html#a968404f8c481ae7bb1ce735953c38716">  168</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="class_t_tdr_file.html#a968404f8c481ae7bb1ce735953c38716">TTdrFile::GetRunNumber</a>()</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>{</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>   <span class="comment">// Parse the run number from the current TMidasFile. This assumes a format of</span></div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>   <span class="comment">// R#*_#* or R#* (#* denoting one or more digits).</span></div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>   <span class="keywordflow">if</span>(<a class="code hl_variable" href="class_t_raw_file.html#aa67a2b187d313e70935b834f72b11c31">fFilename</a>.length() == 0) {</div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>      <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>   }</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>   std::size_t foundslash = <a class="code hl_variable" href="class_t_raw_file.html#aa67a2b187d313e70935b834f72b11c31">fFilename</a>.rfind(<span class="charliteral">&#39;/&#39;</span>);</div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>   std::size_t found = <a class="code hl_variable" href="class_t_raw_file.html#aa67a2b187d313e70935b834f72b11c31">fFilename</a>.rfind(<span class="charliteral">&#39;R&#39;</span>);</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>   <span class="keywordflow">if</span>(found &lt; foundslash || found ==std::string::npos) {</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>      std::cout&lt;&lt;<span class="stringliteral">&quot;Warning, failed to find &#39;R&#39; in filename &#39;&quot;</span>&lt;&lt;<a class="code hl_variable" href="class_t_raw_file.html#aa67a2b187d313e70935b834f72b11c31">fFilename</a>&lt;&lt;<span class="stringliteral">&quot;&#39;!&quot;</span>&lt;&lt;std::endl;</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>      <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>   }</div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>   std::size_t found2 = <a class="code hl_variable" href="class_t_raw_file.html#aa67a2b187d313e70935b834f72b11c31">fFilename</a>.rfind(<span class="charliteral">&#39;-&#39;</span>);</div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>   <span class="keywordflow">if</span>((found2 &lt; foundslash &amp;&amp; foundslash != std::string::npos) || found2 == std::string::npos) {</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>      found2 = <a class="code hl_variable" href="class_t_raw_file.html#aa67a2b187d313e70935b834f72b11c31">fFilename</a>.rfind(<span class="charliteral">&#39;_&#39;</span>);</div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>   }</div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>   <span class="comment">//   printf(&quot;found 2 = %i\n&quot;,found2);</span></div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>   <span class="keywordflow">if</span>(found2 &lt; foundslash &amp;&amp; foundslash != std::string::npos) {</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>      found2 = std::string::npos;</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>   }</div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>   std::string temp;</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>   <span class="keywordflow">if</span>(found2 == std::string::npos) {</div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>      <span class="comment">// no subrun number found, use rest of filename</span></div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>      temp = <a class="code hl_variable" href="class_t_raw_file.html#aa67a2b187d313e70935b834f72b11c31">fFilename</a>.substr(found + 1);</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>   } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>      <span class="comment">// subrun number found, use everything between &#39;R&#39; and &#39;_&#39;/&#39;-&#39;</span></div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>      temp = <a class="code hl_variable" href="class_t_raw_file.html#aa67a2b187d313e70935b834f72b11c31">fFilename</a>.substr(found + 1, found2 - (found + 1));</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>   }</div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>   <span class="keywordflow">return</span> atoi(temp.c_str());</div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>}</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
+<div class="foldopen" id="foldopen00157" data-start="{" data-end="}">
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno"><a class="line" href="class_t_tdr_file.html#a968404f8c481ae7bb1ce735953c38716">  157</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="class_t_tdr_file.html#a968404f8c481ae7bb1ce735953c38716">TTdrFile::GetRunNumber</a>()</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>{</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>   <span class="comment">// Parse the run number from the current TMidasFile. This assumes a format of</span></div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>   <span class="comment">// R#*_#* or R#* (#* denoting one or more digits).</span></div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>   <span class="keywordflow">if</span>(<a class="code hl_function" href="class_t_raw_file.html#aa4d8c634b3290d6891bd300a9be9bf62">Filename</a>().length() == 0) {</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>      <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>   }</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>   std::size_t foundslash = <a class="code hl_function" href="class_t_raw_file.html#aa4d8c634b3290d6891bd300a9be9bf62">Filename</a>().rfind(<span class="charliteral">&#39;/&#39;</span>);</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>   std::size_t found      = <a class="code hl_function" href="class_t_raw_file.html#aa4d8c634b3290d6891bd300a9be9bf62">Filename</a>().rfind(<span class="charliteral">&#39;R&#39;</span>);</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>   <span class="keywordflow">if</span>(found &lt; foundslash || found == std::string::npos) {</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;Warning, failed to find &#39;R&#39; in filename &#39;&quot;</span> &lt;&lt; <a class="code hl_function" href="class_t_raw_file.html#aa4d8c634b3290d6891bd300a9be9bf62">Filename</a>() &lt;&lt; <span class="stringliteral">&quot;&#39;!&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>      <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>   }</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>   std::size_t found2 = <a class="code hl_function" href="class_t_raw_file.html#aa4d8c634b3290d6891bd300a9be9bf62">Filename</a>().rfind(<span class="charliteral">&#39;-&#39;</span>);</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>   <span class="keywordflow">if</span>((found2 &lt; foundslash &amp;&amp; foundslash != std::string::npos) || found2 == std::string::npos) {</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>      found2 = <a class="code hl_function" href="class_t_raw_file.html#aa4d8c634b3290d6891bd300a9be9bf62">Filename</a>().rfind(<span class="charliteral">&#39;_&#39;</span>);</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>   }</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>   <span class="comment">//   printf(&quot;found 2 = %i\n&quot;,found2);</span></div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>   <span class="keywordflow">if</span>(found2 &lt; foundslash &amp;&amp; foundslash != std::string::npos) {</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>      found2 = std::string::npos;</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>   }</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>   std::string temp;</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>   <span class="keywordflow">if</span>(found2 == std::string::npos) {</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>      <span class="comment">// no subrun number found, use rest of filename</span></div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>      temp = <a class="code hl_function" href="class_t_raw_file.html#aa4d8c634b3290d6891bd300a9be9bf62">Filename</a>().substr(found + 1);</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>   } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>      <span class="comment">// subrun number found, use everything between &#39;R&#39; and &#39;_&#39;/&#39;-&#39;</span></div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>      temp = <a class="code hl_function" href="class_t_raw_file.html#aa4d8c634b3290d6891bd300a9be9bf62">Filename</a>().substr(found + 1, found2 - (found + 1));</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>   }</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>   <span class="keywordflow">return</span> atoi(temp.c_str());</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>}</div>
 </div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span> </div>
-<div class="foldopen" id="foldopen00200" data-start="{" data-end="}">
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno"><a class="line" href="class_t_tdr_file.html#ad520fe049804b291f87813c9b6ac137f">  200</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="class_t_tdr_file.html#ad520fe049804b291f87813c9b6ac137f">TTdrFile::GetSubRunNumber</a>()</div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>{</div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>   <span class="comment">// Parse the sub run number from the current TMidasFile. This assumes a format of</span></div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>   <span class="comment">// R#*_#* or R#* (#* denoting one or more digits).</span></div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>   <span class="keywordflow">if</span>(<a class="code hl_variable" href="class_t_raw_file.html#aa67a2b187d313e70935b834f72b11c31">fFilename</a>.length() == 0) {</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>      <span class="keywordflow">return</span> -1;</div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>   }</div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>   std::size_t foundslash = <a class="code hl_variable" href="class_t_raw_file.html#aa67a2b187d313e70935b834f72b11c31">fFilename</a>.rfind(<span class="charliteral">&#39;/&#39;</span>);</div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>   std::size_t found      = <a class="code hl_variable" href="class_t_raw_file.html#aa67a2b187d313e70935b834f72b11c31">fFilename</a>.rfind(<span class="charliteral">&#39;-&#39;</span>);</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>   <span class="keywordflow">if</span>((found &lt; foundslash &amp;&amp; foundslash != std::string::npos) || found == std::string::npos) {</div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>      found = <a class="code hl_variable" href="class_t_raw_file.html#aa67a2b187d313e70935b834f72b11c31">fFilename</a>.rfind(<span class="charliteral">&#39;_&#39;</span>);</div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>   }</div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>   <span class="keywordflow">if</span>(found &lt; foundslash &amp;&amp; foundslash != std::string::npos) {</div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>      found = std::string::npos;</div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>   }</div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>   <span class="keywordflow">if</span>(found != std::string::npos) {</div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>      std::string temp = <a class="code hl_variable" href="class_t_raw_file.html#aa67a2b187d313e70935b834f72b11c31">fFilename</a>.substr(found + 1);</div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>      <span class="keywordflow">return</span> atoi(temp.c_str());</div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>   }</div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>   <span class="keywordflow">return</span> -1;</div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>}</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span> </div>
+<div class="foldopen" id="foldopen00189" data-start="{" data-end="}">
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno"><a class="line" href="class_t_tdr_file.html#ad520fe049804b291f87813c9b6ac137f">  189</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="class_t_tdr_file.html#ad520fe049804b291f87813c9b6ac137f">TTdrFile::GetSubRunNumber</a>()</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>{</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>   <span class="comment">// Parse the sub run number from the current TMidasFile. This assumes a format of</span></div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>   <span class="comment">// R#*_#* or R#* (#* denoting one or more digits).</span></div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>   <span class="keywordflow">if</span>(<a class="code hl_function" href="class_t_raw_file.html#aa4d8c634b3290d6891bd300a9be9bf62">Filename</a>().length() == 0) {</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>      <span class="keywordflow">return</span> -1;</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>   }</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>   std::size_t foundslash = <a class="code hl_function" href="class_t_raw_file.html#aa4d8c634b3290d6891bd300a9be9bf62">Filename</a>().rfind(<span class="charliteral">&#39;/&#39;</span>);</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>   std::size_t found      = <a class="code hl_function" href="class_t_raw_file.html#aa4d8c634b3290d6891bd300a9be9bf62">Filename</a>().rfind(<span class="charliteral">&#39;-&#39;</span>);</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>   <span class="keywordflow">if</span>((found &lt; foundslash &amp;&amp; foundslash != std::string::npos) || found == std::string::npos) {</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>      found = <a class="code hl_function" href="class_t_raw_file.html#aa4d8c634b3290d6891bd300a9be9bf62">Filename</a>().rfind(<span class="charliteral">&#39;_&#39;</span>);</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>   }</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>   <span class="keywordflow">if</span>(found &lt; foundslash &amp;&amp; foundslash != std::string::npos) {</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>      found = std::string::npos;</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>   }</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>   <span class="keywordflow">if</span>(found != std::string::npos) {</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>      std::string temp = <a class="code hl_function" href="class_t_raw_file.html#aa4d8c634b3290d6891bd300a9be9bf62">Filename</a>().substr(found + 1);</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>      <span class="keywordflow">return</span> atoi(temp.c_str());</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>   }</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>   <span class="keywordflow">return</span> -1;</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>}</div>
 </div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span> </div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span><span class="comment">// end</span></div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span> </div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span><span class="comment">// end</span></div>
 <div class="ttc" id="a_globals_8h_html_a09ec0b302bee7262f9959add53ccd0c4"><div class="ttname"><a href="_globals_8h.html#a09ec0b302bee7262f9959add53ccd0c4">SHOW_CURSOR</a></div><div class="ttdeci">#define SHOW_CURSOR</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00033">Globals.h:33</a></div></div>
 <div class="ttc" id="a_globals_8h_html_ad40305115a1eba76faa49995740aec80"><div class="ttname"><a href="_globals_8h.html#ad40305115a1eba76faa49995740aec80">HIDE_CURSOR</a></div><div class="ttdeci">#define HIDE_CURSOR</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00032">Globals.h:32</a></div></div>
-<div class="ttc" id="a_t_h_i_l_mnemonic_8cxx_html_a1777b69706fe45dae662c2e33fb027f2"><div class="ttname"><a href="_t_h_i_l_mnemonic_8cxx.html#a1777b69706fe45dae662c2e33fb027f2">ClassImp</a></div><div class="ttdeci">ClassImp(THILMnemonic) void THILMnemonic</div><div class="ttdef"><b>Definition</b> <a href="_t_h_i_l_mnemonic_8cxx_source.html#l00009">THILMnemonic.cxx:9</a></div></div>
 <div class="ttc" id="a_t_run_info_8h_html"><div class="ttname"><a href="_t_run_info_8h.html">TRunInfo.h</a></div></div>
 <div class="ttc" id="a_t_tdr_detector_information_8h_html"><div class="ttname"><a href="_t_tdr_detector_information_8h.html">TTdrDetectorInformation.h</a></div></div>
 <div class="ttc" id="a_t_tdr_event_8h_html"><div class="ttname"><a href="_t_tdr_event_8h.html">TTdrEvent.h</a></div></div>
 <div class="ttc" id="a_t_tdr_file_8h_html"><div class="ttname"><a href="_t_tdr_file_8h.html">TTdrFile.h</a></div></div>
 <div class="ttc" id="a_t_tdr_mnemonic_8h_html"><div class="ttname"><a href="_t_tdr_mnemonic_8h.html">TTdrMnemonic.h</a></div></div>
 <div class="ttc" id="aclass_t_channel_html_a19c7ccabdc0c3420b71bff4a2a78f401"><div class="ttname"><a href="class_t_channel.html#a19c7ccabdc0c3420b71bff4a2a78f401">TChannel::SetMnemonicClass</a></div><div class="ttdeci">static void SetMnemonicClass(const TClassRef &amp;cls)</div><div class="ttdef"><b>Definition</b> <a href="_t_channel_8h_source.html#l00080">TChannel.h:80</a></div></div>
-<div class="ttc" id="aclass_t_raw_file_html_a07b8745110f5b35e60ccec07070ac557"><div class="ttname"><a href="class_t_raw_file.html#a07b8745110f5b35e60ccec07070ac557">TRawFile::fFileSize</a></div><div class="ttdeci">size_t fFileSize</div><div class="ttdef"><b>Definition</b> <a href="_t_raw_file_8h_source.html#l00088">TRawFile.h:88</a></div></div>
 <div class="ttc" id="aclass_t_raw_file_html_a37d73ab1087c2a9c8df0bc838010e688"><div class="ttname"><a href="class_t_raw_file.html#a37d73ab1087c2a9c8df0bc838010e688">TRawFile::GetFilename</a></div><div class="ttdeci">virtual const char * GetFilename() const</div><div class="ttdoc">Get the name of this file.</div><div class="ttdef"><b>Definition</b> <a href="_t_raw_file_8h_source.html#l00056">TRawFile.h:56</a></div></div>
 <div class="ttc" id="aclass_t_raw_file_html_a4ef0129feb73111852d5592fdeb4fff2"><div class="ttname"><a href="class_t_raw_file.html#a4ef0129feb73111852d5592fdeb4fff2">TRawFile::EOpenType</a></div><div class="ttdeci">EOpenType</div><div class="ttdef"><b>Definition</b> <a href="_t_raw_file_8h_source.html#l00033">TRawFile.h:33</a></div></div>
 <div class="ttc" id="aclass_t_raw_file_html_a4ef0129feb73111852d5592fdeb4fff2a8604cf55a79d6bfdcb30f77d1622839b"><div class="ttname"><a href="class_t_raw_file.html#a4ef0129feb73111852d5592fdeb4fff2a8604cf55a79d6bfdcb30f77d1622839b">TRawFile::EOpenType::kRead</a></div><div class="ttdeci">@ kRead</div></div>
 <div class="ttc" id="aclass_t_raw_file_html_a4ef0129feb73111852d5592fdeb4fff2ad3ac0ba447a9859ad2db8e498056429f"><div class="ttname"><a href="class_t_raw_file.html#a4ef0129feb73111852d5592fdeb4fff2ad3ac0ba447a9859ad2db8e498056429f">TRawFile::EOpenType::kWrite</a></div><div class="ttdeci">@ kWrite</div></div>
-<div class="ttc" id="aclass_t_raw_file_html_a763e3e596b45ef81e1762894adb99dd0"><div class="ttname"><a href="class_t_raw_file.html#a763e3e596b45ef81e1762894adb99dd0">TRawFile::fBytesRead</a></div><div class="ttdeci">size_t fBytesRead</div><div class="ttdef"><b>Definition</b> <a href="_t_raw_file_8h_source.html#l00087">TRawFile.h:87</a></div></div>
-<div class="ttc" id="aclass_t_raw_file_html_a8ae6c0e5b3f20eff5031bb0a017eed9c"><div class="ttname"><a href="class_t_raw_file.html#a8ae6c0e5b3f20eff5031bb0a017eed9c">TRawFile::fReadBuffer</a></div><div class="ttdeci">std::vector&lt; char &gt; fReadBuffer</div><div class="ttdef"><b>Definition</b> <a href="_t_raw_file_8h_source.html#l00085">TRawFile.h:85</a></div></div>
-<div class="ttc" id="aclass_t_raw_file_html_aa67a2b187d313e70935b834f72b11c31"><div class="ttname"><a href="class_t_raw_file.html#aa67a2b187d313e70935b834f72b11c31">TRawFile::fFilename</a></div><div class="ttdeci">std::string fFilename</div><div class="ttdoc">name of the currently open file</div><div class="ttdef"><b>Definition</b> <a href="_t_raw_file_8h_source.html#l00083">TRawFile.h:83</a></div></div>
+<div class="ttc" id="aclass_t_raw_file_html_a7e9bc2e6c2cec7c8a756fc83bfafab7c"><div class="ttname"><a href="class_t_raw_file.html#a7e9bc2e6c2cec7c8a756fc83bfafab7c">TRawFile::BufferData</a></div><div class="ttdeci">char * BufferData()</div><div class="ttdef"><b>Definition</b> <a href="_t_raw_file_8h_source.html#l00070">TRawFile.h:70</a></div></div>
+<div class="ttc" id="aclass_t_raw_file_html_a92f7f63635aa48319bd2d055116e82e8"><div class="ttname"><a href="class_t_raw_file.html#a92f7f63635aa48319bd2d055116e82e8">TRawFile::FileSize</a></div><div class="ttdeci">virtual size_t FileSize()</div><div class="ttdef"><b>Definition</b> <a href="_t_raw_file_8h_source.html#l00063">TRawFile.h:63</a></div></div>
+<div class="ttc" id="aclass_t_raw_file_html_aa4d8c634b3290d6891bd300a9be9bf62"><div class="ttname"><a href="class_t_raw_file.html#aa4d8c634b3290d6891bd300a9be9bf62">TRawFile::Filename</a></div><div class="ttdeci">virtual std::string Filename() const</div><div class="ttdoc">Get the name of this file.</div><div class="ttdef"><b>Definition</b> <a href="_t_raw_file_8h_source.html#l00066">TRawFile.h:66</a></div></div>
+<div class="ttc" id="aclass_t_raw_file_html_aa8ab628f45f6416de2654d38afb339ef"><div class="ttname"><a href="class_t_raw_file.html#aa8ab628f45f6416de2654d38afb339ef">TRawFile::BytesRead</a></div><div class="ttdeci">virtual size_t BytesRead()</div><div class="ttdef"><b>Definition</b> <a href="_t_raw_file_8h_source.html#l00061">TRawFile.h:61</a></div></div>
+<div class="ttc" id="aclass_t_raw_file_html_ac930b008d5305c325ac4c0bcc27bcb22"><div class="ttname"><a href="class_t_raw_file.html#ac930b008d5305c325ac4c0bcc27bcb22">TRawFile::ResizeBuffer</a></div><div class="ttdeci">void ResizeBuffer(size_t newSize)</div><div class="ttdef"><b>Definition</b> <a href="_t_raw_file_8h_source.html#l00072">TRawFile.h:72</a></div></div>
 <div class="ttc" id="aclass_t_run_info_html_a02306257da1fb2d836db98a088ac00d0"><div class="ttname"><a href="class_t_run_info.html#a02306257da1fb2d836db98a088ac00d0">TRunInfo::ClearVersion</a></div><div class="ttdeci">static void ClearVersion()</div><div class="ttdef"><b>Definition</b> <a href="_t_run_info_8h_source.html#l00146">TRunInfo.h:146</a></div></div>
 <div class="ttc" id="aclass_t_run_info_html_a96a1b319c7477dc90697f3c6189a9bc6"><div class="ttname"><a href="class_t_run_info.html#a96a1b319c7477dc90697f3c6189a9bc6">TRunInfo::SetRunInfo</a></div><div class="ttdeci">static void SetRunInfo(int runnum=0, int subrunnum=-1)</div><div class="ttdef"><b>Definition</b> <a href="_t_run_info_8cxx_source.html#l00135">TRunInfo.cxx:135</a></div></div>
 <div class="ttc" id="aclass_t_run_info_html_ab9e4d3719241db6b367fcf135e2b0322"><div class="ttname"><a href="class_t_run_info.html#ab9e4d3719241db6b367fcf135e2b0322">TRunInfo::SetVersion</a></div><div class="ttdeci">static void SetVersion(const char *ver)</div><div class="ttdef"><b>Definition</b> <a href="_t_run_info_8h_source.html#l00147">TRunInfo.h:147</a></div></div>
 <div class="ttc" id="aclass_t_run_info_html_abd97f906fea00eb3e186008256986f23"><div class="ttname"><a href="class_t_run_info.html#abd97f906fea00eb3e186008256986f23">TRunInfo::SetDetectorInformation</a></div><div class="ttdeci">static void SetDetectorInformation(TDetectorInformation *inf)</div><div class="ttdef"><b>Definition</b> <a href="_t_run_info_8h_source.html#l00289">TRunInfo.h:289</a></div></div>
 <div class="ttc" id="aclass_t_tdr_detector_information_html"><div class="ttname"><a href="class_t_tdr_detector_information.html">TTdrDetectorInformation</a></div><div class="ttdef"><b>Definition</b> <a href="_t_tdr_detector_information_8h_source.html#l00023">TTdrDetectorInformation.h:23</a></div></div>
 <div class="ttc" id="aclass_t_tdr_file_html"><div class="ttname"><a href="class_t_tdr_file.html">TTdrFile</a></div><div class="ttdoc">Reader for MIDAS .mid files.</div><div class="ttdef"><b>Definition</b> <a href="_t_tdr_file_8h_source.html#l00032">TTdrFile.h:32</a></div></div>
-<div class="ttc" id="aclass_t_tdr_file_html_a20258d00ba10388c3c99df42ffb4ec12"><div class="ttname"><a href="class_t_tdr_file.html#a20258d00ba10388c3c99df42ffb4ec12">TTdrFile::Read</a></div><div class="ttdeci">int Read(std::shared_ptr&lt; TRawEvent &gt; lstEvent) override</div><div class="ttdoc">Read one event from the file.</div><div class="ttdef"><b>Definition</b> <a href="#l00116">TTdrFile.cxx:116</a></div></div>
-<div class="ttc" id="aclass_t_tdr_file_html_a2fba26dd0195e4870ff20b4a4db9b247"><div class="ttname"><a href="class_t_tdr_file.html#a2fba26dd0195e4870ff20b4a4db9b247">TTdrFile::Close</a></div><div class="ttdeci">void Close() override</div><div class="ttdoc">Close input file.</div><div class="ttdef"><b>Definition</b> <a href="#l00107">TTdrFile.cxx:107</a></div></div>
-<div class="ttc" id="aclass_t_tdr_file_html_a42f8fbab6f3053550f3c23f4b71d0126"><div class="ttname"><a href="class_t_tdr_file.html#a42f8fbab6f3053550f3c23f4b71d0126">TTdrFile::Status</a></div><div class="ttdeci">std::string Status(bool long_file_description=true) override</div><div class="ttdef"><b>Definition</b> <a href="#l00051">TTdrFile.cxx:51</a></div></div>
-<div class="ttc" id="aclass_t_tdr_file_html_a56124106fd48c5c83d973b1e2cf80eaa"><div class="ttname"><a href="class_t_tdr_file.html#a56124106fd48c5c83d973b1e2cf80eaa">TTdrFile::Open</a></div><div class="ttdeci">bool Open(const char *filename) override</div><div class="ttdoc">Open input file.</div><div class="ttdef"><b>Definition</b> <a href="#l00061">TTdrFile.cxx:61</a></div></div>
-<div class="ttc" id="aclass_t_tdr_file_html_a70c4dc998a405a9bec4e35f881d3d9ba"><div class="ttname"><a href="class_t_tdr_file.html#a70c4dc998a405a9bec4e35f881d3d9ba">TTdrFile::fInputFile</a></div><div class="ttdeci">std::ifstream fInputFile</div><div class="ttdef"><b>Definition</b> <a href="_t_tdr_file_8h_source.html#l00058">TTdrFile.h:58</a></div></div>
-<div class="ttc" id="aclass_t_tdr_file_html_a881add6c1cd983ad68904e7020f34ef8"><div class="ttname"><a href="class_t_tdr_file.html#a881add6c1cd983ad68904e7020f34ef8">TTdrFile::TTdrFile</a></div><div class="ttdeci">TTdrFile()</div><div class="ttdoc">default constructor</div><div class="ttdef"><b>Definition</b> <a href="#l00029">TTdrFile.cxx:29</a></div></div>
-<div class="ttc" id="aclass_t_tdr_file_html_a968404f8c481ae7bb1ce735953c38716"><div class="ttname"><a href="class_t_tdr_file.html#a968404f8c481ae7bb1ce735953c38716">TTdrFile::GetRunNumber</a></div><div class="ttdeci">int GetRunNumber() override</div><div class="ttdef"><b>Definition</b> <a href="#l00168">TTdrFile.cxx:168</a></div></div>
-<div class="ttc" id="aclass_t_tdr_file_html_ad520fe049804b291f87813c9b6ac137f"><div class="ttname"><a href="class_t_tdr_file.html#ad520fe049804b291f87813c9b6ac137f">TTdrFile::GetSubRunNumber</a></div><div class="ttdeci">int GetSubRunNumber() override</div><div class="ttdef"><b>Definition</b> <a href="#l00200">TTdrFile.cxx:200</a></div></div>
-<div class="ttc" id="aclass_t_tdr_file_html_af4fbabcf4ff8ac7b67a8fc991941acc6"><div class="ttname"><a href="class_t_tdr_file.html#af4fbabcf4ff8ac7b67a8fc991941acc6">TTdrFile::Skip</a></div><div class="ttdeci">void Skip(size_t nofEvents) override</div><div class="ttdoc">Skip nofEvents from the file.</div><div class="ttdef"><b>Definition</b> <a href="#l00154">TTdrFile.cxx:154</a></div></div>
-<div class="ttc" id="aclass_t_tdr_file_html_af6c157a4ec12d1c81de50368115bddff"><div class="ttname"><a href="class_t_tdr_file.html#af6c157a4ec12d1c81de50368115bddff">TTdrFile::~TTdrFile</a></div><div class="ttdeci">~TTdrFile() override</div><div class="ttdoc">destructor</div><div class="ttdef"><b>Definition</b> <a href="#l00045">TTdrFile.cxx:45</a></div></div>
+<div class="ttc" id="aclass_t_tdr_file_html_a20258d00ba10388c3c99df42ffb4ec12"><div class="ttname"><a href="class_t_tdr_file.html#a20258d00ba10388c3c99df42ffb4ec12">TTdrFile::Read</a></div><div class="ttdeci">int Read(std::shared_ptr&lt; TRawEvent &gt; lstEvent) override</div><div class="ttdoc">Read one event from the file.</div><div class="ttdef"><b>Definition</b> <a href="#l00105">TTdrFile.cxx:105</a></div></div>
+<div class="ttc" id="aclass_t_tdr_file_html_a2fba26dd0195e4870ff20b4a4db9b247"><div class="ttname"><a href="class_t_tdr_file.html#a2fba26dd0195e4870ff20b4a4db9b247">TTdrFile::Close</a></div><div class="ttdeci">void Close() override</div><div class="ttdoc">Close input file.</div><div class="ttdef"><b>Definition</b> <a href="#l00096">TTdrFile.cxx:96</a></div></div>
+<div class="ttc" id="aclass_t_tdr_file_html_a42f8fbab6f3053550f3c23f4b71d0126"><div class="ttname"><a href="class_t_tdr_file.html#a42f8fbab6f3053550f3c23f4b71d0126">TTdrFile::Status</a></div><div class="ttdeci">std::string Status(bool long_file_description=true) override</div><div class="ttdef"><b>Definition</b> <a href="#l00040">TTdrFile.cxx:40</a></div></div>
+<div class="ttc" id="aclass_t_tdr_file_html_a56124106fd48c5c83d973b1e2cf80eaa"><div class="ttname"><a href="class_t_tdr_file.html#a56124106fd48c5c83d973b1e2cf80eaa">TTdrFile::Open</a></div><div class="ttdeci">bool Open(const char *filename) override</div><div class="ttdoc">Open input file.</div><div class="ttdef"><b>Definition</b> <a href="#l00050">TTdrFile.cxx:50</a></div></div>
+<div class="ttc" id="aclass_t_tdr_file_html_a70c4dc998a405a9bec4e35f881d3d9ba"><div class="ttname"><a href="class_t_tdr_file.html#a70c4dc998a405a9bec4e35f881d3d9ba">TTdrFile::fInputFile</a></div><div class="ttdeci">std::ifstream fInputFile</div><div class="ttdef"><b>Definition</b> <a href="_t_tdr_file_8h_source.html#l00061">TTdrFile.h:61</a></div></div>
+<div class="ttc" id="aclass_t_tdr_file_html_a968404f8c481ae7bb1ce735953c38716"><div class="ttname"><a href="class_t_tdr_file.html#a968404f8c481ae7bb1ce735953c38716">TTdrFile::GetRunNumber</a></div><div class="ttdeci">int GetRunNumber() override</div><div class="ttdef"><b>Definition</b> <a href="#l00157">TTdrFile.cxx:157</a></div></div>
+<div class="ttc" id="aclass_t_tdr_file_html_ad520fe049804b291f87813c9b6ac137f"><div class="ttname"><a href="class_t_tdr_file.html#ad520fe049804b291f87813c9b6ac137f">TTdrFile::GetSubRunNumber</a></div><div class="ttdeci">int GetSubRunNumber() override</div><div class="ttdef"><b>Definition</b> <a href="#l00189">TTdrFile.cxx:189</a></div></div>
+<div class="ttc" id="aclass_t_tdr_file_html_af4fbabcf4ff8ac7b67a8fc991941acc6"><div class="ttname"><a href="class_t_tdr_file.html#af4fbabcf4ff8ac7b67a8fc991941acc6">TTdrFile::Skip</a></div><div class="ttdeci">void Skip(size_t nofEvents) override</div><div class="ttdoc">Skip nofEvents from the file.</div><div class="ttdef"><b>Definition</b> <a href="#l00143">TTdrFile.cxx:143</a></div></div>
+<div class="ttc" id="aclass_t_tdr_file_html_af6c157a4ec12d1c81de50368115bddff"><div class="ttname"><a href="class_t_tdr_file.html#af6c157a4ec12d1c81de50368115bddff">TTdrFile::~TTdrFile</a></div><div class="ttdeci">~TTdrFile() override</div><div class="ttdoc">destructor</div><div class="ttdef"><b>Definition</b> <a href="#l00034">TTdrFile.cxx:34</a></div></div>
+<div class="ttc" id="aclass_t_tdr_file_html_af755613ee356e20237c5475727b72e6a"><div class="ttname"><a href="class_t_tdr_file.html#af755613ee356e20237c5475727b72e6a">TTdrFile::TTdrFile</a></div><div class="ttdeci">TTdrFile()=default</div><div class="ttdoc">default constructor</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.9.8-->
@@ -385,7 +372,7 @@ $(function(){initNavTree('_t_tdr_file_8cxx_source.html',''); initResizable(true)
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_cd4f627fa8084e1d86c3a8ecbee83134.html">iThembaData</a></li><li class="navelem"><a class="el" href="dir_e4daa6fade34b68a2c1edbeb23e49006.html">libraries</a></li><li class="navelem"><a class="el" href="dir_ecc8c735f5244272b5c35b9ffdd575ac.html">TTdr</a></li><li class="navelem"><a class="el" href="_t_tdr_file_8cxx.html">TTdrFile.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Sat Jul 5 2025 02:27:15.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jul 8 2025 17:00:20.</li>
   </ul>
 </div>
 </body>

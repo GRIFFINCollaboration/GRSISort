@@ -140,8 +140,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a9bf1697ebf993fc0258c33cfc400221d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9098ec55e76394d351137d52210c3dec" id="r_a9098ec55e76394d351137d52210c3dec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9098ec55e76394d351137d52210c3dec">Print</a> (const char *option=&quot;&quot;) const override</td></tr>
 <tr class="separator:a9098ec55e76394d351137d52210c3dec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a86e10ffd4f27b33619aacef7c480e34a" id="r_a86e10ffd4f27b33619aacef7c480e34a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a86e10ffd4f27b33619aacef7c480e34a">SetData</a> (std::vector&lt; char &gt; &amp;buffer)</td></tr>
-<tr class="separator:a86e10ffd4f27b33619aacef7c480e34a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c2804f60ef68428fed643861cc80d63" id="r_a4c2804f60ef68428fed643861cc80d63"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4c2804f60ef68428fed643861cc80d63">SetData</a> (std::vector&lt; char &gt; buffer)</td></tr>
+<tr class="separator:a4c2804f60ef68428fed643861cc80d63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a046ec24701992ac5e05e118ac5525526" id="r_a046ec24701992ac5e05e118ac5525526"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a046ec24701992ac5e05e118ac5525526">SwapBytes</a> (bool) override</td></tr>
 <tr class="separator:a046ec24701992ac5e05e118ac5525526"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -187,7 +187,9 @@ Private Attributes</h2></td></tr>
 
 <p>default constructor </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_rlmd_event_8cxx_source.html#l00013">13</a> of file <a class="el" href="_t_rlmd_event_8cxx_source.html">TRlmdEvent.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_rlmd_event_8cxx_source.html#l00009">9</a> of file <a class="el" href="_t_rlmd_event_8cxx_source.html">TRlmdEvent.cxx</a>.</p>
+
+<p class="reference">References <a class="el" href="_t_rlmd_event_8h_source.html#l00045">fData</a>.</p>
 
 </div>
 </div>
@@ -208,9 +210,9 @@ Private Attributes</h2></td></tr>
 
 <p>copy constructor </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_rlmd_event_8cxx_source.html#l00025">25</a> of file <a class="el" href="_t_rlmd_event_8cxx_source.html">TRlmdEvent.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_rlmd_event_8cxx_source.html#l00021">21</a> of file <a class="el" href="_t_rlmd_event_8cxx_source.html">TRlmdEvent.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_rlmd_event_8cxx_source.html#l00019">Copy()</a>.</p>
+<p class="reference">References <a class="el" href="_t_rlmd_event_8cxx_source.html#l00015">Copy()</a>.</p>
 
 </div>
 </div>
@@ -239,9 +241,9 @@ Private Attributes</h2></td></tr>
 
 <p>destructor </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_rlmd_event_8cxx_source.html#l00031">31</a> of file <a class="el" href="_t_rlmd_event_8cxx_source.html">TRlmdEvent.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_rlmd_event_8cxx_source.html#l00027">27</a> of file <a class="el" href="_t_rlmd_event_8cxx_source.html">TRlmdEvent.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_rlmd_event_8cxx_source.html#l00046">Clear()</a>.</p>
+<p class="reference">References <a class="el" href="_t_rlmd_event_8cxx_source.html#l00042">Clear()</a>.</p>
 
 </div>
 </div>
@@ -271,11 +273,11 @@ Private Attributes</h2></td></tr>
 
 <p>clear event for reuse </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_rlmd_event_8cxx_source.html#l00046">46</a> of file <a class="el" href="_t_rlmd_event_8cxx_source.html">TRlmdEvent.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_rlmd_event_8cxx_source.html#l00042">42</a> of file <a class="el" href="_t_rlmd_event_8cxx_source.html">TRlmdEvent.cxx</a>.</p>
 
 <p class="reference">References <a class="el" href="_t_rlmd_event_8h_source.html#l00045">fData</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_rlmd_event_8cxx_source.html#l00031">~TRlmdEvent()</a>, and <a class="el" href="_t_rlmd_event_8cxx_source.html#l00036">operator=()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_rlmd_event_8cxx_source.html#l00027">~TRlmdEvent()</a>, and <a class="el" href="_t_rlmd_event_8cxx_source.html#l00032">operator=()</a>.</p>
 
 </div>
 </div>
@@ -304,11 +306,11 @@ Private Attributes</h2></td></tr>
 
 <p>copy helper </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_rlmd_event_8cxx_source.html#l00019">19</a> of file <a class="el" href="_t_rlmd_event_8cxx_source.html">TRlmdEvent.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_rlmd_event_8cxx_source.html#l00015">15</a> of file <a class="el" href="_t_rlmd_event_8cxx_source.html">TRlmdEvent.cxx</a>.</p>
 
 <p class="reference">References <a class="el" href="_t_rlmd_event_8h_source.html#l00045">fData</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_rlmd_event_8cxx_source.html#l00025">TRlmdEvent()</a>, and <a class="el" href="_t_rlmd_event_8cxx_source.html#l00036">operator=()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_rlmd_event_8cxx_source.html#l00021">TRlmdEvent()</a>, and <a class="el" href="_t_rlmd_event_8cxx_source.html#l00032">operator=()</a>.</p>
 
 </div>
 </div>
@@ -339,7 +341,7 @@ Private Attributes</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_t_raw_event.html#a19f7d87730c69dca614334eced7b3640">TRawEvent</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_rlmd_event_8cxx_source.html#l00065">65</a> of file <a class="el" href="_t_rlmd_event_8cxx_source.html">TRlmdEvent.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_rlmd_event_8cxx_source.html#l00061">61</a> of file <a class="el" href="_t_rlmd_event_8cxx_source.html">TRlmdEvent.cxx</a>.</p>
 
 <p class="reference">References <a class="el" href="_t_rlmd_event_8h_source.html#l00045">fData</a>.</p>
 
@@ -372,7 +374,7 @@ Private Attributes</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_t_raw_event.html#a04541caac023e35f895f702d6d8496f3">TRawEvent</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_rlmd_event_8cxx_source.html#l00060">60</a> of file <a class="el" href="_t_rlmd_event_8cxx_source.html">TRlmdEvent.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_rlmd_event_8cxx_source.html#l00056">56</a> of file <a class="el" href="_t_rlmd_event_8cxx_source.html">TRlmdEvent.cxx</a>.</p>
 
 <p class="reference">References <a class="el" href="_t_rlmd_event_8h_source.html#l00045">fData</a>.</p>
 
@@ -488,9 +490,9 @@ Private Attributes</h2></td></tr>
 
 <p>assignement operator </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_rlmd_event_8cxx_source.html#l00036">36</a> of file <a class="el" href="_t_rlmd_event_8cxx_source.html">TRlmdEvent.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_rlmd_event_8cxx_source.html#l00032">32</a> of file <a class="el" href="_t_rlmd_event_8cxx_source.html">TRlmdEvent.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_rlmd_event_8cxx_source.html#l00046">Clear()</a>, and <a class="el" href="_t_rlmd_event_8cxx_source.html#l00019">Copy()</a>.</p>
+<p class="reference">References <a class="el" href="_t_rlmd_event_8cxx_source.html#l00042">Clear()</a>, and <a class="el" href="_t_rlmd_event_8cxx_source.html#l00015">Copy()</a>.</p>
 
 </div>
 </div>
@@ -525,14 +527,14 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_t_rlmd_event_8cxx_source.html#l00071">71</a> of file <a class="el" href="_t_rlmd_event_8cxx_source.html">TRlmdEvent.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_rlmd_event_8cxx_source.html#l00067">67</a> of file <a class="el" href="_t_rlmd_event_8cxx_source.html">TRlmdEvent.cxx</a>.</p>
 
 <p class="reference">References <a class="el" href="_t_rlmd_event_8h_source.html#l00045">fData</a>, and <a class="el" href="_globals_8h_source.html#l00129">hex()</a>.</p>
 
 </div>
 </div>
-<a id="a86e10ffd4f27b33619aacef7c480e34a" name="a86e10ffd4f27b33619aacef7c480e34a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a86e10ffd4f27b33619aacef7c480e34a">&#9670;&#160;</a></span>SetData()</h2>
+<a id="a4c2804f60ef68428fed643861cc80d63" name="a4c2804f60ef68428fed643861cc80d63"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c2804f60ef68428fed643861cc80d63">&#9670;&#160;</a></span>SetData()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -540,7 +542,7 @@ Private Attributes</h2></td></tr>
         <tr>
           <td class="memname">void TRlmdEvent::SetData </td>
           <td>(</td>
-          <td class="paramtype">std::vector&lt; char &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>buffer</em></span></td><td>)</td>
+          <td class="paramtype">std::vector&lt; char &gt;</td>          <td class="paramname"><span class="paramname"><em>buffer</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -548,9 +550,9 @@ Private Attributes</h2></td></tr>
 
 <p>set an externally allocated data buffer </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_rlmd_event_8cxx_source.html#l00052">52</a> of file <a class="el" href="_t_rlmd_event_8cxx_source.html">TRlmdEvent.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_rlmd_event_8cxx_source.html#l00048">48</a> of file <a class="el" href="_t_rlmd_event_8cxx_source.html">TRlmdEvent.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_rlmd_event_8h_source.html#l00045">fData</a>, and <a class="el" href="_t_rlmd_event_8cxx_source.html#l00091">SwapBytes()</a>.</p>
+<p class="reference">References <a class="el" href="_t_rlmd_event_8h_source.html#l00045">fData</a>, and <a class="el" href="_t_rlmd_event_8cxx_source.html#l00087">SwapBytes()</a>.</p>
 
 </div>
 </div>
@@ -581,9 +583,9 @@ Private Attributes</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_t_raw_event.html#a4e8c56610cd6bc2c91f1f5995ce95c23">TRawEvent</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_rlmd_event_8cxx_source.html#l00091">91</a> of file <a class="el" href="_t_rlmd_event_8cxx_source.html">TRlmdEvent.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_rlmd_event_8cxx_source.html#l00087">87</a> of file <a class="el" href="_t_rlmd_event_8cxx_source.html">TRlmdEvent.cxx</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_rlmd_event_8cxx_source.html#l00052">SetData()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_rlmd_event_8cxx_source.html#l00048">SetData()</a>.</p>
 
 </div>
 </div>
@@ -612,7 +614,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_rlmd_event_8h_source.html#l00045">45</a> of file <a class="el" href="_t_rlmd_event_8h_source.html">TRlmdEvent.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_rlmd_event_8cxx_source.html#l00046">Clear()</a>, <a class="el" href="_t_rlmd_event_8cxx_source.html#l00019">Copy()</a>, <a class="el" href="_t_rlmd_event_8cxx_source.html#l00065">GetData()</a>, <a class="el" href="_t_rlmd_event_8cxx_source.html#l00060">GetDataSize()</a>, <a class="el" href="_t_rlmd_event_8cxx_source.html#l00071">Print()</a>, and <a class="el" href="_t_rlmd_event_8cxx_source.html#l00052">SetData()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_rlmd_event_8cxx_source.html#l00009">TRlmdEvent()</a>, <a class="el" href="_t_rlmd_event_8cxx_source.html#l00042">Clear()</a>, <a class="el" href="_t_rlmd_event_8cxx_source.html#l00015">Copy()</a>, <a class="el" href="_t_rlmd_event_8cxx_source.html#l00061">GetData()</a>, <a class="el" href="_t_rlmd_event_8cxx_source.html#l00056">GetDataSize()</a>, <a class="el" href="_t_rlmd_event_8cxx_source.html#l00067">Print()</a>, and <a class="el" href="_t_rlmd_event_8cxx_source.html#l00048">SetData()</a>.</p>
 
 </div>
 </div>
@@ -650,7 +652,7 @@ Private Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_t_rlmd_event.html">TRlmdEvent</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Sat Jul 5 2025 02:27:21.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jul 8 2025 17:00:27.</li>
   </ul>
 </div>
 </body>

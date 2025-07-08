@@ -4,7 +4,7 @@ var class_t_tdr_file =
       [ "kRead", "class_t_tdr_file.html#a4ef0129feb73111852d5592fdeb4fff2a8604cf55a79d6bfdcb30f77d1622839b", null ],
       [ "kWrite", "class_t_tdr_file.html#a4ef0129feb73111852d5592fdeb4fff2ad3ac0ba447a9859ad2db8e498056429f", null ]
     ] ],
-    [ "TTdrFile", "class_t_tdr_file.html#a881add6c1cd983ad68904e7020f34ef8", null ],
+    [ "TTdrFile", "class_t_tdr_file.html#af755613ee356e20237c5475727b72e6a", null ],
     [ "TTdrFile", "class_t_tdr_file.html#a14700d47abc1ec2c587b15bb4a931a84", null ],
     [ "~TTdrFile", "class_t_tdr_file.html#af6c157a4ec12d1c81de50368115bddff", null ],
     [ "BufferData", "class_t_tdr_file.html#a7e9bc2e6c2cec7c8a756fc83bfafab7c", null ],

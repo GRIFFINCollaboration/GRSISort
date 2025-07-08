@@ -1,8 +1,5 @@
 var NAVTREEINDEX66 =
 {
-"classcombinations_1_1iterator.html#a9a6749e53da40aee344fc1ff53bfa644":[10,0,12,0,0],
-"classcombinations_1_1iterator.html#a9e011b6db9c23c12283985960a82b343":[10,0,12,0,7],
-"classcombinations_1_1iterator.html#aca68df075d771728aef4221e8ef1506d":[10,0,12,0,4],
 "classcombinations_1_1iterator.html#acbbce32dee45d1e03f4992e6da2a457e":[10,0,12,0,1],
 "classcombinations_1_1iterator.html#aeeedc620c446b6357a9e7821b1951f76":[10,0,12,0,2],
 "classcombinations_1_1iterator.html#afb8ed395f89c4a34d6bc4fe39b3ac33f":[10,0,12,0,6],
@@ -249,5 +246,8 @@ var NAVTREEINDEX66 =
 "classpygui_1_1status__widget_1_1_thread_vars.html#a2640f6ac3d57b7a6050af0288e9afde0":[10,0,1,3,1,3],
 "classpygui_1_1status__widget_1_1_thread_vars.html#a9bbbeda603d95aa45f03e2ae14708c0d":[9,0,5,5,1,0],
 "classpygui_1_1status__widget_1_1_thread_vars.html#a9bbbeda603d95aa45f03e2ae14708c0d":[10,0,1,3,1,0],
-"classpygui_1_1status__widget_1_1_thread_vars.html#abb30961891102c5ee35af3f3e9410ca6":[9,0,5,5,1,1]
+"classpygui_1_1status__widget_1_1_thread_vars.html#abb30961891102c5ee35af3f3e9410ca6":[9,0,5,5,1,1],
+"classpygui_1_1status__widget_1_1_thread_vars.html#abb30961891102c5ee35af3f3e9410ca6":[10,0,1,3,1,1],
+"classpygui_1_1status__widget_1_1_thread_vars.html#ac512c11cd7e10940ae71923f6c24b671":[9,0,5,5,1,4],
+"classpygui_1_1status__widget_1_1_thread_vars.html#ac512c11cd7e10940ae71923f6c24b671":[10,0,1,3,1,4]
 };

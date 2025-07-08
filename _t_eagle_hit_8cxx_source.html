@@ -112,139 +112,134 @@ $(function(){initNavTree('_t_eagle_hit_8cxx_source.html',''); initResizable(true
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="_globals_8h.html">Globals.h</a>&quot;</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;<a class="code" href="_t_eagle_8h.html">TEagle.h</a>&quot;</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;<a class="code" href="_t_g_r_s_i_options_8h.html">TGRSIOptions.h</a>&quot;</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment"></span> </div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment">/// \cond CLASSIMP</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment"></span><a class="code hl_function" href="_t_h_i_l_mnemonic_8cxx.html#a1777b69706fe45dae662c2e33fb027f2">ClassImp</a>(<a class="code hl_class" href="class_t_eagle_hit.html">TEagleHit</a>)<span class="comment"></span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment">/// \endcond</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment"></span> </div>
-<div class="foldopen" id="foldopen00015" data-start="{" data-end="}">
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="class_t_eagle_hit.html#adc1f1512d8d3413c74692d96b86dbb33">   15</a></span><a class="code hl_class" href="class_t_eagle_hit.html">TEagleHit</a>::<a class="code hl_class" href="class_t_eagle_hit.html">TEagleHit</a>() : <a class="code hl_class" href="class_t_detector_hit.html">TDetectorHit</a>()</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>{</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>   <span class="comment">// Default Constructor</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#if ROOT_VERSION_CODE &lt; ROOT_VERSION(6,0,0)</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>   Class()-&gt;IgnoreTObjectStreamer(kTRUE);</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>   Clear();</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>}</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="foldopen" id="foldopen00011" data-start="{" data-end="}">
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="class_t_eagle_hit.html#adc1f1512d8d3413c74692d96b86dbb33">   11</a></span><a class="code hl_function" href="class_t_eagle_hit.html#adc1f1512d8d3413c74692d96b86dbb33">TEagleHit::TEagleHit</a>() : <a class="code hl_class" href="class_t_detector_hit.html">TDetectorHit</a>()</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>{</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>   <span class="comment">// Default Constructor</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#if ROOT_VERSION_CODE &lt; ROOT_VERSION(6, 0, 0)</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>   Class()-&gt;IgnoreTObjectStreamer(kTRUE);</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>   <a class="code hl_function" href="class_t_eagle_hit.html#ab478a0df800b3ee36a128320b97c3352">Clear</a>();</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>}</div>
 </div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><a class="code hl_function" href="class_t_eagle_hit.html#a5341ed4d097cc8efd69c76f06eeef15a">TEagleHit::~TEagleHit</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
-<div class="foldopen" id="foldopen00026" data-start="{" data-end="}">
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="class_t_eagle_hit.html#a0ee45377c508430e4faea53c19a3d4dd">   26</a></span><a class="code hl_function" href="class_t_eagle_hit.html#adc1f1512d8d3413c74692d96b86dbb33">TEagleHit::TEagleHit</a>(<span class="keyword">const</span> <a class="code hl_class" href="class_t_eagle_hit.html">TEagleHit</a>&amp; rhs) : <a class="code hl_class" href="class_t_detector_hit.html">TDetectorHit</a>()</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>{</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>   <span class="comment">// Copy Constructor</span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="preprocessor">#if ROOT_VERSION_CODE &lt; ROOT_VERSION(6,0,0)</span></div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>   Class()-&gt;IgnoreTObjectStreamer(kTRUE);</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>   <a class="code hl_function" href="class_t_eagle_hit.html#ab478a0df800b3ee36a128320b97c3352">Clear</a>();</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>   rhs.<a class="code hl_function" href="class_t_eagle_hit.html#a92d659f646d04cdbbab1df735d8117bb">Copy</a>(*<span class="keyword">this</span>);</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>}</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><a class="code hl_function" href="class_t_eagle_hit.html#a5341ed4d097cc8efd69c76f06eeef15a">TEagleHit::~TEagleHit</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="foldopen" id="foldopen00022" data-start="{" data-end="}">
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="class_t_eagle_hit.html#a0ee45377c508430e4faea53c19a3d4dd">   22</a></span><a class="code hl_function" href="class_t_eagle_hit.html#adc1f1512d8d3413c74692d96b86dbb33">TEagleHit::TEagleHit</a>(<span class="keyword">const</span> <a class="code hl_class" href="class_t_eagle_hit.html">TEagleHit</a>&amp; rhs) : <a class="code hl_class" href="class_t_detector_hit.html">TDetectorHit</a>()</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>{</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>   <span class="comment">// Copy Constructor</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#if ROOT_VERSION_CODE &lt; ROOT_VERSION(6, 0, 0)</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>   Class()-&gt;IgnoreTObjectStreamer(kTRUE);</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>   <a class="code hl_function" href="class_t_eagle_hit.html#ab478a0df800b3ee36a128320b97c3352">Clear</a>();</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>   rhs.<a class="code hl_function" href="class_t_eagle_hit.html#a92d659f646d04cdbbab1df735d8117bb">Copy</a>(*<span class="keyword">this</span>);</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>}</div>
 </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
-<div class="foldopen" id="foldopen00036" data-start="{" data-end="}">
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="class_t_eagle_hit.html#ac1588751a38b2202dba494ee89a9a60e">   36</a></span><a class="code hl_function" href="class_t_eagle_hit.html#adc1f1512d8d3413c74692d96b86dbb33">TEagleHit::TEagleHit</a>(<span class="keyword">const</span> uint8_t&amp; <span class="keywordtype">id</span>, <span class="keyword">const</span> uint16_t&amp; energy, <span class="keyword">const</span> uint16_t&amp; time, <span class="keyword">const</span> uint64_t&amp; eventTime)</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>{</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>   <a class="code hl_variable" href="class_t_detector_hit.html#a8e84f6a505d936502a0096a749522094">fAddress</a> = 0x100 + id;</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>   <a class="code hl_variable" href="class_t_detector_hit.html#a6a945e8d58872a2bee39ffc1c350901d">fCharge</a> = energy + gRandom-&gt;Uniform();</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>   <a class="code hl_variable" href="class_t_detector_hit.html#abb29f0acb47e7e3a316f7ff998bce3a1">fKValue</a> = 1;</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>   <a class="code hl_variable" href="class_t_detector_hit.html#ad7fb301833e90f4b36b7fa1be7fe1334">fTimeStamp</a> = eventTime;</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>   <a class="code hl_variable" href="class_t_detector_hit.html#ae035598462afc7faf4035ada0bd183dd">fCfd</a> = time;</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>}</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="foldopen" id="foldopen00032" data-start="{" data-end="}">
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="class_t_eagle_hit.html#ac1588751a38b2202dba494ee89a9a60e">   32</a></span><a class="code hl_function" href="class_t_eagle_hit.html#adc1f1512d8d3413c74692d96b86dbb33">TEagleHit::TEagleHit</a>(<span class="keyword">const</span> uint8_t&amp; <span class="keywordtype">id</span>, <span class="keyword">const</span> uint16_t&amp; energy, <span class="keyword">const</span> uint16_t&amp; time, <span class="keyword">const</span> uint64_t&amp; eventTime)</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>{</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>   <a class="code hl_function" href="class_t_detector_hit.html#acdb38ab68d5513dab900d3471e348270">SetAddress</a>(0x100 + <span class="keywordtype">id</span>);</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>   <a class="code hl_function" href="class_t_detector_hit.html#a7e3a6acc044fad3b3e9477078aa3e767">SetCharge</a>(energy);</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>   <a class="code hl_function" href="class_t_detector_hit.html#a02b70f42273d716fc29b8fa873a31a9a">SetKValue</a>(1);</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>   <a class="code hl_function" href="class_t_detector_hit.html#af8d5245a46498534f224f84619ff2f56">SetTimeStamp</a>(eventTime);</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>   <a class="code hl_function" href="class_t_detector_hit.html#a242b756d34c5283429d5973799602bb8">SetCfd</a>(time);</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>}</div>
 </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
-<div class="foldopen" id="foldopen00045" data-start="{" data-end="}">
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="class_t_eagle_hit.html#a92d659f646d04cdbbab1df735d8117bb">   45</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_eagle_hit.html#a92d659f646d04cdbbab1df735d8117bb">TEagleHit::Copy</a>(TObject&amp; rhs)<span class="keyword"> const</span></div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>   <span class="comment">// Copies a TEagleHit</span></div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>   <a class="code hl_function" href="class_t_detector_hit.html#ab901600498f2b8d8ccc888398321c30d">TDetectorHit::Copy</a>(rhs);</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>}</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="foldopen" id="foldopen00041" data-start="{" data-end="}">
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="class_t_eagle_hit.html#a92d659f646d04cdbbab1df735d8117bb">   41</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_eagle_hit.html#a92d659f646d04cdbbab1df735d8117bb">TEagleHit::Copy</a>(TObject&amp; rhs)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>   <span class="comment">// Copies a TEagleHit</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>   <a class="code hl_function" href="class_t_detector_hit.html#ab901600498f2b8d8ccc888398321c30d">TDetectorHit::Copy</a>(rhs);</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>}</div>
 </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
-<div class="foldopen" id="foldopen00051" data-start="{" data-end="}">
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="class_t_eagle_hit.html#ae79d3aae40de5e32e87fbf0ae4bbdce6">   51</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_eagle_hit.html#a92d659f646d04cdbbab1df735d8117bb">TEagleHit::Copy</a>(TObject&amp; obj, <span class="keywordtype">bool</span> waveform)<span class="keyword"> const</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>   <a class="code hl_function" href="class_t_eagle_hit.html#a92d659f646d04cdbbab1df735d8117bb">Copy</a>(obj);</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>   <span class="keywordflow">if</span>(waveform) {</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>      <a class="code hl_function" href="class_t_detector_hit.html#afaf905f6ea1055e3982e2d814fe71bf1">CopyWave</a>(obj);</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>   }</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>}</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="foldopen" id="foldopen00047" data-start="{" data-end="}">
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="class_t_eagle_hit.html#ae79d3aae40de5e32e87fbf0ae4bbdce6">   47</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_eagle_hit.html#a92d659f646d04cdbbab1df735d8117bb">TEagleHit::Copy</a>(TObject&amp; obj, <span class="keywordtype">bool</span> waveform)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>   <a class="code hl_function" href="class_t_eagle_hit.html#a92d659f646d04cdbbab1df735d8117bb">Copy</a>(obj);</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>   <span class="keywordflow">if</span>(waveform) {</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>      <a class="code hl_function" href="class_t_detector_hit.html#afaf905f6ea1055e3982e2d814fe71bf1">CopyWave</a>(obj);</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>   }</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>}</div>
 </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
-<div class="foldopen" id="foldopen00059" data-start="{" data-end="}">
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="class_t_eagle_hit.html#afc6511d4c9cf66a3c8ebb98c6c346a0d">   59</a></span>TVector3 <a class="code hl_function" href="class_t_eagle_hit.html#ae87acf76502a1222b836556965ef5293">TEagleHit::GetPosition</a>(Double_t)<span class="keyword"> const</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>   <span class="comment">// Gets the position of the current TEagleHit</span></div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>   <span class="keyword">auto</span> vec = <a class="code hl_function" href="class_t_eagle.html#ab70d8ea8150830443cefa7d560196205">TEagle::GetPosition</a>(<a class="code hl_function" href="class_t_detector_hit.html#ab4f4c27b4ee3c8d8b24db08ae85c2fb0">GetDetector</a>());</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>   <span class="keywordflow">return</span> TVector3(vec.X(), vec.Y(), vec.Z());</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>}</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="foldopen" id="foldopen00055" data-start="{" data-end="}">
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="class_t_eagle_hit.html#afc6511d4c9cf66a3c8ebb98c6c346a0d">   55</a></span>TVector3 <a class="code hl_function" href="class_t_eagle_hit.html#ae87acf76502a1222b836556965ef5293">TEagleHit::GetPosition</a>(Double_t)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>   <span class="comment">// Gets the position of the current TEagleHit</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>   <span class="keyword">auto</span> vec = <a class="code hl_function" href="class_t_eagle.html#ab70d8ea8150830443cefa7d560196205">TEagle::GetPosition</a>(<a class="code hl_function" href="class_t_detector_hit.html#ab4f4c27b4ee3c8d8b24db08ae85c2fb0">GetDetector</a>());</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>   <span class="keywordflow">return</span> TVector3(vec.X(), vec.Y(), vec.Z());</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>}</div>
 </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
-<div class="foldopen" id="foldopen00066" data-start="{" data-end="}">
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="class_t_eagle_hit.html#ae87acf76502a1222b836556965ef5293">   66</a></span>TVector3 <a class="code hl_function" href="class_t_eagle_hit.html#ae87acf76502a1222b836556965ef5293">TEagleHit::GetPosition</a>()<span class="keyword"> const</span></div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>   <span class="comment">// Gets the position of the current TEagleHit</span></div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>   <span class="keywordflow">return</span> <a class="code hl_function" href="class_t_eagle_hit.html#ae87acf76502a1222b836556965ef5293">GetPosition</a>(<a class="code hl_function" href="class_t_eagle_hit.html#a69a23adfd8f429ec025799bd71d38ca5">GetDefaultDistance</a>());</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>}</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="foldopen" id="foldopen00062" data-start="{" data-end="}">
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="class_t_eagle_hit.html#ae87acf76502a1222b836556965ef5293">   62</a></span>TVector3 <a class="code hl_function" href="class_t_eagle_hit.html#ae87acf76502a1222b836556965ef5293">TEagleHit::GetPosition</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>   <span class="comment">// Gets the position of the current TEagleHit</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>   <span class="keywordflow">return</span> <a class="code hl_function" href="class_t_eagle_hit.html#ae87acf76502a1222b836556965ef5293">GetPosition</a>(<a class="code hl_function" href="class_t_eagle_hit.html#a69a23adfd8f429ec025799bd71d38ca5">GetDefaultDistance</a>());</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>}</div>
 </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
-<div class="foldopen" id="foldopen00072" data-start="{" data-end="}">
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="class_t_eagle_hit.html#ab478a0df800b3ee36a128320b97c3352">   72</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_eagle_hit.html#ab478a0df800b3ee36a128320b97c3352">TEagleHit::Clear</a>(Option_t*)</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>{</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>   <span class="comment">// Clears the EagleHit</span></div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>   <a class="code hl_function" href="class_t_detector_hit.html#ab093aac325d01630f7770301deabdd89">TDetectorHit::Clear</a>();</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>}</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="foldopen" id="foldopen00068" data-start="{" data-end="}">
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="class_t_eagle_hit.html#ab478a0df800b3ee36a128320b97c3352">   68</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_eagle_hit.html#ab478a0df800b3ee36a128320b97c3352">TEagleHit::Clear</a>(Option_t*)</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>{</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>   <span class="comment">// Clears the EagleHit</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>   <a class="code hl_function" href="class_t_detector_hit.html#ab093aac325d01630f7770301deabdd89">TDetectorHit::Clear</a>();</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>}</div>
 </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
-<div class="foldopen" id="foldopen00078" data-start="{" data-end="}">
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="class_t_eagle_hit.html#a3b55e349eba3908fa8e460cfe1a04402">   78</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_eagle_hit.html#a3b55e349eba3908fa8e460cfe1a04402">TEagleHit::Print</a>(Option_t*)<span class="keyword"> const</span></div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="keyword"></span>{<span class="comment"></span></div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="comment">   /// Prints the EagleHit information</span></div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="comment"></span>   <a class="code hl_function" href="class_t_eagle_hit.html#a3b55e349eba3908fa8e460cfe1a04402">Print</a>(std::cout);</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>}</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
+<div class="foldopen" id="foldopen00074" data-start="{" data-end="}">
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno"><a class="line" href="class_t_eagle_hit.html#a3b55e349eba3908fa8e460cfe1a04402">   74</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_eagle_hit.html#a3b55e349eba3908fa8e460cfe1a04402">TEagleHit::Print</a>(Option_t*)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="keyword"></span>{<span class="comment"></span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="comment">   /// Prints the EagleHit information</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="comment"></span>   <a class="code hl_function" href="class_t_eagle_hit.html#a3b55e349eba3908fa8e460cfe1a04402">Print</a>(std::cout);</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>}</div>
 </div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
-<div class="foldopen" id="foldopen00084" data-start="{" data-end="}">
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno"><a class="line" href="class_t_eagle_hit.html#afa4dcdaca1a786711d4d2fa1d08d9dec">   84</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_eagle_hit.html#a3b55e349eba3908fa8e460cfe1a04402">TEagleHit::Print</a>(std::ostream&amp; out)<span class="keyword"> const</span></div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="keyword"></span>{<span class="comment"></span></div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="comment">   /// Prints the EagleHit information in a thread-safe way</span></div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="comment"></span>   std::ostringstream str;</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>   str&lt;&lt;<span class="stringliteral">&quot;Eagle Address:                  0x&quot;</span>&lt;&lt;std::setw(4)&lt;&lt;std::hex&lt;&lt;std::setfill(<span class="charliteral">&#39;0&#39;</span>)&lt;&lt;<a class="code hl_function" href="class_t_detector_hit.html#a20f954f9a2a18f4a9145a48624bd031a">GetAddress</a>()&lt;&lt;std::setfill(<span class="charliteral">&#39; &#39;</span>)&lt;&lt;std::dec&lt;&lt;std::endl;</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>   str&lt;&lt;<span class="stringliteral">&quot;Eagle Detector:       &quot;</span>&lt;&lt;std::setw(16)&lt;&lt;<a class="code hl_function" href="class_t_detector_hit.html#ab4f4c27b4ee3c8d8b24db08ae85c2fb0">GetDetector</a>()&lt;&lt;std::endl;</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>   str&lt;&lt;<span class="stringliteral">&quot;Eagle hit energy:     &quot;</span>&lt;&lt;std::setw(16)&lt;&lt;<a class="code hl_function" href="class_t_detector_hit.html#a3051f50c2e5a1ba895c3b11e8c1b00a3">GetEnergy</a>()&lt;&lt;std::endl;</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>   str&lt;&lt;<span class="stringliteral">&quot;Eagle hit time stamp: &quot;</span>&lt;&lt;std::setw(16)&lt;&lt;<a class="code hl_function" href="class_t_detector_hit.html#a2d0ccf28cbe0792ebdf0987d47c14997">GetTimeStamp</a>()&lt;&lt;std::endl;</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>   str&lt;&lt;<span class="stringliteral">&quot;Eagle CFD:            &quot;</span>&lt;&lt;std::setw(16)&lt;&lt;<a class="code hl_function" href="class_t_detector_hit.html#ab5efce05747d2c39d501a16dc2382db5">GetCfd</a>()&lt;&lt;std::endl;</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>   out&lt;&lt;str.str();</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>}</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
+<div class="foldopen" id="foldopen00080" data-start="{" data-end="}">
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno"><a class="line" href="class_t_eagle_hit.html#afa4dcdaca1a786711d4d2fa1d08d9dec">   80</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_t_eagle_hit.html#a3b55e349eba3908fa8e460cfe1a04402">TEagleHit::Print</a>(std::ostream&amp; out)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="keyword"></span>{<span class="comment"></span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="comment">   /// Prints the EagleHit information in a thread-safe way</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="comment"></span>   std::ostringstream str;</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>   str &lt;&lt; <span class="stringliteral">&quot;Eagle Address:                  0x&quot;</span> &lt;&lt; std::setw(4) &lt;&lt; std::hex &lt;&lt; std::setfill(<span class="charliteral">&#39;0&#39;</span>) &lt;&lt; <a class="code hl_function" href="class_t_detector_hit.html#a20f954f9a2a18f4a9145a48624bd031a">GetAddress</a>() &lt;&lt; std::setfill(<span class="charliteral">&#39; &#39;</span>) &lt;&lt; std::dec &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>   str &lt;&lt; <span class="stringliteral">&quot;Eagle Detector:       &quot;</span> &lt;&lt; std::setw(16) &lt;&lt; <a class="code hl_function" href="class_t_detector_hit.html#ab4f4c27b4ee3c8d8b24db08ae85c2fb0">GetDetector</a>() &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>   str &lt;&lt; <span class="stringliteral">&quot;Eagle hit energy:     &quot;</span> &lt;&lt; std::setw(16) &lt;&lt; <a class="code hl_function" href="class_t_detector_hit.html#a3051f50c2e5a1ba895c3b11e8c1b00a3">GetEnergy</a>() &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>   str &lt;&lt; <span class="stringliteral">&quot;Eagle hit time stamp: &quot;</span> &lt;&lt; std::setw(16) &lt;&lt; <a class="code hl_function" href="class_t_detector_hit.html#a2d0ccf28cbe0792ebdf0987d47c14997">GetTimeStamp</a>() &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>   str &lt;&lt; <span class="stringliteral">&quot;Eagle CFD:            &quot;</span> &lt;&lt; std::setw(16) &lt;&lt; <a class="code hl_function" href="class_t_detector_hit.html#ab5efce05747d2c39d501a16dc2382db5">GetCfd</a>() &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>   out &lt;&lt; str.str();</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>}</div>
 </div>
 <div class="ttc" id="a_globals_8h_html"><div class="ttname"><a href="_globals_8h.html">Globals.h</a></div></div>
 <div class="ttc" id="a_t_eagle_8h_html"><div class="ttname"><a href="_t_eagle_8h.html">TEagle.h</a></div></div>
 <div class="ttc" id="a_t_eagle_hit_8h_html"><div class="ttname"><a href="_t_eagle_hit_8h.html">TEagleHit.h</a></div></div>
 <div class="ttc" id="a_t_g_r_s_i_options_8h_html"><div class="ttname"><a href="_t_g_r_s_i_options_8h.html">TGRSIOptions.h</a></div></div>
-<div class="ttc" id="a_t_h_i_l_mnemonic_8cxx_html_a1777b69706fe45dae662c2e33fb027f2"><div class="ttname"><a href="_t_h_i_l_mnemonic_8cxx.html#a1777b69706fe45dae662c2e33fb027f2">ClassImp</a></div><div class="ttdeci">ClassImp(THILMnemonic) void THILMnemonic</div><div class="ttdef"><b>Definition</b> <a href="_t_h_i_l_mnemonic_8cxx_source.html#l00009">THILMnemonic.cxx:9</a></div></div>
 <div class="ttc" id="aclass_t_detector_hit_html"><div class="ttname"><a href="class_t_detector_hit.html">TDetectorHit</a></div><div class="ttdef"><b>Definition</b> <a href="_t_detector_hit_8h_source.html#l00048">TDetectorHit.h:48</a></div></div>
+<div class="ttc" id="aclass_t_detector_hit_html_a02b70f42273d716fc29b8fa873a31a9a"><div class="ttname"><a href="class_t_detector_hit.html#a02b70f42273d716fc29b8fa873a31a9a">TDetectorHit::SetKValue</a></div><div class="ttdeci">void SetKValue(const Short_t &amp;temp_kval)</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="_t_detector_hit_8h_source.html#l00110">TDetectorHit.h:110</a></div></div>
 <div class="ttc" id="aclass_t_detector_hit_html_a20f954f9a2a18f4a9145a48624bd031a"><div class="ttname"><a href="class_t_detector_hit.html#a20f954f9a2a18f4a9145a48624bd031a">TDetectorHit::GetAddress</a></div><div class="ttdeci">virtual UInt_t GetAddress() const</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="_t_detector_hit_8h_source.html#l00143">TDetectorHit.h:143</a></div></div>
+<div class="ttc" id="aclass_t_detector_hit_html_a242b756d34c5283429d5973799602bb8"><div class="ttname"><a href="class_t_detector_hit.html#a242b756d34c5283429d5973799602bb8">TDetectorHit::SetCfd</a></div><div class="ttdeci">virtual void SetCfd(const Float_t &amp;val)</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="_t_detector_hit_8h_source.html#l00113">TDetectorHit.h:113</a></div></div>
 <div class="ttc" id="aclass_t_detector_hit_html_a2d0ccf28cbe0792ebdf0987d47c14997"><div class="ttname"><a href="class_t_detector_hit.html#a2d0ccf28cbe0792ebdf0987d47c14997">TDetectorHit::GetTimeStamp</a></div><div class="ttdeci">virtual Long64_t GetTimeStamp(Option_t *=&quot;&quot;) const</div><div class="ttdef"><b>Definition</b> <a href="_t_detector_hit_8h_source.html#l00138">TDetectorHit.h:138</a></div></div>
 <div class="ttc" id="aclass_t_detector_hit_html_a3051f50c2e5a1ba895c3b11e8c1b00a3"><div class="ttname"><a href="class_t_detector_hit.html#a3051f50c2e5a1ba895c3b11e8c1b00a3">TDetectorHit::GetEnergy</a></div><div class="ttdeci">virtual double GetEnergy(Option_t *opt=&quot;&quot;) const</div><div class="ttdef"><b>Definition</b> <a href="_t_detector_hit_8cxx_source.html#l00073">TDetectorHit.cxx:73</a></div></div>
-<div class="ttc" id="aclass_t_detector_hit_html_a6a945e8d58872a2bee39ffc1c350901d"><div class="ttname"><a href="class_t_detector_hit.html#a6a945e8d58872a2bee39ffc1c350901d">TDetectorHit::fCharge</a></div><div class="ttdeci">Float_t fCharge</div><div class="ttdoc">charge collected from the hit</div><div class="ttdef"><b>Definition</b> <a href="_t_detector_hit_8h_source.html#l00197">TDetectorHit.h:197</a></div></div>
-<div class="ttc" id="aclass_t_detector_hit_html_a8e84f6a505d936502a0096a749522094"><div class="ttname"><a href="class_t_detector_hit.html#a8e84f6a505d936502a0096a749522094">TDetectorHit::fAddress</a></div><div class="ttdeci">UInt_t fAddress</div><div class="ttdoc">address of the the channel in the DAQ.</div><div class="ttdef"><b>Definition</b> <a href="_t_detector_hit_8h_source.html#l00196">TDetectorHit.h:196</a></div></div>
+<div class="ttc" id="aclass_t_detector_hit_html_a7e3a6acc044fad3b3e9477078aa3e767"><div class="ttname"><a href="class_t_detector_hit.html#a7e3a6acc044fad3b3e9477078aa3e767">TDetectorHit::SetCharge</a></div><div class="ttdeci">void SetCharge(const Float_t &amp;temp_charge)</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="_t_detector_hit_8h_source.html#l00111">TDetectorHit.h:111</a></div></div>
 <div class="ttc" id="aclass_t_detector_hit_html_ab093aac325d01630f7770301deabdd89"><div class="ttname"><a href="class_t_detector_hit.html#ab093aac325d01630f7770301deabdd89">TDetectorHit::Clear</a></div><div class="ttdeci">void Clear(Option_t *opt=&quot;&quot;) override</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="_t_detector_hit_8cxx_source.html#l00169">TDetectorHit.cxx:169</a></div></div>
 <div class="ttc" id="aclass_t_detector_hit_html_ab4f4c27b4ee3c8d8b24db08ae85c2fb0"><div class="ttname"><a href="class_t_detector_hit.html#ab4f4c27b4ee3c8d8b24db08ae85c2fb0">TDetectorHit::GetDetector</a></div><div class="ttdeci">virtual Int_t GetDetector() const</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="_t_detector_hit_8cxx_source.html#l00186">TDetectorHit.cxx:186</a></div></div>
 <div class="ttc" id="aclass_t_detector_hit_html_ab5efce05747d2c39d501a16dc2382db5"><div class="ttname"><a href="class_t_detector_hit.html#ab5efce05747d2c39d501a16dc2382db5">TDetectorHit::GetCfd</a></div><div class="ttdeci">virtual Float_t GetCfd() const</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="_t_detector_hit_8h_source.html#l00142">TDetectorHit.h:142</a></div></div>
 <div class="ttc" id="aclass_t_detector_hit_html_ab901600498f2b8d8ccc888398321c30d"><div class="ttname"><a href="class_t_detector_hit.html#ab901600498f2b8d8ccc888398321c30d">TDetectorHit::Copy</a></div><div class="ttdeci">void Copy(TObject &amp;) const override</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="_t_detector_hit_8cxx_source.html#l00105">TDetectorHit.cxx:105</a></div></div>
-<div class="ttc" id="aclass_t_detector_hit_html_abb29f0acb47e7e3a316f7ff998bce3a1"><div class="ttname"><a href="class_t_detector_hit.html#abb29f0acb47e7e3a316f7ff998bce3a1">TDetectorHit::fKValue</a></div><div class="ttdeci">Short_t fKValue</div><div class="ttdoc">integration value.</div><div class="ttdef"><b>Definition</b> <a href="_t_detector_hit_8h_source.html#l00198">TDetectorHit.h:198</a></div></div>
-<div class="ttc" id="aclass_t_detector_hit_html_ad7fb301833e90f4b36b7fa1be7fe1334"><div class="ttname"><a href="class_t_detector_hit.html#ad7fb301833e90f4b36b7fa1be7fe1334">TDetectorHit::fTimeStamp</a></div><div class="ttdeci">Long64_t fTimeStamp</div><div class="ttdoc">Timestamp given to hit in ns.</div><div class="ttdef"><b>Definition</b> <a href="_t_detector_hit_8h_source.html#l00200">TDetectorHit.h:200</a></div></div>
-<div class="ttc" id="aclass_t_detector_hit_html_ae035598462afc7faf4035ada0bd183dd"><div class="ttname"><a href="class_t_detector_hit.html#ae035598462afc7faf4035ada0bd183dd">TDetectorHit::fCfd</a></div><div class="ttdeci">Float_t fCfd</div><div class="ttdoc">CFD time of the Hit.</div><div class="ttdef"><b>Definition</b> <a href="_t_detector_hit_8h_source.html#l00199">TDetectorHit.h:199</a></div></div>
+<div class="ttc" id="aclass_t_detector_hit_html_acdb38ab68d5513dab900d3471e348270"><div class="ttname"><a href="class_t_detector_hit.html#acdb38ab68d5513dab900d3471e348270">TDetectorHit::SetAddress</a></div><div class="ttdeci">void SetAddress(const UInt_t &amp;temp_address)</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="_t_detector_hit_8h_source.html#l00109">TDetectorHit.h:109</a></div></div>
+<div class="ttc" id="aclass_t_detector_hit_html_af8d5245a46498534f224f84619ff2f56"><div class="ttname"><a href="class_t_detector_hit.html#af8d5245a46498534f224f84619ff2f56">TDetectorHit::SetTimeStamp</a></div><div class="ttdeci">virtual void SetTimeStamp(const Long64_t &amp;val)</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="_t_detector_hit_8h_source.html#l00118">TDetectorHit.h:118</a></div></div>
 <div class="ttc" id="aclass_t_detector_hit_html_afaf905f6ea1055e3982e2d814fe71bf1"><div class="ttname"><a href="class_t_detector_hit.html#afaf905f6ea1055e3982e2d814fe71bf1">TDetectorHit::CopyWave</a></div><div class="ttdeci">virtual void CopyWave(TObject &amp;) const</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="_t_detector_hit_8cxx_source.html#l00123">TDetectorHit.cxx:123</a></div></div>
 <div class="ttc" id="aclass_t_eagle_hit_html"><div class="ttname"><a href="class_t_eagle_hit.html">TEagleHit</a></div><div class="ttdef"><b>Definition</b> <a href="_t_eagle_hit_8h_source.html#l00029">TEagleHit.h:29</a></div></div>
-<div class="ttc" id="aclass_t_eagle_hit_html_a3b55e349eba3908fa8e460cfe1a04402"><div class="ttname"><a href="class_t_eagle_hit.html#a3b55e349eba3908fa8e460cfe1a04402">TEagleHit::Print</a></div><div class="ttdeci">void Print(Option_t *opt=&quot;&quot;) const override</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="#l00078">TEagleHit.cxx:78</a></div></div>
+<div class="ttc" id="aclass_t_eagle_hit_html_a3b55e349eba3908fa8e460cfe1a04402"><div class="ttname"><a href="class_t_eagle_hit.html#a3b55e349eba3908fa8e460cfe1a04402">TEagleHit::Print</a></div><div class="ttdeci">void Print(Option_t *opt=&quot;&quot;) const override</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="#l00074">TEagleHit.cxx:74</a></div></div>
 <div class="ttc" id="aclass_t_eagle_hit_html_a5341ed4d097cc8efd69c76f06eeef15a"><div class="ttname"><a href="class_t_eagle_hit.html#a5341ed4d097cc8efd69c76f06eeef15a">TEagleHit::~TEagleHit</a></div><div class="ttdeci">~TEagleHit() override</div></div>
 <div class="ttc" id="aclass_t_eagle_hit_html_a69a23adfd8f429ec025799bd71d38ca5"><div class="ttname"><a href="class_t_eagle_hit.html#a69a23adfd8f429ec025799bd71d38ca5">TEagleHit::GetDefaultDistance</a></div><div class="ttdeci">Double_t GetDefaultDistance() const</div><div class="ttdef"><b>Definition</b> <a href="_t_eagle_hit_8h_source.html#l00046">TEagleHit.h:46</a></div></div>
-<div class="ttc" id="aclass_t_eagle_hit_html_a92d659f646d04cdbbab1df735d8117bb"><div class="ttname"><a href="class_t_eagle_hit.html#a92d659f646d04cdbbab1df735d8117bb">TEagleHit::Copy</a></div><div class="ttdeci">void Copy(TObject &amp;) const override</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="#l00045">TEagleHit.cxx:45</a></div></div>
-<div class="ttc" id="aclass_t_eagle_hit_html_ab478a0df800b3ee36a128320b97c3352"><div class="ttname"><a href="class_t_eagle_hit.html#ab478a0df800b3ee36a128320b97c3352">TEagleHit::Clear</a></div><div class="ttdeci">void Clear(Option_t *opt=&quot;&quot;) override</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="#l00072">TEagleHit.cxx:72</a></div></div>
-<div class="ttc" id="aclass_t_eagle_hit_html_adc1f1512d8d3413c74692d96b86dbb33"><div class="ttname"><a href="class_t_eagle_hit.html#adc1f1512d8d3413c74692d96b86dbb33">TEagleHit::TEagleHit</a></div><div class="ttdeci">TEagleHit()</div><div class="ttdef"><b>Definition</b> <a href="#l00015">TEagleHit.cxx:15</a></div></div>
-<div class="ttc" id="aclass_t_eagle_hit_html_ae87acf76502a1222b836556965ef5293"><div class="ttname"><a href="class_t_eagle_hit.html#ae87acf76502a1222b836556965ef5293">TEagleHit::GetPosition</a></div><div class="ttdeci">TVector3 GetPosition() const override</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="#l00066">TEagleHit.cxx:66</a></div></div>
-<div class="ttc" id="aclass_t_eagle_html_ab70d8ea8150830443cefa7d560196205"><div class="ttname"><a href="class_t_eagle.html#ab70d8ea8150830443cefa7d560196205">TEagle::GetPosition</a></div><div class="ttdeci">static ROOT::Math::Polar3DVector GetPosition(int DetNbr)</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="_t_eagle_8h_source.html#l00041">TEagle.h:41</a></div></div>
+<div class="ttc" id="aclass_t_eagle_hit_html_a92d659f646d04cdbbab1df735d8117bb"><div class="ttname"><a href="class_t_eagle_hit.html#a92d659f646d04cdbbab1df735d8117bb">TEagleHit::Copy</a></div><div class="ttdeci">void Copy(TObject &amp;) const override</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="#l00041">TEagleHit.cxx:41</a></div></div>
+<div class="ttc" id="aclass_t_eagle_hit_html_ab478a0df800b3ee36a128320b97c3352"><div class="ttname"><a href="class_t_eagle_hit.html#ab478a0df800b3ee36a128320b97c3352">TEagleHit::Clear</a></div><div class="ttdeci">void Clear(Option_t *opt=&quot;&quot;) override</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="#l00068">TEagleHit.cxx:68</a></div></div>
+<div class="ttc" id="aclass_t_eagle_hit_html_adc1f1512d8d3413c74692d96b86dbb33"><div class="ttname"><a href="class_t_eagle_hit.html#adc1f1512d8d3413c74692d96b86dbb33">TEagleHit::TEagleHit</a></div><div class="ttdeci">TEagleHit()</div><div class="ttdef"><b>Definition</b> <a href="#l00011">TEagleHit.cxx:11</a></div></div>
+<div class="ttc" id="aclass_t_eagle_hit_html_ae87acf76502a1222b836556965ef5293"><div class="ttname"><a href="class_t_eagle_hit.html#ae87acf76502a1222b836556965ef5293">TEagleHit::GetPosition</a></div><div class="ttdeci">TVector3 GetPosition() const override</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="#l00062">TEagleHit.cxx:62</a></div></div>
+<div class="ttc" id="aclass_t_eagle_html_ab70d8ea8150830443cefa7d560196205"><div class="ttname"><a href="class_t_eagle.html#ab70d8ea8150830443cefa7d560196205">TEagle::GetPosition</a></div><div class="ttdeci">static ROOT::Math::Polar3DVector GetPosition(int DetNbr)</div><div class="ttdoc">!</div><div class="ttdef"><b>Definition</b> <a href="_t_eagle_8h_source.html#l00042">TEagle.h:42</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.9.8-->
@@ -252,7 +247,7 @@ $(function(){initNavTree('_t_eagle_hit_8cxx_source.html',''); initResizable(true
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_00c05eb3ac5b5ff25e1a6852ee50e9ed.html">HILData</a></li><li class="navelem"><a class="el" href="dir_ce89e7bbac41f3aebbd28e3e457f56c3.html">libraries</a></li><li class="navelem"><a class="el" href="dir_2ec2411259915c8d2db7714301448543.html">THILAnalysis</a></li><li class="navelem"><a class="el" href="dir_188081278e90d32ebf4edd223be5962a.html">TEagle</a></li><li class="navelem"><a class="el" href="_t_eagle_hit_8cxx.html">TEagleHit.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Sat Jul 5 2025 02:27:14.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jul 8 2025 17:00:19.</li>
   </ul>
 </div>
 </body>
