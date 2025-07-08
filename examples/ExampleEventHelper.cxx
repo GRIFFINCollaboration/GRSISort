@@ -112,7 +112,7 @@ void ExampleEventHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& gr
       if(promptBeta) {
          fH1[slot].at("griffinESuppAddbackBeta")->Fill(grif1->GetEnergy());
          if(fCycleLength > 0.) {
-            fH2[slot].at("griffinCycle")->Fill(std::fmod(grif1->GetTime(), fCycleLength), grif1->GetEnergy());
+            fH2[slot].at("griffinCycle")->Fill(std::fmod(grif1->GetTime()/1e3, fCycleLength)/1e6, grif1->GetEnergy());
          }
          for(int g2 = g + 1; g2 < grif.GetSuppressedAddbackMultiplicity(&grifBgo); ++g2) {
             auto grif2 = grif.GetSuppressedAddbackHit(g2);
@@ -133,7 +133,7 @@ void ExampleEventHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& gr
    if(fCycleLength > 0.) {
       for(int z = 0; z < zds.GetMultiplicity(); ++z) {
          auto zds1 = zds.GetZeroDegreeHit(z);
-         fH1[slot].at("zdsCycle")->Fill(std::fmod(zds1->GetTime(), fCycleLength));
+         fH1[slot].at("zdsCycle")->Fill(std::fmod(zds1->GetTime()/1e3, fCycleLength)/1e6);
       }
    }
 }
