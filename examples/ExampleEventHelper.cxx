@@ -3,7 +3,6 @@
 void ExampleEventHelper::CreateHistograms(unsigned int slot)
 {
    // try and get the cycle length if we have a PPG provided
-   // only necessary for the first worker, this is shared with all other workers
    if(Ppg() != nullptr) {
       // the ODB cycle length is in microseconds!
       fCycleLength = Ppg()->OdbCycleLength();
