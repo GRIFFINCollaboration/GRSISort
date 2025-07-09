@@ -15,7 +15,7 @@
 #include "TPeakFitter.h"
 #include "TRWPeak.h"
 
-void FindGainDrift(TH2* hist, std::vector<double> energies, double range, const std::string& prefix, const std::string& label, TFile* output);
+void FindGainDrift(TH2* hist, std::vector<double> energies, std::vector<double> energyUncertainties, double range, const std::string& prefix, const std::string& label, TFile* output);
 
 int main(int argc, char** argv)
 {
@@ -23,6 +23,7 @@ int main(int argc, char** argv)
 
    double                   range = 10.;
    std::vector<double>      energies;
+   std::vector<double>      energyUncertainties;
    std::vector<std::string> fileNames;
    std::string              prefix        = "GainDrift";
    std::string              histogramName = "EnergyVsChannel";
@@ -41,6 +42,7 @@ int main(int argc, char** argv)
          if(i + 1 < argc) {
             TUserSettings settings(argv[++i]);
             prefix = settings.GetString("Prefix", "GainDrift");
+            histogramName = settings.GetString("HistogramName", "EnergyVsChannel");
             if(!energies.empty()) {
                std::cerr << "Warning, already got " << energies.size() << " energies:";
                for(auto energy : energies) { std::cerr << "   " << energy; }
@@ -48,6 +50,13 @@ int main(int argc, char** argv)
                std::cerr << "These will now be overwritten by what is read from the settings file " << argv[i] << std::endl;
             }
             energies = settings.GetDoubleVector("Energies");
+            if(!energyUncertainties.empty()) {
+               std::cerr << "Warning, already got " << energyUncertainties.size() << " energy uncertainties:";
+               for(auto energy : energyUncertainties) { std::cerr << "   " << energy; }
+               std::cerr << std::endl;
+               std::cerr << "These will now be overwritten by what is read from the settings file " << argv[i] << std::endl;
+            }
+            energyUncertainties = settings.GetDoubleVector("EnergyUncertainty");
          } else {
             std::cout << "Error, -sf flag needs an argument!" << std::endl;
             printUsage = true;
@@ -66,6 +75,21 @@ int main(int argc, char** argv)
             }
             // if we get here we can add the next argument to the list of energies
             energies.push_back(std::atof(argv[++i]));
+         }
+      } else if(strcmp(argv[i], "-ul") == 0) {
+			if(!energyUncertainties.empty()) {
+				std::cerr << "Warning, already got " << energyUncertainties.size() << " energy uncertainties:";
+				for(auto energy : energyUncertainties) { std::cerr << "   " << energy; }
+				std::cerr << std::endl;
+            std::cerr << "What is read from command line will not overwrite these but be added to them!" << std::endl;
+			}
+         // if we have a next argument, check if it starts with '-'
+         while(i + 1 < argc) {
+            if(argv[i + 1][0] == '-') {
+               break;
+            }
+            // if we get here we can add the next argument to the list of energies
+            energyUncertainties.push_back(std::atof(argv[++i]));
          }
       } else if(strcmp(argv[i], "-r") == 0) {
          if(i + 1 < argc) {
@@ -96,14 +120,25 @@ int main(int argc, char** argv)
       printUsage = true;
    }
 
+	// if we do not have any uncertainties, set them all to zero
+	if(energyUncertainties.empty()) {
+		energyUncertainties.resize(energies.size(), 0.);
+	}
+
+	// check that the number of uncertainties matches the number of energies
+	if(energyUncertainties.size() != energies.size()) {
+      printUsage = true;
+   }
+
    if(printUsage) {
       std::cout << "Arguments for " << argv[0] << ":" << std::endl
-                << "-if  <input files>                    (required)" << std::endl
-                << "-sf  <settings file>                  (semi-optional, TUserSettings format identifying the peaks to be used)" << std::endl
-                << "-el  <list of energies to be used>    (semi-optional, either this or a settings file need to be used)" << std::endl
-                << "-r   <+-range of fit>                 (optional, default = 10.)" << std::endl
-                << "-hn  <histogram name>                 (optional, default = \"EnergyVsChannel\")" << std::endl
-                << "-pre <prefix>                         (optional, default = \"GainDrift\")" << std::endl;
+                << "-if  <input files>                                (required)" << std::endl
+                << "-sf  <settings file>                              (semi-optional, TUserSettings format identifying the peaks to be used)" << std::endl
+                << "-el  <list of energies to be used>                (semi-optional, either this or a settings file need to be used)" << std::endl
+                << "-ul  <list of energy uncertainties to be used>    (optional, default = empty)" << std::endl
+                << "-r   <+-range of fit>                             (optional, default = 10.)" << std::endl
+                << "-hn  <histogram name>                             (optional, default = \"EnergyVsChannel\")" << std::endl
+                << "-pre <prefix>                                     (optional, default = \"GainDrift\")" << std::endl;
 
       return 1;
    }
@@ -136,7 +171,7 @@ int main(int argc, char** argv)
       TRunInfo::ReadInfoFromFile(file);
       auto label = TRunInfo::CreateLabel(true);
       // find the gain drift for all channels
-      FindGainDrift(hist, energies, range, prefix, label, output);
+      FindGainDrift(hist, energies, energyUncertainties, range, prefix, label, output);
 
       // write the gain drift to new cal-file
       TChannel::WriteCalFile(Form("%s%s.cal", prefix.c_str(), label.c_str()));
@@ -166,7 +201,7 @@ bool GoodFit(TRWPeak& peak, const double& low, const double& high)
    return true;
 }
 
-void FindGainDrift(TH2* hist, std::vector<double> energies, double range, const std::string& prefix, const std::string& label, TFile* output)
+void FindGainDrift(TH2* hist, std::vector<double> energies, std::vector<double> energyUncertainties, double range, const std::string& prefix, const std::string& label, TFile* output)
 {
    auto* yAxis  = hist->GetYaxis();
    TF1*  linear = new TF1("linear", "[0] + [1]*x", yAxis->GetBinLowEdge(yAxis->GetFirst()), yAxis->GetBinLowEdge(yAxis->GetLast()));
@@ -180,8 +215,9 @@ void FindGainDrift(TH2* hist, std::vector<double> energies, double range, const 
 
       // fit all energies and add them to a graph
       auto* redirect = new TRedirect("/dev/null", true);
-      auto* graph    = new TGraphErrors(energies.size());
+      auto* graph    = new TGraphErrors;
       graph->SetName(Form("graph%s_%d", label.c_str(), bin));
+		int graphIndex = 0;
       for(size_t i = 0; i < energies.size(); ++i) {
          TPeakFitter pf(energies[i] - range, energies[i] + range);
          TRWPeak     peak(energies[i]);
@@ -191,8 +227,9 @@ void FindGainDrift(TH2* hist, std::vector<double> energies, double range, const 
          proj->GetListOfFunctions()->Add(pf.GetFitFunction()->Clone(Form("fit%.1f", energies[i])));
          // check if the fit was good
          if(GoodFit(peak, energies[i] - range, energies[i] + range)) {
-            graph->SetPoint(i, energies[i], peak.Centroid());
-            graph->SetPointError(i, 0., peak.CentroidErr());
+            graph->SetPoint(graphIndex, energies[i], peak.Centroid());
+            graph->SetPointError(graphIndex, energyUncertainties[i], peak.CentroidErr());
+				++graphIndex;
          } else {
             static_cast<TF1*>(proj->GetListOfFunctions()->Last())->SetLineColor(kGray);
             std::cout << "Not using bad fit with centroid " << peak.Centroid() << " +- " << peak.CentroidErr() << ", area " << peak.Area() << " +- " << peak.AreaErr() << ", fwhm " << peak.FWHM() << " in range " << energies[i] - range << " - " << energies[i] + range << std::endl;
