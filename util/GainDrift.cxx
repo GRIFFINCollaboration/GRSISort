@@ -41,6 +41,7 @@ int main(int argc, char** argv)
       } else if(strcmp(argv[i], "-sf") == 0) {
          if(i + 1 < argc) {
             TUserSettings settings(argv[++i]);
+            range = settings.GetDouble("Range", 10.);
             prefix = settings.GetString("Prefix", "GainDrift");
             histogramName = settings.GetString("HistogramName", "EnergyVsChannel");
             if(!energies.empty()) {
@@ -56,7 +57,7 @@ int main(int argc, char** argv)
                std::cerr << std::endl;
                std::cerr << "These will now be overwritten by what is read from the settings file " << argv[i] << std::endl;
             }
-            energyUncertainties = settings.GetDoubleVector("EnergyUncertainty");
+            energyUncertainties = settings.GetDoubleVector("EnergyUncertainties");
          } else {
             std::cout << "Error, -sf flag needs an argument!" << std::endl;
             printUsage = true;
