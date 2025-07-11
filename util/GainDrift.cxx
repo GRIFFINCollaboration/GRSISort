@@ -21,8 +21,8 @@ int main(int argc, char** argv)
 {
    bool printUsage = (argc == 1);
 
-	int							 degree = 1;
-   double                   range = 10.;
+   int                      degree = 1;
+   double                   range  = 10.;
    std::vector<double>      energies;
    std::vector<double>      energyUncertainties;
    std::vector<std::string> fileNames;
@@ -43,10 +43,10 @@ int main(int argc, char** argv)
       } else if(strcmp(argv[i], "-sf") == 0) {
          if(i + 1 < argc) {
             TUserSettings settings(argv[++i]);
-            degree = settings.GetInt("Degree", 1);
-            range = settings.GetDouble("Range", 10.);
-            minFWHM = settings.GetDouble("MinimumFWHM", 2.);
-            prefix = settings.GetString("Prefix", "GainDrift");
+            degree        = settings.GetInt("Degree", 1);
+            range         = settings.GetDouble("Range", 10.);
+            minFWHM       = settings.GetDouble("MinimumFWHM", 2.);
+            prefix        = settings.GetString("Prefix", "GainDrift");
             histogramName = settings.GetString("HistogramName", "EnergyVsChannel");
             if(!energies.empty()) {
                std::cerr << "Warning, already got " << energies.size() << " energies:";
@@ -82,12 +82,12 @@ int main(int argc, char** argv)
             energies.push_back(std::atof(argv[++i]));
          }
       } else if(strcmp(argv[i], "-ul") == 0) {
-			if(!energyUncertainties.empty()) {
-				std::cerr << "Warning, already got " << energyUncertainties.size() << " energy uncertainties:";
-				for(auto energy : energyUncertainties) { std::cerr << "   " << energy; }
-				std::cerr << std::endl;
+         if(!energyUncertainties.empty()) {
+            std::cerr << "Warning, already got " << energyUncertainties.size() << " energy uncertainties:";
+            for(auto energy : energyUncertainties) { std::cerr << "   " << energy; }
+            std::cerr << std::endl;
             std::cerr << "What is read from command line will not overwrite these but be added to them!" << std::endl;
-			}
+         }
          // if we have a next argument, check if it starts with '-'
          while(i + 1 < argc) {
             if(argv[i + 1][0] == '-') {
@@ -134,7 +134,7 @@ int main(int argc, char** argv)
       } else {
          std::cerr << "Error, unknown flag \"" << argv[i] << "\"!" << std::endl;
          printUsage = true;
-      }  
+      }
    }
 
    // check that we got the necessary parameters set
@@ -142,14 +142,14 @@ int main(int argc, char** argv)
       printUsage = true;
    }
 
-	// if we do not have any uncertainties, set them all to zero
-	if(energyUncertainties.empty()) {
-		energyUncertainties.resize(energies.size(), 0.);
-	}
+   // if we do not have any uncertainties, set them all to zero
+   if(energyUncertainties.empty()) {
+      energyUncertainties.resize(energies.size(), 0.);
+   }
 
-	// check that the number of uncertainties matches the number of energies
-	if(energyUncertainties.size() != energies.size()) {
-		std::cerr << "Error, mismatch between number of energies (" << energies.size() << ") and number of energy uncertainties (" << energyUncertainties.size() << ")!" << std::endl;
+   // check that the number of uncertainties matches the number of energies
+   if(energyUncertainties.size() != energies.size()) {
+      std::cerr << "Error, mismatch between number of energies (" << energies.size() << ") and number of energy uncertainties (" << energyUncertainties.size() << ")!" << std::endl;
       printUsage = true;
    }
 
@@ -226,19 +226,20 @@ bool GoodFit(TRWPeak& peak, const double& low, const double& high, double& minFW
    return true;
 }
 
-double Polynomial(double* x, double* par) {   // NOLINT(readability-non-const-parameter)
-	double result = par[1];
-	for(int i = 0; i < par[0]; ++i) {
-		result += par[i+2] * TMath::Power(x[0], i+1);
-	}
-	return result;
+double Polynomial(double* x, double* par)   // NOLINT(readability-non-const-parameter)
+{
+   double result = par[1];
+   for(int i = 0; i < par[0]; ++i) {
+      result += par[i + 2] * TMath::Power(x[0], i + 1);
+   }
+   return result;
 }
 
 void FindGainDrift(TH2* hist, std::vector<double> energies, std::vector<double> energyUncertainties, double range, double minFWHM, int degree, const std::string& prefix, const std::string& label, TFile* output)
 {
-   auto* yAxis  = hist->GetYaxis();
-   TF1*  polynomial = new TF1("polynomial", Polynomial, yAxis->GetBinLowEdge(yAxis->GetFirst()), yAxis->GetBinLowEdge(yAxis->GetLast()), degree+2);
-	polynomial->FixParameter(0, degree);
+   auto* yAxis      = hist->GetYaxis();
+   TF1*  polynomial = new TF1("polynomial", Polynomial, yAxis->GetBinLowEdge(yAxis->GetFirst()), yAxis->GetBinLowEdge(yAxis->GetLast()), degree + 2);
+   polynomial->FixParameter(0, degree);
 
    // loop over all x-bins
    for(int bin = 1; bin <= hist->GetXaxis()->GetNbins(); ++bin) {
@@ -251,8 +252,8 @@ void FindGainDrift(TH2* hist, std::vector<double> energies, std::vector<double> 
       auto* redirect = new TRedirect("/dev/null", true);
       auto* graph    = new TGraphErrors;
       graph->SetName(Form("graph%s_%d", label.c_str(), bin));
-		graph->SetTitle(Form("Channel %s, bin %d;uncorr. energy;nominal energy", label.c_str(), bin));
-		int graphIndex = 0;
+      graph->SetTitle(Form("Channel %s, bin %d;uncorr. energy;nominal energy", label.c_str(), bin));
+      int graphIndex = 0;
       for(size_t i = 0; i < energies.size(); ++i) {
          TPeakFitter pf(energies[i] - range, energies[i] + range);
          TRWPeak     peak(energies[i]);
@@ -264,7 +265,7 @@ void FindGainDrift(TH2* hist, std::vector<double> energies, std::vector<double> 
          if(GoodFit(peak, energies[i] - range, energies[i] + range, minFWHM)) {
             graph->SetPoint(graphIndex, peak.Centroid(), energies[i]);
             graph->SetPointError(graphIndex, peak.CentroidErr(), energyUncertainties[i]);
-				++graphIndex;
+            ++graphIndex;
          } else {
             static_cast<TF1*>(proj->GetListOfFunctions()->Last())->SetLineColor(kGray);
             std::cout << "Not using bad fit with centroid " << peak.Centroid() << " +- " << peak.CentroidErr() << ", area " << peak.Area() << " +- " << peak.AreaErr() << ", fwhm " << peak.FWHM() << " in range " << energies[i] - range << " - " << energies[i] + range << std::endl;
@@ -274,9 +275,9 @@ void FindGainDrift(TH2* hist, std::vector<double> energies, std::vector<double> 
       // reset the parameters of the polynomial function and fit the graph
       polynomial->SetParameter(1, 0.);
       polynomial->SetParameter(2, 1.);
-		for(int i = 3; i < degree + 2; ++i) {
-			polynomial->SetParameter(i, 0.);
-		}
+      for(int i = 3; i < degree + 2; ++i) {
+         polynomial->SetParameter(i, 0.);
+      }
       graph->Fit(polynomial, "q");
       delete redirect;
 
@@ -285,10 +286,10 @@ void FindGainDrift(TH2* hist, std::vector<double> energies, std::vector<double> 
       std::cout << "bin " << bin << ":" << std::endl;
       graph->Print();
       std::cout << "polynomial fit " << degree << ". degree: " << polynomial->GetParameter(1) << " + " << polynomial->GetParameter(2) << " * x";
-		for(int i = 3; i < degree + 2; ++i) {
-			std::cout << " + " << polynomial->GetParameter(i) << " * x^" << i-1;
-		}
-		std::cout << std::endl;
+      for(int i = 3; i < degree + 2; ++i) {
+         std::cout << " + " << polynomial->GetParameter(i) << " * x^" << i - 1;
+      }
+      std::cout << std::endl;
       std::cout << "========================================" << std::endl;
 
       // get the channel belonging to this bin
@@ -301,10 +302,10 @@ void FindGainDrift(TH2* hist, std::vector<double> energies, std::vector<double> 
       }
 
       // update the energy drift coefficents
-      std::vector<Float_t> coeff(degree+1);
-		for(int i = 0; i < degree+1; ++i) {
-			coeff[i] = static_cast<Float_t>(polynomial->GetParameter(i+1));
-		}
+      std::vector<Float_t> coeff(degree + 1);
+      for(int i = 0; i < degree + 1; ++i) {
+         coeff[i] = static_cast<Float_t>(polynomial->GetParameter(i + 1));
+      }
       TChannel::GetChannel(address)->SetENGDriftCoefficents(TPriorityValue<std::vector<Float_t>>(coeff, EPriority::kForce));
 
       // write spectrum and graph to output file
