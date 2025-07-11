@@ -2840,6 +2840,7 @@ var group___sorting =
       [ "GetInt", "class_t_user_settings.html#a9b6801fd93ffd2e078d831d4948fc1d2", null ],
       [ "GetIntVector", "class_t_user_settings.html#a56787d23342be0959541ba9612fab118", null ],
       [ "GetString", "class_t_user_settings.html#a26a66c9f36dfdc2724c0ff5367daa0ee", null ],
+      [ "GetString", "class_t_user_settings.html#a20f40a70fa1bf2598d07441ed8695260", null ],
       [ "GetString", "class_t_user_settings.html#a1e9f8cc7a06c0e459e1996015d013f42", null ],
       [ "GetStringVector", "class_t_user_settings.html#a2b765b31688b6aca1ea132420c33fe90", null ],
       [ "Merge", "class_t_user_settings.html#ae8afd1fea017293b904a394fca429066", null ],

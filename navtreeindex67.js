@@ -1,5 +1,6 @@
 var NAVTREEINDEX67 =
 {
+"classpygui_1_1mainwindow_1_1_main_window.html#ad5b787fef8890b8f4fcdd68c198ec2aa":[9,0,5,3,0,45],
 "classpygui_1_1mainwindow_1_1_main_window.html#ad5b787fef8890b8f4fcdd68c198ec2aa":[10,0,1,2,0,45],
 "classpygui_1_1mainwindow_1_1_main_window.html#ad5d0d0eb75850cf212996cc848daa0fe":[9,0,5,3,0,40],
 "classpygui_1_1mainwindow_1_1_main_window.html#ad5d0d0eb75850cf212996cc848daa0fe":[10,0,1,2,0,40],
@@ -248,6 +249,5 @@ var NAVTREEINDEX67 =
 "dir_ac005b97cd125e8cf83993aa10ba4c96.html":[11,0,9,1,8],
 "dir_ad5200afe1530e51dd9cae27c28553ed.html":[11,0,6,2],
 "dir_af8759249976916949d3211b2e3ed5df.html":[11,0,9,6],
-"dir_b5961c678ebe878120c028a0fa1d54ee.html":[11,0,2,2,0,3],
-"dir_b8a6b11093ec7fc73cd5fa39ac4363df.html":[11,0,9,1,9]
+"dir_b5961c678ebe878120c028a0fa1d54ee.html":[11,0,2,2,0,3]
 };

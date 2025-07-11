@@ -1,5 +1,6 @@
 var NAVTREEINDEX71 =
 {
+"struct_t_midas_event_1_1_t_midas___b_a_n_k.html":[8,11,34],
 "struct_t_midas_event_1_1_t_midas___b_a_n_k.html#a9899502428f70ae46b040551307f9c01":[8,11,34,0],
 "struct_t_midas_event_1_1_t_midas___b_a_n_k.html#ad590d9a3f9aafc11996afc76a19e1430":[8,11,34,1],
 "struct_t_midas_event_1_1_t_midas___b_a_n_k.html#adf1df9d33f6aa6f75f23bf8940dcf568":[8,11,34,2],

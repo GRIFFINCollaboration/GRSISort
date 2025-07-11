@@ -327,8 +327,8 @@ $(function(){initNavTree('_angular_correlations_8cxx_source.html',''); initResiz
 <div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>      }</div>
 <div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>      <span class="comment">// if we don&#39;t have limits for the peak position, fix it</span></div>
 <div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>      <span class="keywordflow">if</span>(i == 1 &amp;&amp; peakParameterLow[i] == 0. &amp;&amp; peakParameterHigh[i] == -1.) {</div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>         peakParameter[i] = peakPos;</div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>         peakParameterLow[i] = peakPos;</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>         peakParameter[i]     = peakPos;</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>         peakParameterLow[i]  = peakPos;</div>
 <div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>         peakParameterHigh[i] = peakPos;</div>
 <div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>      }</div>
 <div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>   }</div>
@@ -410,7 +410,7 @@ $(function(){initNavTree('_angular_correlations_8cxx_source.html',''); initResiz
 <div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>   }</div>
 <div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span> </div>
 <div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>   <span class="comment">// get the log file name from the output file name</span></div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>   <span class="keyword">auto</span> logFileName = outputFile.substr(0, outputFile.find_last_of(<span class="charliteral">&#39;.&#39;</span>)) + <span class="stringliteral">&quot;.log&quot;</span>;</div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>   <span class="keyword">auto</span>          logFileName = outputFile.substr(0, outputFile.find_last_of(<span class="charliteral">&#39;.&#39;</span>)) + <span class="stringliteral">&quot;.log&quot;</span>;</div>
 <div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>   std::ofstream logFile(logFileName.c_str());</div>
 <div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span> </div>
 <div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>   <span class="comment">// --------------------------------------------------------------------------------</span></div>
@@ -1202,7 +1202,7 @@ $(function(){initNavTree('_angular_correlations_8cxx_source.html',''); initResiz
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_1d7397b112c23d4eb2fe49dc66ace00a.html">GRSIData</a></li><li class="navelem"><a class="el" href="dir_8965781c9f424dd985c8251b0fe5e6e9.html">util</a></li><li class="navelem"><a class="el" href="_angular_correlations_8cxx.html">AngularCorrelations.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Jul 8 2025 22:09:54.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Jul 11 2025 17:24:11.</li>
   </ul>
 </div>
 </body>

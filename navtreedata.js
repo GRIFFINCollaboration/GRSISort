@@ -164,13 +164,13 @@ var NAVTREEINDEX =
 "class_t_tigress.html#acc9f1183fd75a5efafbc86e93a493345",
 "class_t_tip_hit.html#a3548d815985bbe93215d419a6e136d01",
 "class_t_trific.html#af83f25009bbee633190904900ae02ef2",
-"class_t_user_settings.html#af675568ef70c832a29e27589eed4740f",
-"class_time_walk_selector.html#a6905c9d58bac179b2f24c7f1832864ec",
+"class_t_user_settings.html#af44a4908db1bd4a8454d8e38882b6ef1",
+"class_time_walk_selector.html#a6179997d65c5c6e3a0d6edec42180405",
 "classpygui_1_1mainwindow_1_1_main_window.html#ad5b787fef8890b8f4fcdd68c198ec2aa",
-"dir_b905687dc57ebbc78895aed8781c1b99.html",
-"group___fitting.html#ga6176de1bc585806cf915a44639baf10a",
-"md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html",
-"struct_t_midas_event_1_1_t_midas___b_a_n_k.html#a9899502428f70ae46b040551307f9c01"
+"dir_b8a6b11093ec7fc73cd5fa39ac4363df.html",
+"group___fitting.html#ga5fc48879e4a62b91bf7c81cd502dd332",
+"mainwindow_8py_source.html",
+"struct_t_midas_event_1_1_t_midas___b_a_n_k.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

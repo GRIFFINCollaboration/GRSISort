@@ -1,5 +1,6 @@
 var NAVTREEINDEX69 =
 {
+"group___fitting.html#ga5fc48879e4a62b91bf7c81cd502dd332":[8,3,110],
 "group___fitting.html#ga6176de1bc585806cf915a44639baf10a":[8,3,103],
 "group___fitting.html#ga62b5d5c98d3ab55d3aff5ea93c7e2e14":[8,3,117],
 "group___fitting.html#ga68dc5ec8ef407119b9c07ff65ef4b8ec":[8,3,131],
@@ -248,6 +249,5 @@ var NAVTREEINDEX69 =
 "libraries_2_t_loops_2_link_def_8h_source.html":[11,0,9,7,1],
 "libraries_2_t_raw_file_2_link_def_8h.html":[11,0,9,8,0],
 "libraries_2_t_raw_file_2_link_def_8h_source.html":[11,0,9,8,0],
-"mainwindow_8py.html":[11,0,10,4],
-"mainwindow_8py_source.html":[11,0,10,4]
+"mainwindow_8py.html":[11,0,10,4]
 };

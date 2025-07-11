@@ -1,5 +1,6 @@
 var NAVTREEINDEX70 =
 {
+"mainwindow_8py_source.html":[11,0,10,4],
 "md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html":[0],
 "md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html#autotoc_md1":[0,0],
 "md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html#autotoc_md10":[0,5,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX70 =
 "struct_t_midas___e_v_e_n_t___h_e_a_d_e_r.html#a5c8afd39a16e647960225265a58f6808":[8,11,39,4],
 "struct_t_midas___e_v_e_n_t___h_e_a_d_e_r.html#aa4c25668c89792060320099545f1685b":[8,11,39,1],
 "struct_t_midas___e_v_e_n_t___h_e_a_d_e_r.html#ac25b411bba6622caba8a7779bce21b81":[8,11,39,2],
-"struct_t_midas___e_v_e_n_t___h_e_a_d_e_r.html#acf1a6e10dc3cda9a1225a2bd75e804b7":[8,11,39,3],
-"struct_t_midas_event_1_1_t_midas___b_a_n_k.html":[8,11,34]
+"struct_t_midas___e_v_e_n_t___h_e_a_d_e_r.html#acf1a6e10dc3cda9a1225a2bd75e804b7":[8,11,39,3]
 };
