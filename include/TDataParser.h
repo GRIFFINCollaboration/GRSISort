@@ -124,13 +124,13 @@ protected:
    static void Options(TGRSIOptions* val) { fOptions = val; }
 
 	void ItemsPopped(size_t itemsPopped) { if(fItemsPopped != nullptr) { *fItemsPopped = itemsPopped; } }
-	void InputSize(long inputSize) { if(fInputSize != nullptr) { *fInputSize = inputSize; } }
+	void InputSize(long inputSize) { if(fInputSize != nullptr) { *fInputSize = inputSize; } }   // NOLINT(google-runtime-int)
 
    void IncrementItemsPopped() { if(fItemsPopped != nullptr) { ++fItemsPopped; } }
    void IncrementInputSize() { if(fInputSize != nullptr) { ++fInputSize; } }
 
    void IncrementItemsPopped(size_t val) { if(fItemsPopped != nullptr) { fItemsPopped += val; } }
-   void IncrementInputSize(long val) { if(fInputSize != nullptr) { fInputSize += val; } }
+   void IncrementInputSize(long val) { if(fInputSize != nullptr) { fInputSize += val; } }   // NOLINT(google-runtime-int)
 
    void DecrementItemsPopped() { if(fItemsPopped != nullptr) { --fItemsPopped; } }
    void DecrementInputSize() { if(fInputSize != nullptr) { --fInputSize; } }
