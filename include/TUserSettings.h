@@ -121,6 +121,10 @@ public:
          return def;
       }
    }
+   std::string GetString(const std::string& parameter, const char* def) const
+   {
+      return GetString(parameter, std::string(def));
+   }
    std::string GetString(const std::string& parameter, std::string def) const
    {
       try {

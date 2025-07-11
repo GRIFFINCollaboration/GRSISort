@@ -127,7 +127,8 @@ protected:
    {
       if(fItemsPopped != nullptr) { *fItemsPopped = itemsPopped; }
    }
-   void InputSize(long inputSize)
+
+   void InputSize(long inputSize)   // NOLINT(google-runtime-int)
    {
       if(fInputSize != nullptr) { *fInputSize = inputSize; }
    }
@@ -145,7 +146,7 @@ protected:
    {
       if(fItemsPopped != nullptr) { fItemsPopped += val; }
    }
-   void IncrementInputSize(long val)
+   void IncrementInputSize(long val)   // NOLINT(google-runtime-int)
    {
       if(fInputSize != nullptr) { fInputSize += val; }
    }
@@ -160,7 +161,6 @@ protected:
    }
 
 private:
-   // TODO consider making all of these private with protected access functions
 #ifndef __CINT__
    std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>> fGoodOutputQueues;
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TBadFragment>>>           fBadOutputQueue;
