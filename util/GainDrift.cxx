@@ -226,7 +226,7 @@ bool GoodFit(TRWPeak& peak, const double& low, const double& high, double& minFW
    return true;
 }
 
-double Polynomial(double* x, double* par) {
+double Polynomial(double* x, double* par) {   // NOLINT(readability-non-const-parameter)
 	double result = par[1];
 	for(int i = 0; i < par[0]; ++i) {
 		result += par[i+2] * TMath::Power(x[0], i+1);
