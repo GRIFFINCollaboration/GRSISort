@@ -53,19 +53,18 @@ void AngularCorrelationHelper::Exec(unsigned int slot, TGriffin& fGriffin, TGrif
 {
    bool eventInCycleCut = false;
    for(auto g1 = 0; g1 < (fAddback ? fGriffin.GetSuppressedAddbackMultiplicity(&fGriffinBgo) : fGriffin.GetSuppressedMultiplicity(&fGriffinBgo)); ++g1) {
+      if(fSingleCrystal && fGriffin.GetNSuppressedAddbackFrags(g1) > 1) continue;
       auto grif1 = (fAddback ? fGriffin.GetSuppressedAddbackHit(g1) : fGriffin.GetSuppressedHit(g1));
       if(ExcludeDetector(grif1->GetDetector()) || ExcludeCrystal(grif1->GetArrayNumber())) continue;
-      if(fSingleCrystal && fGriffin.GetNSuppressedAddbackFrags(g1) > 1) continue;
       if(!GoodCycleTime(std::fmod(grif1->GetTime() / 1e3, fCycleLength))) continue;
 
       // we only get here if at least one hit of the event is within the cycle cut
       eventInCycleCut = true;
 
-      for(auto g2 = 0; g2 < (fAddback ? fGriffin.GetSuppressedAddbackMultiplicity(&fGriffinBgo) : fGriffin.GetSuppressedMultiplicity(&fGriffinBgo)); ++g2) {
-         if(g1 == g2) continue;
+      for(auto g2 = g1 + 1; g2 < (fAddback ? fGriffin.GetSuppressedAddbackMultiplicity(&fGriffinBgo) : fGriffin.GetSuppressedMultiplicity(&fGriffinBgo)); ++g2) {
+         if(fSingleCrystal && fGriffin.GetNSuppressedAddbackFrags(g2) > 1) continue;
          auto grif2 = (fAddback ? fGriffin.GetSuppressedAddbackHit(g2) : fGriffin.GetSuppressedHit(g2));
          if(ExcludeDetector(grif2->GetDetector()) || ExcludeCrystal(grif2->GetArrayNumber())) continue;
-         if(fSingleCrystal && fGriffin.GetNSuppressedAddbackFrags(g2) > 1) continue;
          if(!GoodCycleTime(std::fmod(grif2->GetTime() / 1e3, fCycleLength))) continue;
 
          // skip hits in the same detector when using addback, or in the same crystal when not using addback
@@ -85,10 +84,14 @@ void AngularCorrelationHelper::Exec(unsigned int slot, TGriffin& fGriffin, TGrif
          double ggTime = TMath::Abs(grif2->GetTime() - grif1->GetTime());
          if(ggTime <= fPrompt) {
             fH2[slot].at("AngularCorrelation")->Fill(grif1->GetEnergy(), grif2->GetEnergy());
+            fH2[slot].at("AngularCorrelation")->Fill(grif2->GetEnergy(), grif1->GetEnergy());
             fH2[slot].at(Form("AngularCorrelation%d", angleIndex))->Fill(grif1->GetEnergy(), grif2->GetEnergy());
+            fH2[slot].at(Form("AngularCorrelation%d", angleIndex))->Fill(grif2->GetEnergy(), grif1->GetEnergy());
          } else if(fTimeRandomLow <= ggTime && ggTime <= fTimeRandomHigh) {
             fH2[slot].at("AngularCorrelationBG")->Fill(grif1->GetEnergy(), grif2->GetEnergy());
+            fH2[slot].at("AngularCorrelationBG")->Fill(grif2->GetEnergy(), grif1->GetEnergy());
             fH2[slot].at(Form("AngularCorrelationBG%d", angleIndex))->Fill(grif1->GetEnergy(), grif2->GetEnergy());
+            fH2[slot].at(Form("AngularCorrelationBG%d", angleIndex))->Fill(grif2->GetEnergy(), grif1->GetEnergy());
          }
       }
 
