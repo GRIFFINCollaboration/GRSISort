@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"_g_value_8cxx.html":[11,0,9,3,2],
 "_g_value_8cxx_source.html":[11,0,9,3,2],
 "_g_value_8h.html":[11,0,7,22],
 "_g_value_8h_source.html":[11,0,7,22],
@@ -183,6 +184,9 @@ var NAVTREEINDEX2 =
 "_make_griffin_histograms_8cxx_source.html":[11,0,2,0,0],
 "_r_o_o_t_8js.html":[11,0,0,0,0],
 "_r_o_o_t_8js_source.html":[11,0,0,0,0],
+"_simulation_angular_correlation_8cxx.html":[11,0,2,4,12],
+"_simulation_angular_correlation_8cxx.html#a3c04138a5bfe5d72780bb7e82a18e627":[11,0,2,4,12,0],
+"_simulation_angular_correlation_8cxx_source.html":[11,0,2,4,12],
 "_stoppable_thread_8cxx.html":[11,0,9,7,2],
 "_stoppable_thread_8cxx_source.html":[11,0,9,7,2],
 "_stoppable_thread_8h.html":[11,0,7,23],
@@ -245,9 +249,5 @@ var NAVTREEINDEX2 =
 "_t_c_f_d_cal_8cxx_source.html":[11,0,9,1,2,6],
 "_t_c_f_d_cal_8h.html":[11,0,7,43],
 "_t_c_f_d_cal_8h_source.html":[11,0,7,43],
-"_t_c_s_m_8cxx.html":[11,0,2,2,0,2,1],
-"_t_c_s_m_8cxx.html#a28e3adafc74b9719a039cc26dd285e28":[11,0,2,2,0,2,1,1],
-"_t_c_s_m_8cxx.html#a40d2e154046246e080ebef9b7c82a127":[11,0,2,2,0,2,1,0],
-"_t_c_s_m_8cxx_source.html":[11,0,2,2,0,2,1],
-"_t_c_s_m_8h.html":[11,0,2,1,3]
+"_t_c_s_m_8cxx.html":[11,0,2,2,0,2,1]
 };

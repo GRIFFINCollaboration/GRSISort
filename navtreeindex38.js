@@ -1,5 +1,14 @@
 var NAVTREEINDEX38 =
 {
+"class_t_griffin_bgo_hit.html#ab34ad53f3a608de8cedb043f4aa8f194":[8,2,31,11],
+"class_t_griffin_bgo_hit.html#ab40f256532ebb01bd3437cd4ca32d1d6":[8,2,31,55],
+"class_t_griffin_bgo_hit.html#ab4f4c27b4ee3c8d8b24db08ae85c2fb0":[8,2,31,28],
+"class_t_griffin_bgo_hit.html#ab5efce05747d2c39d501a16dc2382db5":[8,2,31,22],
+"class_t_griffin_bgo_hit.html#ab6adf5ff1ffbcbb3b50c4559209f007a":[8,2,31,36],
+"class_t_griffin_bgo_hit.html#ab901600498f2b8d8ccc888398321c30d":[8,2,31,17],
+"class_t_griffin_bgo_hit.html#aba5e96b2f172f0e12eb2b6e06af5a735":[8,2,31,37],
+"class_t_griffin_bgo_hit.html#abab2f46047c824844baca0e7fae7eb03":[8,2,31,60],
+"class_t_griffin_bgo_hit.html#abb29f0acb47e7e3a316f7ff998bce3a1":[8,2,31,75],
 "class_t_griffin_bgo_hit.html#abc39d95961863ed1182a7de704d2af74":[8,2,31,43],
 "class_t_griffin_bgo_hit.html#ac62835a3dd9025e0908385fd95bff958":[8,2,31,66],
 "class_t_griffin_bgo_hit.html#ac9202e62116783982bac618bea13cbb7":[8,2,31,45],
@@ -240,14 +249,5 @@ var NAVTREEINDEX38 =
 "class_t_h_i_l_data_parser.html#aaf974b6bd46255c279e2c90b5d869a17":[8,11,24,42],
 "class_t_h_i_l_data_parser.html#ab280873441f611d06a2fc2dd0dae3d42":[8,11,24,28],
 "class_t_h_i_l_data_parser.html#ab2f0562ac457390e17a15be64f8fe8a4":[8,11,24,56],
-"class_t_h_i_l_data_parser.html#abc763a6d4d5ba613526872f6fd1f637c":[8,11,24,11],
-"class_t_h_i_l_data_parser.html#ac09a169ef95b7bc7b80eeccaac285d5d":[8,11,24,48],
-"class_t_h_i_l_data_parser.html#ac6a97fe17b59817af90f915cc6bcd0fe":[8,11,24,27],
-"class_t_h_i_l_data_parser.html#ad51d4b218647e2b16b315560113ce4fc":[8,11,24,13],
-"class_t_h_i_l_data_parser.html#ad597abad39e33d5f22362b63707633c5":[8,11,24,24],
-"class_t_h_i_l_data_parser.html#ad60b97a4ecd706c0cdab20dd28ade8ec":[8,11,24,25],
-"class_t_h_i_l_data_parser.html#ad6da079b6173ac0300f13f66b95b699e":[8,11,24,34],
-"class_t_h_i_l_data_parser.html#ad792a4f0b6efbe11912b3d308f83a2dc":[8,11,24,29],
-"class_t_h_i_l_data_parser.html#ad91a22364e23092ebd4e0b608ebfe7fd":[8,11,24,50],
-"class_t_h_i_l_data_parser.html#ae0cb2c87aaf61639f31e92f682d2651a":[8,11,24,3]
+"class_t_h_i_l_data_parser.html#abc763a6d4d5ba613526872f6fd1f637c":[8,11,24,11]
 };

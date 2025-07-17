@@ -1,5 +1,14 @@
 var NAVTREEINDEX64 =
 {
+"class_t_trific.html#ad05fbbfc3f08f131525809321f3234f1":[8,2,74,24],
+"class_t_trific.html#ad592a99244d69abf3257b28488ae3c24":[8,2,74,17],
+"class_t_trific.html#ad7253d7a95cd3d9cebb8bc68b2090dce":[8,2,74,40],
+"class_t_trific.html#adb8c1f8037511613f00761b098808cf3":[8,2,74,41],
+"class_t_trific.html#ae0801594426a8f79f60fac0f31be2e1b":[8,2,74,29],
+"class_t_trific.html#ae77c63b34a1df7dbfe64cd13dfc7c62c":[8,2,74,9],
+"class_t_trific.html#ae9e97e5a7460feb8151faca7430e3892":[8,2,74,18],
+"class_t_trific.html#aef9dd85da3cce64eb077e4811a7f37d2":[8,2,74,46],
+"class_t_trific.html#af83ad943618a30f7d1639675e18fc5b8":[8,2,74,6],
 "class_t_trific.html#af83f25009bbee633190904900ae02ef2":[8,2,74,15],
 "class_t_trific.html#afda01aa85d56c207346d176a412f05a1":[8,2,74,28],
 "class_t_trific_hit.html":[8,2,75],
@@ -240,14 +249,5 @@ var NAVTREEINDEX64 =
 "class_t_user_settings.html#a9b6801fd93ffd2e078d831d4948fc1d2":[8,11,64,15],
 "class_t_user_settings.html#a9e085d2ffb486cb281d1439b666633cf":[8,11,64,38],
 "class_t_user_settings.html#ab1c9171cd3ffb4d64042227b6e2a2e85":[8,11,64,2],
-"class_t_user_settings.html#ac0aba11939f785c3425ec85a95fa67b7":[8,11,64,4],
-"class_t_user_settings.html#ac20ca4b81f82de9760ab15912da092f8":[8,11,64,14],
-"class_t_user_settings.html#acb685be0db2e5a5c142294168daa6705":[8,11,64,23],
-"class_t_user_settings.html#acd6c7d027419ef6cd793774b563e17da":[8,11,64,42],
-"class_t_user_settings.html#addda5353c5c7f6b1046667dc6586ab5e":[8,11,64,11],
-"class_t_user_settings.html#ae0dae7b83804282987657dc574931bf3":[8,11,64,0],
-"class_t_user_settings.html#ae37f88713d46fb570cec2abf9bdc081c":[8,11,64,26],
-"class_t_user_settings.html#ae8afd1fea017293b904a394fca429066":[8,11,64,21],
-"class_t_user_settings.html#aed7e02ecd63886b362907f05f0158999":[8,11,64,8],
-"class_t_user_settings.html#af2104c9df363c55f4b26a76696e59c1b":[8,11,64,12]
+"class_t_user_settings.html#ac0aba11939f785c3425ec85a95fa67b7":[8,11,64,4]
 };

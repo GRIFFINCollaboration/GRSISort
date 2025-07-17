@@ -1,5 +1,14 @@
 var NAVTREEINDEX69 =
 {
+"group___fitting.html#ga538393ca9290f847259b067fc5bf0521":[8,3,80],
+"group___fitting.html#ga540d4eba804d4fe60b489ad897e2d4de":[8,3,163],
+"group___fitting.html#ga5916959b7a647cc9b4248742aac0e1bc":[8,3,98],
+"group___fitting.html#ga598a3330b3c21701223ee0ca14316eca":[8,3,28],
+"group___fitting.html#ga598a3330b3c21701223ee0ca14316eca":[8,3,29],
+"group___fitting.html#ga5a99f340753f4791a31de756ad1e3524":[8,3,127],
+"group___fitting.html#ga5c0ef740d322d4a8a6b21d4da1053e2f":[8,3,158],
+"group___fitting.html#ga5eeb25f3aa7733c97c0b88e7e0d3302f":[8,3,50],
+"group___fitting.html#ga5fb0445fe5547044072e7a0e67e21106":[8,3,139],
 "group___fitting.html#ga5fc48879e4a62b91bf7c81cd502dd332":[8,3,110],
 "group___fitting.html#ga6176de1bc585806cf915a44639baf10a":[8,3,103],
 "group___fitting.html#ga62b5d5c98d3ab55d3aff5ea93c7e2e14":[8,3,117],
@@ -240,14 +249,5 @@ var NAVTREEINDEX69 =
 "libraries_2_t_format_2_link_def_8h.html":[11,0,9,3,3],
 "libraries_2_t_format_2_link_def_8h_source.html":[11,0,9,3,3],
 "libraries_2_t_g_r_s_i_proof_2_link_def_8h.html":[11,0,9,5,0],
-"libraries_2_t_g_r_s_i_proof_2_link_def_8h_source.html":[11,0,9,5,0],
-"libraries_2_t_g_r_s_iint_2_link_def_8h.html":[11,0,9,4,3],
-"libraries_2_t_g_r_s_iint_2_link_def_8h_source.html":[11,0,9,4,3],
-"libraries_2_t_g_u_i_2_link_def_8h.html":[11,0,9,6,0],
-"libraries_2_t_g_u_i_2_link_def_8h_source.html":[11,0,9,6,0],
-"libraries_2_t_loops_2_link_def_8h.html":[11,0,9,7,1],
-"libraries_2_t_loops_2_link_def_8h_source.html":[11,0,9,7,1],
-"libraries_2_t_raw_file_2_link_def_8h.html":[11,0,9,8,0],
-"libraries_2_t_raw_file_2_link_def_8h_source.html":[11,0,9,8,0],
-"mainwindow_8py.html":[11,0,10,4]
+"libraries_2_t_g_r_s_i_proof_2_link_def_8h_source.html":[11,0,9,5,0]
 };

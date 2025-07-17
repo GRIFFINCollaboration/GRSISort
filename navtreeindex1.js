@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"_g_notifier_8cxx_source.html":[11,0,9,0,8],
 "_g_notifier_8h.html":[11,0,7,13],
 "_g_notifier_8h_source.html":[11,0,7,13],
 "_g_peak_8cxx.html":[11,0,9,0,9],
@@ -248,6 +249,5 @@ var NAVTREEINDEX1 =
 "_g_snapshot_8cxx_source.html":[11,0,9,0,16],
 "_g_snapshot_8h.html":[11,0,7,21],
 "_g_snapshot_8h.html#af21a80217aaa3713872c52df7c29103b":[11,0,7,21,1],
-"_g_snapshot_8h_source.html":[11,0,7,21],
-"_g_value_8cxx.html":[11,0,9,3,2]
+"_g_snapshot_8h_source.html":[11,0,7,21]
 };

@@ -152,8 +152,10 @@ Functions</h2></td></tr>
 <tr class="separator:a3facf894340487fbc19e2ad941ade6c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c04138a5bfe5d72780bb7e82a18e627" id="r_a3c04138a5bfe5d72780bb7e82a18e627"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3c04138a5bfe5d72780bb7e82a18e627">main</a> (int argc, char **argv)</td></tr>
 <tr class="separator:a3c04138a5bfe5d72780bb7e82a18e627"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac32f038f664c7fdbc7387b6ee6164e79" id="r_ac32f038f664c7fdbc7387b6ee6164e79"><td class="memItemLeft" align="right" valign="top">TGraph *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac32f038f664c7fdbc7387b6ee6164e79">MixingMethod</a> (TGraphErrors *data, TGraphErrors *z0, TGraphErrors *z2, TGraphErrors *z4, int twoJhigh, int twoJmid, int twoJlow, std::vector&lt; double &gt; &amp;bestParameters)</td></tr>
-<tr class="separator:ac32f038f664c7fdbc7387b6ee6164e79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a8fed45632adde84826f0c711fd0120" id="r_a6a8fed45632adde84826f0c711fd0120"><td class="memItemLeft" align="right" valign="top">TGraph *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6a8fed45632adde84826f0c711fd0120">MixingMethod</a> (TGraphErrors *data, TGraphErrors *z0, TGraphErrors *z2, TGraphErrors *z4, int twoJhigh, int twoJmid, int twoJlow, std::vector&lt; double &gt; &amp;bestParameters, std::ofstream &amp;logFile)</td></tr>
+<tr class="separator:a6a8fed45632adde84826f0c711fd0120"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00c11f366029b91d8109f4ea4d74c70e" id="r_a00c11f366029b91d8109f4ea4d74c70e"><td class="memItemLeft" align="right" valign="top">TMultiGraph *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a00c11f366029b91d8109f4ea4d74c70e">PlotCanvas</a> (TGraphErrors *data, TGraphErrors *fit, TGraphErrors *residual, const std::vector&lt; double &gt; &amp;parameters, const std::vector&lt; double &gt; &amp;errors, const double &amp;redChiSquare, const char *extraText=nullptr)</td></tr>
+<tr class="separator:a00c11f366029b91d8109f4ea4d74c70e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="af3145942581d38c8d48b423f36bd0ced" name="af3145942581d38c8d48b423f36bd0ced"></a>
@@ -184,10 +186,11 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>This method does a free fit of a_0, a_2, and a_4 to get the best possible result. The resulting parameters do not necessarily correspond to a meaningful physical result.</p>
 
-<p class="definition">Definition at line <a class="el" href="_angular_correlations_8cxx_source.html#l00887">887</a> of file <a class="el" href="_angular_correlations_8cxx_source.html">AngularCorrelations.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_angular_correlations_8cxx_source.html#l01086">1086</a> of file <a class="el" href="_angular_correlations_8cxx_source.html">AngularCorrelations.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_g_r_s_i_functions_8cxx_source.html#l00377">TGRSIFunctions::LegendrePolynomial()</a>, and <a class="el" href="_angular_correlations_8cxx_source.html#l00734">Ac::Np()</a>.</p>
+<p class="reference">References <a class="el" href="_t_g_r_s_i_functions_8cxx_source.html#l00377">TGRSIFunctions::LegendrePolynomial()</a>, <a class="el" href="_angular_correlations_8cxx_source.html#l00755">Ac::Np()</a>, and <a class="el" href="_angular_correlations_8cxx_source.html#l00786">PlotCanvas()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_angular_correlations_8cxx_source.html#l00056">main()</a>.</p>
 
@@ -215,7 +218,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_angular_correlations_8cxx_source.html#l00030">30</a> of file <a class="el" href="_angular_correlations_8cxx_source.html">AngularCorrelations.cxx</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_angular_correlations_8cxx_source.html#l00056">main()</a>, and <a class="el" href="_angular_correlations_8cxx_source.html#l00736">Ac::operator()()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_angular_correlations_8cxx_source.html#l00056">main()</a>, and <a class="el" href="_angular_correlations_8cxx_source.html#l00757">Ac::operator()()</a>.</p>
 
 </div>
 </div>
@@ -241,14 +244,14 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_angular_correlations_8cxx_source.html#l00056">56</a> of file <a class="el" href="_angular_correlations_8cxx_source.html">AngularCorrelations.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_angular_correlations_8cxx_source.html#l00887">A2a4Method()</a>, <a class="el" href="_t_peak_fitter_8h_source.html#l00041">TPeakFitter::AddPeak()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00057">TSinglePeak::Area()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00058">TSinglePeak::AreaErr()</a>, <a class="el" href="_efficiency_helper_8cxx_source.html#l00011">bgHigh</a>, <a class="el" href="_efficiency_helper_8cxx_source.html#l00010">bgLow</a>, <a class="el" href="_t_r_w_peak_8cxx_source.html#l00003">TRWPeak::Centroid()</a>, <a class="el" href="_t_r_w_peak_8cxx_source.html#l00065">TRWPeak::CentroidErr()</a>, <a class="el" href="_t_peak_fitter_8cxx_source.html#l00088">TPeakFitter::Fit()</a>, <a class="el" href="_t_single_peak_8cxx_source.html#l00077">TSinglePeak::FWHM()</a>, <a class="el" href="_t_single_peak_8cxx_source.html#l00092">TSinglePeak::FWHMErr()</a>, <a class="el" href="_t_peak_fitter_8h_source.html#l00076">TPeakFitter::GetBackground()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00078">TSinglePeak::GetFitFunction()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00093">TSinglePeak::GetReducedChi2()</a>, <a class="el" href="_angular_correlations_8cxx_source.html#l00030">GetYError()</a>, <a class="el" href="_angular_correlations_8cxx_source.html#l00765">MixingMethod()</a>, <a class="el" href="_arg_parser_8h_source.html#l00412">ArgParser::option()</a>, and <a class="el" href="_arg_parser_8h_source.html#l00333">ArgParser::parse()</a>.</p>
+<p class="reference">References <a class="el" href="_angular_correlations_8cxx_source.html#l01086">A2a4Method()</a>, <a class="el" href="_t_peak_fitter_8h_source.html#l00041">TPeakFitter::AddPeak()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00057">TSinglePeak::Area()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00058">TSinglePeak::AreaErr()</a>, <a class="el" href="_efficiency_helper_8cxx_source.html#l00011">bgHigh</a>, <a class="el" href="_efficiency_helper_8cxx_source.html#l00010">bgLow</a>, <a class="el" href="_t_r_w_peak_8cxx_source.html#l00003">TRWPeak::Centroid()</a>, <a class="el" href="_t_r_w_peak_8cxx_source.html#l00065">TRWPeak::CentroidErr()</a>, <a class="el" href="_t_peak_fitter_8cxx_source.html#l00088">TPeakFitter::Fit()</a>, <a class="el" href="_t_single_peak_8cxx_source.html#l00077">TSinglePeak::FWHM()</a>, <a class="el" href="_t_single_peak_8cxx_source.html#l00092">TSinglePeak::FWHMErr()</a>, <a class="el" href="_t_peak_fitter_8h_source.html#l00076">TPeakFitter::GetBackground()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00078">TSinglePeak::GetFitFunction()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00093">TSinglePeak::GetReducedChi2()</a>, <a class="el" href="_angular_correlations_8cxx_source.html#l00030">GetYError()</a>, <a class="el" href="_angular_correlations_8cxx_source.html#l00872">MixingMethod()</a>, <a class="el" href="_arg_parser_8h_source.html#l00412">ArgParser::option()</a>, and <a class="el" href="_arg_parser_8h_source.html#l00333">ArgParser::parse()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_g_root_canvas_8cxx_source.html#l01365">GRootCanvas::ShowEditor()</a>.</p>
 
 </div>
 </div>
-<a id="ac32f038f664c7fdbc7387b6ee6164e79" name="ac32f038f664c7fdbc7387b6ee6164e79"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac32f038f664c7fdbc7387b6ee6164e79">&#9670;&#160;</a></span>MixingMethod()</h2>
+<a id="a6a8fed45632adde84826f0c711fd0120" name="a6a8fed45632adde84826f0c711fd0120"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a8fed45632adde84826f0c711fd0120">&#9670;&#160;</a></span>MixingMethod()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -291,16 +294,72 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::vector&lt; double &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>bestParameters</em></span>&#160;)</td>
+          <td class="paramtype">std::vector&lt; double &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>bestParameters</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::ofstream &amp;</td>          <td class="paramname"><span class="paramname"><em>logFile</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_angular_correlations_8cxx_source.html#l00765">765</a> of file <a class="el" href="_angular_correlations_8cxx_source.html">AngularCorrelations.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_angular_correlations_8cxx_source.html#l00872">872</a> of file <a class="el" href="_angular_correlations_8cxx_source.html">AngularCorrelations.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_g_r_s_i_functions_8cxx_source.html#l00533">TGRSIFunctions::CalculateA2()</a>, <a class="el" href="_t_g_r_s_i_functions_8cxx_source.html#l00538">TGRSIFunctions::CalculateA4()</a>, and <a class="el" href="_angular_correlations_8cxx_source.html#l00734">Ac::Np()</a>.</p>
+<p class="reference">References <a class="el" href="_t_g_r_s_i_functions_8cxx_source.html#l00533">TGRSIFunctions::CalculateA2()</a>, <a class="el" href="_t_g_r_s_i_functions_8cxx_source.html#l00538">TGRSIFunctions::CalculateA4()</a>, <a class="el" href="_angular_correlations_8cxx_source.html#l00755">Ac::Np()</a>, and <a class="el" href="_angular_correlations_8cxx_source.html#l00786">PlotCanvas()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_angular_correlations_8cxx_source.html#l00056">main()</a>.</p>
+
+</div>
+</div>
+<a id="a00c11f366029b91d8109f4ea4d74c70e" name="a00c11f366029b91d8109f4ea4d74c70e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a00c11f366029b91d8109f4ea4d74c70e">&#9670;&#160;</a></span>PlotCanvas()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TMultiGraph * PlotCanvas </td>
+          <td>(</td>
+          <td class="paramtype">TGraphErrors *</td>          <td class="paramname"><span class="paramname"><em>data</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TGraphErrors *</td>          <td class="paramname"><span class="paramname"><em>fit</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TGraphErrors *</td>          <td class="paramname"><span class="paramname"><em>residual</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>parameters</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>errors</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;</td>          <td class="paramname"><span class="paramname"><em>redChiSquare</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>extraText</em></span><span class="paramdefsep"> = </span><span class="paramdefval">nullptr</span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This function plots the data with the fit and residuals on the currently active canvas.</p>
+
+<p class="definition">Definition at line <a class="el" href="_angular_correlations_8cxx_source.html#l00786">786</a> of file <a class="el" href="_angular_correlations_8cxx_source.html">AngularCorrelations.cxx</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_angular_correlations_8cxx_source.html#l01086">A2a4Method()</a>, and <a class="el" href="_angular_correlations_8cxx_source.html#l00872">MixingMethod()</a>.</p>
 
 </div>
 </div>
@@ -311,7 +370,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_1d7397b112c23d4eb2fe49dc66ace00a.html">GRSIData</a></li><li class="navelem"><a class="el" href="dir_8965781c9f424dd985c8251b0fe5e6e9.html">util</a></li><li class="navelem"><a class="el" href="_angular_correlations_8cxx.html">AngularCorrelations.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Jul 11 2025 17:24:13.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Jul 17 2025 20:46:50.</li>
   </ul>
 </div>
 </body>

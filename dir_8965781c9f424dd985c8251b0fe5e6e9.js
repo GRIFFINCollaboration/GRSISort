@@ -12,6 +12,7 @@ var dir_8965781c9f424dd985c8251b0fe5e6e9 =
     [ "offsetadd.cxx", "offsetadd_8cxx.html", "offsetadd_8cxx" ],
     [ "offsetfind.cxx", "offsetfind_8cxx.html", "offsetfind_8cxx" ],
     [ "offsetfix.cxx", "offsetfix_8cxx.html", "offsetfix_8cxx" ],
+    [ "SimulationAngularCorrelation.cxx", "_simulation_angular_correlation_8cxx.html", "_simulation_angular_correlation_8cxx" ],
     [ "tac_calibrator.cxx", "tac__calibrator_8cxx.html", "tac__calibrator_8cxx" ],
     [ "write_cal.cxx", "write__cal_8cxx.html", "write__cal_8cxx" ]
 ];

@@ -1,5 +1,14 @@
 var NAVTREEINDEX65 =
 {
+"class_t_user_settings.html#ac20ca4b81f82de9760ab15912da092f8":[8,11,64,14],
+"class_t_user_settings.html#acb685be0db2e5a5c142294168daa6705":[8,11,64,23],
+"class_t_user_settings.html#acd6c7d027419ef6cd793774b563e17da":[8,11,64,42],
+"class_t_user_settings.html#addda5353c5c7f6b1046667dc6586ab5e":[8,11,64,11],
+"class_t_user_settings.html#ae0dae7b83804282987657dc574931bf3":[8,11,64,0],
+"class_t_user_settings.html#ae37f88713d46fb570cec2abf9bdc081c":[8,11,64,26],
+"class_t_user_settings.html#ae8afd1fea017293b904a394fca429066":[8,11,64,21],
+"class_t_user_settings.html#aed7e02ecd63886b362907f05f0158999":[8,11,64,8],
+"class_t_user_settings.html#af2104c9df363c55f4b26a76696e59c1b":[8,11,64,12],
 "class_t_user_settings.html#af44a4908db1bd4a8454d8e38882b6ef1":[8,11,64,7],
 "class_t_user_settings.html#af675568ef70c832a29e27589eed4740f":[8,11,64,24],
 "class_t_user_settings.html#afeb78ca45dd7981d35476507fa0a4d20":[8,11,64,28],
@@ -240,14 +249,5 @@ var NAVTREEINDEX65 =
 "class_time_walk_selector.html#a095a925b9e0e9ae440a758300f082c9c":[10,0,178,28],
 "class_time_walk_selector.html#a0a36b80b21d1c5fd0b2246943c28ebce":[10,0,178,39],
 "class_time_walk_selector.html#a1935dbf4d7080d06bc59903daafca0ce":[10,0,178,18],
-"class_time_walk_selector.html#a1a4bb08fb6a355a82ed12a5ec159507b":[10,0,178,21],
-"class_time_walk_selector.html#a1e35e3147d9f14a04e4d0f9f30431074":[10,0,178,30],
-"class_time_walk_selector.html#a29945f1269efc3023c16716af041d4bd":[10,0,178,16],
-"class_time_walk_selector.html#a29d79e685215f2e51767926742d6a2d4":[10,0,178,12],
-"class_time_walk_selector.html#a301316e1b796a58ca2abd5339ff35e29":[10,0,178,13],
-"class_time_walk_selector.html#a399ba322e2eef95dfcc3f2d21d27fbac":[10,0,178,27],
-"class_time_walk_selector.html#a3ee3614749d1369487299802d7e18364":[10,0,178,3],
-"class_time_walk_selector.html#a4ede910b47837cd5cdc611154973b5a5":[10,0,178,19],
-"class_time_walk_selector.html#a5d4c3f5aef64c23330e2f80b017d9e42":[10,0,178,23],
-"class_time_walk_selector.html#a613ab2575ae93c6001aa09235c454546":[10,0,178,38]
+"class_time_walk_selector.html#a1a4bb08fb6a355a82ed12a5ec159507b":[10,0,178,21]
 };
