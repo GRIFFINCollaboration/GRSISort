@@ -64,10 +64,10 @@ public:
    {
       fHits.push_back(hit);
    }
-   void         Copy(TObject&) const override;                      //!<!
-   void         Clear(Option_t* = "") override { fHits.clear(); }   //!<!
-   virtual void ClearTransients();                                  //!<!
-   void         Print(Option_t* opt = "") const override;           //!<!
+   void         Copy(TObject&) const override;              //!<!
+   void         Clear(Option_t* = "") override;             //!<!
+   virtual void ClearTransients();                          //!<!
+   void         Print(Option_t* opt = "") const override;   //!<!
    virtual void Print(std::ostream& out) const;
 
    virtual Short_t                           GetMultiplicity() const { return static_cast<Short_t>(fHits.size()); }
