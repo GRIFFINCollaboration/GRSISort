@@ -250,7 +250,8 @@ int main(int argc, char** argv)
 		if(!includedBins.empty()) {
 			excludedBins.clear();
 			for(int bin = 1; bin <= hist->GetXaxis()->GetNbins(); ++bin) {
-				if(std::find(includedBins.begin(), includedBins.end(), bin) != includedBins.end()) {
+				if(std::find(includedBins.begin(), includedBins.end(), bin) == includedBins.end()) {
+					// if the bin is not in the list of included bins, it is excluded
 					excludedBins.push_back(bin);
 				}
 			}
@@ -310,7 +311,7 @@ void FindGainDrift(TH2* hist, std::vector<double> energies, std::vector<double> 
 
    // loop over all x-bins
    for(int bin = 1; bin <= hist->GetXaxis()->GetNbins(); ++bin) {
-		if(std::find(excludedBins.begin(), excludedBins.end(), bin) != excludedBins.end()) { continue; }
+		if(!excludedBins.empty() && std::find(excludedBins.begin(), excludedBins.end(), bin) != excludedBins.end()) { continue; }
       auto* proj = hist->ProjectionY(Form("proj%s_%d", label.c_str(), bin), bin, bin);
       if(proj == nullptr || proj->GetEntries() < 1000) {
          continue;
