@@ -29,8 +29,8 @@ int main(int argc, char** argv)
    std::string              prefix        = "GainDrift";
    std::string              histogramName = "EnergyVsChannel";
    double                   minFWHM       = 2.;
-	std::vector<int>         excludedBins;
-	std::vector<int>         includedBins;
+   std::vector<int>         excludedBins;
+   std::vector<int>         includedBins;
 
    for(int i = 1; i < argc; ++i) {
       if(strcmp(argv[i], "-if") == 0) {
@@ -56,32 +56,32 @@ int main(int argc, char** argv)
                std::cerr << std::endl;
                std::cerr << "These might now be overwritten by what is read from the settings file " << argv[i] << std::endl;
             }
-				try {
-					energies = settings.GetDoubleVector("Energies", true);
-				} catch(std::out_of_range&) {}
+            try {
+               energies = settings.GetDoubleVector("Energies", true);
+            } catch(std::out_of_range&) {}
             if(!energyUncertainties.empty()) {
                std::cerr << "Warning, already got " << energyUncertainties.size() << " energy uncertainties:";
                for(auto energy : energyUncertainties) { std::cerr << "   " << energy; }
                std::cerr << std::endl;
                std::cerr << "These might now be overwritten by what is read from the settings file " << argv[i] << std::endl;
             }
-				try {
-					energyUncertainties = settings.GetDoubleVector("EnergyUncertainties", true);
-				} catch(std::out_of_range&) {}
-				if(!excludedBins.empty()) {
-					std::cerr << "Warning, already got " << excludedBins.size() << " excluded bins from command line, not going to try and read them from settings file!" << std::endl;
-				} else {
-					try {
-						excludedBins = settings.GetIntVector("ExcludedBins", true);
-					} catch(std::out_of_range&) {}
-				}
-				if(!includedBins.empty()) {
-					std::cerr << "Warning, already got " << includedBins.size() << " included bins from command line, not going to try and read them from settings file!" << std::endl;
-				} else {
-					try {
-						includedBins = settings.GetIntVector("IncludedBins", true);
-					} catch(std::out_of_range&) {}
-				}
+            try {
+               energyUncertainties = settings.GetDoubleVector("EnergyUncertainties", true);
+            } catch(std::out_of_range&) {}
+            if(!excludedBins.empty()) {
+               std::cerr << "Warning, already got " << excludedBins.size() << " excluded bins from command line, not going to try and read them from settings file!" << std::endl;
+            } else {
+               try {
+                  excludedBins = settings.GetIntVector("ExcludedBins", true);
+               } catch(std::out_of_range&) {}
+            }
+            if(!includedBins.empty()) {
+               std::cerr << "Warning, already got " << includedBins.size() << " included bins from command line, not going to try and read them from settings file!" << std::endl;
+            } else {
+               try {
+                  includedBins = settings.GetIntVector("IncludedBins", true);
+               } catch(std::out_of_range&) {}
+            }
          } else {
             std::cout << "Error, -sf flag needs an argument!" << std::endl;
             printUsage = true;
@@ -203,10 +203,10 @@ int main(int argc, char** argv)
       printUsage = true;
    }
 
-	if(!excludedBins.empty() && !includedBins.empty()) {
-		std::cerr << "Error, can't provided both bins to exclude and bins to include!" << std::endl;
+   if(!excludedBins.empty() && !includedBins.empty()) {
+      std::cerr << "Error, can't provided both bins to exclude and bins to include!" << std::endl;
       printUsage = true;
-	}
+   }
 
    if(printUsage) {
       std::cerr << "Arguments for " << argv[0] << ":" << std::endl
@@ -246,16 +246,16 @@ int main(int argc, char** argv)
          continue;
       }
 
-		// fill list with bins to excluded if we only have a list of bins to include
-		if(!includedBins.empty()) {
-			excludedBins.clear();
-			for(int bin = 1; bin <= hist->GetXaxis()->GetNbins(); ++bin) {
-				if(std::find(includedBins.begin(), includedBins.end(), bin) == includedBins.end()) {
-					// if the bin is not in the list of included bins, it is excluded
-					excludedBins.push_back(bin);
-				}
-			}
-		}
+      // fill list with bins to excluded if we only have a list of bins to include
+      if(!includedBins.empty()) {
+         excludedBins.clear();
+         for(int bin = 1; bin <= hist->GetXaxis()->GetNbins(); ++bin) {
+            if(std::find(includedBins.begin(), includedBins.end(), bin) == includedBins.end()) {
+               // if the bin is not in the list of included bins, it is excluded
+               excludedBins.push_back(bin);
+            }
+         }
+      }
 
       // read cal-file from this root file
       TChannel::ReadCalFromFile(file);
@@ -311,7 +311,7 @@ void FindGainDrift(TH2* hist, std::vector<double> energies, std::vector<double> 
 
    // loop over all x-bins
    for(int bin = 1; bin <= hist->GetXaxis()->GetNbins(); ++bin) {
-		if(!excludedBins.empty() && std::find(excludedBins.begin(), excludedBins.end(), bin) != excludedBins.end()) { continue; }
+      if(!excludedBins.empty() && std::find(excludedBins.begin(), excludedBins.end(), bin) != excludedBins.end()) { continue; }
       auto* proj = hist->ProjectionY(Form("proj%s_%d", label.c_str(), bin), bin, bin);
       if(proj == nullptr || proj->GetEntries() < 1000) {
          continue;
@@ -322,7 +322,7 @@ void FindGainDrift(TH2* hist, std::vector<double> energies, std::vector<double> 
       auto* graph    = new TGraphErrors;
       graph->SetName(Form("graph%s_%d", label.c_str(), bin));
       graph->SetTitle(Form("Channel %s, bin %d;uncorr. energy;nominal energy", label.c_str(), bin));
-      auto* residual    = new TGraphErrors;
+      auto* residual = new TGraphErrors;
       residual->SetName(Form("res%s_%d", label.c_str(), bin));
       residual->SetTitle(Form("Channel %s, bin %d;uncorr. energy; uncorr. energy - nominal energy", label.c_str(), bin));
       int graphIndex = 0;
