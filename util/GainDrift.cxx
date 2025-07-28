@@ -322,6 +322,9 @@ void FindGainDrift(TH2* hist, std::vector<double> energies, std::vector<double> 
       auto* graph    = new TGraphErrors;
       graph->SetName(Form("graph%s_%d", label.c_str(), bin));
       graph->SetTitle(Form("Channel %s, bin %d;uncorr. energy;nominal energy", label.c_str(), bin));
+      auto* residual    = new TGraphErrors;
+      residual->SetName(Form("res%s_%d", label.c_str(), bin));
+      residual->SetTitle(Form("Channel %s, bin %d;uncorr. energy; uncorr. energy - nominal energy", label.c_str(), bin));
       int graphIndex = 0;
       for(size_t i = 0; i < energies.size(); ++i) {
          TPeakFitter pf(energies[i] - range, energies[i] + range);
@@ -334,6 +337,8 @@ void FindGainDrift(TH2* hist, std::vector<double> energies, std::vector<double> 
          if(GoodFit(peak, energies[i] - range, energies[i] + range, minFWHM)) {
             graph->SetPoint(graphIndex, peak.Centroid(), energies[i]);
             graph->SetPointError(graphIndex, peak.CentroidErr(), energyUncertainties[i]);
+            residual->SetPoint(graphIndex, peak.Centroid(), peak.Centroid() - energies[i]);
+            residual->SetPointError(graphIndex, peak.CentroidErr(), TMath::Sqrt(TMath::Power(energyUncertainties[i], 2) + TMath::Power(peak.CentroidErr(), 2)));
             ++graphIndex;
          } else {
             static_cast<TF1*>(proj->GetListOfFunctions()->Last())->SetLineColor(kGray);
@@ -381,10 +386,12 @@ void FindGainDrift(TH2* hist, std::vector<double> energies, std::vector<double> 
       output->cd();
       proj->Write();
       graph->Write();
+      residual->Write();
 
       // done with this bin, clean up
       delete redirect;
       delete graph;
+      delete residual;
       delete proj;
 
       std::cout << std::setw(3) << bin << " / " << std::setw(3) << hist->GetXaxis()->GetNbins() << "\r" << std::flush;
