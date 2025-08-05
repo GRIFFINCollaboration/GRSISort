@@ -1,0 +1,12 @@
+PileUpRejection:   true
+
+KValue.Griffin:    379
+
+MinimumGriffinEnergy: 0.
+
+Timing.GriffinGriffin.Coincident.Low:  -250.
+Timing.GriffinGriffin.Coincident.High:  250.
+Timing.GriffinGriffin.TimeRandom.Low:   500.
+Timing.GriffinGriffin.TimeRandom.High: 1500.
+
+MaximumCfd: 20.
