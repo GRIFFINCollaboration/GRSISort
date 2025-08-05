@@ -47,11 +47,11 @@ void EfficiencyHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grif
    // loop over unsuppressed griffin hits
    for(int g = 0; g < grif.GetMultiplicity(); ++g) {
       auto grif1 = grif.GetGriffinHit(g);
-		if(Reject(grif1)) continue;
+      if(Reject(grif1)) continue;
       fH1[slot].at("griffinE")->Fill(grif1->GetEnergy());
       for(int g2 = g + 1; g2 < grif.GetMultiplicity(); ++g2) {
          auto grif2 = grif.GetGriffinHit(g2);
-			if(Reject(grif2)) continue;
+         if(Reject(grif2)) continue;
          if(grif1->GetPosition().Angle(grif2->GetPosition()) / TMath::Pi() * 180. > 179.) {
             if(PromptCoincidence(grif1, grif2)) {
                fH2[slot].at("griffinGriffinE180Coinc")->Fill(grif1->GetEnergy(), grif2->GetEnergy());
@@ -69,11 +69,11 @@ void EfficiencyHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grif
    // loop over suppressed griffin hits
    for(int g = 0; g < grif.GetSuppressedMultiplicity(&grifBgo); ++g) {
       auto grif1 = grif.GetSuppressedHit(g);
-		if(Reject(grif1)) continue;
+      if(Reject(grif1)) continue;
       fH1[slot].at("griffinESupp")->Fill(grif1->GetEnergy());
       for(int g2 = g + 1; g2 < grif.GetSuppressedMultiplicity(&grifBgo); ++g2) {
          auto grif2 = grif.GetSuppressedHit(g2);
-			if(Reject(grif2)) continue;
+         if(Reject(grif2)) continue;
          if(grif1->GetPosition().Angle(grif2->GetPosition()) / TMath::Pi() * 180. > 179.) {
             if(PromptCoincidence(grif1, grif2)) {
                fH2[slot].at("griffinGriffinESuppSum180Coinc")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif1->GetEnergy());
@@ -85,7 +85,7 @@ void EfficiencyHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grif
       for(int g2 = 0; g2 < grif.GetMultiplicity(); ++g2) {
          if(g == g2) continue;
          auto grif2 = grif.GetGriffinHit(g2);
-			if(Reject(grif2)) continue;
+         if(Reject(grif2)) continue;
          if(grif1->GetPosition().Angle(grif2->GetPosition()) / TMath::Pi() * 180. > 179.) {
             if(PromptCoincidence(grif1, grif2)) {
                fH2[slot].at("griffinGriffinEMixed180Coinc")->Fill(grif1->GetEnergy(), grif2->GetEnergy());
@@ -99,11 +99,11 @@ void EfficiencyHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grif
    // loop over unsuppressed griffin addback hits
    for(int g = 0; g < grif.GetAddbackMultiplicity(); ++g) {
       auto grif1 = grif.GetAddbackHit(g);
-		if(Reject(grif1)) continue;
+      if(Reject(grif1)) continue;
       fH1[slot].at("griffinEAddback")->Fill(grif1->GetEnergy());
       for(int g2 = g + 1; g2 < grif.GetAddbackMultiplicity(); ++g2) {
          auto grif2 = grif.GetAddbackHit(g2);
-			if(Reject(grif2)) continue;
+         if(Reject(grif2)) continue;
          if(grif1->GetPosition().Angle(grif2->GetPosition()) / TMath::Pi() * 180. > 157.) {
             if(PromptCoincidence(grif1, grif2)) {
                fH2[slot].at("griffinGriffinEAddback180Coinc")->Fill(grif1->GetEnergy(), grif2->GetEnergy());
@@ -121,11 +121,11 @@ void EfficiencyHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grif
    // loop over suppressed griffin addback hits
    for(int g = 0; g < grif.GetSuppressedAddbackMultiplicity(&grifBgo); ++g) {
       auto grif1 = grif.GetSuppressedAddbackHit(g);
-		if(Reject(grif1)) continue;
+      if(Reject(grif1)) continue;
       fH1[slot].at("griffinESuppAddback")->Fill(grif1->GetEnergy());
       for(int g2 = g + 1; g2 < grif.GetSuppressedAddbackMultiplicity(&grifBgo); ++g2) {
          auto grif2 = grif.GetSuppressedAddbackHit(g2);
-			if(Reject(grif2)) continue;
+         if(Reject(grif2)) continue;
          if(grif1->GetPosition().Angle(grif2->GetPosition()) / TMath::Pi() * 180. > 157.) {
             if(PromptCoincidence(grif1, grif2)) {
                fH2[slot].at("griffinGriffinESuppAddbackSum180Coinc")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif1->GetEnergy());
@@ -137,7 +137,7 @@ void EfficiencyHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grif
       for(int g2 = 0; g2 < grif.GetAddbackMultiplicity(); ++g2) {
          if(g == g2) continue;
          auto grif2 = grif.GetAddbackHit(g2);
-			if(Reject(grif2)) continue;
+         if(Reject(grif2)) continue;
          if(grif1->GetPosition().Angle(grif2->GetPosition()) / TMath::Pi() * 180. > 157.) {
             if(PromptCoincidence(grif1, grif2)) {
                fH2[slot].at("griffinGriffinEMixedAddback180Coinc")->Fill(grif1->GetEnergy(), grif2->GetEnergy());
