@@ -15,7 +15,7 @@
 #include "TPeakFitter.h"
 #include "TRWPeak.h"
 
-void FindGainDrift(TH2* hist, std::vector<double> energies, std::vector<double> energyUncertainties, double range, double minFWHM, int degree, const std::string& prefix, const std::string& label, TFile* output);
+void FindGainDrift(TH2* hist, std::vector<double> energies, std::vector<double> energyUncertainties, double range, double minFWHM, int degree, const std::string& prefix, const std::string& label, TFile* output, std::vector<int> excludedBins);
 
 int main(int argc, char** argv)
 {
@@ -29,6 +29,8 @@ int main(int argc, char** argv)
    std::string              prefix        = "GainDrift";
    std::string              histogramName = "EnergyVsChannel";
    double                   minFWHM       = 2.;
+   std::vector<int>         excludedBins;
+   std::vector<int>         includedBins;
 
    for(int i = 1; i < argc; ++i) {
       if(strcmp(argv[i], "-if") == 0) {
@@ -52,16 +54,34 @@ int main(int argc, char** argv)
                std::cerr << "Warning, already got " << energies.size() << " energies:";
                for(auto energy : energies) { std::cerr << "   " << energy; }
                std::cerr << std::endl;
-               std::cerr << "These will now be overwritten by what is read from the settings file " << argv[i] << std::endl;
+               std::cerr << "These might now be overwritten by what is read from the settings file " << argv[i] << std::endl;
             }
-            energies = settings.GetDoubleVector("Energies");
+            try {
+               energies = settings.GetDoubleVector("Energies", true);
+            } catch(std::out_of_range&) {}
             if(!energyUncertainties.empty()) {
                std::cerr << "Warning, already got " << energyUncertainties.size() << " energy uncertainties:";
                for(auto energy : energyUncertainties) { std::cerr << "   " << energy; }
                std::cerr << std::endl;
-               std::cerr << "These will now be overwritten by what is read from the settings file " << argv[i] << std::endl;
+               std::cerr << "These might now be overwritten by what is read from the settings file " << argv[i] << std::endl;
             }
-            energyUncertainties = settings.GetDoubleVector("EnergyUncertainties");
+            try {
+               energyUncertainties = settings.GetDoubleVector("EnergyUncertainties", true);
+            } catch(std::out_of_range&) {}
+            if(!excludedBins.empty()) {
+               std::cerr << "Warning, already got " << excludedBins.size() << " excluded bins from command line, not going to try and read them from settings file!" << std::endl;
+            } else {
+               try {
+                  excludedBins = settings.GetIntVector("ExcludedBins", true);
+               } catch(std::out_of_range&) {}
+            }
+            if(!includedBins.empty()) {
+               std::cerr << "Warning, already got " << includedBins.size() << " included bins from command line, not going to try and read them from settings file!" << std::endl;
+            } else {
+               try {
+                  includedBins = settings.GetIntVector("IncludedBins", true);
+               } catch(std::out_of_range&) {}
+            }
          } else {
             std::cout << "Error, -sf flag needs an argument!" << std::endl;
             printUsage = true;
@@ -131,6 +151,36 @@ int main(int argc, char** argv)
             std::cout << "Error, -pre flag needs an argument!" << std::endl;
             printUsage = true;
          }
+      } else if(strcmp(argv[i], "-eb") == 0) {
+         if(!excludedBins.empty()) {
+            std::cerr << "Warning, already got " << excludedBins.size() << " excluded bins:";
+            for(auto bin : excludedBins) { std::cerr << "   " << bin; }
+            std::cerr << std::endl;
+            std::cerr << "What is read from command line will not overwrite these but be added to them!" << std::endl;
+         }
+         // if we have a next argument, check if it starts with '-'
+         while(i + 1 < argc) {
+            if(argv[i + 1][0] == '-') {
+               break;
+            }
+            // if we get here we can add the next argument to the list of energies
+            excludedBins.push_back(std::atoi(argv[++i]));
+         }
+      } else if(strcmp(argv[i], "-ib") == 0) {
+         if(!includedBins.empty()) {
+            std::cerr << "Warning, already got " << includedBins.size() << " included bins:";
+            for(auto bin : includedBins) { std::cerr << "   " << bin; }
+            std::cerr << std::endl;
+            std::cerr << "What is read from command line will not overwrite these but be added to them!" << std::endl;
+         }
+         // if we have a next argument, check if it starts with '-'
+         while(i + 1 < argc) {
+            if(argv[i + 1][0] == '-') {
+               break;
+            }
+            // if we get here we can add the next argument to the list of energies
+            includedBins.push_back(std::atoi(argv[++i]));
+         }
       } else {
          std::cerr << "Error, unknown flag \"" << argv[i] << "\"!" << std::endl;
          printUsage = true;
@@ -153,6 +203,11 @@ int main(int argc, char** argv)
       printUsage = true;
    }
 
+   if(!excludedBins.empty() && !includedBins.empty()) {
+      std::cerr << "Error, can't provided both bins to exclude and bins to include!" << std::endl;
+      printUsage = true;
+   }
+
    if(printUsage) {
       std::cerr << "Arguments for " << argv[0] << ":" << std::endl
                 << "-if  <input files>                                (required)" << std::endl
@@ -163,7 +218,9 @@ int main(int argc, char** argv)
                 << "-r   <+-range of fit>                             (optional, default = 10.)" << std::endl
                 << "-mw  <minimum FWHM for good fit>                  (optional, default = 2.)" << std::endl
                 << "-hn  <histogram name>                             (optional, default = \"EnergyVsChannel\")" << std::endl
-                << "-pre <prefix>                                     (optional, default = \"GainDrift\")" << std::endl;
+                << "-pre <prefix>                                     (optional, default = \"GainDrift\")" << std::endl
+                << "-eb  <list of bins to be excluded>                (optional, but can't be used together with \"-ib\" flag)" << std::endl
+                << "-ib  <list of bins to be included>                (optional, but can't be used together with \"-eb\" flag)" << std::endl;
 
       return 1;
    }
@@ -189,6 +246,17 @@ int main(int argc, char** argv)
          continue;
       }
 
+      // fill list with bins to excluded if we only have a list of bins to include
+      if(!includedBins.empty()) {
+         excludedBins.clear();
+         for(int bin = 1; bin <= hist->GetXaxis()->GetNbins(); ++bin) {
+            if(std::find(includedBins.begin(), includedBins.end(), bin) == includedBins.end()) {
+               // if the bin is not in the list of included bins, it is excluded
+               excludedBins.push_back(bin);
+            }
+         }
+      }
+
       // read cal-file from this root file
       TChannel::ReadCalFromFile(file);
 
@@ -196,7 +264,7 @@ int main(int argc, char** argv)
       TRunInfo::ReadInfoFromFile(file);
       auto label = TRunInfo::CreateLabel(true);
       // find the gain drift for all channels
-      FindGainDrift(hist, energies, energyUncertainties, range, minFWHM, degree, prefix, label, output);
+      FindGainDrift(hist, energies, energyUncertainties, range, minFWHM, degree, prefix, label, output, excludedBins);
 
       // write the gain drift to new cal-file
       TChannel::WriteCalFile(Form("%s%s.cal", prefix.c_str(), label.c_str()));
@@ -235,7 +303,7 @@ double Polynomial(double* x, double* par)   // NOLINT(readability-non-const-para
    return result;
 }
 
-void FindGainDrift(TH2* hist, std::vector<double> energies, std::vector<double> energyUncertainties, double range, double minFWHM, int degree, const std::string& prefix, const std::string& label, TFile* output)
+void FindGainDrift(TH2* hist, std::vector<double> energies, std::vector<double> energyUncertainties, double range, double minFWHM, int degree, const std::string& prefix, const std::string& label, TFile* output, std::vector<int> excludedBins)
 {
    auto* yAxis      = hist->GetYaxis();
    TF1*  polynomial = new TF1("polynomial", Polynomial, yAxis->GetBinLowEdge(yAxis->GetFirst()), yAxis->GetBinLowEdge(yAxis->GetLast()), degree + 2);
@@ -243,6 +311,7 @@ void FindGainDrift(TH2* hist, std::vector<double> energies, std::vector<double> 
 
    // loop over all x-bins
    for(int bin = 1; bin <= hist->GetXaxis()->GetNbins(); ++bin) {
+      if(!excludedBins.empty() && std::find(excludedBins.begin(), excludedBins.end(), bin) != excludedBins.end()) { continue; }
       auto* proj = hist->ProjectionY(Form("proj%s_%d", label.c_str(), bin), bin, bin);
       if(proj == nullptr || proj->GetEntries() < 1000) {
          continue;
@@ -253,6 +322,9 @@ void FindGainDrift(TH2* hist, std::vector<double> energies, std::vector<double> 
       auto* graph    = new TGraphErrors;
       graph->SetName(Form("graph%s_%d", label.c_str(), bin));
       graph->SetTitle(Form("Channel %s, bin %d;uncorr. energy;nominal energy", label.c_str(), bin));
+      auto* residual = new TGraphErrors;
+      residual->SetName(Form("res%s_%d", label.c_str(), bin));
+      residual->SetTitle(Form("Channel %s, bin %d;uncorr. energy; uncorr. energy - nominal energy", label.c_str(), bin));
       int graphIndex = 0;
       for(size_t i = 0; i < energies.size(); ++i) {
          TPeakFitter pf(energies[i] - range, energies[i] + range);
@@ -265,6 +337,8 @@ void FindGainDrift(TH2* hist, std::vector<double> energies, std::vector<double> 
          if(GoodFit(peak, energies[i] - range, energies[i] + range, minFWHM)) {
             graph->SetPoint(graphIndex, peak.Centroid(), energies[i]);
             graph->SetPointError(graphIndex, peak.CentroidErr(), energyUncertainties[i]);
+            residual->SetPoint(graphIndex, peak.Centroid(), peak.Centroid() - energies[i]);
+            residual->SetPointError(graphIndex, peak.CentroidErr(), TMath::Sqrt(TMath::Power(energyUncertainties[i], 2) + TMath::Power(peak.CentroidErr(), 2)));
             ++graphIndex;
          } else {
             static_cast<TF1*>(proj->GetListOfFunctions()->Last())->SetLineColor(kGray);
@@ -312,10 +386,12 @@ void FindGainDrift(TH2* hist, std::vector<double> energies, std::vector<double> 
       output->cd();
       proj->Write();
       graph->Write();
+      residual->Write();
 
       // done with this bin, clean up
       delete redirect;
       delete graph;
+      delete residual;
       delete proj;
 
       std::cout << std::setw(3) << bin << " / " << std::setw(3) << hist->GetXaxis()->GetNbins() << "\r" << std::flush;
