@@ -1,11 +1,5 @@
 var NAVTREEINDEX1 =
 {
-"_g_notifier_8cxx_source.html":[11,0,9,0,8],
-"_g_notifier_8h.html":[11,0,7,13],
-"_g_notifier_8h_source.html":[11,0,7,13],
-"_g_peak_8cxx.html":[11,0,9,0,9],
-"_g_peak_8cxx_source.html":[11,0,9,0,9],
-"_g_peak_8h.html":[11,0,7,14],
 "_g_peak_8h_source.html":[11,0,7,14],
 "_g_popup_8cxx.html":[11,0,9,0,10],
 "_g_popup_8cxx_source.html":[11,0,9,0,10],
@@ -249,5 +243,11 @@ var NAVTREEINDEX1 =
 "_g_snapshot_8cxx_source.html":[11,0,9,0,16],
 "_g_snapshot_8h.html":[11,0,7,21],
 "_g_snapshot_8h.html#af21a80217aaa3713872c52df7c29103b":[11,0,7,21,1],
-"_g_snapshot_8h_source.html":[11,0,7,21]
+"_g_snapshot_8h_source.html":[11,0,7,21],
+"_g_value_8cxx.html":[11,0,9,3,2],
+"_g_value_8cxx_source.html":[11,0,9,3,2],
+"_g_value_8h.html":[11,0,7,22],
+"_g_value_8h_source.html":[11,0,7,22],
+"_gain_match_g_r_i_f_f_i_n_8cxx.html":[11,0,2,4,5],
+"_gain_match_g_r_i_f_f_i_n_8cxx.html#a0d0ade9d21f075b6aaf7f4f28a36fa19":[11,0,2,4,5,21]
 };

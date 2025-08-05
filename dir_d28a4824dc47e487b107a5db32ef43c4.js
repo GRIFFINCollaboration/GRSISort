@@ -10,7 +10,7 @@ var dir_d28a4824dc47e487b107a5db32ef43c4 =
     [ "CrossTalkHelper.hh", "_cross_talk_helper_8hh.html", "_cross_talk_helper_8hh" ],
     [ "DirectoryHelper.cxx", "_directory_helper_8cxx.html", "_directory_helper_8cxx" ],
     [ "DirectoryHelper.hh", "_directory_helper_8hh.html", "_directory_helper_8hh" ],
-    [ "EfficiencyHelper.cxx", "_efficiency_helper_8cxx.html", "_efficiency_helper_8cxx" ],
+    [ "EfficiencyHelper.cxx", "_efficiency_helper_8cxx.html", null ],
     [ "EfficiencyHelper.hh", "_efficiency_helper_8hh.html", "_efficiency_helper_8hh" ],
     [ "ExampleEventHelper.cxx", "_example_event_helper_8cxx.html", "_example_event_helper_8cxx" ],
     [ "ExampleEventHelper.hh", "_example_event_helper_8hh.html", "_example_event_helper_8hh" ],

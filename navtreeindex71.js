@@ -1,5 +1,11 @@
 var NAVTREEINDEX71 =
 {
+"struct_t_midas___b_a_n_k32.html#ac6b9d6f74c56aa35a60add42f2ec92dd":[8,11,35,1],
+"struct_t_midas___b_a_n_k32.html#ace6301a026392c873e2a7e70f7582a03":[8,11,35,3],
+"struct_t_midas___b_a_n_k32.html#ad5d4209ee6b1dafcaa592a779fd8140e":[8,11,35,2],
+"struct_t_midas___b_a_n_k32.html#adb8680bd57a0b3cafdebb49b7dace908":[8,11,35,0],
+"struct_t_midas___b_a_n_k___h_e_a_d_e_r.html":[8,11,37],
+"struct_t_midas___b_a_n_k___h_e_a_d_e_r.html#a1209084d3e681d7f122064573719b6b1":[8,11,37,0],
 "struct_t_midas___b_a_n_k___h_e_a_d_e_r.html#a4edd76e4dc77c19904da5c6475be35a5":[8,11,37,3],
 "struct_t_midas___b_a_n_k___h_e_a_d_e_r.html#a58253ae5299612df270feb835c059c76":[8,11,37,1],
 "struct_t_midas___b_a_n_k___h_e_a_d_e_r.html#afda267e7c892dd56e0eb2876a01009fa":[8,11,37,2],

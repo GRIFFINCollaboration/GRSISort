@@ -1,5 +1,11 @@
 var NAVTREEINDEX67 =
 {
+"classpygui_1_1mainwindow_1_1_main_window.html#aafa6087c9dc7a94acf1df2a18b8b5af8":[10,0,1,2,0,34],
+"classpygui_1_1mainwindow_1_1_main_window.html#ab0eb499c4b96c47ee85f2bd3d2ec48e6":[9,0,5,3,0,8],
+"classpygui_1_1mainwindow_1_1_main_window.html#ab0eb499c4b96c47ee85f2bd3d2ec48e6":[10,0,1,2,0,8],
+"classpygui_1_1mainwindow_1_1_main_window.html#ab91cecfda6ea54b5a18c15b1f95dd96b":[9,0,5,3,0,61],
+"classpygui_1_1mainwindow_1_1_main_window.html#ab91cecfda6ea54b5a18c15b1f95dd96b":[10,0,1,2,0,61],
+"classpygui_1_1mainwindow_1_1_main_window.html#ab9eb35b3b335cd0bed3b390067b7ce4a":[9,0,5,3,0,23],
 "classpygui_1_1mainwindow_1_1_main_window.html#ab9eb35b3b335cd0bed3b390067b7ce4a":[10,0,1,2,0,23],
 "classpygui_1_1mainwindow_1_1_main_window.html#abb88d3339f4e9cf20033cd73d1fa84ed":[9,0,5,3,0,2],
 "classpygui_1_1mainwindow_1_1_main_window.html#abb88d3339f4e9cf20033cd73d1fa84ed":[10,0,1,2,0,2],
@@ -243,11 +249,5 @@ var NAVTREEINDEX67 =
 "dir_75642c81bf98e31b1a0c84b8fdfdc8e2.html":[11,0,2,2,2],
 "dir_78f7d5e3c66d21c85688ebc1c1dd129a.html":[11,0,2,2,0,15],
 "dir_7c637f2c38aea748f009e26d5869f12c.html":[11,0,2,2,0,0],
-"dir_86f6de06f46d8847a880e570834709b8.html":[11,0,8,0],
-"dir_8965781c9f424dd985c8251b0fe5e6e9.html":[11,0,2,4],
-"dir_8f9e4df5e3b6c5148da9bcb5e99fb906.html":[11,0,2,3],
-"dir_922bc89a4fe7a3014680e6c7709ac08a.html":[11,0,2,0],
-"dir_934f90ec7b7003bf03c7a36bdb961e81.html":[11,0,4,1,2],
-"dir_9669779df7bfcf1c7bf651204e08d102.html":[11,0,13],
-"dir_96a286c95e152dc84501dde3344e48b1.html":[11,0,2,2,0,6]
+"dir_86f6de06f46d8847a880e570834709b8.html":[11,0,8,0]
 };

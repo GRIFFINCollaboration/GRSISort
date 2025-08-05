@@ -32,8 +32,8 @@ var searchData=
   ['best_5fdig_29',['best_dig',['../class_t_event_time.html#ac025872ccc6990b1cc008cc2033a9956',1,'TEventTime::best_dig'],['../class_t_event_time.html#ac025872ccc6990b1cc008cc2033a9956',1,'TEventTime::best_dig']]],
   ['bfit_30',['bfit',['../struct_t_pulse_analyzer_1_1_wave_form_par.html#a1838e85000f5bff0b6db57833d047b67',1,'TPulseAnalyzer::WaveFormPar']]],
   ['bflag_31',['bflag',['../struct_t_pulse_analyzer_1_1_wave_form_par.html#a7b94171d19b16c964d9985782d138118',1,'TPulseAnalyzer::WaveFormPar']]],
-  ['bghigh_32',['bgHigh',['../_efficiency_helper_8cxx.html#af7c87127f83b77788e3ff236ad70f942',1,'bgHigh:&#160;EfficiencyHelper.cxx'],['../_angular_correlation_selector_8_c.html#af7c87127f83b77788e3ff236ad70f942',1,'bgHigh:&#160;AngularCorrelationSelector.C']]],
-  ['bglow_33',['bgLow',['../_efficiency_helper_8cxx.html#a844ddf3a7141aa90f36942778a6939ff',1,'bgLow:&#160;EfficiencyHelper.cxx'],['../_angular_correlation_selector_8_c.html#a844ddf3a7141aa90f36942778a6939ff',1,'bgLow:&#160;AngularCorrelationSelector.C']]],
+  ['bghigh_32',['bgHigh',['../_angular_correlation_selector_8_c.html#af7c87127f83b77788e3ff236ad70f942',1,'AngularCorrelationSelector.C']]],
+  ['bglow_33',['bgLow',['../_angular_correlation_selector_8_c.html#a844ddf3a7141aa90f36942778a6939ff',1,'AngularCorrelationSelector.C']]],
   ['bhflag_34',['bhFlag',['../struct_rlmd_file_header.html#abd8075ce1224c553466b10df3b6f9326',1,'RlmdFileHeader']]],
   ['bright_35',['bright',['../classpygui_1_1_ansi_color_text_1_1_ansi_color_text.html#a4974b8ca04bd8e490d36dd8471cedb3f',1,'pygui::AnsiColorText::AnsiColorText']]],
   ['buffernumts_36',['bufferNumTS',['../struct_rlmd_file_header.html#a97445e68b7a205f29f723103071bb834',1,'RlmdFileHeader::bufferNumTS'],['../struct_rlmd_buffer_header.html#a679575ecf4f04164fbeb09a8894d3284',1,'RlmdBufferHeader::bufferNumTS']]]
