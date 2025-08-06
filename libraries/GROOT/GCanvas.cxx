@@ -178,13 +178,17 @@ void GCanvas::RedrawMarkers()
 {
    gPad->Update();
    for(auto* marker : fMarkers) {
-      marker->Update(GetUxmin(), GetUxmax(), GetUymin(), GetUymax());
-      marker->Draw();
+		if(marker != nullptr) {
+			marker->Update(GetUxmin(), GetUxmax(), GetUymin(), GetUymax());
+			marker->Draw();
+		}
    }
 
    for(auto* marker : fBackgroundMarkers) {
-      marker->Update(GetUxmin(), GetUxmax(), GetUymin(), GetUymax());
-      marker->Draw();
+		if(marker != nullptr) {
+			marker->Update(GetUxmin(), GetUxmax(), GetUymin(), GetUymax());
+			marker->Draw();
+		}
    }
 }
 
@@ -569,7 +573,7 @@ bool GCanvas::Process1DArrowKeyPress(Event_t*, const UInt_t* keysym)
 {
    /// Moves displayed 1D histograms by 50% of the visible range left, right, or selects the next (up) or previous (down) GH1D histogram.
    bool edited = Move1DHistogram(*keysym);
-   if(edited) { RedrawMarkers(); }
+   if(edited && IsA() == GCanvas::Class()) { RedrawMarkers(); }
    return edited;
 }
 
@@ -634,7 +638,7 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, const UInt_t* keysym)
          }
       }
       edited = true;
-      RemoveMarker("all");
+      if(IsA() == GCanvas::Class()) { RemoveMarker("all"); }
       break;
    case kKey_E:
       // GetListOfPrimitives()->Print();
@@ -746,7 +750,7 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, const UInt_t* keysym)
       SetMarkerMode(false);
       [[fallthrough]];
    case kKey_n:
-      RemoveMarker("all");
+      if(IsA() == GCanvas::Class()) { RemoveMarker("all"); }
       for(auto* hist : hists) {
          hist->GetListOfFunctions()->Clear();
       }
@@ -757,7 +761,7 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, const UInt_t* keysym)
       edited = true;
       break;
    case kKey_N:
-      RemoveMarker("all");
+      if(IsA() == GCanvas::Class()) { RemoveMarker("all"); }
       for(auto* hist : hists) {
          hist->GetListOfFunctions()->Clear();
       }
@@ -775,7 +779,7 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, const UInt_t* keysym)
          hist->GetXaxis()->UnZoom();
          hist->GetYaxis()->UnZoom();
       }
-      RemoveMarker("all");
+      if(IsA() == GCanvas::Class()) { RemoveMarker("all"); }
       edited = true;
       break;
 
@@ -889,7 +893,7 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, const UInt_t* keysym)
          }
       }
       edited = true;
-      RemoveMarker("all");
+      if(IsA() == GCanvas::Class()) { RemoveMarker("all"); }
       break;
    case kKey_R:
       // GetListOfPrimitives()->Print();
@@ -924,7 +928,7 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, const UInt_t* keysym)
 
       if(GetNMarkers() < 2) {
          edited = ShowPeaks(hists.data(), hists.size());
-         RemoveMarker("all");
+			if(IsA() == GCanvas::Class()) { RemoveMarker("all"); }
       } else {
          double x1 = fMarkers.at(fMarkers.size() - 1)->GetLocalX();
          double x2 = fMarkers.at(fMarkers.size() - 2)->GetLocalX();
@@ -944,14 +948,14 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, const UInt_t* keysym)
             sigma = 10.0;
          }
          edited = ShowPeaks(hists.data(), hists.size(), sigma, thresh);
-         RemoveMarker("all");
+			if(IsA() == GCanvas::Class()) { RemoveMarker("all"); }
       }
       break;
    case kKey_S:
 
       if(GetNMarkers() < 2) {
          edited = ShowPeaks(hists.data(), hists.size());
-         RemoveMarker("all");
+			if(IsA() == GCanvas::Class()) { RemoveMarker("all"); }
       } else {
          double x1 = fMarkers.at(fMarkers.size() - 1)->GetLocalX();
          double x2 = fMarkers.at(fMarkers.size() - 2)->GetLocalX();
@@ -971,7 +975,7 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, const UInt_t* keysym)
             sigma = 10.0;
          }
          edited = ShowPeaks(hists.data(), hists.size(), sigma, thresh);
-         RemoveMarker("all");
+			if(IsA() == GCanvas::Class()) { RemoveMarker("all"); }
       }
       break;
    case kKey_F9: {
@@ -1051,7 +1055,7 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, const UInt_t* keysym)
          }
       }
       edited = true;
-      RemoveMarker("all");
+		if(IsA() == GCanvas::Class()) { RemoveMarker("all"); }
       break;
 
    case kKey_E:
@@ -1123,7 +1127,7 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, const UInt_t* keysym)
          // TGRSIint::instance()->LoadTCutG(cut);
       }
       edited = true;
-      RemoveMarker("all");
+		if(IsA() == GCanvas::Class()) { RemoveMarker("all"); }
       break;
 
    case kKey_i: {
@@ -1136,7 +1140,7 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, const UInt_t* keysym)
    } break;
 
    case kKey_n:
-      RemoveMarker("all");
+		if(IsA() == GCanvas::Class()) { RemoveMarker("all"); }
       // for(unsigned int i=0;i<hists.size();i++)
       //  hists.at(i)->GetListOfFunctions()->Delete();
       RemovePeaks(hists.data(), hists.size());
@@ -1152,7 +1156,7 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, const UInt_t* keysym)
          h->GetXaxis()->UnZoom();
          h->GetYaxis()->UnZoom();
       }
-      RemoveMarker("all");
+		if(IsA() == GCanvas::Class()) { RemoveMarker("all"); }
       edited = true;
       break;
    case kKey_P: {
@@ -1187,7 +1191,7 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, const UInt_t* keysym)
          }
       }
       edited = true;
-      RemoveMarker("all");
+		if(IsA() == GCanvas::Class()) { RemoveMarker("all"); }
       break;
    case kKey_R:
       // GetListOfPrimitives()->Print();
