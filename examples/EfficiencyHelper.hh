@@ -26,9 +26,11 @@ public:
          fMinimumGriffinEnergy = fUserSettings->GetDouble("MinimumGriffinEnergy", fMinimumGriffinEnergy);
          fGgLow                = fUserSettings->GetDouble("Timing.GriffinGriffin.Coincident.Low", fGgLow);
          fGgHigh               = fUserSettings->GetDouble("Timing.GriffinGriffin.Coincident.High", fGgHigh);
-         fGgBgLow              = fUserSettings->GetDouble("Timing.GriffinGriffin.TimeRandom.Low", fGgBgLow);
-         fGgBgHigh             = fUserSettings->GetDouble("Timing.GriffinGriffin.TimeRandom.High", fGgBgHigh);
          fMaxCfd               = fUserSettings->GetDouble("MaximumCfd", fMaxCfd);
+         fEnergyBins1D         = fUserSettings->GetInt("Energy.Bins.1D", fEnergyBins1D);
+         fEnergyBins2D         = fUserSettings->GetInt("Energy.Bins.2D", fEnergyBins2D);
+         fLowEnergy            = fUserSettings->GetDouble("Energy.Low", fLowEnergy);
+         fHighEnergy           = fUserSettings->GetDouble("Energy.High", fHighEnergy);
       }
       Prefix("EfficiencyHelper");
       Setup();
@@ -43,12 +45,17 @@ public:
    // this function gets called for every single event and fills the histograms
    void Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grifBgo);
    // this function is optional and is called after the output lists off all slots/workers have been merged
-   void EndOfSort(std::shared_ptr<std::map<std::string, TList>>& list) override;
+   void EndOfSort(std::shared_ptr<std::map<std::string, TList>>& list) override {}
 
 private:
    // any constants that are set in the CreateHistograms function and used in the Exec function can be stored here
    // or any other settings
-   Long64_t fCycleLength{0};
+   // some variables to easily change range and binning for multiple histograms at once
+   int    fEnergyBins1D{10000};
+   int    fEnergyBins2D{2000};
+   double fLowEnergy{0.};
+   double fHighEnergy{2000.};
+
    // Pile-up Rejection - default k-values for not piled-up hits
    int    fKValueGriffin{379};
    bool   fPileUpRejection{true};      // If true, pile-up is rejected
@@ -57,8 +64,6 @@ private:
    // Coincidences Gates
    double fGgLow{-250.};
    double fGgHigh{250.};
-   double fGgBgLow{500.};
-   double fGgBgHigh{1500.};
    double fMaxCfd{20.};
 
    // ==========  functions for timing conditions  ==========
@@ -66,10 +71,6 @@ private:
    bool PromptCoincidence(TGriffinHit* h1, TGriffinHit* h2)
    {
       return fGgLow < h1->GetTime() - h2->GetTime() && h1->GetTime() - h2->GetTime() < fGgHigh;
-   }
-   bool TimeRandom(TGriffinHit* h1, TGriffinHit* h2)
-   {
-      return fGgBgLow < std::fabs(h1->GetTime() - h2->GetTime()) && std::fabs(h1->GetTime() - h2->GetTime()) < fGgBgHigh;
    }
 
    // general check for good CFD
