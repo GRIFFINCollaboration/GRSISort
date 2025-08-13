@@ -5,15 +5,9 @@
 
 #include "TFile.h"
 #include "TThread.h"
-#include "TMessage.h"
-#include "TSocket.h"
-#include "TMemFile.h"
 #include "TFileMerger.h"
-#include "TServerSocket.h"
-#include "TMonitor.h"
 #include "TFileCacheWrite.h"
 #include "TROOT.h"
-#include "THashTable.h"
 
 #include "GValue.h"
 #include "TChannel.h"
@@ -21,6 +15,7 @@
 #include "TGRSIOptions.h"
 #include "TTreeFillMutex.h"
 #include "TSortingDiagnostics.h"
+#include "TParsingDiagnostics.h"
 
 TAnalysisWriteLoop* TAnalysisWriteLoop::Get(std::string name, std::string outputFilename)
 {
@@ -138,6 +133,10 @@ void TAnalysisWriteLoop::Write()
 
       if(options->WriteDiagnostics()) {
          diag->Write("SortingDiagnostics", TObject::kOverwrite);
+			if(!options->WriteFragmentTree()) {
+				auto* parsingDiagnostics = TParsingDiagnostics::Get();
+				parsingDiagnostics->Write("ParsingDiagnostics", TObject::kOverwrite);
+			}
       }
 
       fOutputFile->Write();
