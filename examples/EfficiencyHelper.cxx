@@ -162,7 +162,7 @@ void EfficiencyHelper::EndOfSort(std::shared_ptr<std::map<std::string, TList>>& 
             list->at("").Print();
             continue;
          }
-         double factor = (promptHigh - promptLow) / (2. * (bgHigh - bgLow));   // factor two for BG window because we use absolute time here, might be wrong for asymmetric histograms?
+         double factor = (fGgHigh - fGgLow) / (2. * (fGgBgHigh - fGgBgLow));   // factor two for BG window because we use absolute time here, might be wrong for asymmetric histograms?
          std::cout << "Found \"" << timeRandom->GetName() << "\" after finding \"" << obj->GetName() << "\", creating corrected spectrum using factor " << factor << std::endl;
          auto corrected = static_cast<TH2*>(obj->Clone(name.replace(coinc, 5, "Corr").c_str()));
          corrected->Add(timeRandom, -factor);
