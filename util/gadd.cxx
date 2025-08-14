@@ -79,13 +79,10 @@
 #include <ROOT/RConfig.hxx>
 #include "ROOT/TIOFeatures.hxx"
 #include "TFile.h"
-#include "THashList.h"
 #include "TKey.h"
-#include "TClass.h"
 #include "TSystem.h"
 #include "TUUID.h"
 #include "ROOT/StringConv.hxx"
-#include "snprintf.h"
 
 #include <string>
 #include <iostream>
