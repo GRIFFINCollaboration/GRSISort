@@ -1,19 +1,5 @@
 #include "EfficiencyHelper.hh"
 
-// Coincidences Gates
-double promptLow  = -250.;
-double promptHigh = 250.;
-bool   PromptCoincidence(TGriffinHit* h1, TGriffinHit* h2)
-{   // Griffin-Griffin
-   return promptLow <= h2->GetTime() - h1->GetTime() && h2->GetTime() - h1->GetTime() <= promptHigh;
-}
-double bgLow  = 500.;
-double bgHigh = 1500.;
-bool   TimeRandom(TGriffinHit* h1, TGriffinHit* h2)
-{
-   return (bgLow <= std::fabs(h1->GetTime() - h2->GetTime()) && std::fabs(h1->GetTime() - h2->GetTime()) <= bgHigh);
-}
-
 void EfficiencyHelper::CreateHistograms(unsigned int slot)
 {
    // some variables to easily change range and binning for multiple histograms at once
@@ -29,28 +15,28 @@ void EfficiencyHelper::CreateHistograms(unsigned int slot)
 
    // unsuppressed spectra
    fH1[slot]["griffinE"]                   = new TH1F("griffinE", Form("Unsuppressed griffin energy;energy [keV];counts/%.1f keV", (highEnergy - lowEnergy) / energyBins), energyBins, lowEnergy, highEnergy);
-   fH2[slot]["griffinGriffinE180Coinc"]    = new TH2F("griffinGriffinE180Coinc", "Unsuppressed griffin-griffin energy @ 180^{o};energy [keV];energy [keV]", energyBins2D, lowEnergy, highEnergy, energyBins2D, lowEnergy, highEnergy);
-   fH2[slot]["griffinGriffinE180Bg"]       = new TH2F("griffinGriffinE180Bg", "Unsuppressed griffin-griffin energy @ 180^{o};energy [keV];energy [keV]", energyBins2D, lowEnergy, highEnergy, energyBins2D, lowEnergy, highEnergy);
-   fH2[slot]["griffinGriffinESum180Coinc"] = new TH2F("griffinGriffinESum180Coinc", "Unsuppressed griffin energy vs griffin sum energy @ 180^{o};energy [keV];energy [keV]", energyBins2D, lowEnergy, highEnergy, energyBins2D, lowEnergy, highEnergy);
-   fH2[slot]["griffinGriffinESum180Bg"]    = new TH2F("griffinGriffinESum180Bg", "Unsuppressed griffin energy vs griffin sum energy @ 180^{o};energy [keV];energy [keV]", energyBins2D, lowEnergy, highEnergy, energyBins2D, lowEnergy, highEnergy);
+   fH2[slot]["griffinGriffinE180Coinc"]    = new TH2F("griffinGriffinE180Coinc", "Unsuppressed griffin-griffin energy @ 180^{o}, coincident;energy [keV];energy [keV]", energyBins2D, lowEnergy, highEnergy, energyBins2D, lowEnergy, highEnergy);
+   fH2[slot]["griffinGriffinE180Bg"]       = new TH2F("griffinGriffinE180Bg", "Unsuppressed griffin-griffin energy @ 180^{o}, time random;energy [keV];energy [keV]", energyBins2D, lowEnergy, highEnergy, energyBins2D, lowEnergy, highEnergy);
+   fH2[slot]["griffinGriffinESum180Coinc"] = new TH2F("griffinGriffinESum180Coinc", "Unsuppressed griffin energy vs griffin sum energy @ 180^{o}, coincident;sum energy [keV];energy [keV]", energyBins2D, lowEnergy, highEnergy, energyBins2D, lowEnergy, highEnergy);
+   fH2[slot]["griffinGriffinESum180Bg"]    = new TH2F("griffinGriffinESum180Bg", "Unsuppressed griffin energy vs griffin sum energy @ 180^{o}, time random;sum energy [keV];energy [keV]", energyBins2D, lowEnergy, highEnergy, energyBins2D, lowEnergy, highEnergy);
    // suppressed spectra
    fH1[slot]["griffinESupp"]                   = new TH1F("griffinESupp", Form("Suppressed griffin energy;energy [keV];counts/%.1f keV", (highEnergy - lowEnergy) / energyBins), energyBins, lowEnergy, highEnergy);
-   fH2[slot]["griffinGriffinESuppSum180Coinc"] = new TH2F("griffinGriffinESuppSum180Coinc", "Suppressed griffin energy vs griffin sum energy @ 180^{o};energy [keV];energy [keV]", energyBins2D, lowEnergy, highEnergy, energyBins2D, lowEnergy, highEnergy);
-   fH2[slot]["griffinGriffinESuppSum180Bg"]    = new TH2F("griffinGriffinESuppSum180Bg", "Suppressed griffin energy vs griffin sum energy @ 180^{o};energy [keV];energy [keV]", energyBins2D, lowEnergy, highEnergy, energyBins2D, lowEnergy, highEnergy);
-   fH2[slot]["griffinGriffinEMixed180Coinc"]   = new TH2F("griffinGriffinEMixed180Coinc", "Unsuppressed/suppressed griffin-griffin energy @ 180^{o};suppressed energy [keV];unsuppressed energy [keV]", energyBins2D, lowEnergy, highEnergy, energyBins2D, lowEnergy, highEnergy);
-   fH2[slot]["griffinGriffinEMixed180Bg"]      = new TH2F("griffinGriffinEMixed180Bg", "Unsuppressed/suppressed griffin-griffin energy @ 180^{o};suppressed energy [keV];unsuppressed energy [keV]", energyBins2D, lowEnergy, highEnergy, energyBins2D, lowEnergy, highEnergy);
+   fH2[slot]["griffinGriffinESuppSum180Coinc"] = new TH2F("griffinGriffinESuppSum180Coinc", "Suppressed griffin energy vs griffin sum energy @ 180^{o}, coincident;sum energy [keV];energy [keV]", energyBins2D, lowEnergy, highEnergy, energyBins2D, lowEnergy, highEnergy);
+   fH2[slot]["griffinGriffinESuppSum180Bg"]    = new TH2F("griffinGriffinESuppSum180Bg", "Suppressed griffin energy vs griffin sum energy @ 180^{o}, time random;sum energy [keV];energy [keV]", energyBins2D, lowEnergy, highEnergy, energyBins2D, lowEnergy, highEnergy);
+   fH2[slot]["griffinGriffinEMixed180Coinc"]   = new TH2F("griffinGriffinEMixed180Coinc", "Unsuppressed/suppressed griffin-griffin energy @ 180^{o}, coincident;suppressed energy [keV];unsuppressed energy [keV]", energyBins2D, lowEnergy, highEnergy, energyBins2D, lowEnergy, highEnergy);
+   fH2[slot]["griffinGriffinEMixed180Bg"]      = new TH2F("griffinGriffinEMixed180Bg", "Unsuppressed/suppressed griffin-griffin energy @ 180^{o}, time random;suppressed energy [keV];unsuppressed energy [keV]", energyBins2D, lowEnergy, highEnergy, energyBins2D, lowEnergy, highEnergy);
    // unsuppressed addback spectra
    fH1[slot]["griffinEAddback"]                   = new TH1F("griffinEAddback", Form("Unsuppressed griffin addback energy;energy [keV];counts/%.1f keV", (highEnergy - lowEnergy) / energyBins), energyBins, lowEnergy, highEnergy);
-   fH2[slot]["griffinGriffinEAddback180Coinc"]    = new TH2F("griffinGriffinEAddback180Coinc", "Unsuppressed griffin-griffin addback @ 180^{o};energy [keV];energy [keV]", energyBins2D, lowEnergy, highEnergy, energyBins2D, lowEnergy, highEnergy);
-   fH2[slot]["griffinGriffinEAddback180Bg"]       = new TH2F("griffinGriffinEAddback180Bg", "Unsuppressed griffin-griffin addback @ 180^{o};energy [keV];energy [keV]", energyBins2D, lowEnergy, highEnergy, energyBins2D, lowEnergy, highEnergy);
-   fH2[slot]["griffinGriffinEAddbackSum180Coinc"] = new TH2F("griffinGriffinEAddbackSum180Coinc", "Unsuppressed griffin addback vs griffin sum energy @ 180^{o};energy [keV];energy [keV]", energyBins2D, lowEnergy, highEnergy, energyBins2D, lowEnergy, highEnergy);
-   fH2[slot]["griffinGriffinEAddbackSum180Bg"]    = new TH2F("griffinGriffinEAddbackSum180Bg", "Unsuppressed griffin addback vs griffin sum energy @ 180^{o};energy [keV];energy [keV]", energyBins2D, lowEnergy, highEnergy, energyBins2D, lowEnergy, highEnergy);
+   fH2[slot]["griffinGriffinEAddback180Coinc"]    = new TH2F("griffinGriffinEAddback180Coinc", "Unsuppressed griffin-griffin addback @ 180^{o}, coincident;energy [keV];energy [keV]", energyBins2D, lowEnergy, highEnergy, energyBins2D, lowEnergy, highEnergy);
+   fH2[slot]["griffinGriffinEAddback180Bg"]       = new TH2F("griffinGriffinEAddback180Bg", "Unsuppressed griffin-griffin addback @ 180^{o}, time random;energy [keV];energy [keV]", energyBins2D, lowEnergy, highEnergy, energyBins2D, lowEnergy, highEnergy);
+   fH2[slot]["griffinGriffinEAddbackSum180Coinc"] = new TH2F("griffinGriffinEAddbackSum180Coinc", "Unsuppressed griffin addback vs griffin sum energy @ 180^{o}, coincident;sum energy [keV];energy [keV]", energyBins2D, lowEnergy, highEnergy, energyBins2D, lowEnergy, highEnergy);
+   fH2[slot]["griffinGriffinEAddbackSum180Bg"]    = new TH2F("griffinGriffinEAddbackSum180Bg", "Unsuppressed griffin addback vs griffin sum energy @ 180^{o}, time random;sum energy [keV];energy [keV]", energyBins2D, lowEnergy, highEnergy, energyBins2D, lowEnergy, highEnergy);
    // suppressed addback spectra
    fH1[slot]["griffinESuppAddback"]                   = new TH1F("griffinESuppAddback", Form("Suppressed griffin addback energy;energy [keV];counts/%.1f keV", (highEnergy - lowEnergy) / energyBins), energyBins, lowEnergy, highEnergy);
-   fH2[slot]["griffinGriffinESuppAddbackSum180Coinc"] = new TH2F("griffinGriffinESuppAddbackSum180Coinc", "Suppressed griffin addback vs sum energy @ 180^{o};energy [keV];energy [keV]", energyBins2D, lowEnergy, highEnergy, energyBins2D, lowEnergy, highEnergy);
-   fH2[slot]["griffinGriffinESuppAddbackSum180Bg"]    = new TH2F("griffinGriffinESuppAddbackSum180Bg", "Suppressed griffin addback vs sum energy @ 180^{o};energy [keV];energy [keV]", energyBins2D, lowEnergy, highEnergy, energyBins2D, lowEnergy, highEnergy);
-   fH2[slot]["griffinGriffinEMixedAddback180Coinc"]   = new TH2F("griffinGriffinEMixedAddback180Coinc", "Unsuppressed/suppressed griffin-griffin addback @ 180^{o};suppressed energy [keV];unsuppressed energy [keV]", energyBins2D, lowEnergy, highEnergy, energyBins2D, lowEnergy, highEnergy);
-   fH2[slot]["griffinGriffinEMixedAddback180Bg"]      = new TH2F("griffinGriffinEMixedAddback180Bg", "Unsuppressed/suppressed griffin-griffin addback @ 180^{o};suppressed energy [keV];unsuppressed energy [keV]", energyBins2D, lowEnergy, highEnergy, energyBins2D, lowEnergy, highEnergy);
+   fH2[slot]["griffinGriffinESuppAddbackSum180Coinc"] = new TH2F("griffinGriffinESuppAddbackSum180Coinc", "Suppressed griffin addback vs sum energy @ 180^{o}, coincident;sum energy [keV];energy [keV]", energyBins2D, lowEnergy, highEnergy, energyBins2D, lowEnergy, highEnergy);
+   fH2[slot]["griffinGriffinESuppAddbackSum180Bg"]    = new TH2F("griffinGriffinESuppAddbackSum180Bg", "Suppressed griffin addback vs sum energy @ 180^{o}, time random;sum energy [keV];energy [keV]", energyBins2D, lowEnergy, highEnergy, energyBins2D, lowEnergy, highEnergy);
+   fH2[slot]["griffinGriffinEMixedAddback180Coinc"]   = new TH2F("griffinGriffinEMixedAddback180Coinc", "Unsuppressed/suppressed griffin-griffin addback @ 180^{o}, coincident;suppressed energy [keV];unsuppressed energy [keV]", energyBins2D, lowEnergy, highEnergy, energyBins2D, lowEnergy, highEnergy);
+   fH2[slot]["griffinGriffinEMixedAddback180Bg"]      = new TH2F("griffinGriffinEMixedAddback180Bg", "Unsuppressed/suppressed griffin-griffin addback @ 180^{o}, time random;suppressed energy [keV];unsuppressed energy [keV]", energyBins2D, lowEnergy, highEnergy, energyBins2D, lowEnergy, highEnergy);
 }
 
 void EfficiencyHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grifBgo)
@@ -61,10 +47,12 @@ void EfficiencyHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grif
    // loop over unsuppressed griffin hits
    for(int g = 0; g < grif.GetMultiplicity(); ++g) {
       auto grif1 = grif.GetGriffinHit(g);
+      if(Reject(grif1)) continue;
       fH1[slot].at("griffinE")->Fill(grif1->GetEnergy());
       for(int g2 = g + 1; g2 < grif.GetMultiplicity(); ++g2) {
          auto grif2 = grif.GetGriffinHit(g2);
-         if(grif1->GetPosition().Angle(grif2->GetPosition()) * 180. > 179.) {
+         if(Reject(grif2)) continue;
+         if(grif1->GetPosition().Angle(grif2->GetPosition()) / TMath::Pi() * 180. > 179.) {
             if(PromptCoincidence(grif1, grif2)) {
                fH2[slot].at("griffinGriffinE180Coinc")->Fill(grif1->GetEnergy(), grif2->GetEnergy());
                fH2[slot].at("griffinGriffinE180Coinc")->Fill(grif2->GetEnergy(), grif1->GetEnergy());
@@ -81,10 +69,12 @@ void EfficiencyHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grif
    // loop over suppressed griffin hits
    for(int g = 0; g < grif.GetSuppressedMultiplicity(&grifBgo); ++g) {
       auto grif1 = grif.GetSuppressedHit(g);
+      if(Reject(grif1)) continue;
       fH1[slot].at("griffinESupp")->Fill(grif1->GetEnergy());
       for(int g2 = g + 1; g2 < grif.GetSuppressedMultiplicity(&grifBgo); ++g2) {
          auto grif2 = grif.GetSuppressedHit(g2);
-         if(grif1->GetPosition().Angle(grif2->GetPosition()) * 180. > 179.) {
+         if(Reject(grif2)) continue;
+         if(grif1->GetPosition().Angle(grif2->GetPosition()) / TMath::Pi() * 180. > 179.) {
             if(PromptCoincidence(grif1, grif2)) {
                fH2[slot].at("griffinGriffinESuppSum180Coinc")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif1->GetEnergy());
             } else if(TimeRandom(grif1, grif2)) {
@@ -95,7 +85,8 @@ void EfficiencyHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grif
       for(int g2 = 0; g2 < grif.GetMultiplicity(); ++g2) {
          if(g == g2) continue;
          auto grif2 = grif.GetGriffinHit(g2);
-         if(grif1->GetPosition().Angle(grif2->GetPosition()) * 180. > 179.) {
+         if(Reject(grif2)) continue;
+         if(grif1->GetPosition().Angle(grif2->GetPosition()) / TMath::Pi() * 180. > 179.) {
             if(PromptCoincidence(grif1, grif2)) {
                fH2[slot].at("griffinGriffinEMixed180Coinc")->Fill(grif1->GetEnergy(), grif2->GetEnergy());
             } else if(TimeRandom(grif1, grif2)) {
@@ -108,10 +99,12 @@ void EfficiencyHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grif
    // loop over unsuppressed griffin addback hits
    for(int g = 0; g < grif.GetAddbackMultiplicity(); ++g) {
       auto grif1 = grif.GetAddbackHit(g);
+      if(Reject(grif1)) continue;
       fH1[slot].at("griffinEAddback")->Fill(grif1->GetEnergy());
       for(int g2 = g + 1; g2 < grif.GetAddbackMultiplicity(); ++g2) {
          auto grif2 = grif.GetAddbackHit(g2);
-         if(grif1->GetPosition().Angle(grif2->GetPosition()) * 180. > 157.) {
+         if(Reject(grif2)) continue;
+         if(grif1->GetPosition().Angle(grif2->GetPosition()) / TMath::Pi() * 180. > 157.) {
             if(PromptCoincidence(grif1, grif2)) {
                fH2[slot].at("griffinGriffinEAddback180Coinc")->Fill(grif1->GetEnergy(), grif2->GetEnergy());
                fH2[slot].at("griffinGriffinEAddback180Coinc")->Fill(grif2->GetEnergy(), grif1->GetEnergy());
@@ -128,10 +121,12 @@ void EfficiencyHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grif
    // loop over suppressed griffin addback hits
    for(int g = 0; g < grif.GetSuppressedAddbackMultiplicity(&grifBgo); ++g) {
       auto grif1 = grif.GetSuppressedAddbackHit(g);
+      if(Reject(grif1)) continue;
       fH1[slot].at("griffinESuppAddback")->Fill(grif1->GetEnergy());
       for(int g2 = g + 1; g2 < grif.GetSuppressedAddbackMultiplicity(&grifBgo); ++g2) {
          auto grif2 = grif.GetSuppressedAddbackHit(g2);
-         if(grif1->GetPosition().Angle(grif2->GetPosition()) * 180. > 157.) {
+         if(Reject(grif2)) continue;
+         if(grif1->GetPosition().Angle(grif2->GetPosition()) / TMath::Pi() * 180. > 157.) {
             if(PromptCoincidence(grif1, grif2)) {
                fH2[slot].at("griffinGriffinESuppAddbackSum180Coinc")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif1->GetEnergy());
             } else if(TimeRandom(grif1, grif2)) {
@@ -142,7 +137,8 @@ void EfficiencyHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grif
       for(int g2 = 0; g2 < grif.GetAddbackMultiplicity(); ++g2) {
          if(g == g2) continue;
          auto grif2 = grif.GetAddbackHit(g2);
-         if(grif1->GetPosition().Angle(grif2->GetPosition()) * 180. > 157.) {
+         if(Reject(grif2)) continue;
+         if(grif1->GetPosition().Angle(grif2->GetPosition()) / TMath::Pi() * 180. > 157.) {
             if(PromptCoincidence(grif1, grif2)) {
                fH2[slot].at("griffinGriffinEMixedAddback180Coinc")->Fill(grif1->GetEnergy(), grif2->GetEnergy());
             } else if(TimeRandom(grif1, grif2)) {

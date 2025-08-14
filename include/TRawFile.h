@@ -59,6 +59,7 @@ public:
    virtual int GetSubRunNumber() = 0;
 
    virtual size_t BytesRead() { return fBytesRead; }
+   void           BytesRead(size_t bytesRead) { fBytesRead = bytesRead; }
    void           IncrementBytesRead(size_t val = 1) { fBytesRead += val; }
    virtual size_t FileSize() { return fFileSize; }
    void           FileSize(size_t fileSize) { fFileSize = fileSize; }
@@ -66,10 +67,11 @@ public:
    virtual std::string Filename() const { return fFilename; }   ///< Get the name of this file
    virtual void        Filename(const char* val) { fFilename = val; }
 
-   size_t BufferSize() const { return fReadBuffer.size(); }
-   char*  BufferData() { return fReadBuffer.data(); }
-   void   ClearBuffer() { fReadBuffer.clear(); }
-   void   ResizeBuffer(size_t newSize) { fReadBuffer.resize(newSize); }
+   std::vector<char>& ReadBuffer() { return fReadBuffer; }
+   size_t             BufferSize() const { return fReadBuffer.size(); }
+   char*              BufferData() { return fReadBuffer.data(); }
+   void               ClearBuffer() { fReadBuffer.clear(); }
+   void               ResizeBuffer(size_t newSize) { fReadBuffer.resize(newSize); }
 
 #ifndef __CINT__
    virtual std::shared_ptr<TRawEvent> GetOdbEvent()

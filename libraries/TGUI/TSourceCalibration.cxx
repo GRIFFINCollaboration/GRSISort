@@ -1679,10 +1679,17 @@ void TChannelTab::UpdateFwhm()
 
 void TChannelTab::Calibrate()
 {
-   /// This function fit's the final data of the given channel. It requires all other elements to have been created already.
+   /// Uses the statis TSourceCalibration::Degree for the degree of the polynomial used to calibrate the data.
+   Calibrate(fSourceCalibration->Degree());
+}
+
+void TChannelTab::Calibrate(int degree)
+{
+   /// This function fit's the final data of the given channel.
+   /// It requires all other elements to have been created already.
    if(TSourceCalibration::VerboseLevel() >= EVerbosity::kSubroutines) { std::cout << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-   TF1* calibration = new TF1("fitfunction", ::Polynomial, 0., 10000., fSourceCalibration->Degree() + 2);
-   calibration->FixParameter(0, fSourceCalibration->Degree());
+   TF1* calibration = new TF1("fitfunction", ::Polynomial, 0., 10000., degree + 2);
+   calibration->FixParameter(0, degree);
    if(TSourceCalibration::VerboseLevel() > EVerbosity::kBasicFlow) {
       std::cout << DYELLOW << "fData " << fData << ": ";
       if(fData != nullptr) {
@@ -1695,7 +1702,7 @@ void TChannelTab::Calibrate()
    }
    fData->Fit(calibration, "Q");
    TString text = Form("%.6f + %.6f*x", calibration->GetParameter(1), calibration->GetParameter(2));
-   for(int i = 2; i <= fSourceCalibration->Degree(); ++i) {
+   for(int i = 2; i <= degree; ++i) {
       text.Append(Form(" + %.6f*x^%d", calibration->GetParameter(i + 1), i));
    }
    fChannelStatusBar->SetText(text.Data(), 2);
@@ -1797,7 +1804,7 @@ void TChannelTab::RecursiveRemove(const double& maxResidual)
 
    // get the maximum residual
    auto* maxElement = std::max_element(fData->TotalResidualGraph()->GetX(), fData->TotalResidualGraph()->GetX() + fData->TotalResidualGraph()->GetN(), [](double a, double b) { return std::abs(a) < std::abs(b); });
-   auto index      = std::distance(fData->TotalResidualGraph()->GetX(), maxElement);
+   auto  index      = std::distance(fData->TotalResidualGraph()->GetX(), maxElement);
 
    if(std::abs(*maxElement) < maxResidual) {
       if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) { std::cout << DYELLOW << "largest residual is " << *maxElement << " at position " << index << " and is smaller than max. residual " << maxResidual << ": stopping recursive remove" << std::endl; }
@@ -1868,9 +1875,9 @@ void TChannelTab::Initialize(const bool& force)
       source->InitialCalibration(force);
       fProgressBar->Increment(1);
    }
-   // get this rough calibration data and calibrate
+   // get this rough calibration data and calibrate with linear calibration
    UpdateData();
-   Calibrate();
+   Calibrate(1);
    // copy the data to the initial data and draw it
    fInit = static_cast<TCalibrationGraphSet*>(fData->Clone(Form("init%s", fName.c_str())));
    if(TSourceCalibration::VerboseLevel() > EVerbosity::kSubroutines) {
@@ -2210,9 +2217,9 @@ TSourceCalibration::TSourceCalibration(double sigma, double threshold, int degre
    for(size_t i = 1; i < fMatrices.size(); ++i) {
       int tmpBins = 0;
       for(int bin = 1; bin <= fMatrices[i]->GetNbinsX(); ++bin) {
-         if(FilledBin(fMatrices[i], bin), std::find(fBadBins.begin(), fBadBins.end(), bin) == fBadBins.end()) {   // good bin in the current matrix
-                                                                                                                  // current index is tmpBins, so we check if the bin agrees with what we have
-            if(channelToIndex.find(bin) == channelToIndex.end() || tmpBins != channelToIndex[bin]) {              // found a full bin, but the corresponding bin in the first matrix isn't full or a different bin
+         if(FilledBin(fMatrices[i], bin)) {                                                            // good bin in the current matrix
+                                                                                                       // current index is tmpBins, so we check if the bin agrees with what we have
+            if(channelToIndex.find(bin) == channelToIndex.end() || tmpBins != channelToIndex[bin]) {   // found a full bin, but the corresponding bin in the first matrix isn't full or a different bin
                std::ostringstream error;
                error << "Mismatch in " << i << ". matrix (" << fMatrices[i]->GetName() << "), bin " << bin << " is " << tmpBins << ". filled bin, but should be " << (channelToIndex.find(bin) == channelToIndex.end() ? "not filled" : Form("%d", channelToIndex[bin])) << std::endl;
                throw std::invalid_argument(error.str());

@@ -26,6 +26,12 @@ cmake_minimum_required(VERSION 3.15 FATAL_ERROR)
 project(GRSISort)
 
 #----------------------------------------------------------------------------
+# Check that we are building out of source
+if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
+	message(FATAL_ERROR "In-source builds are not recommended, please re-run from a separate build directory, or specify the build directory via the -B flag.")
+endif()
+
+#----------------------------------------------------------------------------
 # find git (to set version correctly)
 find_package(Git REQUIRED)
 
@@ -369,6 +375,12 @@ add_custom_target(GVersion
 						  COMMENT "Generating ${CMAKE_SOURCE_DIR}/include/GVersion.h from ${CMAKE_SOURCE_DIR}/include/GVersion.h.in"
 						  #WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
   )
+
+add_custom_command(TARGET GVersion POST_BUILD
+	  COMMAND ${CMAKE_COMMAND} -E copy
+	  ${CMAKE_SOURCE_DIR}/include/GVersion.h
+	  ${CMAKE_CURRENT_BINARY_DIR}/include/GVersion.h
+)
 
 #----------------------------------------------------------------------------
 # add grsiproof (but exclude it from target all)

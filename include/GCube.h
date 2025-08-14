@@ -44,8 +44,11 @@ public:
    void FillRandom(TH1* h, Int_t ntimes = 5000) override { FillRandom(h, ntimes, nullptr); }
    void FillRandom(const char* fname, Int_t ntimes = 5000, TRandom* rng = nullptr);
    void FillRandom(TH1* h, Int_t ntimes = 5000, TRandom* rng = nullptr);
-#else
+#elif ROOT_VERSION_CODE < ROOT_VERSION(6, 36, 0)
    void FillRandom(const char* fname, Int_t ntimes = 5000, TRandom* rng = nullptr) override;
+   void FillRandom(TH1* h, Int_t ntimes = 5000, TRandom* rng = nullptr) override;
+#else
+   void FillRandom(const char* fname, Int_t ntimes = 5000, TRandom* rng = nullptr);
    void FillRandom(TH1* h, Int_t ntimes = 5000, TRandom* rng = nullptr) override;
 #endif
 #if ROOT_VERSION_CODE < ROOT_VERSION(6, 18, 0)

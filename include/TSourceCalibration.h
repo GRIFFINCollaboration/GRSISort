@@ -146,6 +146,7 @@ public:
    void          SelectedTab(Int_t id);
    void          Write(TFile* output);
    void          Calibrate();
+   void          Calibrate(int degree);
    void          RecursiveRemove(const double& maxResidual);
    void          FindCalibratedPeaks();
    void          FindAllCalibratedPeaks();
@@ -196,7 +197,6 @@ private:
    std::vector<TNucleus*>                                               fNuclei;               ///< the source nucleus
    std::vector<GH1D*>                                                   fProjections;          ///< vector of all projections
    std::string                                                          fName;                 ///< name of this tab
-   int                                                                  fDegree{1};            ///< degree of polynomial function used to calibrate
    std::vector<std::vector<std::tuple<double, double, double, double>>> fSourceEnergies;       ///< vector with source energies and uncertainties
    TCalibrationGraphSet*                                                fData{nullptr};        ///< combined data from all sources
    TCalibrationGraphSet*                                                fFwhm{nullptr};        ///< combined fwhm from all sources

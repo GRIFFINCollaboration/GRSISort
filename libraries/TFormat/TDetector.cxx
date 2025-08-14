@@ -51,6 +51,16 @@ void TDetector::Print(std::ostream& out) const
    out << str.str();
 }
 
+void TDetector::Clear(Option_t* opt)
+{
+   if(strcmp(opt, "a") == 0) {
+      for(auto* hit : fHits) {
+         delete hit;
+      }
+   }
+   fHits.clear();
+}
+
 void TDetector::ClearTransients()
 {
    for(auto* hit : fHits) {
