@@ -133,10 +133,10 @@ void TAnalysisWriteLoop::Write()
 
       if(options->WriteDiagnostics()) {
          diag->Write("SortingDiagnostics", TObject::kOverwrite);
-			if(!options->WriteFragmentTree()) {
-				auto* parsingDiagnostics = TParsingDiagnostics::Get();
-				parsingDiagnostics->Write("ParsingDiagnostics", TObject::kOverwrite);
-			}
+         if(!options->WriteFragmentTree()) {
+            auto* parsingDiagnostics = TParsingDiagnostics::Get();
+            parsingDiagnostics->Write("ParsingDiagnostics", TObject::kOverwrite);
+         }
       }
 
       fOutputFile->Write();

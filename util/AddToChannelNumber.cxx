@@ -4,20 +4,20 @@
 int main(int argc, char** argv)
 {
    if(argc != 3) {
-		std::cout << "Usage: AddOneToChannel <int to add> <calfile.cal>\n";
+      std::cout << "Usage: AddOneToChannel <int to add> <calfile.cal>\n";
       return 1;
    }
 
    int numToAdd = atoi(argv[1]);
 
-	std::cout << "Adding " << numToAdd << " to all channels\n";
+   std::cout << "Adding " << numToAdd << " to all channels\n";
 
    // Read Cal file
    TChannel::ReadCalFile(argv[2]);
    std::unordered_map<unsigned int, TChannel*>* chanmap = TChannel::GetChannelMap();
 
    if(chanmap == nullptr) {
-		std::cout << "can't find channel map\n";
+      std::cout << "can't find channel map\n";
       return 1;
    }
 
