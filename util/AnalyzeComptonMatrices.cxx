@@ -5,12 +5,6 @@
 #include "TF1.h"
 #include "TGraphErrors.h"
 #include "TMultiGraph.h"
-#include "TCanvas.h"
-#include "TLine.h"
-#include "TLegend.h"
-#include "Fit/Fitter.h"
-#include "TMatrixD.h"
-#include "TPaveText.h"
 #include "TMath.h"
 #include "Math/SpecFuncMathMore.h"
 

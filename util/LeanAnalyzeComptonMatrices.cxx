@@ -35,39 +35,21 @@ ________________________________________________________________________________
 #include <cmath>
 #include <vector>
 #include <algorithm>
-#include <fstream>
 #include <Globals.h>
-#include <string>
 
 #include "TTree.h"
-#include "TTreeIndex.h"
-#include "TVirtualIndex.h"
 #include "TFile.h"
 #include "TList.h"
-#include "TFragment.h"
-#include "TChannel.h"
-#include "TApplication.h"
 #include "TROOT.h"
 #include "TChain.h"
 #include "TMath.h"
+#include "Math/SpecFuncMathMore.h"
 #include "TF1.h"
-#include "TH1F.h"
-#include "TH2F.h"
-#include "TH3F.h"
-#include "TVector.h"
-#include "TVector3.h"
-#include "TCanvas.h"
-#include "TLatex.h"
-#include "TStyle.h"
 #include "TStopwatch.h"
-#include "TSpectrum.h"
+#include "TH2.h"
 #include "TGraph.h"
 #include "TMultiGraph.h"
 #include "TGraphErrors.h"
-
-#include "TRunInfo.h"
-#include "TGRSISortInfo.h"
-#include "TGRSIFunctions.h"
 
 // Functions
 TList* ComptonPol(TFile* f, TStopwatch* w);

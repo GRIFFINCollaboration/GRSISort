@@ -4,7 +4,6 @@
 //    itterating over the keys, than turn each of them into an ascii file.
 //
 
-#include <cstdint>
 #include <fstream>
 #include <iostream>
 #include <iomanip>
@@ -22,13 +21,8 @@
 #include "TGraphAsymmErrors.h"
 #include "TSpline.h"
 #include "TFolder.h"
-#include "TSystem.h"
-#include "TList.h"
-#include "TClass.h"
 #include "TKey.h"
-#include "TTimeStamp.h"
 
-#include "Globals.h"
 #include "GHSym.h"
 
 template <class T>

@@ -32,11 +32,7 @@ ________________________________________________________________________________
 #include <cstdlib>
 #include <cmath>
 
-#include <vector>
-#include <algorithm>
-#include <fstream>
 #include <Globals.h>
-#include <string>
 
 #include "TMath.h"
 
@@ -45,7 +41,7 @@ ________________________________________________________________________________
 double ScaleQ(double En1, double En2);
 
 // Main
-int main(int argc, char** argv)
+int main(int, char**)
 {
    // The quality factor for creating a predicted Asymmetry plot of 0.5*Q*P*Cos(2*Xi), where
    // P is determined by PolarizationCalculation()  <- Parameters must be set internally for each transition
@@ -56,11 +52,6 @@ int main(int argc, char** argv)
    constexpr double energyUsed = 1332.;
    // Maximum energy for plot.
    constexpr int maxEnergy = 3000;
-
-   if(argc != 2) {
-      printf("try again (usage: %s <matrix file>).\n", argv[0]);
-      return 0;
-   }
 
    for(int i = 100; i <= maxEnergy; i += 100) {
       std::cout << i << " " << qualityFactor * ScaleQ(i, energyUsed) << std::endl;

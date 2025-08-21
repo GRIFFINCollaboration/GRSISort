@@ -8,11 +8,8 @@
 #include <sstream>
 
 #include "TApplication.h"
-#include "TBox.h"
 #include "TFile.h"
 #include "TH1.h"
-#include "TLatex.h"
-#include "TPaveStats.h"
 
 // ****** Compilation command *************************************************
 // g++ -o convertTH1 `root-config --cflags` convertTH1.cpp `root-config --glibs`

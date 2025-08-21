@@ -4,21 +4,15 @@
 // Takes in a FragmentTree, makes data loss spectra
 //
 //
-#include <utility>
-#include <vector>
 #include <cstdio>
 #include <iostream>
-#include <iomanip>
 
 #include "TTree.h"
-#include "TTreeIndex.h"
 #include "TVirtualIndex.h"
 #include "TFile.h"
 #include "TList.h"
-#include "TH1F.h"
-#include "TH2F.h"
 #include "TStopwatch.h"
-#include "TMath.h"
+#include "TH2.h"
 
 #include "TChannel.h"
 

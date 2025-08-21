@@ -1,9 +1,6 @@
-#include <map>
-
 #include "TFile.h"
 
 #include "TChannel.h"
-#include "Globals.h"
 
 int main(int argc, char** argv)
 {

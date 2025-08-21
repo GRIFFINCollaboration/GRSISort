@@ -2,18 +2,14 @@
 #include <string>
 #include <vector>
 
-#include "RVersion.h"
+#include "ROOT/RVersion.hxx"
 #if ROOT_VERSION_CODE >= ROOT_VERSION(6, 14, 0)
-#include "TStyle.h"
 #include "TFile.h"
 #include "TChain.h"
-#include "ROOT/RDataFrame.hxx"
 #include "TEnv.h"
-#include "TSystem.h"
 #include "TStopwatch.h"
 
 #include "TGRSIOptions.h"
-#include "TChannel.h"
 #include "TParserLibrary.h"
 #include "TGRSIFrame.h"
 #include "TRedirect.h"
@@ -26,7 +22,7 @@ int main(int argc, char** argv)
    TGRSIOptions* opt = nullptr;
    try {
       std::string grsi_path = getenv("GRSISYS");   // Finds the GRSISYS path to be used by other parts of the grsisort code
-      if(grsi_path.length() > 0) {
+      if(!grsi_path.empty()) {
          grsi_path += "/";
       }
       // Read in grsirc in the GRSISYS directory to set user defined options on grsisort startup
