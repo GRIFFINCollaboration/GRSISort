@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 
-#include "ROOT/RVersion.hxx"
+#include "RVersion.h" // IWYU pragma: keep
 #if ROOT_VERSION_CODE >= ROOT_VERSION(6, 14, 0)
 #include "TFile.h"
 #include "TChain.h"
