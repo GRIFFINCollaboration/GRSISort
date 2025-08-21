@@ -1,25 +1,15 @@
-#include <map>
-#include <vector>
-
 #include "TH1.h"
+#include "TH2.h"
 #include "TF1.h"
-#include "TList.h"
-#include "TFitResult.h"
-#include "TFitResultPtr.h"
-#include "TRandom.h"
 #include "TSpectrum.h"
 #include "TVirtualFitter.h"
 #include "TMath.h"
-#include "TCanvas.h"
 #include "TROOT.h"
 #include "TMultiGraph.h"
 #include "TFile.h"
-#include "TH2D.h"
 #include "TGraphErrors.h"
 #include "TPeak.h"
-#include "Math/Minimizer.h"
-
-#include "TGRSITransition.h"
+#include "Math/MinimizerOptions.h"
 
 void GetCal(TH1* hist, TGraphErrors* ge, TGraphErrors* fwhm)
 {

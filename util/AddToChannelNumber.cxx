@@ -4,21 +4,21 @@
 int main(int argc, char** argv)
 {
    if(argc != 3) {
-      printf("Usage: AddOneToChannel <int to add> <calfile.cal>\n");
-      return 0;
+      std::cout << "Usage: AddOneToChannel <int to add> <calfile.cal>\n";
+      return 1;
    }
 
-   int num_to_add = atoi(argv[1]);
+   int numToAdd = atoi(argv[1]);
 
-   printf("Adding %d to all channels\n", num_to_add);
+   std::cout << "Adding " << numToAdd << " to all channels\n";
 
    // Read Cal file
    TChannel::ReadCalFile(argv[2]);
    std::unordered_map<unsigned int, TChannel*>* chanmap = TChannel::GetChannelMap();
 
    if(chanmap == nullptr) {
-      printf("can't find channel map\n");
-      return 0;
+      std::cout << "can't find channel map\n";
+      return 1;
    }
 
    std::vector<TChannel*> chanlist;
@@ -27,7 +27,7 @@ int main(int argc, char** argv)
       TChannel* chan    = iter.second;
       auto*     newchan = new TChannel(chan);
       chanlist.push_back(newchan);
-      newchan->SetNumber(TPriorityValue<int>(newchan->GetNumber() + num_to_add, EPriority::kUser));
+      newchan->SetNumber(TPriorityValue<int>(newchan->GetNumber() + numToAdd, EPriority::kUser));
    }
 
    TChannel::DeleteAllChannels();
@@ -38,5 +38,5 @@ int main(int argc, char** argv)
 
    TChannel::WriteCalFile(argv[2]);
 
-   return 1;
+   return 0;
 }
