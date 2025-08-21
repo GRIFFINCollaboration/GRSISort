@@ -43,7 +43,6 @@ ________________________________________________________________________________
 #include "TROOT.h"
 #include "TChain.h"
 #include "TMath.h"
-#include "Math/SpecFuncMathMore.h"
 #include "TF1.h"
 #include "TStopwatch.h"
 #include "TH2.h"
@@ -60,6 +59,8 @@ TList* AGATATheory(TList* list, double Q);
 double ScaleQ(double E1, double E2);
 
 #ifdef HAS_MATHMORE
+#include "Math/SpecFuncMathMore.h"
+
 // Main
 int main(int argc, char** argv)
 {
