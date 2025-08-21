@@ -111,9 +111,6 @@
 ///
 /////////////////////////////////////////////////////////////////
 
-#include <cstdio>
-
-#include "TObject.h"
 #include "TTree.h"
 #include "TFile.h"
 #include "TKey.h"
@@ -121,7 +118,6 @@
 #include "Globals.h"
 
 #include "TSingleton.h"
-#include "TChannel.h"
 #include "TEventBuildingLoop.h"
 #include "TDetectorInformation.h"
 
@@ -205,34 +201,34 @@ public:
    static void SetRunInfo(int runnum = 0, int subrunnum = -1);
    static void SetAnalysisTreeBranches(TTree*);
 
-   static inline void SetRunNumber(int tmp) { Get()->fRunNumber = tmp; }
-   static inline void SetSubRunNumber(int tmp) { Get()->fSubRunNumber = tmp; }
+   static void SetRunNumber(int tmp) { Get()->fRunNumber = tmp; }
+   static void SetSubRunNumber(int tmp) { Get()->fSubRunNumber = tmp; }
 
-   static inline int RunNumber() { return Get()->fRunNumber; }
-   static inline int SubRunNumber() { return Get()->fSubRunNumber; }
+   static int RunNumber() { return Get()->fRunNumber; }
+   static int SubRunNumber() { return Get()->fSubRunNumber; }
 
-   static inline int FirstRunNumber() { return Get()->fFirstRunNumber; }
-   static inline int FirstSubRunNumber() { return Get()->fFirstSubRunNumber; }
+   static int FirstRunNumber() { return Get()->fFirstRunNumber; }
+   static int FirstSubRunNumber() { return Get()->fFirstSubRunNumber; }
 
-   static inline int LastRunNumber() { return Get()->fLastRunNumber; }
-   static inline int LastSubRunNumber() { return Get()->fLastSubRunNumber; }
+   static int LastRunNumber() { return Get()->fLastRunNumber; }
+   static int LastSubRunNumber() { return Get()->fLastSubRunNumber; }
 
-   static inline void SetRunTitle(const char* run_title)
+   static void SetRunTitle(const char* run_title)
    {
       if(run_title != nullptr) { Get()->fRunTitle.assign(run_title); }
    }
-   static inline void SetRunComment(const char* run_comment)
+   static void SetRunComment(const char* run_comment)
    {
       if(run_comment != nullptr) { Get()->fRunComment.assign(run_comment); }
    }
 
-   static inline std::string RunTitle() { return Get()->fRunTitle; }
-   static inline std::string RunComment() { return Get()->fRunComment; }
+   static std::string RunTitle() { return Get()->fRunTitle; }
+   static std::string RunComment() { return Get()->fRunComment; }
 
-   static inline void SetRunStart(double tmp) { Get()->fRunStart = tmp; }
-   static inline void SetRunStop(double tmp) { Get()->fRunStop = tmp; }
-   static inline void SetRunLength(double tmp) { Get()->fRunLength = tmp; }
-   static inline void SetRunLength()
+   static void SetRunStart(double tmp) { Get()->fRunStart = tmp; }
+   static void SetRunStop(double tmp) { Get()->fRunStop = tmp; }
+   static void SetRunLength(double tmp) { Get()->fRunLength = tmp; }
+   static void SetRunLength()
    {
       // if this is a single sub run or consecutive sub runs of a single run we can calculate the run length from the stop and start times
       if(RunNumber() != 0) {
@@ -242,15 +238,15 @@ public:
       // so we do nothing
    }
 
-   static inline double RunStart() { return Get()->fRunStart; }
-   static inline double RunStop() { return Get()->fRunStop; }
-   static inline double RunLength() { return Get()->fRunLength; }
+   static double RunStart() { return Get()->fRunStart; }
+   static double RunStop() { return Get()->fRunStop; }
+   static double RunLength() { return Get()->fRunLength; }
 
-   static inline void SetCalFileName(const char* name) { Get()->fCalFileName.assign(name); }
-   static inline void SetCalFileData(const char* data) { Get()->fCalFile.assign(data); }
+   static void SetCalFileName(const char* name) { Get()->fCalFileName.assign(name); }
+   static void SetCalFileData(const char* data) { Get()->fCalFile.assign(data); }
 
-   static inline void SetXMLODBFileName(const char* name) { Get()->fXMLODBFileName.assign(name); }
-   static inline void SetXMLODBFileData(const char* data) { Get()->fXMLODBFile.assign(data); }
+   static void SetXMLODBFileName(const char* name) { Get()->fXMLODBFileName.assign(name); }
+   static void SetXMLODBFileData(const char* data) { Get()->fXMLODBFile.assign(data); }
 
    static const char* GetCalFileName() { return Get()->fCalFileName.c_str(); }
    static const char* GetCalFileData() { return Get()->fCalFile.c_str(); }
@@ -264,11 +260,11 @@ public:
    static Bool_t ReadInfoFile(const char* filename = "");
    static Bool_t ParseInputData(const char* inputdata = "", Option_t* opt = "q");
 
-   static inline void SetRunInfoFileName(const char* fname) { Get()->fRunInfoFileName.assign(fname); }
-   static inline void SetRunInfoFile(const char* ffile) { Get()->fRunInfoFile.assign(ffile); }
+   static void SetRunInfoFileName(const char* fname) { Get()->fRunInfoFileName.assign(fname); }
+   static void SetRunInfoFile(const char* ffile) { Get()->fRunInfoFile.assign(ffile); }
 
-   static inline void   SetHPGeArrayPosition(const double arr_pos) { Get()->fHPGeArrayPosition = arr_pos; }
-   static inline double HPGeArrayPosition() { return Get()->fHPGeArrayPosition; }
+   static void   SetHPGeArrayPosition(const double arr_pos) { Get()->fHPGeArrayPosition = arr_pos; }
+   static double HPGeArrayPosition() { return Get()->fHPGeArrayPosition; }
 
    Long64_t Merge(TCollection* list);
    void     Add(TRunInfo* runinfo, bool verbose = false);
@@ -337,7 +333,7 @@ private:
    TDetectorInformation* fDetectorInformation{nullptr};   //!<! pointer to detector specific information (set by each parser library)
 
    /// \cond CLASSIMP
-   ClassDefOverride(TRunInfo, 18)   // NOLINT(readability-else-after-return)
+   ClassDefOverride(TRunInfo, 18)   // NOLINT(readability-else-after-return,modernize-type-traits)
    /// \endcond
 };
 /*! @} */
