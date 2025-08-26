@@ -1,18 +1,13 @@
 #include "TRuntimeObjects.h"
 
-#include <iostream>
 #include <utility>
 
-#include "TClass.h"
 #include "TCutG.h"
 #include "TFile.h"
 #include "TH1.h"
 #include "TH2.h"
 #include "TDirectoryFile.h"
 #include "TProfile.h"
-
-#include "TH1D.h"
-#include "TH2D.h"
 
 #include "GValue.h"
 

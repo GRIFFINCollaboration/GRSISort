@@ -3,11 +3,6 @@
 #include <chrono>
 #include <thread>
 
-#include "TClass.h"
-#include "TFile.h"
-#include "TThread.h"
-
-#include "TDetector.h"
 #include "TGRSIint.h"
 #include "TFragment.h"
 
