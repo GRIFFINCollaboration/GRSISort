@@ -72,7 +72,7 @@ DynamicLibrary& DynamicLibrary::operator=(DynamicLibrary&& other) noexcept
    return *this;
 }
 
-void DynamicLibrary::swap(DynamicLibrary& other)
+void DynamicLibrary::swap(DynamicLibrary& other) noexcept
 {
    std::swap(fLibrary, other.fLibrary);
    std::swap(fLibName, other.fLibName);
