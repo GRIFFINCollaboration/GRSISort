@@ -55,7 +55,7 @@ public:
    void* GetSymbol(const char* symbol);
 
 private:
-   void swap(DynamicLibrary& other);
+   void swap(DynamicLibrary& other) noexcept;
 
    void*       fLibrary;
    std::string fLibName;

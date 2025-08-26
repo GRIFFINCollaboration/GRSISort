@@ -14,7 +14,6 @@
 #include "TROOT.h"
 #include "TKey.h"
 
-#include "GValue.h"
 #include "GRootCommands.h"
 #include "TPreserveGDirectory.h"
 
