@@ -20,7 +20,7 @@ jobs:
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -32,25 +32,25 @@ jobs:
 
     # Check out the data libraries
       - name: Checkout GRSIData
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: GRIFFINCollaboration/GRSIData
           path: GRSIData
 
       - name: Checkout ILLData
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: UoG-Nuclear-Physics-Group/ILLData
           path: IllData
 
       - name: Checkout iThembaData
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: UoG-Nuclear-Physics-Group/iThembaData
           path: iThembaData
 
       - name: Checkout HILData
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: UoG-Nuclear-Physics-Group/HILData
           path: HILData
