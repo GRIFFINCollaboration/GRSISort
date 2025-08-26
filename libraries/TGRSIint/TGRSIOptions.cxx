@@ -1,6 +1,5 @@
 #include "TGRSIOptions.h"
 
-#include <algorithm>
 #include <cctype>
 #include <iostream>
 
@@ -12,7 +11,6 @@
 #include "FullPath.h"
 #include "ArgParser.h"
 #include "DynamicLibrary.h"
-#include "TGRSIUtilities.h"
 #include "GRootCommands.h"
 
 TGRSIOptions*     TGRSIOptions::fGRSIOptions     = nullptr;
@@ -213,7 +211,7 @@ void TGRSIOptions::Load(int argc, char** argv)
    // Load default TChannels, if specified.
    {
       std::string default_calfile = gEnv->GetValue("GRSI.CalFile", "");
-      if(default_calfile.length() != 0u) {
+      if(!default_calfile.empty()) {
          fInputCalFiles.push_back(default_calfile);
       }
    }
@@ -221,7 +219,7 @@ void TGRSIOptions::Load(int argc, char** argv)
    // Load default GValues, if specified.
    {
       std::string default_valfile = gEnv->GetValue("GRSI.ValFile", "");
-      if(default_valfile.length() != 0u) {
+      if(!default_valfile.empty()) {
          fInputValFiles.push_back(default_valfile);
       }
    }
@@ -392,7 +390,7 @@ void TGRSIOptions::Load(int argc, char** argv)
    if(program == "grsiframe") {
       // grsisort or grsiproof options
       parser.option("max-events", &fNumberOfEvents, true)
-         .description("Maximum number of (midas, lst, rlmd, or tdr) events read")
+         .description("Maximum number of events read")
          .default_value(0);
    }
 
