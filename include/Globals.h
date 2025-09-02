@@ -49,8 +49,6 @@ typedef char int8_t;
 #include <_types/_uint32_t.h>
 #include <_types/_uint64_t.h>
 #include <sys/_types/_int16_t.h>
-#else
-#include <cstdint>
 #endif
 
 #include <iostream>
@@ -66,8 +64,6 @@ typedef char int8_t;
 #include <memory>
 #include <unistd.h>
 
-#include "TEnv.h"
-
 const std::string& ProgramName();
 
 namespace grsi {
@@ -79,7 +75,7 @@ public:
            return what.c_str();
         }*/
 
-   const int   code;
+   const int   code; // NOLINT(cppcoreguidelines-avoid-const-or-ref-data-members)
    const char* message;
 };
 
@@ -140,7 +136,7 @@ inline std::string hex(T val, int width = -1)
    return str.str();
 }
 
-enum EVerbosity : int {
+enum EVerbosity : std::uint8_t {
    kQuiet       = 0,
    kBasicFlow   = 1,
    kSubroutines = 2,

@@ -5,12 +5,7 @@
  *  @{
  */
 
-#include <iostream>
-#include <fstream>
-#include <string>
-
 #include "TNamed.h"
-#include "TMath.h"
 #include "TSpline.h"
 #include "TGraph.h"
 #include "TLorentzVector.h"

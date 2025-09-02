@@ -5,8 +5,6 @@
  *  @{
  */
 
-#include <map>
-
 #include "TObject.h"
 #include "TFile.h"
 

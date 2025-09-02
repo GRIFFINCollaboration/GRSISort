@@ -6,17 +6,12 @@
  */
 
 #include <vector>
-#include <string>
-#include <fstream>
-#include <iostream>
 
 #include <map>
 #include <utility>
 
 #include "TGraph.h"
 #include "TSpline.h"
-#include "TH1.h"
-#include "TF1.h"
 
 class TSRIM {
 public:

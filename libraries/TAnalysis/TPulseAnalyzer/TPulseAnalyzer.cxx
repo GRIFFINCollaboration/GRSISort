@@ -1,6 +1,7 @@
 #include <utility>
 
 #include "TPulseAnalyzer.h"
+#include "TGRSIFunctions.h"
 
 TPulseAnalyzer::TPulseAnalyzer()
 {
@@ -1304,9 +1305,7 @@ void TPulseAnalyzer::GetCsIExclusionZone()
             // the
             // acceptable range, set temin to the upper limit of the baseline range.
             cWpar->temin = static_cast<int>(floor((cWpar->baselineMin - cWpar->bfit) / cWpar->afit));
-            if(cWpar->temin < cWpar->baseline_range) {
-               cWpar->temin = cWpar->baseline_range;
-            }
+            cWpar->temin = std::max(cWpar->temin, cWpar->baseline_range);
             if(cWpar->temin > cWpar->temax) {
                cWpar->temin = cWpar->baseline_range;
             }
@@ -1394,13 +1393,9 @@ intersection of f'(t) and 0 by linear interpolation from these endpoints.
          double slope = -fa / (fb - fa);   // interpolation slope for dependent variable t
 
          //"reasonable" interpolation slopes
-         if(slope > 0.99) {
-            slope = 0.99;
-         }
+         slope = std::min(slope, 0.99);
 
-         if(slope < 0.01) {
-            slope = 0.01;
-         }
+         slope = std::max(slope, 0.01);
          // its pretty harmless computationally
 
          // tc is the estimate for t0
@@ -1452,7 +1447,7 @@ void TPulseAnalyzer::GetQuickPara()
    get_baseline();   // Takes a small sample baseline
    get_tmax();       // Does a filtered max search
 
-   if(!(cWpar->mflag == 1 && cWpar->bflag)) { return; }
+   if(cWpar->mflag != 1 || !cWpar->bflag) { return; }
 
    if(cWpar->tmax > cN) { cWpar->tmax = cN - 1; }
 
@@ -1494,7 +1489,7 @@ void TPulseAnalyzer::GetQuickPara()
       t0 += cWpar->t90 - ((cWpar->t90 - cWpar->t10) * 1.125);
       t0 *= 0.5;
    }
-   if(t0 < 0.) { t0 = 0.; }
+   t0 = std::max(t0, 0.);
 
    // 	std::cout<<std::endl<<t0<<std::flush;
    cWpar->t0 = t0;

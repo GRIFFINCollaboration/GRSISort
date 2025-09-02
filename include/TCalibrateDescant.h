@@ -8,13 +8,9 @@
 #include "TGNumberEntry.h"
 #include "TGLabel.h"
 
-#include "TH1D.h"
 #include "TH2.h"
 #include "TF1.h"
 #include "TGraphErrors.h"
-#include "TMath.h"
-
-#include "GCanvas.h"
 
 /** \addtogroup GUI
  *  @{
@@ -69,7 +65,7 @@ private:
 
 class TCalibrateDescant : public TGMainFrame {
 public:
-   enum class ESourceType { k22NaLow,
+   enum class ESourceType : std::uint8_t { k22NaLow,
                             k22NaHigh,
                             k24NaLow,
                             k24NaHigh,
@@ -80,7 +76,7 @@ public:
                             k152Eu1408,
                             k241AmEdge,
                             k241Am };
-   enum EParameter { kAmplitude      = 0,
+   enum EParameter : std::uint8_t { kAmplitude      = 0,
                      kPosition       = 3,
                      kSigma          = 6,
                      kDSigma         = 9,

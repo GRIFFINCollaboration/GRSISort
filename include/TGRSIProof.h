@@ -12,20 +12,11 @@
 #include "TParserLibrary.h"
 
 #include <iostream>
-#include <sstream>
-#include <vector>
 #include <ctime>
-#include <fstream>
-#include <streambuf>
 
 #include "Rtypes.h"
 #include "TProof.h"
-#include "TSystemFile.h"
-#include "TSystemDirectory.h"
 #include "TString.h"
-#include "TList.h"
-#include "TROOT.h"
-#include "TError.h"
 
 #include <unistd.h>
 const char* const nulFileName = "/dev/null";

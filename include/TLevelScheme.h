@@ -3,12 +3,10 @@
 
 #if __cplusplus >= 201703L
 
-#include <iostream>
 #include <vector>
 #include <map>
 #include <utility>
 
-#include "TColor.h"
 #include "TPolyLine.h"
 #include "TArrow.h"
 #include "TPaveLabel.h"
@@ -278,9 +276,9 @@ private:
 
 class TLevelScheme : public TPaveLabel {
 public:
-   enum class EGammaWidth { kNoWidth,
-                            kBand,
-                            kGlobal };
+   enum class EGammaWidth : std::uint8_t { kNoWidth,
+                                           kBand,
+                                           kGlobal };
 
    explicit TLevelScheme(const std::string& filename = "", bool debug = false);
    explicit TLevelScheme(const char* filename, bool debug = false) : TLevelScheme(std::string(filename), debug) {}

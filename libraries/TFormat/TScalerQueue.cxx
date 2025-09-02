@@ -1,5 +1,6 @@
-
 #include "TScalerQueue.h"
+
+#include <thread>
 
 std::mutex TDeadtimeScalerQueue::All;
 std::mutex TDeadtimeScalerQueue::Sorted;

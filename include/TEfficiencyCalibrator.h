@@ -4,30 +4,24 @@
 #if __cplusplus >= 201703L
 
 #include <cstdarg>
-#include <iostream>
 #include <vector>
 #include <string>
-#include <thread>
-#include <mutex>
 
 #include "TFile.h"
-#include "TCanvas.h"
 #include "TPad.h"
 #include "TLegend.h"
 #include "TGFrame.h"
 #include "TGTab.h"
-#include "TGFSComboBox.h"
 #include "TGStatusBar.h"
 #include "TGButtonGroup.h"
 #include "TGButton.h"
 #include "TGNumberEntry.h"
 #include "TGLabel.h"
 #include "TGProgressBar.h"
+#include "TGComboBox.h"
 #include "TRootEmbeddedCanvas.h"
 #include "TH1.h"
 #include "TH2.h"
-#include "TPaveText.h"
-#include "RVersion.h"
 
 #include "Globals.h"
 #include "TNucleus.h"
@@ -57,7 +51,7 @@ class TEfficiencyTab {
    ///
    /////////////////////////////////////////////////////////////////
 public:
-   enum EPeakType { kRWPeak  = 0,
+   enum EPeakType : std::uint8_t { kRWPeak  = 0,
                     kABPeak  = 1,
                     kAB3Peak = 2,
                     kGauss   = 3 };
@@ -117,7 +111,7 @@ class TEfficiencyDatatypeTab {
    ///
    /////////////////////////////////////////////////////////////////
 public:
-   enum EEntry { kRangeEntry,
+   enum EEntry : std::uint8_t { kRangeEntry,
                  kThresholdEntry,
                  kBgParamEntry,
                  kCalibrationUncertaintyEntry,
@@ -232,16 +226,16 @@ class TEfficiencyCalibrator : public TGMainFrame {
    /////////////////////////////////////////////////////////////////
 
 public:
-   enum ESources { k22Na,
-                   k56Co,
-                   k60Co,
-                   k133Ba,
-                   k152Eu,
-                   k241Am };
-   enum EEntry { kStartButton,
-                 kSourceBox      = 100,
-                 kSigmaEntry     = 200,
-                 kThresholdEntry = 300 };
+   enum ESources : std::uint8_t { k22Na,
+                                  k56Co,
+                                  k60Co,
+                                  k133Ba,
+                                  k152Eu,
+                                  k241Am };
+   enum EEntry : std::uint16_t { kStartButton    = 0,
+                                 kSourceBox      = 100,
+                                 kSigmaEntry     = 200,
+                                 kThresholdEntry = 300 };
 
    explicit TEfficiencyCalibrator(int n...);
    TEfficiencyCalibrator(const TEfficiencyCalibrator&)                = delete;

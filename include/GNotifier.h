@@ -7,8 +7,6 @@
 
 #include "TNamed.h"
 
-#include "GRootCommands.h"
-
 class GNotifier : public TNamed {
 public:
    static GNotifier* Get();

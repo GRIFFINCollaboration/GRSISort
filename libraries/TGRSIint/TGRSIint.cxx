@@ -4,11 +4,9 @@
 #include "GVersion.h"
 #include "Getline.h"
 #include "Globals.h"
-#include "TDataParser.h"
 #include "TGRSIOptions.h"
 #include "TGRSIUtilities.h"
 #include "GValue.h"
-#include "TROOT.h"
 #include "GCanvas.h"
 
 #include "StoppableThread.h"
@@ -20,15 +18,17 @@
 #include "TFragHistLoop.h"
 #include "TFragWriteLoop.h"
 #include "TFragmentChainLoop.h"
-#include "TTerminalLoop.h"
+#include "ArgParser.h"
 #include "TUnpackingLoop.h"
-#include "TPPG.h"
 #include "TSortingDiagnostics.h"
 #include "TParserLibrary.h"
 
 #include "GRootCommands.h"
 #include "TRunInfo.h"
 
+#include "TROOT.h"
+#include "TSystem.h"
+#include "TTimer.h"
 #include "TInterpreter.h"
 #include "TGHtmlBrowser.h"
 //#include <pstream.h>
@@ -421,10 +421,10 @@ void TGRSIint::SetupPipeline()
 
    // Which output files are could possibly be made
    bool able_to_write_fragment_histograms =
-      ((has_raw_file || has_input_fragment_tree) && opt->FragmentHistogramLib().length() > 0);
+      ((has_raw_file || has_input_fragment_tree) && !opt->FragmentHistogramLib().empty());
    bool able_to_write_fragment_tree       = (has_raw_file && !missing_raw_file);
    bool able_to_write_analysis_histograms = ((has_raw_file || has_input_fragment_tree || has_input_analysis_tree) &&
-                                             opt->AnalysisHistogramLib().length() > 0);
+                                             !opt->AnalysisHistogramLib().empty());
    bool able_to_write_analysis_tree       = (able_to_write_fragment_tree || has_input_fragment_tree);
 
    // Which output files will we make
@@ -467,7 +467,7 @@ void TGRSIint::SetupPipeline()
 
    // Choose output file names for the 4 possible output files
    std::string output_fragment_tree_filename = opt->OutputFragmentFile();
-   if(output_fragment_tree_filename.length() == 0) {
+   if(output_fragment_tree_filename.empty()) {
       if(sub_run_number == -1) {
          output_fragment_tree_filename = Form("fragment%05i.root", run_number);
       } else {
@@ -476,7 +476,7 @@ void TGRSIint::SetupPipeline()
    }
 
    std::string output_fragment_hist_filename = opt->OutputFragmentHistogramFile();
-   if(output_fragment_hist_filename.length() == 0) {
+   if(output_fragment_hist_filename.empty()) {
       if(sub_run_number == -1) {
          output_fragment_hist_filename = Form("hist_fragment%05i.root", run_number);
       } else {
@@ -485,7 +485,7 @@ void TGRSIint::SetupPipeline()
    }
 
    std::string output_analysis_tree_filename = opt->OutputAnalysisFile();
-   if(output_analysis_tree_filename.length() == 0) {
+   if(output_analysis_tree_filename.empty()) {
       if(sub_run_number == -1) {
          if(opt->UseRnTuple()) {
             output_analysis_tree_filename = Form("rntuple%05i.root", run_number);
@@ -502,7 +502,7 @@ void TGRSIint::SetupPipeline()
    }
 
    std::string output_analysis_hist_filename = opt->OutputAnalysisHistogramFile();
-   if(output_analysis_hist_filename.length() == 0) {
+   if(output_analysis_hist_filename.empty()) {
       if(sub_run_number == -1) {
          output_analysis_hist_filename = Form("hist_analysis%05i.root", run_number);
       } else {

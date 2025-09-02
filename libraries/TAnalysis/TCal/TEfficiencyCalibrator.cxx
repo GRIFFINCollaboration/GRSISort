@@ -8,6 +8,7 @@
 
 #include "TGTableLayout.h"
 #include "TTimer.h"
+#include "TCanvas.h"
 
 #include "TGauss.h"
 #include "TABPeak.h"
@@ -749,10 +750,10 @@ TEfficiencyCalibrator::TEfficiencyCalibrator(int n...)
       }
       if(fFiles.back()->FindKey("griffinE") != nullptr) {
          // unsuppressed singles data
-         fHistograms[0].push_back(std::make_tuple(
+         fHistograms[0].emplace_back(
             static_cast<TH1*>(fFiles.back()->Get("griffinE")),
             static_cast<TH2*>(fFiles.back()->Get("griffinGriffinE180Corr")),
-            static_cast<TH2*>(fFiles.back()->Get("griffinGriffinESum180Corr"))));
+            static_cast<TH2*>(fFiles.back()->Get("griffinGriffinESum180Corr")));
          goodFile = true;
          if(fVerboseLevel > EVerbosity::kQuiet) {
             std::cout << " found unsuppressed singles";
@@ -760,10 +761,10 @@ TEfficiencyCalibrator::TEfficiencyCalibrator(int n...)
       }
       if(fFiles.back()->FindKey("griffinESupp") != nullptr) {
          // suppressed singles data
-         fHistograms[1].push_back(std::make_tuple(
+         fHistograms[1].emplace_back(
             static_cast<TH1*>(fFiles.back()->Get("griffinESupp")),
             static_cast<TH2*>(fFiles.back()->Get("griffinGriffinEMixed180Corr")),
-            static_cast<TH2*>(fFiles.back()->Get("griffinGriffinESuppSum180Corr"))));
+            static_cast<TH2*>(fFiles.back()->Get("griffinGriffinESuppSum180Corr")));
          goodFile = true;
          if(fVerboseLevel > EVerbosity::kQuiet) {
             std::cout << " found suppressed singles";
@@ -771,10 +772,10 @@ TEfficiencyCalibrator::TEfficiencyCalibrator(int n...)
       }
       if(fFiles.back()->FindKey("griffinEAddback") != nullptr) {
          // unsuppressed addback data
-         fHistograms[2].push_back(std::make_tuple(
+         fHistograms[2].emplace_back(
             static_cast<TH1*>(fFiles.back()->Get("griffinEAddback")),
             static_cast<TH2*>(fFiles.back()->Get("griffinGriffinEAddback180Corr")),
-            static_cast<TH2*>(fFiles.back()->Get("griffinGriffinEAddbackSum180Corr"))));
+            static_cast<TH2*>(fFiles.back()->Get("griffinGriffinEAddbackSum180Corr")));
          goodFile = true;
          if(fVerboseLevel > EVerbosity::kQuiet) {
             std::cout << " found unsuppressed addback";
@@ -782,10 +783,10 @@ TEfficiencyCalibrator::TEfficiencyCalibrator(int n...)
       }
       if(fFiles.back()->FindKey("griffinESuppAddback") != nullptr) {
          // suppressed addback data
-         fHistograms[3].push_back(std::make_tuple(
+         fHistograms[3].emplace_back(
             static_cast<TH1*>(fFiles.back()->Get("griffinESuppAddback")),
             static_cast<TH2*>(fFiles.back()->Get("griffinGriffinEMixedAddback180Corr")),
-            static_cast<TH2*>(fFiles.back()->Get("griffinGriffinESuppAddbackSum180Corr"))));
+            static_cast<TH2*>(fFiles.back()->Get("griffinGriffinESuppAddbackSum180Corr")));
          goodFile = true;
          if(fVerboseLevel > EVerbosity::kQuiet) {
             std::cout << " found suppressed addback";

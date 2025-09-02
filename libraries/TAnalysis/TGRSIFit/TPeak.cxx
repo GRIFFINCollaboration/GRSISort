@@ -1,7 +1,12 @@
 #include "TPeak.h"
 #include "TGraph.h"
+#include "Math/MinimizerOptions.h"
+#include "TVirtualFitter.h"
+#include "TFitResult.h"
+#include "TList.h"
 
-#include "Math/Minimizer.h"
+#include "Globals.h"
+#include "TGRSIFunctions.h"
 
 Bool_t TPeak::fLogLikelihoodFlag = true;
 TPeak* TPeak::fLastFit           = nullptr;

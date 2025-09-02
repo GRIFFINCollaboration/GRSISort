@@ -26,11 +26,11 @@
 
 class TEventBuildingLoop : public StoppableThread {
 public:
-   enum class EBuildMode { kDefault,
-                           kTime,
-                           kTimestamp,
-                           kTriggerId,
-                           kSkip };
+   enum class EBuildMode : std::uint8_t { kDefault,
+                                          kTime,
+                                          kTimestamp,
+                                          kTriggerId,
+                                          kSkip };
 
    static TEventBuildingLoop* Get(std::string name = "", EBuildMode mode = EBuildMode::kTimestamp, uint64_t buildWindow = 2000);
    TEventBuildingLoop(const TEventBuildingLoop&)                = delete;

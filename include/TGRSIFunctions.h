@@ -5,21 +5,10 @@
  *  @{
  */
 
-#include <iostream>
-#include <fstream>
 #include <string>
 #include <cmath>
 
-#include "TMath.h"
-#include "TROOT.h"
 #include "TFitResultPtr.h"
-#include "TFitResult.h"
-
-#ifdef HAS_MATHMORE
-#include "Math/SpecFuncMathMore.h"
-#endif
-
-#include "Globals.h"
 
 namespace TGRSIFunctions {
 

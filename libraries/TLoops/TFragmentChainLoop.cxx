@@ -8,7 +8,7 @@
 
 TFragmentChainLoop* TFragmentChainLoop::Get(std::string name, TChain* chain)
 {
-   if(name.length() == 0) {
+   if(name.empty()) {
       name = "chain_loop";
    }
 

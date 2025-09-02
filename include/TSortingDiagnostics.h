@@ -15,18 +15,13 @@
 ///
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <iostream>
-#include <iomanip>
-#include <string>
 #include <vector>
 #include <unordered_map>
 
 #include "TObject.h"
-#include "TH1F.h"
 
-#include "TSortingDiagnostics.h"
-#include "TPPG.h"
-#include "TFragment.h"
+#include "TChannel.h"
+#include "TSingleton.h"
 
 class TSortingDiagnostics : public TSingleton<TSortingDiagnostics> {
 public:

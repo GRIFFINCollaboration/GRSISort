@@ -1,22 +1,17 @@
 #ifndef TBGSUBTRACTION_H
 #define TBGSUBTRACTION_H
-#include "TGClient.h"
-#include "TCanvas.h"
 #include "TF1.h"
-#include "TRandom.h"
 #include "TGButton.h"
 #include "TGDoubleSlider.h"
 #include "TGTripleSlider.h"
 #include "TGSlider.h"
 #include "TGToolTip.h"
-#include "TClass.h"
 #include "TGNumberEntry.h"
 #include "TGLabel.h"
 #include "TGStatusBar.h"
 #include "TGFrame.h"
 #include "TGComboBox.h"
 #include "TRootEmbeddedCanvas.h"
-#include "RQ_OBJECT.h"
 
 #include "TPeakFitter.h"
 #include "TSinglePeak.h"
@@ -54,14 +49,14 @@ class TBGSubtraction : public TGMainFrame {
    // these enums are used to communicate with ROOT classes
    // since those classes take ints as arguments there isn't
    // much gained by changing them to enum classes
-   enum ESliders {
+   enum ESliders : std::uint8_t {
       kGateSlider,
       kBGSlider1,
       kBGSlider2,
       kPeakSlider,
       kBinningSlider
    };
-   enum EEntries {
+   enum EEntries : std::uint8_t {
       kBGParamEntry,
       kGateLowEntry,
       kGateHighEntry,
@@ -80,7 +75,7 @@ class TBGSubtraction : public TGMainFrame {
       kBGCheckButton2,
       kAutoUpdateCheckButton
    };
-   enum EPeaks {
+   enum EPeaks : std::uint8_t {
       kGauss   = 0,
       kRWPeak  = 1,
       kABPeak  = 2,

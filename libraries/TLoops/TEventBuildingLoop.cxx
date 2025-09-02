@@ -8,7 +8,7 @@
 
 TEventBuildingLoop* TEventBuildingLoop::Get(std::string name, EBuildMode mode, uint64_t buildWindow)
 {
-   if(name.length() == 0) {
+   if(name.empty()) {
       name = "build_loop";
    }
 

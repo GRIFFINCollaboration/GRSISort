@@ -2,12 +2,12 @@
 
 #include <utility>
 
-#include "Math/Minimizer.h"
-#include "Math/Factory.h"
-#include "Math/Functor.h"
 #include "TCanvas.h"
 #include "TBuffer.h"
 #include "TLMFitter.h"
+#include "Math/MinimizerOptions.h"
+#include "TVirtualFitter.h"
+#include "TFitResult.h"
 
 UInt_t TSingleDecay::fCounter     = 0;
 UInt_t TDecayChain::fChainCounter = 0;

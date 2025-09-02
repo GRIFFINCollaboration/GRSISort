@@ -7,7 +7,6 @@
 
 #include "TNamed.h"
 #include "TGraphErrors.h"
-#include "TFitResultPtr.h"
 #include "TList.h"
 #include "TLegend.h"
 #include "TQObject.h"

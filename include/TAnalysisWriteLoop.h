@@ -5,9 +5,6 @@
  *  @{
  */
 
-#include <future>
-#include <vector>
-
 #include "TClass.h"
 #include "TTree.h"
 

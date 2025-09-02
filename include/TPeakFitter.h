@@ -5,17 +5,13 @@
  *  @{
  */
 
-#include <string>
-#include <algorithm>
-#include <vector>
 #include <cstdarg>
 
 #include "TF1.h"
 #include "TFitResultPtr.h"
-#include "TFitResult.h"
 #include "TGraph.h"
 
-#include "TGRSIFunctions.h"
+#include "Globals.h"
 #include "TSinglePeak.h"
 
 /////////////////////////////////////////////////////////////////

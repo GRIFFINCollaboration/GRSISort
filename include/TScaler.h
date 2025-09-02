@@ -28,9 +28,8 @@
 
 #include "TObject.h"
 #include "Globals.h"
-#include "TCollection.h"
 #include "TTree.h"
-#include "TH1D.h"
+#include "TH1.h"
 
 #include "TPPG.h"
 
@@ -176,7 +175,7 @@ private:
 
    /// \cond CLASSIMP
    ClassDefOverride(TScaler, 2)   // NOLINT(readability-else-after-return)
-                                  /// \endcond
+   /// \endcond
 };
 /*! @} */
 #endif

@@ -1,7 +1,6 @@
 #ifndef TREDIRECT_H
 #define TREDIRECT_H
 
-#include <iostream>
 #include <cstdio>
 #include <cstdlib>
 #include <fcntl.h>

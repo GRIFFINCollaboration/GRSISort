@@ -1,18 +1,28 @@
 #include "TGRSIFunctions.h"
 
+#include <iostream>
+
+#include "TMath.h"
+#include "TFitResult.h"
+#ifdef HAS_MATHMORE
+#include "Math/SpecFuncMathMore.h"
+#endif
+
+#include "Globals.h"
+
 // Without this macro the THtml doc for TGRSIFunctions can't be generated
 /// \cond NAMESPACEIMP
 NamespaceImp(TGRSIFunctions)
-/// \endcond
+   /// \endcond
 
-///////////////////////////////////////////////////////////////////////
-///
-/// \namespace TGRSIFunctions
-///
-/// This namespace is where we store all of our commonly used functions.
-/// This makes it easier to create fits etc.
-///
-////////////////////////////////////////////////////////////////////////
+   ///////////////////////////////////////////////////////////////////////
+   ///
+   /// \namespace TGRSIFunctions
+   ///
+   /// This namespace is where we store all of our commonly used functions.
+   /// This makes it easier to create fits etc.
+   ///
+   ////////////////////////////////////////////////////////////////////////
 
 bool TGRSIFunctions::CheckParameterErrors(const TFitResultPtr& fitres, std::string opt)
 {
@@ -179,7 +189,7 @@ Double_t TGRSIFunctions::SkewedGaus(Double_t* dim, Double_t* par)   // NOLINT(re
    }
 
    return relHeight * height / 100. * (TMath::Exp((x - centroid) / beta)) *
-          (TMath::Erfc(((x - centroid) / (TMath::Sqrt(2.) * sigma)) + sigma / (TMath::Sqrt(2.) * beta)));
+      (TMath::Erfc(((x - centroid) / (TMath::Sqrt(2.) * sigma)) + sigma / (TMath::Sqrt(2.) * beta)));
 }
 
 Double_t TGRSIFunctions::MultiSkewedGausWithBG(Double_t* dim, Double_t* par)   // NOLINT(readability-non-const-parameter)
@@ -213,7 +223,7 @@ Double_t TGRSIFunctions::SkewedGaus2(Double_t* x, Double_t* par)   // NOLINT(rea
    ///   - par[3]:  "skewedness" of the skewed gaussin
 
    return par[0] * (TMath::Exp((x[0] - par[1]) / par[3])) *
-          (TMath::Erfc(((x[0] - par[1]) / (TMath::Sqrt(2.) * par[2])) + par[2] / (TMath::Sqrt(2.) * par[3])));
+      (TMath::Erfc(((x[0] - par[1]) / (TMath::Sqrt(2.) * par[2])) + par[2] / (TMath::Sqrt(2.) * par[3])));
 }
 
 Double_t TGRSIFunctions::MultiSkewedGausWithBG2(Double_t* dim, Double_t* par)   // NOLINT(readability-non-const-parameter)
@@ -249,15 +259,15 @@ Double_t TGRSIFunctions::LanGaus(Double_t* x, Double_t* pars)
       y = x[0] - 2.5 * pars[3] + dy * i;
 
       spec = pars[1] +
-             pars[2] * y;   // define background SHOULD THIS BE CONVOLUTED ????? *************************************
+         pars[2] * y;   // define background SHOULD THIS BE CONVOLUTED ????? *************************************
       for(int n = 0; n < static_cast<int>(pars[0] + 0.5); n++) {
          // the implementation of landau function should be done using the landau function
          spec += pars[3 * n + 4] * TMath::Landau(-y, -pars[3 * n + 5], pars[3 * n + 6]) /
-                 TMath::Landau(0, 0, 100);   // add peaks, dividing by max height of landau
+            TMath::Landau(0, 0, 100);   // add peaks, dividing by max height of landau
       }
 
       gaus = TMath::Gaus(-x[0], -y, pars[3]) /
-             sqrt(2 * TMath::Pi() * pars[3] * pars[3]);   // gaus must be normalisd so there is no sigma weighting
+         sqrt(2 * TMath::Pi() * pars[3] * pars[3]);   // gaus must be normalisd so there is no sigma weighting
       conv += gaus * spec * dy;                           // now convolve this [integrate the product] with a gaussian centered at x;
    }
 
@@ -429,11 +439,11 @@ double TGRSIFunctions::ClebschGordan(double j1, double m1, double j2, double m2,
 {
    // Conditions check
    if(2 * j1 != floor(2 * j1) ||
-      2 * j2 != floor(2 * j2) ||
-      2 * j != floor(2 * j) ||
-      2 * m1 != floor(2 * m1) ||
-      2 * m2 != floor(2 * m2) ||
-      2 * m != floor(2 * m)) {
+         2 * j2 != floor(2 * j2) ||
+         2 * j != floor(2 * j) ||
+         2 * m1 != floor(2 * m1) ||
+         2 * m2 != floor(2 * m2) ||
+         2 * m != floor(2 * m)) {
       return 0;
    }
    if((m1 + m2) != m) {

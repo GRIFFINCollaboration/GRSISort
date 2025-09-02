@@ -6,7 +6,6 @@
 #include <vector>
 #include <string>
 #include <sstream>
-#include <initializer_list>
 
 /** \addtogroup Sorting
  *  * @{
@@ -78,7 +77,7 @@ public:
    template <class... Args>
    std::pair<typename map_t::iterator, bool> emplace(Args&&... args)
    {
-      return fMap.emplace(args...);
+      return fMap.emplace(std::forward<Args>(args)...);
    }
    // emplace_hint
    // try_emplace

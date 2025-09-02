@@ -5,10 +5,6 @@
  *  @{
  */
 
-#include <iostream>
-#include <fstream>
-#include <string>
-
 #include "TNamed.h"
 #include "TNucleus.h"
 

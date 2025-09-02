@@ -1,6 +1,9 @@
 #include "TTransition.h"
 
 #include <iostream>
+#include <cmath>
+
+#include "TString.h"
 
 TTransition::TTransition()
 {

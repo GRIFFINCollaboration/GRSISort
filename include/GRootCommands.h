@@ -16,8 +16,9 @@ class GGaus;
 class TFile;
 
 #include "TDirectory.h"
+#include "TH2.h"
 
-enum GRSIArrowPress { kGRSIArrowLeft  = 0x1012,
+enum GRSIArrowPress : std::uint16_t { kGRSIArrowLeft  = 0x1012,
                       kGRSIArrowUp    = 0x1013,
                       kGRSIArrowRight = 0x1014,
                       kGRSIArrowDown  = 0x1015 };
@@ -56,7 +57,7 @@ void StartGUI();
 bool GUIIsRunning();
 void AddFileToGUI(TFile* file);
 
-enum class EAxis { kXAxis = 1,
+enum class EAxis : std::uint8_t { kXAxis = 1,
                    kYAxis = 2 };
 EAxis operator&(EAxis lhs, EAxis rhs);
 

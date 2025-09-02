@@ -148,7 +148,7 @@ private:
    const TGPicture*     fIconPic{nullptr};          ///< icon picture
 
 public:
-   enum class ENewBrowserMessages {
+   enum class ENewBrowserMessages : std::uint16_t{
       kBrowse = 11011,
       kOpenFile,
       kClone,
@@ -170,7 +170,7 @@ public:
       kQuitRoot
    };
 
-   enum class EInsertPosition { kLeft,
+   enum class EInsertPosition : std::uint8_t{ kLeft,
                                 kRight,
                                 kBottom };
 

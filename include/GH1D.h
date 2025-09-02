@@ -108,7 +108,7 @@ private:
                                /// /endcond
 };
 
-enum class ERegionType { kDefault,
+enum class ERegionType : std::uint8_t { kDefault,
                          kGate,
                          kBackground,
                          kRegion };

@@ -7,7 +7,7 @@
 
 TDetBuildingLoop* TDetBuildingLoop::Get(std::string name)
 {
-   if(name.length() == 0) {
+   if(name.empty()) {
       name = "unpack_loop";
    }
    auto* loop = static_cast<TDetBuildingLoop*>(StoppableThread::Get(name));

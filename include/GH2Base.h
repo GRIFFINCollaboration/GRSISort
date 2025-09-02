@@ -2,8 +2,6 @@
 #define GH2BASE__H
 
 #include <cstdio>
-#include <iostream>
-#include <map>
 
 #include <TNamed.h>
 #include <TH2.h>
@@ -11,13 +9,13 @@
 
 class GH1D;
 
-enum class EBackgroundSubtraction { kNoBackground,
+enum class EBackgroundSubtraction : std::uint8_t { kNoBackground,
                                     kRegionBackground,
                                     kMatchedLowerMarker,
                                     kSplitTwoMarker,
                                     kTotalFraction };
 
-enum class EDirection { kXDirection,
+enum class EDirection : std::uint8_t { kXDirection,
                         kYDirection };
 
 class GH2Base {

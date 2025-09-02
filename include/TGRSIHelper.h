@@ -1,6 +1,6 @@
 #ifndef TGRSIHELPER_H
 #define TGRSIHELPER_H
-#include "RVersion.h"
+#include "RVersion.h" // IWYU pragma: keep
 #if ROOT_VERSION_CODE >= ROOT_VERSION(6, 14, 0)
 #include "ROOT/RDataFrame.hxx"
 #include "TObject.h"
@@ -10,17 +10,12 @@
 #include "TH3.h"
 #include "TTree.h"
 #include "TCutG.h"
-#include "TBufferFile.h"
 
-#include "TGRSIOptions.h"
-#include "TAnalysisOptions.h"
 #include "GHSym.h"
 #include "GCube.h"
-#include "GValue.h"
 #include "TPPG.h"
 #include "TRunInfo.h"
 #include "TGRSIMap.h"
-#include "TChannel.h"
 #include "TUserSettings.h"
 
 ////////////////////////////////////////////////////////////////////////////////

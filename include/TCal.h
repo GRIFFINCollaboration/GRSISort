@@ -16,30 +16,17 @@
 ///
 /////////////////////////////////////////////////////////////////
 
-#include <map>
 #include <vector>
-#include <utility>
 
-#include "Varargs.h"
-#include "TNamed.h"
 #include "TH1.h"
 #include "TF1.h"
-#include "TList.h"
-#include "TFitResult.h"
-#include "TFitResultPtr.h"
-#include "TRandom.h"
 #include "TSpectrum.h"
-#include "TVirtualFitter.h"
-#include "TMath.h"
-#include "TCanvas.h"
-#include "TROOT.h"
 #include "TMultiGraph.h"
 #include "TGraphErrors.h"
 #include "TRef.h"
 
 #include "TChannel.h"
 #include "TNucleus.h"
-#include "TGRSITransition.h"
 
 class TCal : public TGraphErrors {
 public:

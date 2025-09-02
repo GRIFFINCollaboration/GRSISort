@@ -2,6 +2,8 @@
 
 #include <fstream>
 
+#include "TH1.h"
+
 #include "TChannel.h"
 
 TParsingDiagnosticsData::TParsingDiagnosticsData() = default;
@@ -18,23 +20,15 @@ void TParsingDiagnosticsData::Update(const std::shared_ptr<const TFragment>& fra
    auto   timeStamp = frag->GetTimeStampNs();
 
    // update minimum and maximum channel id if necessary
-   if(channelId < fMinChannelId) {
-      fMinChannelId = channelId;
-   }
-   if(channelId > fMaxChannelId) {
-      fMaxChannelId = channelId;
-   }
+   fMinChannelId = std::min(fMinChannelId, channelId);
+   fMaxChannelId = std::max(fMaxChannelId, channelId);
 
    ++fNumberOfHits;
 
    // increment the dead time and set per channel min/max timestamps
    fDeadTime += frag->GetDeadTime();
-   if(timeStamp < fMinTimeStamp) {
-      fMinTimeStamp = timeStamp;
-   }
-   if(timeStamp > fMaxTimeStamp) {
-      fMaxTimeStamp = timeStamp;
-   }
+   fMinTimeStamp = std::min(fMinTimeStamp, static_cast<int64_t>(timeStamp));
+   fMaxTimeStamp = std::max(fMaxTimeStamp, static_cast<int64_t>(timeStamp));
 }
 
 void TParsingDiagnosticsData::Print(UInt_t address) const
@@ -131,12 +125,8 @@ void TParsingDiagnostics::GoodFragment(const std::shared_ptr<const TFragment>& f
    // check if this is a new minimum/maximum network packet id
    if(frag->GetNetworkPacketNumber() > 0) {
       ++fNumberOfNetworkPackets;
-      if(frag->GetNetworkPacketNumber() < fMinNetworkPacketNumber) {
-         fMinNetworkPacketNumber = frag->GetNetworkPacketNumber();
-      }
-      if(frag->GetNetworkPacketNumber() > fMaxNetworkPacketNumber) {
-         fMaxNetworkPacketNumber = frag->GetNetworkPacketNumber();
-      }
+      fMinNetworkPacketNumber = std::min(fMinNetworkPacketNumber, frag->GetNetworkPacketNumber());
+      fMaxNetworkPacketNumber = std::max(fMaxNetworkPacketNumber, frag->GetNetworkPacketNumber());
    }
 
    if(fMinDaqTimeStamp == 0 || frag->GetDaqTimeStamp() < fMinDaqTimeStamp) {
@@ -162,8 +152,8 @@ void TParsingDiagnostics::Draw(Option_t* opt)
    UInt_t maxChannel = fChannelAddressData.begin()->first;
 
    for(const auto& iter : fChannelAddressData) {
-      if(iter.first < minChannel) { minChannel = iter.first; }
-      if(iter.first > maxChannel) { maxChannel = iter.first; }
+      minChannel = std::min(minChannel, iter.first);
+      maxChannel = std::max(maxChannel, iter.first);
    }
 
    // check that the histogram (if it already exists) has the right number of bins
@@ -173,7 +163,7 @@ void TParsingDiagnostics::Draw(Option_t* opt)
    }
    if(fIdHist == nullptr) {
       fIdHist = new TH1F("IdHist", "Event survival;channel number;survival rate [%]", maxChannel - minChannel + 1,
-                         minChannel, maxChannel + 1);
+            minChannel, maxChannel + 1);
    } else {
       // the histogram already had the right number of bins, but to be save we set the range
       fIdHist->SetAxisRange(minChannel, maxChannel + 1);
@@ -182,7 +172,7 @@ void TParsingDiagnostics::Draw(Option_t* opt)
    for(const auto& iter : fChannelAddressData) {
       if(iter.second.MinChannelId() != 0 || iter.second.MinChannelId() != iter.second.MaxChannelId()) {
          fIdHist->SetBinContent(fIdHist->GetXaxis()->FindBin(iter.first),
-                                100. * static_cast<double>(iter.second.NumberOfHits()) / static_cast<double>(iter.second.MaxChannelId() - iter.second.MinChannelId() + 1));
+               100. * static_cast<double>(iter.second.NumberOfHits()) / static_cast<double>(iter.second.MaxChannelId() - iter.second.MinChannelId() + 1));
       }
    }
 
@@ -193,8 +183,8 @@ void TParsingDiagnostics::WriteToFile(const char* fileName) const
 {
    std::ofstream statsOut(fileName);
    statsOut << std::endl
-            << "Run time to the nearest second = " << fMaxDaqTimeStamp - fMinDaqTimeStamp << std::endl
-            << std::endl;
+      << "Run time to the nearest second = " << fMaxDaqTimeStamp - fMinDaqTimeStamp << std::endl
+      << std::endl;
 
    statsOut << "Good fragments:";
    for(const auto& iter : fNumberOfGoodFragments) {
@@ -214,7 +204,7 @@ void TParsingDiagnostics::WriteToFile(const char* fileName) const
          continue;
       }
       statsOut << hex(iter.first, 4) << ":\t" << chan->GetName()
-               << "\tdead time: " << static_cast<float>(iter.second.DeadTime()) / 1e9 << " seconds." << std::endl;
+         << "\tdead time: " << static_cast<float>(iter.second.DeadTime()) / 1e9 << " seconds." << std::endl;
    }
    statsOut << std::endl;
 

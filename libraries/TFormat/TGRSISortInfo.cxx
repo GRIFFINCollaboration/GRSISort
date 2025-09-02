@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include "TRunInfo.h"
+
 Bool_t TGRSISortList::AddSortInfo(TGRSISortInfo* info, Option_t* opt)
 {
    TString opt1 = opt;

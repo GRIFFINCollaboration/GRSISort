@@ -3,9 +3,6 @@
 
 #include <TF1.h>
 
-#include <string>
-#include <algorithm>
-
 class GGaus : public TF1 {
 public:
    GGaus();

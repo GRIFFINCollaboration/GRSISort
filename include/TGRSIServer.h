@@ -25,8 +25,6 @@
 
 #include "TServerSocket.h"
 #include "TMonitor.h"
-#include "TSocket.h"
-#include "TMessage.h"
 
 class TGRSIServer : public TServerSocket {
 public:
@@ -45,9 +43,9 @@ public:
 private:
    static TGRSIServer* fGRSIServer;
    explicit TGRSIServer(int port);
-   bool fRunning;
+   bool fRunning{false};
 
-   TMonitor* fMonitor;
+   TMonitor* fMonitor{nullptr};
 
    void AcceptConnectionThread();
    void MonitorConnectionsThread();

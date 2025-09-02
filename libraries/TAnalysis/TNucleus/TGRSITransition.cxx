@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include "TString.h"
+
 TGRSITransition::TGRSITransition()
 {
    // Default constructor for TGRSITransition

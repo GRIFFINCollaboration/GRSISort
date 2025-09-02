@@ -1,17 +1,13 @@
 #ifndef TNUCLEUS_H
 #define TNUCLEUS_H
 
-#include <iostream>
 #include <cmath>
 #include <cstring>
-#include <iomanip>
 #include <cstdlib>
-#include <fstream>
 #include <string>
 
 #include "TTransition.h"
 
-#include "TObject.h"
 #include "TNamed.h"
 #include "TSortedList.h"
 
@@ -39,7 +35,7 @@ public:
 
    static void ParseName(const char* name, std::string& symbol, int& number, std::string& element)
    {
-      return ParseName(std::string(name), symbol, number, element);
+      ParseName(std::string(name), symbol, number, element);
    }
    static void        ParseName(std::string name, std::string& symbol, int& number, std::string& element);
    static std::string SortName(const char* input)

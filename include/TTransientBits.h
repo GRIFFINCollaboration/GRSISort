@@ -13,14 +13,9 @@
 ///
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <sstream>
 #include <iostream>
-#include <iomanip>
-#include <string>
-#include <map>
-#include <algorithm>
 
-#include "Rtypes.h"
+#include "RtypesCore.h"
 
 template <typename T>
 class TTransientBits {
@@ -43,13 +38,13 @@ public:
    template <typename U>
    void SetBit(U bit, Bool_t flag) { flag ? SetBit(bit) : ClearBit(bit); }
    template <typename U>
-   void SetBit(U bit) { fBits |= static_cast<typename std::underlying_type<U>::type>(bit); }
+   void SetBit(U bit) { fBits |= static_cast<std::underlying_type_t<U>>(bit); }
    template <typename U>
-   void ClearBit(U bit) { fBits &= ~static_cast<typename std::underlying_type<U>::type>(bit); }
+   void ClearBit(U bit) { fBits &= ~static_cast<std::underlying_type_t<U>>(bit); }
    template <typename U>
-   Bool_t TestBit(U bit) const { return fBits & static_cast<typename std::underlying_type<U>::type>(bit); }
+   Bool_t TestBit(U bit) const { return fBits & static_cast<std::underlying_type_t<U>>(bit); }
    template <typename U>
-   T TestBits(U bit) const { return (fBits & static_cast<typename std::underlying_type<U>::type>(bit)); }
+   T TestBits(U bit) const { return (fBits & static_cast<std::underlying_type_t<U>>(bit)); }
 
    TTransientBits& operator=(const T& rhs)
    {

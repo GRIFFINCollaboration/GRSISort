@@ -1,12 +1,9 @@
 #ifndef TGRSITYPES_H
 #define TGRSITYPES_H
 
-#include <map>
-#include <string>
+#include <cstdint>
 
-#include "Rtypes.h"
-
-enum class kFileType {
+enum class kFileType : std::uint8_t {
    UNKNOWN_FILETYPE,
    NSCL_EVT,
    GRETINA_MODE2,

@@ -7,7 +7,6 @@
 
 #include "TCal.h"
 #include "TPeak.h"
-#include "TSpectrum.h"
 
 class TEfficiencyCal : public TCal {
 public:

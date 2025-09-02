@@ -2,7 +2,6 @@
 
 #include <cstdlib>
 #include <algorithm>
-#include <fstream>
 #include <iostream>
 #include <mutex>
 #include <sstream>
@@ -11,7 +10,6 @@
 #include <dlfcn.h>
 #include <unistd.h>
 
-//#include "RuntimeExceptions.h"
 #include "FullPath.h"
 
 namespace {
@@ -55,7 +53,7 @@ DynamicLibrary::~DynamicLibrary()
 {
    if(fLibrary != nullptr) {
       dlclose(fLibrary);
-      if(fTempName.length() != 0u) {
+      if(!fTempName.empty()) {
          unlink(fTempName.c_str());
       }
    }

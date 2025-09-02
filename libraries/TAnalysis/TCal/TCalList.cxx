@@ -1,7 +1,8 @@
 #include "TCalList.h"
-#include "Globals.h"
 
 #include <iostream>
+
+#include "TGraphErrors.h"
 
 TCalList::TCalList()
 {

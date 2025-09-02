@@ -1,3 +1,5 @@
+#include <fstream>
+
 #include "Globals.h"
 #include "TFile.h"
 #include "TSystem.h"

@@ -13,11 +13,9 @@
 // NOLINTBEGIN(readability-identifier-naming, cppcoreguidelines-macro-usage)
 #define _GLIBCXX_USE_NANOSLEEP 1
 // NOLINTEND(readability-identifier-naming, cppcoreguidelines-macro-usage)
-#include <thread>
 #include <mutex>
 #endif
 
-#include "TObjArray.h"
 #include "TStopwatch.h"
 
 #include "TScaler.h"

@@ -6,31 +6,27 @@
  */
 
 #include <cstdarg>
-#include <iostream>
 #include <vector>
 #include <string>
-#include <thread>
 #include <mutex>
 #include <future>
 #include <queue>
 
 #include "TFile.h"
-#include "TCanvas.h"
 #include "TPad.h"
 #include "TLegend.h"
 #include "TGFrame.h"
 #include "TGTab.h"
-#include "TGFSComboBox.h"
 #include "TGStatusBar.h"
 #include "TGButtonGroup.h"
 #include "TGButton.h"
 #include "TGNumberEntry.h"
 #include "TGLabel.h"
 #include "TGProgressBar.h"
+#include "TGComboBox.h"
 #include "TRootEmbeddedCanvas.h"
 #include "TH2.h"
 #include "TPaveText.h"
-#include "RVersion.h"
 
 #include "TPeakFitter.h"
 #include "TGauss.h"
@@ -312,18 +308,18 @@ public:
    void PrintCanvases() const;
 
 private:
-   enum EEntry : int {
-      kStartButton,
-      kSourceBox           = 100,
-      kSigmaEntry          = 200,
-      kThresholdEntry      = 300,
-      kDegreeEntry         = 400,
-      kMaxResidualEntry    = 500,
-      kApplyToAll          = 600,
-      kWriteNonlinearities = 700
+   enum EEntry : std::uint8_t {
+      kStartButton         = 0,
+      kSourceBox           = 10,
+      kSigmaEntry          = 20,
+      kThresholdEntry      = 30,
+      kDegreeEntry         = 40,
+      kMaxResidualEntry    = 50,
+      kApplyToAll          = 60,
+      kWriteNonlinearities = 70
    };
    // the numbering of these two enums needs to match the order in which the buttons are created
-   enum ENavigate : int {
+   enum ENavigate : std::uint8_t {
       kPrevious  = 1,
       kDiscard   = 2,
       kAccept    = 3,
@@ -331,7 +327,7 @@ private:
       kWrite     = 5,
       kNext      = 6
    };
-   enum EFitting : int {
+   enum EFitting : std::uint8_t {
       kFindSourcePeaks  = 1,
       kFindChannelPeaks = 2,
       kFindAllPeaks     = 3,

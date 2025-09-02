@@ -28,20 +28,15 @@
 ///
 //////////////////////////////////////////////////////////////////////////
 
-#include <iostream>
 #include <string>
 #include <cmath>
 #include <utility>
 #include <unordered_map>
 
 #include "TNamed.h"
-#include "TRandom.h"
-#include "TList.h"
 #include "TTree.h"
 #include "TGraph.h"
-#include "TMnemonic.h"
 #include "TClassRef.h"
-#include "Globals.h"
 #include "TPriorityValue.h"
 
 enum class EDigitizer : char;
@@ -136,7 +131,7 @@ private:
 public:
    void        SetName(const char* tmpName) override;
    void        SetAddress(unsigned int tmpadd);
-   inline void SetNumber(const TPriorityValue<int>& tmp)
+   void        SetNumber(const TPriorityValue<int>& tmp)
    {
       if(fNumber == tmp) { return; }
       // channel number has changed so we need to delete the old one and insert the new one
@@ -146,13 +141,13 @@ public:
          fChannelNumberMap->insert(std::make_pair(fNumber.Value(), this));
       }
    }
-   inline void SetIntegration(const TPriorityValue<int>& tmp) { fIntegration = tmp; }
+   void        SetIntegration(const TPriorityValue<int>& tmp) { fIntegration = tmp; }
    static void SetIntegration(const std::string& mnemonic, int tmpint, EPriority pr);
-   inline void SetStream(const TPriorityValue<int>& tmp) { fStream = tmp; }
+   void        SetStream(const TPriorityValue<int>& tmp) { fStream = tmp; }
    void        SetDigitizerType(const TPriorityValue<std::string>& tmp);
    static void SetDigitizerType(const std::string& mnemonic, const char* tmpstr, EPriority prio);
-   inline void SetTimeOffset(const TPriorityValue<Long64_t>& tmp) { fTimeOffset = tmp; }
-   inline void SetTimeDrift(const TPriorityValue<double>& tmp) { fTimeDrift = tmp; }
+   void        SetTimeOffset(const TPriorityValue<Long64_t>& tmp) { fTimeOffset = tmp; }
+   void        SetTimeDrift(const TPriorityValue<double>& tmp) { fTimeDrift = tmp; }
 
    void SetDetectorNumber(int tempint) { fDetectorNumber = tempint; }
    void SetSegmentNumber(int tempint) { fSegmentNumber = tempint; }
@@ -201,20 +196,20 @@ public:
    std::pair<double, double>              GetENGRange(size_t range) const { return fENGRanges.Value()[range]; }
    std::vector<Float_t>                   GetENGDriftCoefficents() const { return fENGDriftCoefficents.Value(); }
 
-   inline void AddENGCoefficient(Float_t temp, size_t range = 0)
+   void AddENGCoefficient(Float_t temp, size_t range = 0)
    {
       if(range >= fENGCoefficients.size()) { fENGCoefficients.resize(range + 1); }
       fENGCoefficients.Address()->at(range).push_back(temp);
    }
-   inline void AddENGDriftCoefficent(Float_t temp) { fENGDriftCoefficents.Address()->push_back(temp); }
-   inline void AddCFDCoefficient(double temp) { fCFDCoefficients.Address()->push_back(temp); }
-   inline void AddLEDCoefficient(double temp) { fLEDCoefficients.Address()->push_back(temp); }
-   inline void AddTIMECoefficient(double temp) { fTIMECoefficients.Address()->push_back(temp); }
-   inline void AddEFFCoefficient(double temp) { fEFFCoefficients.Address()->push_back(temp); }
-   inline void AddCTCoefficient(double temp) { fCTCoefficients.Address()->push_back(temp); }
+   void AddENGDriftCoefficent(Float_t temp) { fENGDriftCoefficents.Address()->push_back(temp); }
+   void AddCFDCoefficient(double temp) { fCFDCoefficients.Address()->push_back(temp); }
+   void AddLEDCoefficient(double temp) { fLEDCoefficients.Address()->push_back(temp); }
+   void AddTIMECoefficient(double temp) { fTIMECoefficients.Address()->push_back(temp); }
+   void AddEFFCoefficient(double temp) { fEFFCoefficients.Address()->push_back(temp); }
+   void AddCTCoefficient(double temp) { fCTCoefficients.Address()->push_back(temp); }
    void        AddEnergyNonlinearityPoint(double x, double y) { fEnergyNonlinearity.Address()->SetPoint(fEnergyNonlinearity.Address()->GetN(), x, y); }
 
-   inline void ResizeENG(size_t size)
+   void ResizeENG(size_t size)
    {
       fENGCoefficients.resize(size);
       fENGChi2.resize(size);
@@ -241,37 +236,37 @@ public:
    void SetCTCoefficients(const TPriorityValue<std::vector<double>>& tmp) { fCTCoefficients = tmp; }
    void SetEnergyNonlinearity(const TPriorityValue<TGraph>& tmp) { fEnergyNonlinearity = tmp; }
 
-   inline void SetAllENGChi2(const TPriorityValue<std::vector<double>>& tmp) { fENGChi2 = tmp; }
-   inline void SetENGChi2(const TPriorityValue<double>& tmp, const size_t& range = 0)
+   void SetAllENGChi2(const TPriorityValue<std::vector<double>>& tmp) { fENGChi2 = tmp; }
+   void SetENGChi2(const TPriorityValue<double>& tmp, const size_t& range = 0)
    {
       if(tmp.Priority() >= fENGChi2.Priority()) {
          if(range >= fENGChi2.size()) { fENGChi2.resize(range + 1); }
          fENGChi2.Address()->at(range) = tmp.Value();
       }
    }
-   inline void SetCFDChi2(const TPriorityValue<double>& tmp) { fCFDChi2 = tmp; }
-   inline void SetLEDChi2(const TPriorityValue<double>& tmp) { fLEDChi2 = tmp; }
-   inline void SetTIMEChi2(const TPriorityValue<double>& tmp) { fTIMEChi2 = tmp; }
-   inline void SetEFFChi2(const TPriorityValue<double>& tmp) { fEFFChi2 = tmp; }
+   void SetCFDChi2(const TPriorityValue<double>& tmp) { fCFDChi2 = tmp; }
+   void SetLEDChi2(const TPriorityValue<double>& tmp) { fLEDChi2 = tmp; }
+   void SetTIMEChi2(const TPriorityValue<double>& tmp) { fTIMEChi2 = tmp; }
+   void SetEFFChi2(const TPriorityValue<double>& tmp) { fEFFChi2 = tmp; }
 
-   inline void SetWaveRise(const double& temp)
+   void SetWaveRise(const double& temp)
    {
       WaveFormShape.TauRise = temp;
       SetUseWaveParam();
    }
-   inline void SetWaveDecay(const double& temp)
+   void SetWaveDecay(const double& temp)
    {
       WaveFormShape.TauDecay = temp;
       SetUseWaveParam();
    }
-   inline void SetWaveBaseLine(double temp)
+   void SetWaveBaseLine(double temp)
    {
       WaveFormShape.BaseLine = temp;
       SetUseWaveParam();
    }
 
-   inline void SetUseWaveParam(bool temp = true) { WaveFormShape.InUse = temp; }
-   inline void SetWaveParam(WaveFormShapePar temp) { WaveFormShape = temp; }
+   void SetUseWaveParam(bool temp = true) { WaveFormShape.InUse = temp; }
+   void SetWaveParam(WaveFormShapePar temp) { WaveFormShape = temp; }
 
    double           GetWaveRise() const { return WaveFormShape.TauRise; }
    double           GetWaveDecay() const { return WaveFormShape.TauDecay; }
@@ -291,8 +286,8 @@ public:
 
    double        CalibrateTIME(double) const;
    double        CalibrateTIME(int) const;
-   inline double GetTZero(double tempd) const { return CalibrateTIME(tempd); }
-   inline double GetTZero(int tempi) const { return CalibrateTIME(tempi); }
+   double GetTZero(double tempd) const { return CalibrateTIME(tempd); }
+   double GetTZero(int tempi) const { return CalibrateTIME(tempi); }
 
    double CalibrateEFF(double) const;
 
