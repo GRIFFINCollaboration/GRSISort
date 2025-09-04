@@ -4,7 +4,7 @@ void TacOffsetHelper::CreateHistograms(unsigned int slot)
 {
    // find the offsets from the current calibration
    int channelNumber = 0;
-   int currentIndex = 0;
+   int currentIndex  = 0;
    while(currentIndex < 8) {
       auto* channel = TChannel::GetChannelByNumber(++channelNumber);
       if(channel == nullptr) {
@@ -22,15 +22,15 @@ void TacOffsetHelper::CreateHistograms(unsigned int slot)
 
    //TAC offset histograms
    for(int i = 0; i < fOffset.size(); ++i) {
-      fH1[slot][Form("TacOffset_%d", i)] = new TH1D(Form("TacOffset_%d", i), Form("Time difference between TAC and LaBr %d; time (ns); counts/ns", i), 10000, -5000., 5000.);
+      fH1[slot][Form("TacOffset_%d", i)]          = new TH1D(Form("TacOffset_%d", i), Form("Time difference between TAC and LaBr %d; time (ns); counts/ns", i), 10000, -5000., 5000.);
       fH1[slot][Form("TacOffsetCorrected_%d", i)] = new TH1D(Form("TacOffsetCorrected_%d", i), Form("Time difference between TAC and LaBr %d, corrected by TAC offset; time (ns); counts/ns", i), 10000, -5000., 5000.);
-      fH1[slot][Form("TimeDiff_%d", i)] = new TH1D(Form("TimeDiff_%d", i), Form("Time difference for LaBr %d - LaBr with TAC coincidence; time (ns); counts/ns", i), 10000, -5000., 5000.);
-      fH1[slot][Form("TimeDiffNoTac_%d", i)] = new TH1D(Form("TimeDiffNoTac_%d", i), Form("Time difference for LaBr %d - LaBr without TAC coincidence; time (ns); counts/ns", i), 10000, -5000., 5000.);
-      fH1[slot][Form("TimeStampDiff_%d", i)] = new TH1D(Form("TimeStampDiff_%d", i), Form("Timestamp difference for LaBr %d - LaBr with TAC coincidence; time (ns); counts/ns", i), 10000, -5000., 5000.);
+      fH1[slot][Form("TimeDiff_%d", i)]           = new TH1D(Form("TimeDiff_%d", i), Form("Time difference for LaBr %d - LaBr with TAC coincidence; time (ns); counts/ns", i), 10000, -5000., 5000.);
+      fH1[slot][Form("TimeDiffNoTac_%d", i)]      = new TH1D(Form("TimeDiffNoTac_%d", i), Form("Time difference for LaBr %d - LaBr without TAC coincidence; time (ns); counts/ns", i), 10000, -5000., 5000.);
+      fH1[slot][Form("TimeStampDiff_%d", i)]      = new TH1D(Form("TimeStampDiff_%d", i), Form("Timestamp difference for LaBr %d - LaBr with TAC coincidence; time (ns); counts/ns", i), 10000, -5000., 5000.);
       fH1[slot][Form("TimeStampDiffNoTac_%d", i)] = new TH1D(Form("TimeStampDiffNoTac_%d", i), Form("Timestamp difference for LaBr %d - LaBr without TAC coincidence; time (ns); counts/ns", i), 10000, -5000., 5000.);
    }
    fH1[slot]["TimeStampDiffGriffin"] = new TH1D("TimeStampDiffGriffin", "Timestamp difference for HPGe - LaBr, with TAC coincidence; time (ns); counts/ns", 10000, -5000., 5000.);
-   fH1[slot]["TimeDiffGriffin"] = new TH1D("TimeDiffGriffin", "Time difference for HPGe - LaBr, with TAC coincidence; time (ns); counts/ns", 10000, -5000., 5000.);
+   fH1[slot]["TimeDiffGriffin"]      = new TH1D("TimeDiffGriffin", "Time difference for HPGe - LaBr, with TAC coincidence; time (ns); counts/ns", 10000, -5000., 5000.);
 }
 
 void TacOffsetHelper::Exec(unsigned int slot, TGriffin& grif, TTAC& tac, TLaBr& labr)   // NOLINT
@@ -39,7 +39,7 @@ void TacOffsetHelper::Exec(unsigned int slot, TGriffin& grif, TTAC& tac, TLaBr& 
    // e.g. because of a typo
 
    Short_t nofLaBr = labr.GetMultiplicity();
-   Short_t nofTac = tac.GetMultiplicity();
+   Short_t nofTac  = tac.GetMultiplicity();
    Short_t nofGrif = grif.GetMultiplicity();
 
    // ignoring any events without exactly two LaBr

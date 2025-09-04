@@ -49,14 +49,14 @@ public:
 
    // if you add anything to these enums, only add at the end!
    enum class EBank : std::uint8_t { kWFDN,
-                      kGRF1,
-                      kGRF2,
-                      kGRF3,
-                      kGRF4,
-                      kFME0,
-                      kFME1,
-                      kFME2,
-                      kFME3 };
+                                     kGRF1,
+                                     kGRF2,
+                                     kGRF3,
+                                     kGRF4,
+                                     kFME0,
+                                     kFME1,
+                                     kFME2,
+                                     kFME3 };
 
 #ifndef __CINT__
    virtual std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>& AddGoodOutputQueue(size_t maxSize = 50000)

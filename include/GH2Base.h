@@ -10,13 +10,13 @@
 class GH1D;
 
 enum class EBackgroundSubtraction : std::uint8_t { kNoBackground,
-                                    kRegionBackground,
-                                    kMatchedLowerMarker,
-                                    kSplitTwoMarker,
-                                    kTotalFraction };
+                                                   kRegionBackground,
+                                                   kMatchedLowerMarker,
+                                                   kSplitTwoMarker,
+                                                   kTotalFraction };
 
 enum class EDirection : std::uint8_t { kXDirection,
-                        kYDirection };
+                                       kYDirection };
 
 class GH2Base {
 

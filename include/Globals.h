@@ -75,7 +75,7 @@ public:
            return what.c_str();
         }*/
 
-   const int   code; // NOLINT(cppcoreguidelines-avoid-const-or-ref-data-members)
+   const int   code;   // NOLINT(cppcoreguidelines-avoid-const-or-ref-data-members)
    const char* message;
 };
 

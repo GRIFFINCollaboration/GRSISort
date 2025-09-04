@@ -52,9 +52,9 @@ class TEfficiencyTab {
    /////////////////////////////////////////////////////////////////
 public:
    enum EPeakType : std::uint8_t { kRWPeak  = 0,
-                    kABPeak  = 1,
-                    kAB3Peak = 2,
-                    kGauss   = 3 };
+                                   kABPeak  = 1,
+                                   kAB3Peak = 2,
+                                   kGauss   = 3 };
 
    TEfficiencyTab(TEfficiencyDatatypeTab* parent, TNucleus* nucleus, std::tuple<TH1*, TH2*, TH2*> hists, TGCompositeFrame* frame);
    TEfficiencyTab(const TEfficiencyTab&)                = default;
@@ -112,16 +112,16 @@ class TEfficiencyDatatypeTab {
    /////////////////////////////////////////////////////////////////
 public:
    enum EEntry : std::uint8_t { kRangeEntry,
-                 kThresholdEntry,
-                 kBgParamEntry,
-                 kCalibrationUncertaintyEntry,
-                 kPeakTypeBox,
-                 kDegreeEntry,
-                 kPlotEfficiencyCheck,
-                 kPlotUncorrEfficiencyCheck,
-                 kPlotPeakAreaCheck,
-                 kPlotSummingInCheck,
-                 kPlotSummingOutCheck };
+                                kThresholdEntry,
+                                kBgParamEntry,
+                                kCalibrationUncertaintyEntry,
+                                kPeakTypeBox,
+                                kDegreeEntry,
+                                kPlotEfficiencyCheck,
+                                kPlotUncorrEfficiencyCheck,
+                                kPlotPeakAreaCheck,
+                                kPlotSummingInCheck,
+                                kPlotSummingOutCheck };
 
    TEfficiencyDatatypeTab(TEfficiencyCalibrator* parent, std::vector<TNucleus*> nucleus, std::vector<std::tuple<TH1*, TH2*, TH2*>> hists, TGCompositeFrame* frame, const std::string& dataType, TGHProgressBar* progressBar);
    TEfficiencyDatatypeTab(const TEfficiencyDatatypeTab&)                = default;
