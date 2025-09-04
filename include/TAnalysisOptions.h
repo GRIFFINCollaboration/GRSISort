@@ -42,7 +42,7 @@ public:
    void SetWaveformFitting(const bool& flag) { fWaveformFitting = flag; }
    bool IsWaveformFitting() const { return fWaveformFitting; }
 
-   void        SetCorrectCrossTalk(const bool& flag, Option_t* opt = "");
+   void SetCorrectCrossTalk(const bool& flag, Option_t* opt = "");
    bool IsCorrectingCrossTalk() const { return fIsCorrectingCrossTalk; }
 
    int64_t BuildWindow() const { return fBuildWindow; }

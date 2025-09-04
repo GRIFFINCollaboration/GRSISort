@@ -163,7 +163,7 @@ void TParsingDiagnostics::Draw(Option_t* opt)
    }
    if(fIdHist == nullptr) {
       fIdHist = new TH1F("IdHist", "Event survival;channel number;survival rate [%]", maxChannel - minChannel + 1,
-            minChannel, maxChannel + 1);
+                         minChannel, maxChannel + 1);
    } else {
       // the histogram already had the right number of bins, but to be save we set the range
       fIdHist->SetAxisRange(minChannel, maxChannel + 1);
@@ -172,7 +172,7 @@ void TParsingDiagnostics::Draw(Option_t* opt)
    for(const auto& iter : fChannelAddressData) {
       if(iter.second.MinChannelId() != 0 || iter.second.MinChannelId() != iter.second.MaxChannelId()) {
          fIdHist->SetBinContent(fIdHist->GetXaxis()->FindBin(iter.first),
-               100. * static_cast<double>(iter.second.NumberOfHits()) / static_cast<double>(iter.second.MaxChannelId() - iter.second.MinChannelId() + 1));
+                                100. * static_cast<double>(iter.second.NumberOfHits()) / static_cast<double>(iter.second.MaxChannelId() - iter.second.MinChannelId() + 1));
       }
    }
 
@@ -183,8 +183,8 @@ void TParsingDiagnostics::WriteToFile(const char* fileName) const
 {
    std::ofstream statsOut(fileName);
    statsOut << std::endl
-      << "Run time to the nearest second = " << fMaxDaqTimeStamp - fMinDaqTimeStamp << std::endl
-      << std::endl;
+            << "Run time to the nearest second = " << fMaxDaqTimeStamp - fMinDaqTimeStamp << std::endl
+            << std::endl;
 
    statsOut << "Good fragments:";
    for(const auto& iter : fNumberOfGoodFragments) {
@@ -204,7 +204,7 @@ void TParsingDiagnostics::WriteToFile(const char* fileName) const
          continue;
       }
       statsOut << hex(iter.first, 4) << ":\t" << chan->GetName()
-         << "\tdead time: " << static_cast<float>(iter.second.DeadTime()) / 1e9 << " seconds." << std::endl;
+               << "\tdead time: " << static_cast<float>(iter.second.DeadTime()) / 1e9 << " seconds." << std::endl;
    }
    statsOut << std::endl;
 

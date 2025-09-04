@@ -66,10 +66,10 @@ public:
    };
 
    enum class ETimeFlag : std::uint16_t { kNoneSet = BIT(0),
-                          kCFD     = BIT(1),
-                          kWalk    = BIT(2),
-                          kOffset  = BIT(3),
-                          kAll     = 0xFFFF };
+                                          kCFD     = BIT(1),
+                                          kWalk    = BIT(2),
+                                          kOffset  = BIT(3),
+                                          kAll     = 0xFFFF };
 
    explicit TDetectorHit(const int& Address = 0xffffffff);
    TDetectorHit(const TDetectorHit&, bool copywave = true);

@@ -136,13 +136,13 @@ public:
    double Get_wpar_decay() { return cWpar->tauDecay; }
    double Get_wpar_rise() { return cWpar->tauRise; }
 
-   bool        SiliShapePrepare(double tauDecay, double tauRise);
-   bool        GetSiliShape(double tauDecay, double tauRise);                                            // Added for Spice, parameters to be found : t0 and Amplitude
-   bool        GetSiliShapeTF1(double tauDecay, double tauRise, double baseline, double basefreq = 0);   // Added for Spice, full slow fit to establish parameters, needs initial estimates
-   bool Get_bflag() { return cWpar->bflag; }
-   TF1         Getsilifit();
-   double      GetsiliSmirnov();
-   void        Drawsilifit();
+   bool   SiliShapePrepare(double tauDecay, double tauRise);
+   bool   GetSiliShape(double tauDecay, double tauRise);                                            // Added for Spice, parameters to be found : t0 and Amplitude
+   bool   GetSiliShapeTF1(double tauDecay, double tauRise, double baseline, double basefreq = 0);   // Added for Spice, full slow fit to establish parameters, needs initial estimates
+   bool   Get_bflag() { return cWpar->bflag; }
+   TF1    Getsilifit();
+   double GetsiliSmirnov();
+   void   Drawsilifit();
 
    static double SiLiFitFunction(double* i, double* p);
 

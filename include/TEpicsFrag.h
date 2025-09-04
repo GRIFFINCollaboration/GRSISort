@@ -35,8 +35,8 @@ public:
    TEpicsFrag& operator=(TEpicsFrag&&) noexcept = default;
    ~TEpicsFrag()                                = default;
 
-   size_t       GetSize() const { return fData.size(); }
-   float GetData(const unsigned int& index) const
+   size_t GetSize() const { return fData.size(); }
+   float  GetData(const unsigned int& index) const
    {
       if(index >= fData.size()) {
          return fData.back();

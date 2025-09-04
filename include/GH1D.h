@@ -109,9 +109,9 @@ private:
 };
 
 enum class ERegionType : std::uint8_t { kDefault,
-                         kGate,
-                         kBackground,
-                         kRegion };
+                                        kGate,
+                                        kBackground,
+                                        kRegion };
 
 class TRegion : public TBox {
 public:

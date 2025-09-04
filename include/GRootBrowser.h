@@ -148,7 +148,7 @@ private:
    const TGPicture*     fIconPic{nullptr};          ///< icon picture
 
 public:
-   enum class ENewBrowserMessages : std::uint16_t{
+   enum class ENewBrowserMessages : std::uint16_t {
       kBrowse = 11011,
       kOpenFile,
       kClone,
@@ -170,9 +170,9 @@ public:
       kQuitRoot
    };
 
-   enum class EInsertPosition : std::uint8_t{ kLeft,
-                                kRight,
-                                kBottom };
+   enum class EInsertPosition : std::uint8_t { kLeft,
+                                               kRight,
+                                               kBottom };
 
    explicit GRootBrowser(TBrowser* b = nullptr, const char* name = "ROOT Browser", UInt_t width = 800, UInt_t height = 500, Option_t* opt = "", Bool_t initshow = kTRUE);
    GRootBrowser(TBrowser* b, const char* name, Int_t x, Int_t y, UInt_t width, UInt_t height, Option_t* opt = "", Bool_t initshow = kTRUE);

@@ -129,9 +129,9 @@ private:
    static std::vector<TChannel*> SortedChannels();
 
 public:
-   void        SetName(const char* tmpName) override;
-   void        SetAddress(unsigned int tmpadd);
-   void        SetNumber(const TPriorityValue<int>& tmp)
+   void SetName(const char* tmpName) override;
+   void SetAddress(unsigned int tmpadd);
+   void SetNumber(const TPriorityValue<int>& tmp)
    {
       if(fNumber == tmp) { return; }
       // channel number has changed so we need to delete the old one and insert the new one
@@ -207,7 +207,7 @@ public:
    void AddTIMECoefficient(double temp) { fTIMECoefficients.Address()->push_back(temp); }
    void AddEFFCoefficient(double temp) { fEFFCoefficients.Address()->push_back(temp); }
    void AddCTCoefficient(double temp) { fCTCoefficients.Address()->push_back(temp); }
-   void        AddEnergyNonlinearityPoint(double x, double y) { fEnergyNonlinearity.Address()->SetPoint(fEnergyNonlinearity.Address()->GetN(), x, y); }
+   void AddEnergyNonlinearityPoint(double x, double y) { fEnergyNonlinearity.Address()->SetPoint(fEnergyNonlinearity.Address()->GetN(), x, y); }
 
    void ResizeENG(size_t size)
    {
@@ -284,8 +284,8 @@ public:
    double CalibrateLED(double) const;
    double CalibrateLED(int) const;
 
-   double        CalibrateTIME(double) const;
-   double        CalibrateTIME(int) const;
+   double CalibrateTIME(double) const;
+   double CalibrateTIME(int) const;
    double GetTZero(double tempd) const { return CalibrateTIME(tempd); }
    double GetTZero(int tempi) const { return CalibrateTIME(tempi); }
 
