@@ -134,7 +134,7 @@ private:
    static float fTextSize;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TGamma, 1)   // NOLINT(readability-else-after-return)
+   ClassDefOverride(TGamma, 2)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 
