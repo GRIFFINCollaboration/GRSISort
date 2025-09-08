@@ -1,18 +1,21 @@
 #include <iostream>
 #include <fstream>
 
-void ODBGains(char* fname, char* outname = "odbgains.sh")
+#include "TChannel.h"
+
+void ODBGains(char* fname, const char* outname = "odbgains.sh")
 {
    // Script to make a script to write to ODB automatically from a created cal file.
    // Some assertions and exceptions could be useful here, but for the amount this will
    // be used, I'm not going to spend time doing it.
    // Please send any other complaints to rd.
 
-   if(!(TChannel::ReadCalFile(fname)))
+   if(TChannel::ReadCalFile(fname) == 0) {
       return;
+   }
 
-   ofstream myfile;
-   myfile.open(outname, ios::out);
+   std::ofstream myfile;
+   myfile.open(outname, std::ios::out);
 
    myfile << "#!/bin/bash\n";
    myfile << "#\n";
@@ -22,7 +25,7 @@ void ODBGains(char* fname, char* outname = "odbgains.sh")
 
    for(int i = 0; i < 64; i++) {   // make this smarter
       TChannel* chan = TChannel::GetChannelByNumber(i);
-      if(!chan) continue;
+      if(chan == nullptr) { continue; }
 
       myfile << "odbedit -c \"set /DAQ/PSC/offset[" << i << "] " << chan->GetENGCoeff().at(0) << "\"\n";
       myfile << "odbedit -c \"set /DAQ/PSC/gain[" << i << "] " << chan->GetENGCoeff().at(1) << "\"\n\n";

@@ -1,9 +1,9 @@
 #include <iostream>
 #include <iomanip>
 #include <cmath>
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cmath>
 #include <vector>
 #include <algorithm>
 #include <fstream>
@@ -30,11 +30,8 @@
 #include "TGaxis.h"
 #include "TText.h"
 #include "TPaveText.h"
-#include "TGraphErrors.h"
 #include "TLegend.h"
 #include "TLegendEntry.h"
-
-using namespace std;
 
 double PolarizationCalculation();
 double Kcoefficents(int mu, int L1, int L2);
@@ -47,14 +44,14 @@ void PlotCompPolDeltaSensitivity()
    exit(0);
 
    // canvas
-   TCanvas* c1 = new TCanvas("ScaledQ", "ScaledQ", 500, 1000);
+   auto* c1 = new TCanvas("ScaledQ", "ScaledQ", 500, 1000);
    c1->Divide(1, 2);
    // in TGraphPainter. Default np=1
-   Int_t np = 6;
+   Float_t np = 6.;
    gStyle->SetEndErrorSize(np);
    // TPad (from PlotProWaveforms)
-   TPad* pada = (TPad*)c1->GetPad(1);
-   TPad* padb = (TPad*)c1->GetPad(2);
+   auto* pada = static_cast<TPad*>(c1->GetPad(1));
+   auto* padb = static_cast<TPad*>(c1->GetPad(2));
 
    pada->SetTopMargin(0.03);
    padb->SetTopMargin(0.03);
@@ -677,7 +674,7 @@ void PlotCompPolDeltaSensitivity()
                        0.135304};
    double eya[dp]   = {};
 
-   TGraphErrors* plota1 = new TGraphErrors(dp, xaxis, seria, ex, eya);
+   auto* plota1 = new TGraphErrors(dp, xaxis, seria, ex, eya);
 
    // Att
    plota1->SetLineColor(8);
@@ -686,7 +683,7 @@ void PlotCompPolDeltaSensitivity()
    plota1->SetMarkerSize(1);
    plota1->SetLineWidth(2);
    // TMultiGraph
-   TMultiGraph* mga = new TMultiGraph();
+   auto* mga = new TMultiGraph();
    mga->Add(plota1);
    mga->Draw("apl");
    // Att
@@ -730,8 +727,8 @@ void PlotCompPolDeltaSensitivity()
    double serid[dp] = {1081, 550, 410, 351, 324, 287, 283, 276, 277};
    double eyd[dp]   = {425, 199, 132, 102, 85, 70, 65, 60, 58};
 
-   TGraphErrors* plotb1 = new TGraphErrors(dp2, xaxis2, seric, ex2, eyc);
-   TGraphErrors* plotb2 = new TGraphErrors(dp2, xaxis2, serid, ex2, eyd);
+   auto* plotb1 = new TGraphErrors(dp2, xaxis2, seric, ex2, eyc);
+   auto* plotb2 = new TGraphErrors(dp2, xaxis2, serid, ex2, eyd);
 
    // Att
    plotb1->SetLineColor(8);

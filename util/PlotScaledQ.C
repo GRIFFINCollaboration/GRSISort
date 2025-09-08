@@ -19,27 +19,24 @@
 #include "TGaxis.h"
 #include "TText.h"
 #include "TPaveText.h"
-#include "TGraphErrors.h"
 #include "TLegend.h"
 #include "TLegendEntry.h"
 
 #include <iostream>
 #include <iomanip>
 #include <cmath>
-using namespace std;
 
 void PlotScaledQ()
 {
-
    // canvas
-   TCanvas* c1 = new TCanvas("ScaledQ", "ScaledQ", 500, 1000);
+   auto* c1 = new TCanvas("ScaledQ", "ScaledQ", 500, 1000);
    c1->Divide(1, 2);
    // in TGraphPainter. Default np=1
-   Int_t np = 6;
+   Float_t np = 6.;
    gStyle->SetEndErrorSize(np);
    // TPad (from PlotProWaveforms)
-   TPad* pada = (TPad*)c1->GetPad(1);
-   TPad* padb = (TPad*)c1->GetPad(2);
+   auto* pada = static_cast<TPad*>(c1->GetPad(1));
+   auto* padb = static_cast<TPad*>(c1->GetPad(2));
 
    pada->SetTopMargin(0.03);
    padb->SetTopMargin(0.03);
@@ -55,7 +52,7 @@ void PlotScaledQ()
 
    const Int_t dp = 300;
    // x axis
-   double xaxis[dp] = {10,
+   std::array<double, dp> xaxis = {10,
                        20,
                        30,
                        40,
@@ -355,12 +352,11 @@ void PlotScaledQ()
                        2980,
                        2990,
                        3000};
-   double ex[dp]    = {0};
    // Projected range for 20keV beam energy, and straggling for Mylar tape
    // double seria[dp]={545,310,264,250,249,232,238,239,246};
    // double eya[dp]={87.5,42,31,27,24.5,21.5,20.5,19.5,19.5};
    // Scaled quality factors
-   double seria[dp] = {0.554626,
+   std::array<double, dp> seria = {0.554626,
                        0.554026,
                        0.553063,
                        0.551768,
@@ -660,9 +656,9 @@ void PlotScaledQ()
                        0.135996,
                        0.135649,
                        0.135304};
-   double eya[dp]   = {};
 
-   TGraphErrors* plota1 = new TGraphErrors(dp, xaxis, seria, ex, eya);
+   // this was originally a TGraphErrors, but none of the errors were set?
+   auto* plota1 = new TGraph(dp, xaxis.data(), seria.data());
 
    // Att
    plota1->SetLineColor(8);
@@ -670,8 +666,8 @@ void PlotScaledQ()
    plota1->SetMarkerColor(8);
    plota1->SetMarkerSize(1);
    plota1->SetLineWidth(2);
-   // TMultiGraph
-   TMultiGraph* mga = new TMultiGraph();
+   // TMultiGraph - not sure why this is done via a TMultiGraph instead of just plotting the TGraph directly?
+   auto* mga = new TMultiGraph();
    mga->Add(plota1);
    mga->Draw("apl");
    // Att
@@ -706,17 +702,17 @@ void PlotScaledQ()
    // data
    const Int_t dp2 = 9;
    // x axis
-   double xaxis2[dp] = {10, 20, 30, 40, 50, 60, 70, 80, 90};
-   double ex2[dp]    = {0};
+   std::array<double, dp2> xaxis2 = {10, 20, 30, 40, 50, 60, 70, 80, 90};
+   std::array<double, dp2> ex2    = { 0,  0,  0,  0,  0,  0,  0,  0,  0};
    // Projected range for 20keV beam energy, and straggling for Aluminized Mylar tape
-   double seric[dp] = {378, 211, 173, 160, 156, 145, 148, 148, 152};
-   double eyc[dp]   = {93.5, 44, 31, 26, 23, 20, 19, 18, 17.5};
+   std::array<double, dp2> seric = {378, 211, 173, 160, 156, 145, 148, 148, 152};
+   std::array<double, dp2> eyc   = {93.5, 44, 31, 26, 23, 20, 19, 18, 17.5};
    // Projected range for 60keV beam energy, and straggling for Aluminized Mylar tape
-   double serid[dp] = {1081, 550, 410, 351, 324, 287, 283, 276, 277};
-   double eyd[dp]   = {425, 199, 132, 102, 85, 70, 65, 60, 58};
+   std::array<double, dp2> serid = {1081, 550, 410, 351, 324, 287, 283, 276, 277};
+   std::array<double, dp2> eyd   = {425, 199, 132, 102, 85, 70, 65, 60, 58};
 
-   TGraphErrors* plotb1 = new TGraphErrors(dp2, xaxis2, seric, ex2, eyc);
-   TGraphErrors* plotb2 = new TGraphErrors(dp2, xaxis2, serid, ex2, eyd);
+   auto* plotb1 = new TGraphErrors(dp2, xaxis2.data(), seric.data(), ex2.data(), eyc.data());
+   auto* plotb2 = new TGraphErrors(dp2, xaxis2.data(), serid.data(), ex2.data(), eyd.data());
 
    // Att
    plotb1->SetLineColor(8);
@@ -730,7 +726,7 @@ void PlotScaledQ()
    plotb2->SetMarkerSize(1);
    plotb2->SetLineWidth(2);
    // TMultiGraph
-   TMultiGraph* mgb = new TMultiGraph();
+   auto* mgb = new TMultiGraph();
    mgb->Add(plotb1);
    mgb->Add(plotb2);
    mgb->Draw("apl");
@@ -762,8 +758,8 @@ void PlotScaledQ()
    //~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~
 
    // TPaveText
-   TPaveText* pta = new TPaveText(0.9600, 0.8500, 0.4700, 0.9800, "blNDC");
-   TPaveText* ptb = new TPaveText(0.9600, 0.8500, 0.4700, 0.9800, "blNDC");
+   auto* pta = new TPaveText(0.9600, 0.8500, 0.4700, 0.9800, "blNDC");
+   auto* ptb = new TPaveText(0.9600, 0.8500, 0.4700, 0.9800, "blNDC");
    //
    pta->SetBorderSize(0);
    pta->SetFillColor(0);

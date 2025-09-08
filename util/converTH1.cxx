@@ -2,6 +2,7 @@
 
 // C++ libraries
 #include <iostream>
+#include <fstream>
 // C libraries
 #include <cstdio>
 #include <cstdlib>
@@ -55,24 +56,31 @@ int main(int argc, char* argv[])
    if(file.IsZombie()) {
       std::cout << "Error opening file.  " << file_name << std::endl;
       std::cout << "Perhaps file not there or not closed correctly" << std::endl;
-      return (1);
+      return 1;
    }
    TH1* hist = nullptr;
    file.GetObject(hist_name, hist);
    if(hist == nullptr) {
       std::cout << "Sorry, histogram " << hist_name << " not found in file" << std::endl;
-      return (1);
+      return 1;
+   }
+   if(hist->GetDimension() != 1) {
+      std::cout << "Sorry, histogram " << hist_name << " is not a 1D histogram but a " << hist->GetDimension() <<"D histogram!" << std::endl;
+      return 1;
    }
 
    std::stringstream str;
    str << hist->GetName() << ".hist";
-   FILE* out_file = fopen(str.str().c_str(), "w");
+   std::ofstream out_file(str.str().c_str());
    std::cout << "Making output file: " << str.str() << std::endl;
-   fprintf(out_file, "%s\t%s\t%d\n", file_name, hist_name, hist->GetNbinsX());
+
+   out_file << file_name << "\t" << hist_name << "\t" << hist->GetNbinsX() << "\n";
    for(int i = 1; i <= hist->GetNbinsX(); i++) {
-      fprintf(out_file, "%g\t%g\n", hist->GetBinCenter(i), hist->GetBinContent(i));
+      out_file << hist->GetBinCenter(i) << "\t" << hist->GetBinContent(i) << "\n";
    }
-   fclose(out_file);
+   out_file.close();
+   
    std::cout << "Output complete" << std::endl;
+
    return 0;
 }

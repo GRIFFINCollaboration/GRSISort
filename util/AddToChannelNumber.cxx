@@ -5,7 +5,7 @@
 int main(int argc, char** argv)
 {
    if(argc != 3) {
-      std::cout << "Usage: AddOneToChannel <int to add> <calfile.cal>\n";
+      std::cout << "Usage: " << argv[0] << " <int to add> <calfile.cal>\n";
       return 1;
    }
 
