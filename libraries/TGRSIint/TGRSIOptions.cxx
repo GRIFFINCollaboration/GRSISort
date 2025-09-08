@@ -76,12 +76,13 @@ void TGRSIOptions::Clear(Option_t*)
    fIgnoreOdbChannels = false;
    fDownscaling       = 1;
 
-   fIgnoreScaler      = false;
-   fIgnoreEpics       = false;
-   fWriteFragmentTree = false;
-   fWriteBadFrags     = false;
-   fWriteDiagnostics  = false;
-   fWordOffset        = -1;
+   fIgnoreScaler              = false;
+   fIgnoreEpics               = false;
+   fWriteFragmentTree         = false;
+   fWriteBadFrags             = false;
+   fWriteDiagnostics          = false;
+   fCreateFragmentDiagnostics = false;
+   fWordOffset                = -1;
 
    fBatch = false;
 
@@ -151,6 +152,7 @@ void TGRSIOptions::Print(Option_t*) const
              << "fWriteFragmentTree: " << fWriteFragmentTree << std::endl
              << "fWriteBadFrags: " << fWriteBadFrags << std::endl
              << "fWriteDiagnostics: " << fWriteDiagnostics << std::endl
+             << "fCreateFragmentDiagnostics: " << fCreateFragmentDiagnostics << std::endl
              << "fWordOffset: " << fWordOffset << std::endl
              << std::endl
              << "fBatch: " << fBatch << std::endl
@@ -306,6 +308,7 @@ void TGRSIOptions::Load(int argc, char** argv)
          .description("Write debug information to output/file, e.g. enables writing of TDescantDebug at analysis stage")
          .default_value(false);
       parser.option("write-diagnostics", &fWriteDiagnostics, true).description("Write Parsing/SortingDiagnostics to root-file").colour(DGREEN);
+      parser.option("create-diagnostics", &fCreateFragmentDiagnostics, true).description("Create more diagnostics from the fragment loop");
       parser.option("word-count-offset", &fWordOffset, true)
          .description("Offset to the word count in the GRIFFIN header word, default is -1 (disabled).")
          .default_value(-1)

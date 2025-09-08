@@ -17,6 +17,7 @@
 #include "TEventBuildingLoop.h"
 #include "TFragHistLoop.h"
 #include "TFragWriteLoop.h"
+#include "TFragDiagnosticsLoop.h"
 #include "TFragmentChainLoop.h"
 #include "ArgParser.h"
 #include "TUnpackingLoop.h"
@@ -616,6 +617,16 @@ void TGRSIint::SetupPipeline()
          loop->BadInputQueue()    = unpackLoop->BadOutputQueue();
          loop->ScalerInputQueue() = unpackLoop->ScalerOutputQueue();
          scalerQueues.push_back(loop->ScalerInputQueue());
+      }
+      if(fragmentChainLoop != nullptr) {
+         loop->InputQueue() = fragmentChainLoop->AddOutputQueue();
+      }
+      fragmentQueues.push_back(loop->InputQueue());
+   } else if(opt->CreateFragmentDiagnostics() && write_analysis_tree) {
+      // we only have the diagnostics loop running if requested and we write an analysis tree as we write to the same output file
+      TFragDiagnosticsLoop* loop = TFragDiagnosticsLoop::Get("4_frag_diag_loop", output_analysis_tree_filename);
+      if(unpackLoop != nullptr) {
+         loop->InputQueue()       = unpackLoop->AddGoodOutputQueue(TGRSIOptions::Get()->FragmentWriteQueueSize());
       }
       if(fragmentChainLoop != nullptr) {
          loop->InputQueue() = fragmentChainLoop->AddOutputQueue();
