@@ -53,6 +53,7 @@ void TGRSIOptions::Clear(Option_t*)
 
    fOutputFragmentFile          = "";
    fOutputAnalysisFile          = "";
+   fOutputDiagnosticsFile       = "";
    fOutputFilteredFile          = "";
    fOutputFragmentHistogramFile = "";
    fOutputAnalysisHistogramFile = "";
@@ -284,6 +285,7 @@ void TGRSIOptions::Load(int argc, char** argv)
       parser.option("recommended", &useRecommendedFlags, true).description("Use recommended flags (those in " DGREEN "dark green" GREEN ")").colour(GREEN);
       parser.option("output-fragment-tree", &fOutputFragmentFile, true).description("Filename of output fragment tree");
       parser.option("output-analysis-tree", &fOutputAnalysisFile, true).description("Filename of output analysis tree");
+      parser.option("output-diagnostics", &fOutputDiagnosticsFile, true).description("Filename of output diagnostics");
       parser.option("output-fragment-hists", &fOutputFragmentHistogramFile, true)
          .description("Filename of output fragment hists");
       parser.option("output-analysis-hists", &fOutputAnalysisHistogramFile, true)

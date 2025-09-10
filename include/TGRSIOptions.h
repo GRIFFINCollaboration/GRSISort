@@ -51,6 +51,7 @@ public:
 
    const std::string& OutputFragmentFile() const { return fOutputFragmentFile; }
    const std::string& OutputAnalysisFile() const { return fOutputAnalysisFile; }
+   const std::string& OutputDiagnosticsFile() const { return fOutputDiagnosticsFile; }
 
    const std::string& OutputFilteredFile() const { return fOutputFilteredFile; }
    const std::string& OutputFragmentHistogramFile() const { return fOutputFragmentHistogramFile; }
@@ -161,8 +162,9 @@ private:
    std::vector<std::string> fInputWinFiles;   ///< A list of the input window files
    std::string              fInputRing;       ///< The name of hte input ring
 
-   std::string fOutputFragmentFile;   ///< The name of the fragment file to write to
-   std::string fOutputAnalysisFile;   ///< The name of the analysis file to write to
+   std::string fOutputFragmentFile;      ///< The name of the fragment file to write to
+   std::string fOutputAnalysisFile;      ///< The name of the analysis file to write to
+   std::string fOutputDiagnosticsFile;   ///< The name of the diagnostics file to write to
    std::string fOutputFilteredFile;
    std::string fOutputFragmentHistogramFile;   ///< The name of the fragment histogram file
    std::string fOutputAnalysisHistogramFile;   ///< The name of the analysis histogram file

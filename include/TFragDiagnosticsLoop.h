@@ -57,6 +57,7 @@ private:
 #ifndef __CINT__
    void Process(const std::shared_ptr<const TFragment>& event);
 #endif
+   bool CreateHistograms();
 
    TFile* fOutputFile{nullptr};
 
@@ -72,11 +73,15 @@ private:
    unsigned int                 fRollingThreshold{1000};
    int                          fRollnumThreshold{20};   // if we have this many numbers above the threshold, turn rolling on or off
 
-   std::map<unsigned int, std::array<int64_t, 3>> fChannelIds;
-   std::map<unsigned int, std::array<int64_t, 3>> fAcceptedChannelIds;
-   std::map<unsigned int, std::array<int64_t, 3>> fTimeStamps;
-   std::array<int, 3> fNetworkPacketNumber{{0, 0, 0}};
-   std::array<int64_t, 3> fNetworkPacketTimeStamp{{0, 0, 0}};
+   // these are all 2 to store the last and second to last instances of these variables (per channel for the first three)
+   std::map<unsigned int, std::array<int64_t, 2>> fChannelIds;
+   std::map<unsigned int, std::array<int64_t, 2>> fAcceptedChannelIds;
+   std::map<unsigned int, std::array<int64_t, 2>> fTimeStamps;
+   std::array<int, 2> fNetworkPacketNumber{{0, 0}};
+   std::array<int64_t, 2> fNetworkPacketTimeStamp{{0, 0}};
+
+   // time binning of histograms
+   int fRunLength{0};
 
    // histograms
    TH2D* fAccepted{nullptr};

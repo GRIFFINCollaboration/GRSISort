@@ -48,36 +48,7 @@ TFragDiagnosticsLoop::TFragDiagnosticsLoop(std::string name, const std::string& 
          throw std::runtime_error(Form("Failed to open \"%s\"\n", fOutputFilename.c_str()));
       }
 
-      // start with 1 s binning
-      int nofTimeBins = static_cast<int>(TRunInfo::RunLength());
-      if(nofTimeBins < 1000) {
-         // if we can, increase the binning to 100 ms binning
-         nofTimeBins = static_cast<int>(TRunInfo::RunLength()*10.);
-      } else if(nofTimeBins > 10000) {
-         // if we have to, decrease the binning to 10 s binning
-         nofTimeBins = static_cast<int>(TRunInfo::RunLength()/10.);
-         std::cout << "Warning, run is more than 10000 s long (run length " << TRunInfo::RunLength() << " s), reducing binning to 10 s (number of bins " << nofTimeBins << ")!" << std::endl;
-      }
-
-      fAccepted = new TH2D("accepted", "Accepted Channel ID vs. Channel Address;Channel Address;Accepted Channel ID",
-            TChannel::GetNumberOfChannels(), 0, static_cast<Double_t>(TChannel::GetNumberOfChannels()), 10000, 0, 1e6);
-      fLostNetworkPackets = new TH1D("lostNetworkPackets", "lost network packets;time [s];lost network packets",
-            nofTimeBins, TRunInfo::RunStart(), TRunInfo::RunStop());
-      fLostChannelIds = new TH2D("lostChannelIds", "Lost Channel Id vs. Channel Number;Channel Number;Lost Channel Id",
-            TChannel::GetNumberOfChannels(), 0, static_cast<Double_t>(TChannel::GetNumberOfChannels()), 10000, 0, 1e6);
-      fLostAcceptedIds = new TH2D("lostAcceptedIds", "Lost Accepted Channel Id vs. Channel Number;Channel Number;Lost Accepted Channel Id",
-            TChannel::GetNumberOfChannels(), 0, static_cast<Double_t>(TChannel::GetNumberOfChannels()), 10000, 0, 1e6);
-      fLostChannelIdsTime = new TH2D("lostChannelIdsTime", "Lost Channel Id time vs. Channel Number;Channel Number;time [s]",
-            TChannel::GetNumberOfChannels(), 0, static_cast<Double_t>(TChannel::GetNumberOfChannels()), nofTimeBins, TRunInfo::RunStart(), TRunInfo::RunStop());
-      fLostAcceptedIdsTime = new TH2D("lostAcceptedIdsTime", "Lost Accepted Channel Id time vs. Channel Number;Channel Number;time [s]",
-            TChannel::GetNumberOfChannels(), 0, static_cast<Double_t>(TChannel::GetNumberOfChannels()), nofTimeBins, TRunInfo::RunStart(), TRunInfo::RunStop());
-
-
-      int bin = 1;
-      for(const auto& channel : *TChannel::GetChannelMap()) {
-         fAccepted->GetXaxis()->SetBinLabel(bin, Form("0x%04x", channel.first));
-         ++bin;
-      }
+      // we delay the creating of histograms until we need them so that all the information needed is present
       TThread::UnLock();
    }
 }
@@ -120,7 +91,7 @@ bool TFragDiagnosticsLoop::Iteration()
    if(fInputQueue->IsFinished()) {
       return false;
    }
-   std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+   std::this_thread::sleep_for(std::chrono::milliseconds(100));
    return true;
 }
 
@@ -134,6 +105,13 @@ void TFragDiagnosticsLoop::Write()
       TParsingDiagnostics* parsingDiagnostics = TParsingDiagnostics::Get();
       GValue*              gValues            = GValue::Get();
 
+      // check our final run length and compare to the binning we chose
+      if(TRunInfo::RunLength() > fRunLength) {
+         std::cerr << Name() << ": got a final run length of " << TRunInfo::RunLength() << " s, instead of the assumed run length of " << fRunLength << " s, some diagnostics information will be missing!" << std::endl;
+      } else if(TRunInfo::RunLength() < fRunLength/2) {
+         // TODO: if we have less than half the range, resize the histograms (maybe via a general function?)
+      }
+      // switch to the output file
       fOutputFile->cd();
 
       fAccepted->Write();
@@ -166,9 +144,67 @@ void TFragDiagnosticsLoop::Write()
    }
 }
 
+bool TFragDiagnosticsLoop::CreateHistograms()
+{
+   std::cout << Name() << ": creating histograms using output file " << fOutputFile << std::endl;
+
+   if(fOutputFile == nullptr || !fOutputFile->IsOpen()) {
+      return false;
+   }
+   fOutputFile->cd();
+
+   // at this point we have read the first midas event and have a run start, but not a run stop yet (we will only find that one out at the end of the run)
+   // so for now we assume a run length of 3600 seconds
+   fRunLength = (TRunInfo::RunLength() > 0. ? static_cast<int>(TRunInfo::RunLength()) : 3600);
+   // start with 1 s binning
+   int nofTimeBins = fRunLength;
+   if(nofTimeBins < 1000) {
+      // if we can, increase the binning to 100 ms binning
+      nofTimeBins = fRunLength * 10;
+   } else if(nofTimeBins > 10000) {
+      // if we have to, decrease the binning to 10 s binning
+      nofTimeBins = fRunLength / 10;
+      std::cout << "Warning, run is more than 10000 s long (run length " << TRunInfo::RunLength() << " s), reducing binning to 10 s (number of bins " << nofTimeBins << ")!" << std::endl;
+   }
+
+   std::cout << Name() << ": creating histograms with " << nofTimeBins << " time bins from 0 to " << fRunLength << std::endl;
+
+   fAccepted = new TH2D("accepted", "Accepted Channel ID vs. Channel Address;Channel Address;Accepted Channel ID",
+         TChannel::GetNumberOfChannels(), 0, static_cast<Double_t>(TChannel::GetNumberOfChannels()), 10000, 0, 1e6);
+   fLostNetworkPackets = new TH1D("lostNetworkPackets", "lost network packets;time [s];lost network packets",
+         nofTimeBins, 0., fRunLength);
+   fLostChannelIds = new TH2D("lostChannelIds", "Lost Channel Id vs. Channel Number;Channel Number;Lost Channel Id",
+         TChannel::GetNumberOfChannels(), 0, static_cast<Double_t>(TChannel::GetNumberOfChannels()), 10000, 0, 1e6);
+   fLostAcceptedIds = new TH2D("lostAcceptedIds", "Lost Accepted Channel Id vs. Channel Number;Channel Number;Lost Accepted Channel Id",
+         TChannel::GetNumberOfChannels(), 0, static_cast<Double_t>(TChannel::GetNumberOfChannels()), 10000, 0, 1e6);
+   fLostChannelIdsTime = new TH2D("lostChannelIdsTime", "Lost Channel Id time vs. Channel Number;Channel Number;time [s]",
+         TChannel::GetNumberOfChannels(), 0, static_cast<Double_t>(TChannel::GetNumberOfChannels()), nofTimeBins, 0., fRunLength);
+   fLostAcceptedIdsTime = new TH2D("lostAcceptedIdsTime", "Lost Accepted Channel Id time vs. Channel Number;Channel Number;time [s]",
+         TChannel::GetNumberOfChannels(), 0, static_cast<Double_t>(TChannel::GetNumberOfChannels()), nofTimeBins, 0., fRunLength);
+
+
+   int bin = 1;
+   for(const auto& channel : *TChannel::GetChannelMap()) {
+      fAccepted->GetXaxis()->SetBinLabel(bin, Form("0x%04x", channel.first));
+      fLostChannelIds->GetXaxis()->SetBinLabel(bin, Form("0x%04x", channel.first));
+      fLostAcceptedIds->GetXaxis()->SetBinLabel(bin, Form("0x%04x", channel.first));
+      fLostChannelIdsTime->GetXaxis()->SetBinLabel(bin, Form("0x%04x", channel.first));
+      fLostAcceptedIdsTime->GetXaxis()->SetBinLabel(bin, Form("0x%04x", channel.first));
+      ++bin;
+   }
+
+   return true;
+}
+
 void TFragDiagnosticsLoop::Process(const std::shared_ptr<const TFragment>& event)
 {
-   auto timeStamp = event->GetTimeStamp();
+   if(fAccepted == nullptr || fLostNetworkPackets == nullptr || fLostChannelIds == nullptr ||
+      fLostAcceptedIds == nullptr || fLostChannelIdsTime == nullptr || fLostAcceptedIdsTime == nullptr) {
+      if(!CreateHistograms()) {
+         throw std::runtime_error(Name() + ": trying to create histograms failed, can't produce diagnostics!");
+      }
+   }
+   auto timeStamp = event->GetTimeStampNs();
    auto address = event->GetAddress();
    auto acceptedId = event->GetAcceptedChannelId();
    auto channelId = event->GetChannelId();
@@ -197,65 +233,67 @@ void TFragDiagnosticsLoop::Process(const std::shared_ptr<const TFragment>& event
    }
    acceptedId += fNofRollovers[address] * fAcceptedMax;
 
+   // check whether we had this channel before and if not, initialize all arrays
+   if(fChannelIds.find(address) == fChannelIds.end()) {
+      fChannelIds[address] = {0, 0};
+      fAcceptedChannelIds[address] = {0, 0};
+      fTimeStamps[address] = {0, 0};
+   }
+
    // if we have a new network packet number
    if(networkPacket != 0 && fNetworkPacketNumber[0] != 0) {
-      if(fNetworkPacketNumber[0] < fNetworkPacketNumber[1] && fNetworkPacketNumber[1] < fNetworkPacketNumber[2]) {
+      // we get here once we get the 3rd network packet number, so now
+      // [1] is the last, [0] the second to last
+
+      // we don't need to check that [0] is smaller than [1]
+      if(fNetworkPacketNumber[1] < networkPacket) {
+         // we get a new highest network packet number, so count all numbers between the second to last and the last one
+         // before we update things
          for(int packet = fNetworkPacketNumber[0] + 1; packet < fNetworkPacketNumber[1]; ++packet) {
-            fLostNetworkPackets->Fill(static_cast<double>(fNetworkPacketTimeStamp[1]) / 1e8);
+            fLostNetworkPackets->Fill(static_cast<double>(fNetworkPacketTimeStamp[1]) / 1e9);
          }
          // things look fine, so prepare for next time
          fNetworkPacketNumber[0]    = fNetworkPacketNumber[1];
-         fNetworkPacketNumber[1]    = fNetworkPacketNumber[2];
+         fNetworkPacketNumber[1]    = networkPacket;
          fNetworkPacketTimeStamp[0] = fNetworkPacketTimeStamp[1];
-         fNetworkPacketTimeStamp[1] = fNetworkPacketTimeStamp[2];
-      } else if(fNetworkPacketNumber[0] < fNetworkPacketNumber[2]) {
-         std::cout << "found wrong network packet number 0x" << std::hex << fNetworkPacketNumber[1]
-            << " (not between 0x" << fNetworkPacketNumber[0] << " and 0x" << fNetworkPacketNumber[2] << std::dec
-            << ")" << std::endl;
-         fNetworkPacketNumber[1]    = fNetworkPacketNumber[2];
-         fNetworkPacketTimeStamp[1] = fNetworkPacketTimeStamp[2];
+         fNetworkPacketTimeStamp[1] = timeStamp;
+         // [1] is now the current packet number, [0] is the last packet number
+      } else if(networkPacket < fNetworkPacketNumber[1]) {
+         //std::cout << "found wrong network packet number " << hex(networkPacket, 8)
+         //          << " (between " << hex(fNetworkPacketNumber[0], 8) << " and " << hex(fNetworkPacketNumber[1]) << ", 8)" << std::endl;
+         // we update [1] to the current packet number here, not sure if that is the best way to deal with this situation?
+         fNetworkPacketNumber[1]    = networkPacket;
+         fNetworkPacketTimeStamp[1] = timeStamp;
       }
-      // these two statements used to be before the if statement, but that seemed wrong?
-      fNetworkPacketNumber[2]    = networkPacket;
-      fNetworkPacketTimeStamp[2] = timeStamp;
-   } else if(networkPacket != 0 && fNetworkPacketNumber[0] == 0) {
+      // It seems that we can get the same packet number multiple times? But if that happens there's nothing to do so no need to check.
+   } else if(networkPacket != 0) {
+      // if [0] is 0, we haven't got 2 network packets numbers yet, so we just copy them through
+      // that means after this [1] is the current, and [0] the last
       fNetworkPacketNumber[0]    = fNetworkPacketNumber[1];
-      fNetworkPacketNumber[1]    = fNetworkPacketNumber[2];
-      fNetworkPacketNumber[2]    = networkPacket;
+      fNetworkPacketNumber[1]    = networkPacket;
       fNetworkPacketTimeStamp[0] = fNetworkPacketTimeStamp[1];
-      fNetworkPacketTimeStamp[1] = fNetworkPacketTimeStamp[2];
-      fNetworkPacketTimeStamp[2] = timeStamp;
+      fNetworkPacketTimeStamp[1] = timeStamp;
    }
 
    // check if the "middle" channel ID is reasonable and fill all IDs we've missed between the first and middle ID
-   if(fTimeStamps[address][0] != 0) {
-      fTimeStamps[address][2]  = timeStamp;
-      fChannelIds[address][2] = channelId;
-      if(fTimeStamps[address][0] > 0 && fChannelIds[address][0] < fChannelIds[address][1] &&
-            fChannelIds[address][1] < fChannelIds[address][2]) {
+   if(fChannelIds[address][0] != 0) {
+      if(fChannelIds[address][0] < fChannelIds[address][1] && fChannelIds[address][1] < channelId) {
          for(int id = fChannelIds[address][0] + 1; id < fChannelIds[address][1]; ++id) {
             fLostChannelIds->Fill(Form("0x%04x", address), id, 1.);
-            fLostChannelIdsTime->Fill(Form("0x%04x", address), static_cast<double>(fTimeStamps[address][1]) / 1e8, 1.);
+            fLostChannelIdsTime->Fill(Form("0x%04x", address), static_cast<double>(fTimeStamps[address][1]) / 1e9, 1.);
          }
-         fTimeStamps[address][0]  = fTimeStamps[address][1];
-         fTimeStamps[address][1]  = fTimeStamps[address][2];
+         fTimeStamps[address][0] = fTimeStamps[address][1];
          fChannelIds[address][0] = fChannelIds[address][1];
-         fChannelIds[address][1] = fChannelIds[address][2];
-      } else {
-         // now, we only want to overwrite the bad timestamp
-         fTimeStamps[address][1]  = fTimeStamps[address][2];
-         fChannelIds[address][1] = fChannelIds[address][2];
       }
+      // we either got a good new timestamp and channel ID and have copied the information from [1] to [0]
+      // or we had a bad timestamp that we overwrite now
+      fTimeStamps[address][1] = timeStamp;
+      fChannelIds[address][1] = channelId;
    } else {
-      fTimeStamps[address][0]          = fTimeStamps[address][1];
-      fTimeStamps[address][1]          = fTimeStamps[address][2];
-      fChannelIds[address][0]         = fChannelIds[address][1];
-      fChannelIds[address][1]         = fChannelIds[address][2];
-      fTimeStamps[address][2]          = timeStamp;
-      fChannelIds[address][2]         = channelId;
-      fAcceptedChannelIds[address][0] = fAcceptedChannelIds[address][1];
-      fAcceptedChannelIds[address][1] = fAcceptedChannelIds[address][2];
-      fAcceptedChannelIds[address][2] = acceptedId;
+      fTimeStamps[address][0] = fTimeStamps[address][1];
+      fChannelIds[address][0] = fChannelIds[address][1];
+      fTimeStamps[address][1] = timeStamp;
+      fChannelIds[address][1] = channelId;
    }
 
    fAccepted->Fill(Form("0x%04x", address), static_cast<double>(acceptedId), 1.);
@@ -264,16 +302,13 @@ void TFragDiagnosticsLoop::Process(const std::shared_ptr<const TFragment>& event
    // middle ID
    if(fTimeStamps[address][0] != 0) {
       fAcceptedChannelIds[address][2] = acceptedId;
-      if(fTimeStamps[address][0] > 0 && fAcceptedChannelIds[address][0] < fAcceptedChannelIds[address][1] &&
-            fAcceptedChannelIds[address][1] < fAcceptedChannelIds[address][2]) {
+      if(fAcceptedChannelIds[address][0] < fAcceptedChannelIds[address][1] && fAcceptedChannelIds[address][1] < acceptedId) {
          for(int id = fAcceptedChannelIds[address][0] + 1; id < fAcceptedChannelIds[address][1]; ++id) {
             fLostAcceptedIds->Fill(Form("0x%04x", address), id, 1.);
-            fLostAcceptedIdsTime->Fill(Form("0x%04x", address), static_cast<double>(fTimeStamps[address][1]) / 1e8, 1.);
+            fLostAcceptedIdsTime->Fill(Form("0x%04x", address), static_cast<double>(fTimeStamps[address][1]) / 1e9, 1.);
          }
          fAcceptedChannelIds[address][0] = fAcceptedChannelIds[address][1];
-         fAcceptedChannelIds[address][1] = fAcceptedChannelIds[address][2];
-      } else {
-         fAcceptedChannelIds[address][1] = fAcceptedChannelIds[address][2];
       }
+      fAcceptedChannelIds[address][1] = acceptedId;
    }
 }
