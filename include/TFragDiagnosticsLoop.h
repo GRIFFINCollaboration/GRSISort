@@ -67,9 +67,9 @@ private:
 
    //--------------- parameters for dealing with the roll-over of the AcceptedChannelId ----------------------//
    uint64_t                     fAcceptedMax{0x1 << 14};   // = 2^14 = this is the maximum number that the AcceptedChannelId can be
-   std::map<unsigned int, int>  fNofRollovers;              // this is how many roll-overs we have had
-   std::map<unsigned int, bool> fRolling;                   // array that tells us if we're rolling over in that channel
-   std::map<unsigned int, int>  fRollnum;                   // array that tells us how many times we've had accepted ID over the threshold
+   std::map<unsigned int, int>  fNofRollovers;             // this is how many roll-overs we have had
+   std::map<unsigned int, bool> fRolling;                  // array that tells us if we're rolling over in that channel
+   std::map<unsigned int, int>  fRollnum;                  // array that tells us how many times we've had accepted ID over the threshold
    unsigned int                 fRollingThreshold{1000};
    int                          fRollnumThreshold{20};   // if we have this many numbers above the threshold, turn rolling on or off
 
@@ -77,8 +77,8 @@ private:
    std::map<unsigned int, std::array<int64_t, 2>> fChannelIds;
    std::map<unsigned int, std::array<int64_t, 2>> fAcceptedChannelIds;
    std::map<unsigned int, std::array<int64_t, 2>> fTimeStamps;
-   std::array<int, 2> fNetworkPacketNumber{{0, 0}};
-   std::array<int64_t, 2> fNetworkPacketTimeStamp{{0, 0}};
+   std::array<int, 2>                             fNetworkPacketNumber{{0, 0}};
+   std::array<int64_t, 2>                         fNetworkPacketTimeStamp{{0, 0}};
 
    // time binning of histograms
    int fRunLength{0};
@@ -92,7 +92,7 @@ private:
    TH2D* fLostAcceptedIdsTime{nullptr};
 
 #ifndef __CINT__
-   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>    fInputQueue;
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>> fInputQueue;
 #endif
 
    /// \cond CLASSIMP

@@ -39,8 +39,8 @@ TDecayChain* TestDecayChain()
 TH1F* TestChainFit(Int_t nPoints = 10000)
 {
    TDecayChain* chain       = TestDecayChain();
-   auto* decay_curve = static_cast<TH1F*>(gROOT->Get("decay_curve"));
-   auto* tmp_curve   = static_cast<TH1F*>(gROOT->Get("tmp_curve"));
+   auto*        decay_curve = static_cast<TH1F*>(gROOT->Get("decay_curve"));
+   auto*        tmp_curve   = static_cast<TH1F*>(gROOT->Get("tmp_curve"));
    delete decay_curve;
    delete tmp_curve;
    decay_curve = new TH1F("decay_curve", "", 1000, 0, 100);
@@ -54,7 +54,7 @@ TH1F* TestChainFit(Int_t nPoints = 10000)
 void TestDraw(Int_t generation)
 {
    auto* dec1     = new TSingleDecay;
-   Int_t         halflife = 1;
+   Int_t halflife = 1;
    dec1->SetIntensity(100);
    dec1->SetHalfLife(halflife++);
    std::vector<TSingleDecay*> declist;
@@ -152,8 +152,8 @@ TH1F* TestFullFit(Int_t nPoints = 100000)
    auto* tmp_curve   = static_cast<TH1F*>(gROOT->Get("tmp_curve"));
    delete decay_curve;
    delete tmp_curve;
-   TDecay* mydecay     = GenDecay();
-   decay_curve = new TH1F("decay_curve", "decay_curve", 1000, 0, 100);
+   TDecay* mydecay = GenDecay();
+   decay_curve     = new TH1F("decay_curve", "decay_curve", 1000, 0, 100);
    // for(int i =0;i<nPoints;++i){
    //  decay_curve->Fill(decay->GetFitFunc()->GetRandom());
    //  }
