@@ -56,6 +56,7 @@ typedef char int8_t;
 #include <stdexcept>
 #include <string>
 #include <cstdio>
+#include <cstdint>
 #include <cstdlib>
 #include <execinfo.h>
 #include <cxxabi.h>
