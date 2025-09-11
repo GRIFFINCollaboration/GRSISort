@@ -50,14 +50,14 @@ TH2F* CycleRejector(TH2* cycleMat, Int_t counts, bool reject_last = true)
    const char* finalMatrixTitle = Form("%s with Rejected Cycles", cycleMat->GetTitle());
    TH2F*       finalMatrix      = new TH2F(finalMatrixName, finalMatrixTitle, nTimeBins, lowTimeBin, highTimeBin, nCycBins, lowCycBin, highCycBin);
 
-   TH1D* tmpSlice = nullptr;
+   TH1D* tmpSlice   = nullptr;
    bool  found_last = false;
    // If I do this in reverse order I can easily throw out the last cycle
    for(int i = highCycBin; i >= lowCycBin; --i) {
       tmpSlice = cycleMat->ProjectionX(Form("slice_%d", i), i, i);
       if(!found_last && (tmpSlice->Integral() < 1)) {
          continue;
-      } 
+      }
       if(!found_last && (tmpSlice->Integral() > 0)) {
          printf("the last cycle found: %d\n", i);
          found_last = true;

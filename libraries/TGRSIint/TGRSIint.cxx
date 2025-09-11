@@ -630,7 +630,7 @@ void TGRSIint::SetupPipeline()
       // we only have the diagnostics loop running if requested and we write an analysis tree as we write to the same output file
       TFragDiagnosticsLoop* loop = TFragDiagnosticsLoop::Get("4_frag_diag_loop", outputDiagnosticsFilename);
       if(unpackLoop != nullptr) {
-         loop->InputQueue()       = unpackLoop->AddGoodOutputQueue(TGRSIOptions::Get()->FragmentWriteQueueSize());
+         loop->InputQueue() = unpackLoop->AddGoodOutputQueue(TGRSIOptions::Get()->FragmentWriteQueueSize());
       }
       if(fragmentChainLoop != nullptr) {
          loop->InputQueue() = fragmentChainLoop->AddOutputQueue();
