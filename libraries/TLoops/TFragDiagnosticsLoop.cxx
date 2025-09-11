@@ -301,7 +301,6 @@ void TFragDiagnosticsLoop::Process(const std::shared_ptr<const TFragment>& event
    // check if the "middle" accepted channel ID is reasonable and fill all IDs we've missed between the first and
    // middle ID
    if(fTimeStamps[address][0] != 0) {
-      fAcceptedChannelIds[address][2] = acceptedId;
       if(fAcceptedChannelIds[address][0] < fAcceptedChannelIds[address][1] && fAcceptedChannelIds[address][1] < acceptedId) {
          for(int id = fAcceptedChannelIds[address][0] + 1; id < fAcceptedChannelIds[address][1]; ++id) {
             fLostAcceptedIds->Fill(Form("0x%04x", address), id, 1.);

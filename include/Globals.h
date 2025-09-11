@@ -136,7 +136,7 @@ inline std::string hex(T val, int width = -1)
    return str.str();
 }
 
-enum EVerbosity : std::uint8_t {
+enum class EVerbosity : std::uint8_t {
    kQuiet       = 0,
    kBasicFlow   = 1,
    kSubroutines = 2,
