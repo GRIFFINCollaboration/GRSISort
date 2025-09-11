@@ -53,9 +53,9 @@ TList* AnalyzeFragmentTree(TTree* tree, int64_t entries = 0, TStopwatch* w = nul
    tree->BuildIndex("TimeStampHigh", "TimeStampLow");
    printf(" done!\n");
 
-   auto*       index       = static_cast<TTreeIndex*>(tree->GetTreeIndex());
-   Long64_t*   indexvalues = index->GetIndex();
-   int         fEntries    = index->GetN();
+   auto*     index       = static_cast<TTreeIndex*>(tree->GetTreeIndex());
+   Long64_t* indexvalues = index->GetIndex();
+   int       fEntries    = index->GetN();
 
    int minTime = -5000;
    int maxTime = 5000;
@@ -107,8 +107,8 @@ TList* AnalyzeFragmentTree(TTree* tree, int64_t entries = 0, TStopwatch* w = nul
       int64_t time      = currentFrag->GetTimeStamp();   // Get the timestamp of the x'th fragment
       int64_t timelow   = time + minTime;
       int64_t timehigh  = time + maxTime;
-      int  time_low  = static_cast<int>(timelow & 0x0fffffff);
-      int  time_high = static_cast<int>(timelow >> 28);
+      int     time_low  = static_cast<int>(timelow & 0x0fffffff);
+      int     time_high = static_cast<int>(timelow >> 28);
 
       // find the entry where the low part of the gate fits.
       int64_t start = index->FindValues(time_high, time_low);
@@ -220,7 +220,7 @@ int main(int argc, char** argv)
    std::cout << argv[0] << ": starting AnalyzeFragmentTree after " << w.RealTime() << " seconds" << std::endl;
    w.Continue();
 
-   int64_t   entries = tree->GetEntries();
+   int64_t entries = tree->GetEntries();
    if(argc == 4 && atoi(argv[3]) < entries) {
       entries = atoi(argv[3]);
       std::cout << "Limiting processing of fragment tree to " << entries << " entries!" << std::endl;

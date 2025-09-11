@@ -108,7 +108,7 @@ void TFragDiagnosticsLoop::Write()
       // check our final run length and compare to the binning we chose
       if(TRunInfo::RunLength() > fRunLength) {
          std::cerr << Name() << ": got a final run length of " << TRunInfo::RunLength() << " s, instead of the assumed run length of " << fRunLength << " s, some diagnostics information will be missing!" << std::endl;
-      } else if(TRunInfo::RunLength() < fRunLength/2) {
+      } else if(TRunInfo::RunLength() < fRunLength / 2) {
          // TODO: if we have less than half the range, resize the histograms (maybe via a general function?)
       }
       // switch to the output file
@@ -169,19 +169,18 @@ bool TFragDiagnosticsLoop::CreateHistograms()
 
    std::cout << Name() << ": creating histograms with " << nofTimeBins << " time bins from 0 to " << fRunLength << std::endl;
 
-   fAccepted = new TH2D("accepted", "Accepted Channel ID vs. Channel Address;Channel Address;Accepted Channel ID",
-         TChannel::GetNumberOfChannels(), 0, static_cast<Double_t>(TChannel::GetNumberOfChannels()), 10000, 0, 1e6);
-   fLostNetworkPackets = new TH1D("lostNetworkPackets", "lost network packets;time [s];lost network packets",
-         nofTimeBins, 0., fRunLength);
-   fLostChannelIds = new TH2D("lostChannelIds", "Lost Channel Id vs. Channel Number;Channel Number;Lost Channel Id",
-         TChannel::GetNumberOfChannels(), 0, static_cast<Double_t>(TChannel::GetNumberOfChannels()), 10000, 0, 1e6);
-   fLostAcceptedIds = new TH2D("lostAcceptedIds", "Lost Accepted Channel Id vs. Channel Number;Channel Number;Lost Accepted Channel Id",
-         TChannel::GetNumberOfChannels(), 0, static_cast<Double_t>(TChannel::GetNumberOfChannels()), 10000, 0, 1e6);
-   fLostChannelIdsTime = new TH2D("lostChannelIdsTime", "Lost Channel Id time vs. Channel Number;Channel Number;time [s]",
-         TChannel::GetNumberOfChannels(), 0, static_cast<Double_t>(TChannel::GetNumberOfChannels()), nofTimeBins, 0., fRunLength);
+   fAccepted            = new TH2D("accepted", "Accepted Channel ID vs. Channel Address;Channel Address;Accepted Channel ID",
+                                   TChannel::GetNumberOfChannels(), 0, static_cast<Double_t>(TChannel::GetNumberOfChannels()), 10000, 0, 1e6);
+   fLostNetworkPackets  = new TH1D("lostNetworkPackets", "lost network packets;time [s];lost network packets",
+                                   nofTimeBins, 0., fRunLength);
+   fLostChannelIds      = new TH2D("lostChannelIds", "Lost Channel Id vs. Channel Number;Channel Number;Lost Channel Id",
+                                   TChannel::GetNumberOfChannels(), 0, static_cast<Double_t>(TChannel::GetNumberOfChannels()), 10000, 0, 1e6);
+   fLostAcceptedIds     = new TH2D("lostAcceptedIds", "Lost Accepted Channel Id vs. Channel Number;Channel Number;Lost Accepted Channel Id",
+                                   TChannel::GetNumberOfChannels(), 0, static_cast<Double_t>(TChannel::GetNumberOfChannels()), 10000, 0, 1e6);
+   fLostChannelIdsTime  = new TH2D("lostChannelIdsTime", "Lost Channel Id time vs. Channel Number;Channel Number;time [s]",
+                                   TChannel::GetNumberOfChannels(), 0, static_cast<Double_t>(TChannel::GetNumberOfChannels()), nofTimeBins, 0., fRunLength);
    fLostAcceptedIdsTime = new TH2D("lostAcceptedIdsTime", "Lost Accepted Channel Id time vs. Channel Number;Channel Number;time [s]",
-         TChannel::GetNumberOfChannels(), 0, static_cast<Double_t>(TChannel::GetNumberOfChannels()), nofTimeBins, 0., fRunLength);
-
+                                   TChannel::GetNumberOfChannels(), 0, static_cast<Double_t>(TChannel::GetNumberOfChannels()), nofTimeBins, 0., fRunLength);
 
    int bin = 1;
    for(const auto& channel : *TChannel::GetChannelMap()) {
@@ -204,10 +203,10 @@ void TFragDiagnosticsLoop::Process(const std::shared_ptr<const TFragment>& event
          throw std::runtime_error(Name() + ": trying to create histograms failed, can't produce diagnostics!");
       }
    }
-   auto timeStamp = event->GetTimeStampNs();
-   auto address = event->GetAddress();
-   auto acceptedId = event->GetAcceptedChannelId();
-   auto channelId = event->GetChannelId();
+   auto timeStamp     = event->GetTimeStampNs();
+   auto address       = event->GetAddress();
+   auto acceptedId    = event->GetAcceptedChannelId();
+   auto channelId     = event->GetChannelId();
    auto networkPacket = event->GetNetworkPacketNumber();
 
    //---------------- this section deals with the rolling over of the AcceptedChannelId. -------------------//
@@ -235,9 +234,9 @@ void TFragDiagnosticsLoop::Process(const std::shared_ptr<const TFragment>& event
 
    // check whether we had this channel before and if not, initialize all arrays
    if(fChannelIds.find(address) == fChannelIds.end()) {
-      fChannelIds[address] = {0, 0};
+      fChannelIds[address]         = {0, 0};
       fAcceptedChannelIds[address] = {0, 0};
-      fTimeStamps[address] = {0, 0};
+      fTimeStamps[address]         = {0, 0};
    }
 
    // if we have a new network packet number

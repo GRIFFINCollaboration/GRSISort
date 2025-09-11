@@ -65,7 +65,7 @@ int main(int argc, char* argv[])
       return 1;
    }
    if(hist->GetDimension() != 1) {
-      std::cout << "Sorry, histogram " << hist_name << " is not a 1D histogram but a " << hist->GetDimension() <<"D histogram!" << std::endl;
+      std::cout << "Sorry, histogram " << hist_name << " is not a 1D histogram but a " << hist->GetDimension() << "D histogram!" << std::endl;
       return 1;
    }
 
@@ -79,7 +79,7 @@ int main(int argc, char* argv[])
       out_file << hist->GetBinCenter(i) << "\t" << hist->GetBinContent(i) << "\n";
    }
    out_file.close();
-   
+
    std::cout << "Output complete" << std::endl;
 
    return 0;
