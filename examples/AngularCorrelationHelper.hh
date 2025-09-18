@@ -73,10 +73,10 @@ public:
          fNofMixedEvents  = fUserSettings->GetInt("NumberOfMixedEvents", 10);
          fGriffinDistance = fUserSettings->GetDouble("GriffinDistance", 145.);
          try {
-            fAddback         = fUserSettings->GetBool("Addback", true);
-            fSingleCrystal   = fUserSettings->GetBool("SingleCrystal", true);
-            fFolding         = fUserSettings->GetBool("Folding", true);
-            fGrouping        = fUserSettings->GetBool("Grouping", true);
+            fAddback       = fUserSettings->GetBool("Addback", true);
+            fSingleCrystal = fUserSettings->GetBool("SingleCrystal", true);
+            fFolding       = fUserSettings->GetBool("Folding", true);
+            fGrouping      = fUserSettings->GetBool("Grouping", true);
          } catch(std::exception&) {}
 
          try {
