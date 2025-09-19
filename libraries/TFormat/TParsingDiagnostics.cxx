@@ -2,6 +2,8 @@
 
 #include <fstream>
 
+#include "TH1.h"
+
 #include "TChannel.h"
 
 TParsingDiagnosticsData::TParsingDiagnosticsData() = default;
@@ -18,23 +20,15 @@ void TParsingDiagnosticsData::Update(const std::shared_ptr<const TFragment>& fra
    auto   timeStamp = frag->GetTimeStampNs();
 
    // update minimum and maximum channel id if necessary
-   if(channelId < fMinChannelId) {
-      fMinChannelId = channelId;
-   }
-   if(channelId > fMaxChannelId) {
-      fMaxChannelId = channelId;
-   }
+   fMinChannelId = std::min(fMinChannelId, channelId);
+   fMaxChannelId = std::max(fMaxChannelId, channelId);
 
    ++fNumberOfHits;
 
    // increment the dead time and set per channel min/max timestamps
    fDeadTime += frag->GetDeadTime();
-   if(timeStamp < fMinTimeStamp) {
-      fMinTimeStamp = timeStamp;
-   }
-   if(timeStamp > fMaxTimeStamp) {
-      fMaxTimeStamp = timeStamp;
-   }
+   fMinTimeStamp = std::min(fMinTimeStamp, static_cast<int64_t>(timeStamp));
+   fMaxTimeStamp = std::max(fMaxTimeStamp, static_cast<int64_t>(timeStamp));
 }
 
 void TParsingDiagnosticsData::Print(UInt_t address) const
@@ -131,12 +125,8 @@ void TParsingDiagnostics::GoodFragment(const std::shared_ptr<const TFragment>& f
    // check if this is a new minimum/maximum network packet id
    if(frag->GetNetworkPacketNumber() > 0) {
       ++fNumberOfNetworkPackets;
-      if(frag->GetNetworkPacketNumber() < fMinNetworkPacketNumber) {
-         fMinNetworkPacketNumber = frag->GetNetworkPacketNumber();
-      }
-      if(frag->GetNetworkPacketNumber() > fMaxNetworkPacketNumber) {
-         fMaxNetworkPacketNumber = frag->GetNetworkPacketNumber();
-      }
+      fMinNetworkPacketNumber = std::min(fMinNetworkPacketNumber, frag->GetNetworkPacketNumber());
+      fMaxNetworkPacketNumber = std::max(fMaxNetworkPacketNumber, frag->GetNetworkPacketNumber());
    }
 
    if(fMinDaqTimeStamp == 0 || frag->GetDaqTimeStamp() < fMinDaqTimeStamp) {
@@ -162,8 +152,8 @@ void TParsingDiagnostics::Draw(Option_t* opt)
    UInt_t maxChannel = fChannelAddressData.begin()->first;
 
    for(const auto& iter : fChannelAddressData) {
-      if(iter.first < minChannel) { minChannel = iter.first; }
-      if(iter.first > maxChannel) { maxChannel = iter.first; }
+      minChannel = std::min(minChannel, iter.first);
+      maxChannel = std::max(maxChannel, iter.first);
    }
 
    // check that the histogram (if it already exists) has the right number of bins

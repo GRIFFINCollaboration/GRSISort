@@ -19,12 +19,11 @@
 #include <thread>
 #endif
 
-#include <sstream>
-#include <iomanip>
 #include <string>
+#include <vector>
 #include <map>
 
-#include "TObject.h"
+#include "Rtypes.h"
 
 class StoppableThread {
 public:

@@ -1,7 +1,7 @@
 #ifndef GROOTFUNCTIONS__H
 #define GROOTFUNCTIONS__H
 
-#include "TMath.h"
+#include "RtypesCore.h"
 
 namespace GRootFunctions {
 

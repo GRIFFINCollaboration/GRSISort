@@ -5,18 +5,12 @@
  *  @{
  */
 
-#include <string>
-#include <algorithm>
 #include <vector>
 #include <cstdarg>
 
 #include "TObject.h"
 #include "TF1.h"
-#include "TFitResultPtr.h"
-#include "TFitResult.h"
 #include "TGraph.h"
-#include "TMath.h"
-#include "TVirtualFitter.h"
 #include "TPeakFitter.h"
 
 /////////////////////////////////////////////////////////////////

@@ -1,5 +1,7 @@
 #ifndef TCALIBRATEDESCANT_H
 #define TCALIBRATEDESCANT_H
+#include <cstdint>
+
 #include "TGFrame.h"
 #include "TRootEmbeddedCanvas.h"
 #include "TGStatusBar.h"
@@ -8,13 +10,9 @@
 #include "TGNumberEntry.h"
 #include "TGLabel.h"
 
-#include "TH1D.h"
 #include "TH2.h"
 #include "TF1.h"
 #include "TGraphErrors.h"
-#include "TMath.h"
-
-#include "GCanvas.h"
 
 /** \addtogroup GUI
  *  @{
@@ -69,33 +67,33 @@ private:
 
 class TCalibrateDescant : public TGMainFrame {
 public:
-   enum class ESourceType { k22NaLow,
-                            k22NaHigh,
-                            k24NaLow,
-                            k24NaHigh,
-                            k60Co,
-                            k137Cs,
-                            k152Eu121,
-                            k152Eu344,
-                            k152Eu1408,
-                            k241AmEdge,
-                            k241Am };
-   enum EParameter { kAmplitude      = 0,
-                     kPosition       = 3,
-                     kSigma          = 6,
-                     kDSigma         = 9,
-                     kPeakAmp        = 12,
-                     kPeakPos        = 15,
-                     kPeakSigma      = 18,
-                     kNoiseAmp       = 21,
-                     kNoisePos       = 24,
-                     kNoiseSigma     = 27,
-                     kThreshold      = 30,
-                     kThresholdSigma = 33,
-                     kBgConst        = 36,
-                     kBgAmp          = 39,
-                     kBgDecayConst   = 42,
-                     kCutoff         = 45 };
+   enum class ESourceType : std::uint8_t { k22NaLow,
+                                           k22NaHigh,
+                                           k24NaLow,
+                                           k24NaHigh,
+                                           k60Co,
+                                           k137Cs,
+                                           k152Eu121,
+                                           k152Eu344,
+                                           k152Eu1408,
+                                           k241AmEdge,
+                                           k241Am };
+   enum EParameter : std::uint8_t { kAmplitude      = 0,
+                                    kPosition       = 3,
+                                    kSigma          = 6,
+                                    kDSigma         = 9,
+                                    kPeakAmp        = 12,
+                                    kPeakPos        = 15,
+                                    kPeakSigma      = 18,
+                                    kNoiseAmp       = 21,
+                                    kNoisePos       = 24,
+                                    kNoiseSigma     = 27,
+                                    kThreshold      = 30,
+                                    kThresholdSigma = 33,
+                                    kBgConst        = 36,
+                                    kBgAmp          = 39,
+                                    kBgDecayConst   = 42,
+                                    kCutoff         = 45 };
 
    explicit TCalibrateDescant(TH2* hist, const ESourceType& source = ESourceType::k137Cs);
    TCalibrateDescant(const TCalibrateDescant&)                = delete;

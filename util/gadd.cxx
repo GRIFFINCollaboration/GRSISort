@@ -1,14 +1,14 @@
 /*
-	gadd is a copy of hadd with the additional line
-	`
-	gSystem->Load("libGRSIFormat");
-	`
+   gadd is a copy of hadd with the additional line
+   `
+   gSystem->Load("libGRSIFormat");
+   `
 
-	Copied from https://github.com/root-project/root/pull/5995
+   Copied from https://github.com/root-project/root/pull/5995
 
-  This program will add histograms (see note) and Trees from a list of root files and write them
-  to a target root file. The target file is newly created and must not be
-  identical to one of the source files.
+   This program will add histograms (see note) and Trees from a list of root files and write them
+   to a target root file. The target file is newly created and must not be
+   identical to one of the source files.
 
   Syntax:
 

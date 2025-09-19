@@ -7,11 +7,8 @@
 
 #include <map>
 
-#include "TList.h"
 #include "TString.h"
 #include "TCollection.h"
-#include "Globals.h"
-#include "TRunInfo.h"
 
 class TGRSISortInfo;
 

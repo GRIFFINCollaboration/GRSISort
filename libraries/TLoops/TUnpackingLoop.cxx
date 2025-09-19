@@ -10,7 +10,7 @@
 
 TUnpackingLoop* TUnpackingLoop::Get(std::string name)
 {
-   if(name.length() == 0) {
+   if(name.empty()) {
       name = "unpacking_loop";
    }
 

@@ -49,8 +49,6 @@ typedef char int8_t;
 #include <_types/_uint32_t.h>
 #include <_types/_uint64_t.h>
 #include <sys/_types/_int16_t.h>
-#else
-#include <cstdint>
 #endif
 
 #include <iostream>
@@ -58,6 +56,7 @@ typedef char int8_t;
 #include <stdexcept>
 #include <string>
 #include <cstdio>
+#include <cstdint>
 #include <cstdlib>
 #include <execinfo.h>
 #include <cxxabi.h>
@@ -65,8 +64,6 @@ typedef char int8_t;
 #include <array>
 #include <memory>
 #include <unistd.h>
-
-#include "TEnv.h"
 
 const std::string& ProgramName();
 
@@ -79,7 +76,7 @@ public:
            return what.c_str();
         }*/
 
-   const int   code;
+   const int   code;   // NOLINT(cppcoreguidelines-avoid-const-or-ref-data-members)
    const char* message;
 };
 
@@ -140,7 +137,7 @@ inline std::string hex(T val, int width = -1)
    return str.str();
 }
 
-enum EVerbosity : int {
+enum class EVerbosity : std::uint8_t {
    kQuiet       = 0,
    kBasicFlow   = 1,
    kSubroutines = 2,

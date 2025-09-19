@@ -145,7 +145,7 @@ private:
 #endif
    TList*               fObjects{nullptr};
    TList*               fGates{nullptr};
-   std::vector<TFile*>& fCut_files;
+   std::vector<TFile*>& fCut_files;   // NOLINT(cppcoreguidelines-avoid-const-or-ref-data-members)
 
    TDirectory* fDirectory{nullptr};
 

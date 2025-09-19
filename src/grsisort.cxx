@@ -9,9 +9,9 @@
 #include "TPluginManager.h"
 #include "TGRSIint.h"
 
-#include "GVersion.h"
 #include "Globals.h"
 #include "TThread.h"
+#include "TStopwatch.h"
 
 #ifdef __APPLE__
 #define HAVE_UTMPX_H

@@ -6,16 +6,12 @@
  *  @{
  */
 
-#include <string>
-
 #include "TNamed.h"
-#include "TMath.h"
 #include "TFitResult.h"
 #include "TFitResultPtr.h"
 #include "TGraph.h"
 #include "TF1.h"
 #include "TH1.h"
-#include "TVirtualFitter.h"
 
 class TVirtualDecay;
 class TSingleDecay;

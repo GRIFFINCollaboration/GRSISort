@@ -1,7 +1,6 @@
 #ifndef TUSERSETTINGS_H
 #define TUSERSETTINGS_H
 
-#include <iostream>
 #include <map>
 #include <string>
 #include <vector>

@@ -17,7 +17,7 @@ void AngularCorrelationHelper::CreateHistograms(unsigned int slot)
          fCycleLength = fPpg->OdbCycleLength();
          if(slot == 0) {
             std::stringstream str;
-            str << "Got ODB cycle length " << fCycleLength << " us = " << fCycleLength / 1e6 << " s" << std::endl;
+            str << "Got ODB cycle length " << fCycleLength << " us = " << static_cast<double>(fCycleLength) / 1e6 << " s" << std::endl;
             std::cout << str.str();
          }
       } else if(slot == 0) {
@@ -53,19 +53,19 @@ void AngularCorrelationHelper::Exec(unsigned int slot, TGriffin& fGriffin, TGrif
 {
    bool eventInCycleCut = false;
    for(auto g1 = 0; g1 < (fAddback ? fGriffin.GetSuppressedAddbackMultiplicity(&fGriffinBgo) : fGriffin.GetSuppressedMultiplicity(&fGriffinBgo)); ++g1) {
-      if(fSingleCrystal && fGriffin.GetNSuppressedAddbackFrags(g1) > 1) continue;
-      auto grif1 = (fAddback ? fGriffin.GetSuppressedAddbackHit(g1) : fGriffin.GetSuppressedHit(g1));
-      if(ExcludeDetector(grif1->GetDetector()) || ExcludeCrystal(grif1->GetArrayNumber())) continue;
-      if(!GoodCycleTime(std::fmod(grif1->GetTime() / 1e3, fCycleLength))) continue;
+      if(fSingleCrystal && fGriffin.GetNSuppressedAddbackFrags(g1) > 1) { continue; }
+      auto* grif1 = (fAddback ? fGriffin.GetSuppressedAddbackHit(g1) : fGriffin.GetSuppressedHit(g1));
+      if(ExcludeDetector(grif1->GetDetector()) || ExcludeCrystal(grif1->GetArrayNumber())) { continue; }
+      if(!GoodCycleTime(std::fmod(grif1->GetTime() / 1e3, fCycleLength))) { continue; }
 
       // we only get here if at least one hit of the event is within the cycle cut
       eventInCycleCut = true;
 
       for(auto g2 = g1 + 1; g2 < (fAddback ? fGriffin.GetSuppressedAddbackMultiplicity(&fGriffinBgo) : fGriffin.GetSuppressedMultiplicity(&fGriffinBgo)); ++g2) {
-         if(fSingleCrystal && fGriffin.GetNSuppressedAddbackFrags(g2) > 1) continue;
-         auto grif2 = (fAddback ? fGriffin.GetSuppressedAddbackHit(g2) : fGriffin.GetSuppressedHit(g2));
-         if(ExcludeDetector(grif2->GetDetector()) || ExcludeCrystal(grif2->GetArrayNumber())) continue;
-         if(!GoodCycleTime(std::fmod(grif2->GetTime() / 1e3, fCycleLength))) continue;
+         if(fSingleCrystal && fGriffin.GetNSuppressedAddbackFrags(g2) > 1) { continue; }
+         auto* grif2 = (fAddback ? fGriffin.GetSuppressedAddbackHit(g2) : fGriffin.GetSuppressedHit(g2));
+         if(ExcludeDetector(grif2->GetDetector()) || ExcludeCrystal(grif2->GetArrayNumber())) { continue; }
+         if(!GoodCycleTime(std::fmod(grif2->GetTime() / 1e3, fCycleLength))) { continue; }
 
          // skip hits in the same detector when using addback, or in the same crystal when not using addback
          if(grif1->GetDetector() == grif2->GetDetector() && (fAddback || grif1->GetCrystal() == grif2->GetCrystal())) {
@@ -74,12 +74,12 @@ void AngularCorrelationHelper::Exec(unsigned int slot, TGriffin& fGriffin, TGrif
 
          // calculate the angle
          double angle = grif1->GetPosition(fGriffinDistance).Angle(grif2->GetPosition(fGriffinDistance)) * 180. / TMath::Pi();
-         if(angle < fAngles->Rounding()) continue;
-         if(fFolding && angle > 90.) angle = 180. - angle;
+         if(angle < TGriffinAngles::Rounding()) { continue; }
+         if(fFolding && angle > 90.) { angle = 180. - angle; }
 
          // find the index of the angle
          auto angleIndex = fAngles->Index(angle);
-         if(angleIndex < 0) continue;
+         if(angleIndex < 0) { continue; }
          // check the timing to see if these are coincident or time-random hits
          double ggTime = TMath::Abs(grif2->GetTime() - grif1->GetTime());
          if(ggTime <= fPrompt) {
@@ -97,24 +97,24 @@ void AngularCorrelationHelper::Exec(unsigned int slot, TGriffin& fGriffin, TGrif
 
       // Event mixing: loop over all stored events for this thread/slot and use them as the "second" gamma ray
       for(auto l = 0; l < fGriffinDeque[slot].size(); ++l) {
-         auto fLastGriffin = fGriffinDeque[slot][l];
-         auto fLastBgo     = fBgoDeque[slot][l];
+         auto* fLastGriffin = fGriffinDeque[slot][l];
+         auto* fLastBgo     = fBgoDeque[slot][l];
          for(auto g2 = 0; g2 < (fAddback ? fLastGriffin->GetSuppressedAddbackMultiplicity(fLastBgo) : fLastGriffin->GetSuppressedMultiplicity(fLastBgo)); ++g2) {
-            auto grif2 = (fAddback ? fLastGriffin->GetSuppressedAddbackHit(g2) : fLastGriffin->GetSuppressedHit(g2));
-            if(ExcludeDetector(grif2->GetDetector()) || ExcludeCrystal(grif2->GetArrayNumber())) continue;
-            if(fSingleCrystal && fLastGriffin->GetNSuppressedAddbackFrags(g2) > 1) continue;
-            if(!GoodCycleTime(std::fmod(grif2->GetTime() / 1e3, fCycleLength))) continue;
+            auto* grif2 = (fAddback ? fLastGriffin->GetSuppressedAddbackHit(g2) : fLastGriffin->GetSuppressedHit(g2));
+            if(ExcludeDetector(grif2->GetDetector()) || ExcludeCrystal(grif2->GetArrayNumber())) { continue; }
+            if(fSingleCrystal && fLastGriffin->GetNSuppressedAddbackFrags(g2) > 1) { continue; }
+            if(!GoodCycleTime(std::fmod(grif2->GetTime() / 1e3, fCycleLength))) { continue; }
 
             // skip hits in the same detector when using addback, or in the same crystal when not using addback
-            if(grif1->GetDetector() == grif2->GetDetector() && (fAddback || grif1->GetCrystal() == grif2->GetCrystal())) continue;
+            if(grif1->GetDetector() == grif2->GetDetector() && (fAddback || grif1->GetCrystal() == grif2->GetCrystal())) { continue; }
 
             double angle = grif1->GetPosition(fGriffinDistance).Angle(grif2->GetPosition(fGriffinDistance)) * 180. / TMath::Pi();
-            if(angle < fAngles->Rounding()) continue;
-            if(fFolding && angle > 90.) angle = 180. - angle;
+            if(angle < TGriffinAngles::Rounding()) { continue; }
+            if(fFolding && angle > 90.) { angle = 180. - angle; }
 
             // find the index of the angle
             auto angleIndex = fAngles->Index(angle);
-            if(angleIndex < 0) continue;
+            if(angleIndex < 0) { continue; }
             // no point in checking the time here, the two hits are from different events
             fH2[slot].at("AngularCorrelationMixed")->Fill(grif1->GetEnergy(), grif2->GetEnergy());
             fH2[slot].at(Form("AngularCorrelationMixed%d", angleIndex))->Fill(grif1->GetEnergy(), grif2->GetEnergy());

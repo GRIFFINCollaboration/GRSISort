@@ -5,19 +5,13 @@
  *  @{
  */
 
-#include <vector>
 #include <cstdio>
-#include <functional>
 //#include <tuple>
 
-#include "TBits.h"
 #include "TVector3.h"
 
-#include "Globals.h"
 #include "TBgoHit.h"
 #include "TDetector.h"
-#include "TTransientBits.h"
-#include "TSpline.h"
 
 class TBgo : public TDetector {
 public:

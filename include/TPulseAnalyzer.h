@@ -6,7 +6,6 @@
  */
 
 #include "TFragment.h"
-#include "TGRSIFunctions.h"
 
 #include <vector>
 #include <cstdlib>
@@ -14,11 +13,9 @@
 #include <cstring>
 #include <cmath>
 
-#include "TNamed.h"
 #include "Rtypes.h"
 #include "TH1.h"
 #include "TF1.h"
-#include "TMath.h"
 #include "TGraph.h"
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -133,19 +130,19 @@ public:
    void Clear(Option_t* opt = "");
    bool IsSet() const { return set; }
 
-   inline double Get_wpar_T0() { return cWpar->t0; }
-   inline double Get_wpar_baselinefin() { return cWpar->baselinefin; }
-   inline double Get_wpar_amplitude() { return cWpar->amplitude; }
-   inline double Get_wpar_decay() { return cWpar->tauDecay; }
-   inline double Get_wpar_rise() { return cWpar->tauRise; }
+   double Get_wpar_T0() { return cWpar->t0; }
+   double Get_wpar_baselinefin() { return cWpar->baselinefin; }
+   double Get_wpar_amplitude() { return cWpar->amplitude; }
+   double Get_wpar_decay() { return cWpar->tauDecay; }
+   double Get_wpar_rise() { return cWpar->tauRise; }
 
-   bool        SiliShapePrepare(double tauDecay, double tauRise);
-   bool        GetSiliShape(double tauDecay, double tauRise);                                            // Added for Spice, parameters to be found : t0 and Amplitude
-   bool        GetSiliShapeTF1(double tauDecay, double tauRise, double baseline, double basefreq = 0);   // Added for Spice, full slow fit to establish parameters, needs initial estimates
-   inline bool Get_bflag() { return cWpar->bflag; }
-   TF1         Getsilifit();
-   double      GetsiliSmirnov();
-   void        Drawsilifit();
+   bool   SiliShapePrepare(double tauDecay, double tauRise);
+   bool   GetSiliShape(double tauDecay, double tauRise);                                            // Added for Spice, parameters to be found : t0 and Amplitude
+   bool   GetSiliShapeTF1(double tauDecay, double tauRise, double baseline, double basefreq = 0);   // Added for Spice, full slow fit to establish parameters, needs initial estimates
+   bool   Get_bflag() { return cWpar->bflag; }
+   TF1    Getsilifit();
+   double GetsiliSmirnov();
+   void   Drawsilifit();
 
    static double SiLiFitFunction(double* i, double* p);
 

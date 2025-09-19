@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include <sstream>
+#include <cstdint>
 
 #include "TObject.h"
 #include "TClass.h"
@@ -30,33 +31,33 @@ public:
    // standard C++ makes these enumerations global to the class. ie, the name of the enumeration
    // EMnemonic or ESystem has no effect on the clashing of enumerated variable names.
    // These separations exist only to easily see the difference when looking at the code here.
-   enum class EMnemonic { kA,
-                          kB,
-                          kC,
-                          kD,
-                          kE,
-                          kF,
-                          kG,
-                          kH,
-                          kI,
-                          kJ,
-                          kK,
-                          kL,
-                          kM,
-                          kN,
-                          kO,
-                          kP,
-                          kQ,
-                          kR,
-                          kS,
-                          kT,
-                          kU,
-                          kV,
-                          kW,
-                          kX,
-                          kY,
-                          kZ,
-                          kClear };
+   enum class EMnemonic : std::uint8_t { kA,
+                                         kB,
+                                         kC,
+                                         kD,
+                                         kE,
+                                         kF,
+                                         kG,
+                                         kH,
+                                         kI,
+                                         kJ,
+                                         kK,
+                                         kL,
+                                         kM,
+                                         kN,
+                                         kO,
+                                         kP,
+                                         kQ,
+                                         kR,
+                                         kS,
+                                         kT,
+                                         kU,
+                                         kV,
+                                         kW,
+                                         kX,
+                                         kY,
+                                         kZ,
+                                         kClear };
 
    virtual EMnemonic SubSystem() const { return fSubSystem; }
    virtual EMnemonic ArraySubPosition() const { return fArraySubPosition; }

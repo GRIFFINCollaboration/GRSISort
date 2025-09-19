@@ -10,11 +10,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cassert>
-#include <iostream>
+#include <string>
 
 #ifndef __CINT__
 #include <atomic>
-#include <memory>
 #include <chrono>
 #include <condition_variable>
 #include <mutex>

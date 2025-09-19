@@ -5,12 +5,9 @@
  *  @{
  */
 
-#include <iostream>
-#include <string>
 #include <cmath>
 
 #include "TNamed.h"
-#include "TMath.h"
 #include "TGraph.h"
 
 #include "TNucleus.h"

@@ -17,12 +17,12 @@
 ///
 /////////////////////////////////////////////////////////////////
 
-#include "Globals.h"
 #include <ctime>
 #include <sstream>
 #include <vector>
 #include <map>
 #include <limits>
+#include <cstdint>
 
 #ifndef __CINT__
 #include <memory>
@@ -30,8 +30,6 @@
 
 #include "TChannel.h"
 #include "TFragment.h"
-#include "TPPG.h"
-#include "TScaler.h"
 #include "TFragmentMap.h"
 #include "ThreadsafeQueue.h"
 #include "TEpicsFrag.h"
@@ -51,15 +49,15 @@ public:
    virtual void SetRecordDiag(bool temp = true) { fRecordDiag = temp; }
 
    // if you add anything to these enums, only add at the end!
-   enum class EBank { kWFDN,
-                      kGRF1,
-                      kGRF2,
-                      kGRF3,
-                      kGRF4,
-                      kFME0,
-                      kFME1,
-                      kFME2,
-                      kFME3 };
+   enum class EBank : std::uint8_t { kWFDN,
+                                     kGRF1,
+                                     kGRF2,
+                                     kGRF3,
+                                     kGRF4,
+                                     kFME0,
+                                     kFME1,
+                                     kFME2,
+                                     kFME3 };
 
 #ifndef __CINT__
    virtual std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>& AddGoodOutputQueue(size_t maxSize = 50000)
@@ -170,7 +168,7 @@ private:
    bool      fRecordDiag;    ///< The flag to turn on diagnostics recording
    TChannel* fChannel;
 
-   const uint64_t fMaxTriggerId;        ///< The last trigger ID Called
+   const uint64_t fMaxTriggerId;        // NOLINT(cppcoreguidelines-avoid-const-or-ref-data-members) ///< The last trigger ID Called
    uint64_t       fLastDaqId;           ///< The last daq ID in the raw file
    uint64_t       fLastTriggerId;       ///< The last Trigged ID in the raw File
    uint64_t       fLastNetworkPacket;   ///< The last network packet recieved.

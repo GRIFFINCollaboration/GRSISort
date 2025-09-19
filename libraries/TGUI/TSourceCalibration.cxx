@@ -2181,7 +2181,7 @@ TSourceCalibration::TSourceCalibration(double sigma, double threshold, int degre
    }
    va_end(args);   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    if(fVerboseLevel > EVerbosity::kQuiet) {
-      std::cout << DGREEN << __PRETTY_FUNCTION__ << ": verbose level " << fVerboseLevel << std::endl   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+      std::cout << DGREEN << __PRETTY_FUNCTION__ << ": verbose level " << static_cast<std::underlying_type<EVerbosity>::type>(fVerboseLevel) << std::endl   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
                 << "using " << count << "/" << fMatrices.size() << " matrices:" << std::endl;
       for(auto* mat : fMatrices) {
          std::cout << mat << std::flush << " = " << mat->GetName() << std::endl;

@@ -7,9 +7,6 @@
  *  @{
  */
 
-#include "Globals.h"
-
-#include <vector>
 #include <complex>
 #include <iostream>
 #include <fstream>
@@ -540,17 +537,26 @@ inline float MAX(const float& a, const double& b)
 template <class T>
 inline T SIGN(const T& a, const T& b)
 {
-   return b >= 0 ? (a >= 0 ? a : -a) : (a >= 0 ? -a : a);
+   if(b >= 0) {
+      return (a >= 0 ? a : -a);
+   }
+   return (a >= 0 ? -a : a);
 }
 
 inline float SIGN(const float& a, const double& b)
 {
-   return b >= 0 ? (a >= 0 ? a : -a) : (a >= 0 ? -a : a);
+   if(b >= 0) {
+      return (a >= 0 ? a : -a);
+   }
+   return (a >= 0 ? -a : a);
 }
 
 inline float SIGN(const double& a, const float& b)
 {
-   return b >= 0 ? static_cast<float>(a >= 0 ? a : -a) : static_cast<float>(a >= 0 ? -a : a);
+   if(b >= 0) {
+      return static_cast<float>(a >= 0 ? a : -a);
+   }
+   return static_cast<float>(a >= 0 ? -a : a);
 }
 
 template <class T>
@@ -635,7 +641,7 @@ protected:
       fRangeMax = max;
    }
 
-   inline void nrerror(const std::string& error_text)
+   void nrerror(const std::string& error_text)
    // Numerical Recipes standard error handler
    {
       std::cerr << "Numerical Recipes run-time error..." << std::endl;

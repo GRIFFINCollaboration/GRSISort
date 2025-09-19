@@ -4,24 +4,13 @@
 /** \addtogroup Fitting Fitting & Analysis
  *  @{
  */
-#include <utility>
 
-#include "TGRSIFunctions.h"
 #include "TObject.h"
 #include "TH1.h"
 #include "TF1.h"
-#include "TList.h"
-#include "TFitResult.h"
-#include "TFitResultPtr.h"
-#include "TRandom.h"
 #include "TSpectrum.h"
-#include "TVirtualFitter.h"
-#include "TMath.h"
-#include "TNamed.h"
-#include "TROOT.h"
 #include "TRef.h"
 #include "TString.h"
-#include "Globals.h"
 
 class TGRSIFit : public TF1 {
 public:

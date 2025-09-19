@@ -7,16 +7,9 @@
 #ifndef TOBJECTWRAPPER_H
 #define TOBJECTWRAPPER_H
 
-#include "Globals.h"
-
-#include <iostream>
-#include <sstream>
-#include <vector>
 #include <ctime>
-#include <fstream>
-#include <streambuf>
 
-#include "TFragment.h"
+#include "TObject.h"
 
 /////////////////////////////////////////////////////////////////
 ///
@@ -34,7 +27,7 @@ public:
    T* operator->() { return pT; }
 
 private:
-   T* pT;
+   T* pT{nullptr};
 
    /// \cond CLASSIMP
    ClassDefOverride(TObjectWrapper, 1)   // NOLINT(readability-else-after-return)

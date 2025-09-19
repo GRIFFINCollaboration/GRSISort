@@ -1,5 +1,15 @@
 #include "TGRSIFunctions.h"
 
+#include <iostream>
+
+#include "TMath.h"
+#include "TFitResult.h"
+#ifdef HAS_MATHMORE
+#include "Math/SpecFuncMathMore.h"
+#endif
+
+#include "Globals.h"
+
 // Without this macro the THtml doc for TGRSIFunctions can't be generated
 /// \cond NAMESPACEIMP
 NamespaceImp(TGRSIFunctions)

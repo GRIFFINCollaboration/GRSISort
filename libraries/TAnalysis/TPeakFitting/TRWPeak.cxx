@@ -1,5 +1,7 @@
 #include "TRWPeak.h"
 
+#include "TH1.h"
+
 void TRWPeak::Centroid(const Double_t& centroid)
 {
    SetFitFunction(new TF1("rw_total", this, &TRWPeak::TotalFunction, 0, 1, 6, "TRWPeak", "TotalFunction"));

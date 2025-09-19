@@ -38,7 +38,7 @@ void AlphanumericHelper::Exec(unsigned int slot, TGriffin& grif)
 {
    // Loop over all Griffin Hits
    for(auto i = 0; i < grif.GetMultiplicity(); ++i) {
-      auto grif1 = grif.GetGriffinHit(i);
+      auto* grif1 = grif.GetGriffinHit(i);
       fH2[slot].at("EnergyVsChannel")->Fill(grif1->GetArrayNumber(), grif1->GetEnergy());
       fH2[slot].at("ChargeVsChannel")->Fill(grif1->GetArrayNumber(), grif1->GetCharge());
    }

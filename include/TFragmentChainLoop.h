@@ -14,7 +14,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #ifndef __CINT__
-#include <atomic>
 #include <memory>
 #endif
 
@@ -23,7 +22,6 @@
 #include "TChain.h"
 #include "TClass.h"
 
-#include "TUnpackingLoop.h"
 #include "StoppableThread.h"
 #include "ThreadsafeQueue.h"
 #include "TFragment.h"

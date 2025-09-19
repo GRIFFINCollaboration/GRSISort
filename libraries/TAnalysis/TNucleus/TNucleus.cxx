@@ -1,14 +1,12 @@
 // g++ -c -fPIC Nucleus.cc -I./ `root-config --cflags`
 
-#include "Globals.h"
-
 #include "TNucleus.h"
+
 #include <algorithm>
 #include <cstring>
 #include <sstream>
-
-#include <TClass.h>
-#include <TGraph.h>
+#include <fstream>
+#include <iostream>
 
 static double amu = 931.494043;
 
@@ -37,7 +35,7 @@ TNucleus::TNucleus(const char* name)
       massFile = Massfile();
       infile.open(massFile.c_str());
       while(!getline(infile, line).fail()) {
-         if(line.length() < 1) {
+         if(line.empty()) {
             continue;
          }
          std::istringstream ss(line);
@@ -315,7 +313,7 @@ void TNucleus::Print(Option_t*) const
 
 void TNucleus::WriteSourceFile(const std::string& outfilename)
 {
-   if(outfilename.length() > 0) {
+   if(!outfilename.empty()) {
       std::ofstream sourceout;
       sourceout.open(outfilename.c_str());
       for(int i = 0; i < fTransitionListByIntensity.GetSize(); i++) {

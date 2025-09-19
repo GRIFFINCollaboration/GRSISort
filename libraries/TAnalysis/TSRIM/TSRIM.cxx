@@ -3,8 +3,8 @@
 #include "Globals.h"
 #include "TGRSIUtilities.h"
 
-#include <TVector3.h>
-#include <TMath.h>
+#include "TMath.h"
+#include "TAxis.h"
 
 #include <cmath>
 #include <sstream>
@@ -62,7 +62,7 @@ void TSRIM::ReadEnergyLossFile(const char* filename, double emax, double emin, b
    std::vector<std::string> string_input;
 
    while(!std::getline(infile, line).fail()) {
-      if(line.length() == 0u) {
+      if(line.empty()) {
          continue;
       }
       std::istringstream linestream(line);

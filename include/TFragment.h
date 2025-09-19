@@ -7,7 +7,6 @@
 #ifndef TFRAGMENT_H
 #define TFRAGMENT_H
 
-#include "Globals.h"
 #include "TDetectorHit.h"
 #include "TPPG.h"
 

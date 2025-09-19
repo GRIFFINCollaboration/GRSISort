@@ -5,9 +5,7 @@
  *  @{
  */
 
-#include "TNamed.h"
 #include "TCalList.h"
-#include "TGraphErrors.h"
 #include "TNucleus.h"
 
 #include <string>

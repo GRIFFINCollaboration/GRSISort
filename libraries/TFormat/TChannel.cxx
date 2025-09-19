@@ -3,7 +3,6 @@
 #include <stdexcept>
 #include <fstream>
 #include <iostream>
-#include <iomanip>
 #include <fcntl.h>
 #include <unistd.h>
 #include <unordered_map>
@@ -15,10 +14,12 @@
 
 #include "TFile.h"
 #include "TKey.h"
+#include "TRandom.h"
 
 #include "StoppableThread.h"
 #include "Globals.h"
 #include "TGRSIUtilities.h"
+#include "TMnemonic.h"
 
 /*
  * Author:  P.C. Bender, <pcbend@gmail.com>
@@ -500,7 +501,7 @@ TChannel* TChannel::FindChannelByName(const char* ccName)
    }
 
    std::string name = ccName;
-   if(name.length() == 0) {
+   if(name.empty()) {
       return chan;
    }
 
@@ -998,7 +999,7 @@ void TChannel::WriteCalFile(const std::string& outfilename)
 
    std::vector<TChannel*> chanVec = SortedChannels();
 
-   if(outfilename.length() > 0) {
+   if(!outfilename.empty()) {
       std::ofstream calout;
       calout.open(outfilename.c_str());
       for(auto* iter_vec : chanVec) {
@@ -1019,7 +1020,7 @@ void TChannel::WriteCTCorrections(const std::string& outfilename)
 {
    std::vector<TChannel*> chanVec = SortedChannels();
 
-   if(outfilename.length() > 0) {
+   if(!outfilename.empty()) {
       std::ofstream calout;
       calout.open(outfilename.c_str());
       for(auto* iter_vec : chanVec) {
@@ -1137,7 +1138,7 @@ Int_t TChannel::ReadCalFile(const char* filename)
    /// is closed. Returns the number of channels properly read in.
    std::string infilename(filename);
 
-   if(infilename.length() == 0) {
+   if(infilename.empty()) {
       return -1;
    }
 
@@ -1186,7 +1187,7 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
       if(comment != std::string::npos) {
          line = line.substr(0, comment);
       }
-      if(line.length() == 0u) {
+      if(line.empty()) {
          continue;
       }
       size_t openbrace  = line.find('{');
@@ -1206,7 +1207,7 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
                AddChannel(channel);   // consider using a default option here
                newchannels++;
             } else {
-               currentchan->UpdateChannel(channel);
+               TChannel::UpdateChannel(channel);
                delete channel;
                newchannels++;
             }

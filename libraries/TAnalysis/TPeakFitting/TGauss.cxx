@@ -1,5 +1,7 @@
 #include "TGauss.h"
 
+#include "TH1.h"
+
 TGauss::TGauss(Double_t centroid, Double_t relativeLimit)
 {
    Centroid(centroid);

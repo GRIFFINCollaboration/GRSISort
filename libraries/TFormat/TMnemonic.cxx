@@ -1,7 +1,8 @@
 #include "TMnemonic.h"
 
-#include <algorithm>
 #include <iostream>
+
+#include "TRandom.h"
 
 bool TMnemonic::fPrint = true;
 

@@ -1,9 +1,11 @@
 // g++ -c -fPIC TReaction.cxx -I./ `root-config --cflags`
 
 #include "TReaction.h"
-#include "Globals.h"
 
-#include <TStyle.h>
+#include <iostream>
+
+#include "TStyle.h"
+#include "TMath.h"
 
 TReaction::TReaction(const char* beam, const char* targ, const char* ejec, const char* reco, double eBeam, double ex3, bool inverse)
    : fTBeam(eBeam), fInverse(inverse), fExc(ex3)
@@ -219,9 +221,7 @@ double TReaction::GetRutherfordLab(double theta_lab, int part, bool Units_mb) co
 // Conversion from LAB frame to CM frame
 double TReaction::ConvertThetaLabToCm(double theta_lab, int part) const
 {
-   if(theta_lab > fThetaMax[part]) {
-      theta_lab = fThetaMax[part];
-   }
+   theta_lab = std::max(theta_lab, fThetaMax[part]);
 
    // Uses the particle velocity in the CM frame, which makes it more complex
    double gtan2    = pow(tan(theta_lab) * fCmG, 2);

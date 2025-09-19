@@ -10,6 +10,7 @@
 #include "TStopwatch.h"
 
 #include "TGRSIOptions.h"
+#include "ArgParser.h"
 #include "TParserLibrary.h"
 #include "TGRSIFrame.h"
 #include "TRedirect.h"

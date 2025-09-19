@@ -1,5 +1,7 @@
 #include "TGRSIFit.h"
 
+#include "TROOT.h"
+
 TString TGRSIFit::fDefaultFitType("");
 
 TGRSIFit::TGRSIFit()

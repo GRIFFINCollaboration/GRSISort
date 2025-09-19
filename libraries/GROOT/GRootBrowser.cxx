@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "TROOT.h"
 #include "TSystem.h"
 #include "TApplication.h"
@@ -9,7 +11,6 @@
 #include "TGLayout.h"
 #include "TGSplitter.h"
 #include "TGStatusBar.h"
-#include "Varargs.h"
 #include "TInterpreter.h"
 #include "TGFileDialog.h"
 #include "TObjString.h"
@@ -18,17 +19,13 @@
 #include "TEnv.h"
 #include <KeySymbols.h>
 
-#include "RConfigure.h"
-
 #include "GRootBrowser.h"
 #include "TGFileBrowser.h"
 #include "TGInputDialog.h"
 #include "TRootHelpDialog.h"
 #include "TVirtualPadEditor.h"
 #include "HelpText.h"
-#include "Getline.h"
 
-#include "TChannel.h"
 #include "TKey.h"
 
 #ifdef WIN32

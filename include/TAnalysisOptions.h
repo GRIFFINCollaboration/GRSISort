@@ -8,8 +8,6 @@
 #include "TObject.h"
 #include "TFile.h"
 
-#include "ArgParser.h"
-
 /////////////////////////////////////////////////////////////////
 ///
 /// \class TAnalysisOptions
@@ -35,21 +33,21 @@ public:
    void ReadFromFile(TFile* file = nullptr);
 
    // sorting options
-   inline void SetBuildWindow(const int64_t& t_bw) { fBuildWindow = t_bw; }
-   inline void SetBuildEventsByTimeStamp(bool& val) { fBuildEventsByTimeStamp = val; }
-   inline void SetAddbackWindow(const double& t_abw) { fAddbackWindow = t_abw; }
-   inline void SetSuppressionWindow(const double& t_sup) { fSuppressionWindow = t_sup; }
-   inline void SetSuppressionEnergy(const double& e_sup) { fSuppressionEnergy = e_sup; }
+   void SetBuildWindow(const int64_t& t_bw) { fBuildWindow = t_bw; }
+   void SetBuildEventsByTimeStamp(bool& val) { fBuildEventsByTimeStamp = val; }
+   void SetAddbackWindow(const double& t_abw) { fAddbackWindow = t_abw; }
+   void SetSuppressionWindow(const double& t_sup) { fSuppressionWindow = t_sup; }
+   void SetSuppressionEnergy(const double& e_sup) { fSuppressionEnergy = e_sup; }
 
-   inline void SetWaveformFitting(const bool& flag) { fWaveformFitting = flag; }
-   inline bool IsWaveformFitting() const { return fWaveformFitting; }
+   void SetWaveformFitting(const bool& flag) { fWaveformFitting = flag; }
+   bool IsWaveformFitting() const { return fWaveformFitting; }
 
-   void        SetCorrectCrossTalk(const bool& flag, Option_t* opt = "");
-   inline bool IsCorrectingCrossTalk() const { return fIsCorrectingCrossTalk; }
+   void SetCorrectCrossTalk(const bool& flag, Option_t* opt = "");
+   bool IsCorrectingCrossTalk() const { return fIsCorrectingCrossTalk; }
 
-   inline int64_t BuildWindow() const { return fBuildWindow; }
-   inline bool    BuildEventsByTimeStamp() const { return fBuildEventsByTimeStamp; }
-   inline double  AddbackWindow() const
+   int64_t BuildWindow() const { return fBuildWindow; }
+   bool    BuildEventsByTimeStamp() const { return fBuildEventsByTimeStamp; }
+   double  AddbackWindow() const
    {
       if(fAddbackWindow < 1) {
          return 15.0;
@@ -57,8 +55,8 @@ public:
       return fAddbackWindow;
    }
 
-   inline double SuppressionWindow() const { return fSuppressionWindow; }
-   inline double SuppressionEnergy() const { return fSuppressionEnergy; }
+   double SuppressionWindow() const { return fSuppressionWindow; }
+   double SuppressionEnergy() const { return fSuppressionEnergy; }
 
    bool StaticWindow() const { return fStaticWindow; }
 

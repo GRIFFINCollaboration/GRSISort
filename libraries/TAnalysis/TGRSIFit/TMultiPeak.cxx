@@ -1,8 +1,10 @@
 #include "TMultiPeak.h"
 
-#include "Math/Minimizer.h"
-#include "Math/Factory.h"
-#include "Math/Functor.h"
+#include "TGRSIFunctions.h"
+
+#include "Math/MinimizerOptions.h"
+#include "TVirtualFitter.h"
+#include "TFitResult.h"
 
 #include <algorithm>
 

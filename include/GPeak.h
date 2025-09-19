@@ -2,11 +2,6 @@
 #define GPEAK_H
 
 #include "TF1.h"
-#include "TFitResultPtr.h"
-#include "TFitResult.h"
-
-#include <string>
-#include <algorithm>
 
 class GPeak : public TF1 {
 public:

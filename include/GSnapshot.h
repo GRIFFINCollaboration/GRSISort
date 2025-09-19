@@ -3,8 +3,6 @@
 
 #include <string>
 
-#include "TObject.h"
-
 class TCanvas;
 
 class GSnapshot {

@@ -1,16 +1,22 @@
+#include "TCanvas.h"
+#include "TFile.h"
+#include "TH1.h"
+#include "TH2.h"
+#include "TStyle.h"
+
 void PlotGriffinKValue(const char* filename, double eLow = 0., double eHigh = 0.)
 {
-   TFile* file = new TFile(filename);
+   auto* file = new TFile(filename);
 
    gStyle->SetOptTitle(0);
    gStyle->SetOptStat(0);
 
-   TCanvas* canv1 = new TCanvas;
+   auto* canv1 = new TCanvas;
 
    canv1->SetLogz();
    static_cast<TH2D*>(file->Get("hKP"))->Draw("colz");
 
-   TCanvas* canv2 = new TCanvas;
+   auto* canv2 = new TCanvas;
 
    canv2->SetLogy();
    TH1D* hE = static_cast<TH1D*>(file->Get("hE"));
@@ -46,7 +52,7 @@ void PlotGriffinKValue(const char* filename, double eLow = 0., double eHigh = 0.
    hE_2hc->SetTitle("two piled-up hits with two integrations");
    canv2->BuildLegend();
 
-   TCanvas* canv3 = new TCanvas("canv3", "Energy vs k-value plots", 700, 2000);
+   auto* canv3 = new TCanvas("canv3", "Energy vs k-value plots", 700, 2000);
 
    canv3->Divide(2, 4);
    canv3->SetLogz();

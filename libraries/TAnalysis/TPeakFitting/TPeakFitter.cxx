@@ -1,9 +1,12 @@
 #include "TPeakFitter.h"
-#include "Math/Minimizer.h"
 #include "TH1.h"
 #include "TClass.h"
+#include "Math/MinimizerOptions.h"
+#include "TVirtualFitter.h"
+#include "TFitResult.h"
 
 #include "Globals.h"
+#include "TGRSIFunctions.h"
 
 EVerbosity TPeakFitter::fVerboseLevel = EVerbosity::kQuiet;
 

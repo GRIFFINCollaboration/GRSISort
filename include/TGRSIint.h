@@ -25,16 +25,12 @@
 #include <cstdio>
 #include <string>
 
-#include "TSystem.h"
 #include "TSysEvtHandler.h"
 #include "TRint.h"
-#include "TList.h"
 #include "TEnv.h"
 #include "TFile.h"
 #include "TChain.h"
-#include "TStopwatch.h"
 
-#include "Globals.h"
 #include "TRawFile.h"
 
 extern TChain* gFragment;

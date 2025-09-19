@@ -1,3 +1,5 @@
+#include "TH2.h"
+
 TH2F* DeadTimeCorrect(TH2* cycleMat, TH2* triggerMat, Double_t dt_usec, Double_t dwellTime_sec)
 {
 
@@ -12,9 +14,9 @@ TH2F* DeadTimeCorrect(TH2* cycleMat, TH2* triggerMat, Double_t dt_usec, Double_t
    TH2F*       finalMatrix      = new TH2F(finalMatrixName, finalMatrixTitle, nTimeBins, lowTimeBin, highTimeBin, nCycBins, lowCycBin, highCycBin);
 
    for(int i = lowCycBin; i <= highCycBin; ++i) {
-      tmpTrig  = triggerMat->ProjectionX(Form("trigger_%d", i), i, i);
-      tmpSlice = cycleMat->ProjectionX(Form("slice_%d", i), i, i);
-      if(tmpTrig->Integral() < 1) continue;
+      auto* tmpTrig  = triggerMat->ProjectionX(Form("trigger_%d", i), i, i);
+      auto* tmpSlice = cycleMat->ProjectionX(Form("slice_%d", i), i, i);
+      if(tmpTrig->Integral() < 1) { continue; }
 
       for(int bin = lowTimeBin; bin < highTimeBin; ++bin) {
          Double_t dt_corr = 1. / (1. - tmpTrig->GetBinContent(bin) * (dt_usec * 1e-6 / dwellTime_sec));
@@ -35,7 +37,7 @@ TH2F* CycleRejector(TH2* cycleMat, Int_t counts, bool reject_last = true)
    printf(" *    Cycle Rejector   *\n");
    printf(" ***********************\n\n");
    printf("          Threshold: %d Counts\n", counts);
-   printf("  Reject Last Cycle: %d\n", reject_last);
+   printf("  Reject Last Cycle: %s\n", (reject_last ? "true" : "false"));
    printf("\n");
 
    Int_t       lowCycBin        = cycleMat->GetYaxis()->GetFirst();
@@ -48,14 +50,15 @@ TH2F* CycleRejector(TH2* cycleMat, Int_t counts, bool reject_last = true)
    const char* finalMatrixTitle = Form("%s with Rejected Cycles", cycleMat->GetTitle());
    TH2F*       finalMatrix      = new TH2F(finalMatrixName, finalMatrixTitle, nTimeBins, lowTimeBin, highTimeBin, nCycBins, lowCycBin, highCycBin);
 
-   TH1D* tmpSlice;
+   TH1D* tmpSlice   = nullptr;
    bool  found_last = false;
    // If I do this in reverse order I can easily throw out the last cycle
    for(int i = highCycBin; i >= lowCycBin; --i) {
       tmpSlice = cycleMat->ProjectionX(Form("slice_%d", i), i, i);
       if(!found_last && (tmpSlice->Integral() < 1)) {
          continue;
-      } else if(!found_last && (tmpSlice->Integral() > 0)) {
+      }
+      if(!found_last && (tmpSlice->Integral() > 0)) {
          printf("the last cycle found: %d\n", i);
          found_last = true;
          if(reject_last) {

@@ -1,13 +1,10 @@
 #include "TGainMatch.h"
 
 #include <algorithm>
-#include <map>
 
-#include "TError.h"
-#include "TRandom2.h"
-#include "Math/Minimizer.h"
-#include "Math/Factory.h"
-#include "Math/Functor.h"
+#include "Math/MinimizerOptions.h"
+#include "TVirtualFitter.h"
+#include "TFitResult.h"
 
 Double_t TGainMatch::fDefaultCoarseRange = 40.;
 
@@ -378,7 +375,7 @@ Bool_t TGainMatch::CoarseMatchAll(TCalManager* cm, TH2* mat, Double_t, Double_t)
       gm->Clear();
       std::cout << std::endl
                 << "Now fitting channel " << chan - 1 << std::endl;
-      auto* h1 = static_cast<TH1D*>(mat->ProjectionY(Form("Channel%d", chan), chan, chan, "o"));
+      auto* h1 = mat->ProjectionY(Form("Channel%d", chan), chan, chan, "o");
       std::cout << "BIN WIDTH " << h1->GetXaxis()->GetBinWidth(h1->GetXaxis()->GetFirst() + 1) << std::endl;
       if(h1->Integral() < 100) {
          continue;
@@ -461,8 +458,8 @@ Bool_t TGainMatch::FineMatchFastAll(TCalManager* cm, TH2* mat1, TPeak* peak1, TH
 
       std::cout << std::endl
                 << "Now fitting channel: " << chan - 1 << std::endl;
-      auto* h1 = static_cast<TH1D*>(mat1->ProjectionY(Form("Channel%d_mat1", chan - 1), chan, chan, "o"));
-      auto* h2 = static_cast<TH1D*>(mat2->ProjectionY(Form("Channel%d_mat2", chan - 1), chan, chan, "o"));
+      auto* h1 = mat1->ProjectionY(Form("Channel%d_mat1", chan - 1), chan, chan, "o");
+      auto* h2 = mat2->ProjectionY(Form("Channel%d_mat2", chan - 1), chan, chan, "o");
       if(h1->Integral() < 100 || h2->Integral() < 100) {
          gm->Warning("FineMatchFastAll", "Empty channel = %d", chan - 1);
          continue;
@@ -508,7 +505,7 @@ Bool_t TGainMatch::Align(TH1* test, TH1* hist, Int_t low_range, Int_t high_range
 {
    // Minimizes the chi^2 between the bin contents of the test histogram and the bin contents of the histogram to be
    // matched'
-   if(!((test != nullptr) && (hist != nullptr))) {
+   if((test == nullptr) || (hist == nullptr)) {
       std::cout << "Unassigned histogram" << std::endl;
       return false;
    }
@@ -594,7 +591,7 @@ Bool_t TGainMatch::AlignAll(TCalManager* cm, TH1* hist, TH2* mat, Int_t low_rang
       gm->Clear();
       std::cout << std::endl
                 << "Now fitting channel: " << chan << std::endl;
-      auto* h1 = static_cast<TH1D*>(mat->ProjectionY(Form("Channel%d", chan), chan + 1, chan + 1, "o"));
+      auto* h1 = mat->ProjectionY(Form("Channel%d", chan), chan + 1, chan + 1, "o");
       std::cout << "BIN WIDTH " << h1->GetXaxis()->GetBinWidth(h1->GetXaxis()->GetFirst() + 1) << std::endl;
       if(h1->Integral() < 100) {
          continue;
@@ -641,13 +638,13 @@ Bool_t TGainMatch::FineMatchAll(TCalManager* cm, TH2* charge_mat, TH2* eng_mat, 
    Int_t first_chan = eng_mat->GetXaxis()->GetFirst();
    Int_t last_chan  = eng_mat->GetXaxis()->GetLast();
    // The first thing we need to do is slice the matrix into it's channel vs energy.
-   auto* testhist = static_cast<TH1D*>(eng_mat->ProjectionY(Form("Test%d_mat", testchan), testchan + 1, testchan + 1, "o"));
+   auto* testhist = eng_mat->ProjectionY(Form("Test%d_mat", testchan), testchan + 1, testchan + 1, "o");
 
    for(int chan = first_chan; chan <= last_chan; chan++) {
       std::cout << std::endl
                 << "Now fitting channel: " << chan - 1 << std::endl;
-      auto* chargeh = static_cast<TH1D*>(charge_mat->ProjectionY(Form("Charge%d_mat", chan - 1), chan, chan, "o"));
-      auto* engh    = static_cast<TH1D*>(eng_mat->ProjectionY(Form("Energy%d_mat", chan - 1), chan, chan, "o"));
+      auto* chargeh = charge_mat->ProjectionY(Form("Charge%d_mat", chan - 1), chan, chan, "o");
+      auto* engh    = eng_mat->ProjectionY(Form("Energy%d_mat", chan - 1), chan, chan, "o");
       if(chargeh->Integral() < 100 || chargeh->Integral() < 100) {
          gm->Warning("FineMatchAll", "Empty channel = %d", chan - 1);
          continue;
@@ -786,9 +783,7 @@ Bool_t TGainMatch::FineMatch(TH1* energyHist, TH1* testhist, TH1* chargeHist, Do
 
    Double_t largestPeak = spec2.GetPositionX()[0];
    for(int x = 0; x < nFound; x++) {
-      if(fabs(peak2->GetCentroid() - spec2.GetPositionX()[x]) < closestDiff) {
-         closestDiff = fabs(peak2->GetCentroid() - spec2.GetPositionX()[x]);
-      }
+      closestDiff = std::min(closestDiff, fabs(peak2->GetCentroid() - spec2.GetPositionX()[x]));
    }
    Double_t rangeWidth2 = (peak2->GetXmax() - peak2->GetXmin()) / 2.;
    peak2->SetParameter("centroid", largestPeak);

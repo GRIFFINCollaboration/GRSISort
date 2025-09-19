@@ -17,7 +17,6 @@
 /////////////////////////////////////////////////////////////////
 
 #include <map>
-#include <vector>
 #include <utility>
 
 #include "TGraphErrors.h"

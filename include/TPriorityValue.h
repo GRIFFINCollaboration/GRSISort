@@ -4,6 +4,7 @@
 #include <ostream>
 #include <string>
 #include <vector>
+#include <cstdint>
 
 /** \addtogroup Sorting
  *  @{
@@ -20,11 +21,11 @@
 ///
 /////////////////////////////////////////////////////////////
 
-enum class EPriority { kDefault,
-                       kRootFile,
-                       kInputFile,
-                       kUser,
-                       kForce };
+enum class EPriority : std::uint8_t { kDefault,
+                                      kRootFile,
+                                      kInputFile,
+                                      kUser,
+                                      kForce };
 
 // template specialization requires full duplicate of original class, take care to update all specializations when changing this!
 template <class T>
@@ -42,18 +43,14 @@ public:
    {
       if(priority >= fPriority) {
          fValue = val;
-         if(priority != EPriority::kForce) {
-            fPriority = priority;
-         }
+         SetPriority(priority);
       }
    }
 
    void SetPriority(EPriority priority)
    {
       // only allow the priority to be increased, not decreased
-      if(priority > fPriority) {
-         fPriority = priority;
-      }
+      fPriority = std::max(priority, fPriority);
    }
 
    // reset functions
@@ -198,18 +195,14 @@ public:
    {
       if(priority >= fPriority) {
          fValue = val;
-         if(priority != EPriority::kForce) {
-            fPriority = priority;
-         }
+         SetPriority(priority);
       }
    }
 
    void SetPriority(EPriority priority)
    {
       // only allow the priority to be increased, not decreased
-      if(priority > fPriority) {
-         fPriority = priority;
-      }
+      fPriority = std::max(priority, fPriority);
    }
 
    // reset functions
@@ -387,18 +380,14 @@ public:
    {
       if(priority >= fPriority) {
          fValue = val;
-         if(priority != EPriority::kForce) {
-            fPriority = priority;
-         }
+         SetPriority(priority);
       }
    }
 
    void SetPriority(EPriority priority)
    {
       // only allow the priority to be increased, not decreased
-      if(priority > fPriority) {
-         fPriority = priority;
-      }
+      fPriority = std::max(priority, fPriority);
    }
 
    // reset functions

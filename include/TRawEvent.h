@@ -5,7 +5,6 @@
  *  @{
  */
 
-#include "Globals.h"
 #include "TDataParser.h"
 
 #include "TObject.h"

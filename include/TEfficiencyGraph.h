@@ -16,16 +16,7 @@
 ///
 /////////////////////////////////////////////////////////////////
 
-#include <map>
-#include <vector>
-#include <utility>
-
 #include "TCalGraph.h"
-#include "TCalPoint.h"
-#include "TCalList.h"
-#include "TSourceList.h"
-
-#include "TMath.h"
 
 class TEfficiencyGraph : public TCalGraph {
 public:

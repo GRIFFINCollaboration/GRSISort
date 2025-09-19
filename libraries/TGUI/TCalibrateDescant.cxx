@@ -2,6 +2,8 @@
 
 #include <iomanip>
 
+#include "TCanvas.h"
+
 double MaximumRecoilEnergy(double gammaEnergy)
 {
    return gammaEnergy - gammaEnergy / (1. + 2. * gammaEnergy / 510.998928);

@@ -1,8 +1,6 @@
 #ifndef TPPG_H
 #define TPPG_H
 
-#include "TBuffer.h"
-
 /** \addtogroup Sorting
  *  @{
  */
@@ -27,15 +25,15 @@
 #include <map>
 #include <utility>
 #include <iostream>
+#include <cstdint>
 
-#include "TFile.h"
 #include "TObject.h"
 #include "TCollection.h"
 
 #include "Globals.h"
 #include "TSingleton.h"
 
-enum class EPpgPattern {
+enum class EPpgPattern : std::uint8_t {
    kBeamOn     = 0x01,
    kDecay      = 0x04,
    kTapeMove   = 0x08,

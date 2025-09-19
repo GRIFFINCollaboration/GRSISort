@@ -8,7 +8,7 @@
 
 TEventBuildingLoop* TEventBuildingLoop::Get(std::string name, EBuildMode mode, uint64_t buildWindow)
 {
-   if(name.length() == 0) {
+   if(name.empty()) {
       name = "build_loop";
    }
 
@@ -171,7 +171,7 @@ bool TEventBuildingLoop::CheckTimeCondition(const std::shared_ptr<const TFragmen
                    << "Sorting depth of " << fSortingDepth << " was insufficient. time: " << std::setw(12) << time
                    << " Last: " << std::setw(12) << event_start << " \n"
                    << "Not all events were built correctly" << std::endl;
-         std::cerr << "Please increase sort depth with --sort-depth=N" << std::endl;
+         std::cerr << "Please increase sort depth with --sort-depth=N, if needed" << std::endl;
          fPreviousSortingDepthError = true;
       }
       if(TGRSIOptions::Get()->SeparateOutOfOrder()) {
@@ -206,7 +206,7 @@ bool TEventBuildingLoop::CheckTimestampCondition(const std::shared_ptr<const TFr
                    << "Sorting depth of " << fSortingDepth << " was insufficient. timestamp: " << timestamp
                    << " Last: " << event_start << " \n"
                    << "Not all events were built correctly" << std::endl;
-         std::cerr << "Please increase sort depth with --sort-depth=N" << std::endl;
+         std::cerr << "Please increase sort depth with --sort-depth=N, if needed" << std::endl;
          fPreviousSortingDepthError = true;
       }
       if(TGRSIOptions::Get()->SeparateOutOfOrder()) {
@@ -241,7 +241,7 @@ bool TEventBuildingLoop::CheckTriggerIdCondition(const std::shared_ptr<const TFr
                    << "Not all events were built correctly" << std::endl;
          std::cerr << "Trigger id #" << trigger_id << " was incorrectly sorted before "
                    << "trigger id #" << current_trigger_id << std::endl;
-         std::cerr << "Please increase sort depth with --sort-depth=N" << std::endl;
+         std::cerr << "Please increase sort depth with --sort-depth=N, if needed" << std::endl;
          fPreviousSortingDepthError = true;
       }
       if(TGRSIOptions::Get()->SeparateOutOfOrder()) {

@@ -1,15 +1,15 @@
 #ifndef GRUTCANVAS_H
 #define GRUTCANVAS_H
 
+#include "GH2Base.h"
 #include "TROOT.h"
 #include "TCanvas.h"
 #include "TRootCanvas.h"
-
 #include "TH1.h"
 #include "TLine.h"
 #include "TCutG.h"
 
-#include "GH2I.h"
+#include <iostream>
 
 /** \addtogroup GROOT
  *  @{

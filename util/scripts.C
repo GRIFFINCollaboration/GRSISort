@@ -2,11 +2,13 @@
 #include <vector>
 #include <iostream>
 
-#include <TFile.h>
-#include <TGraph.h>
-#include <TH1I.h>
-#include <TString.h>
-#include <TTree.h>
+#include "TFragment.h"
+#include "TFile.h"
+#include "TGraph.h"
+#include "TH1I.h"
+#include "TROOT.h"
+#include "TString.h"
+#include "TTree.h"
 
 // almost any quick analysis will end up using the tree and a fragment
 TTree*     tree = nullptr;
@@ -14,13 +16,13 @@ TFragment* frag = new TFragment;
 
 // construct a TGraph from an arbitrary STL vector, useful for ROOT plotting
 template <typename T>
-TGraph* makeGraph(const vector<T>& v, const char* name = "vectorGraph")
+TGraph* makeGraph(const std::vector<T>& v, const char* name = "vectorGraph")
 {
    TObject* obj = gROOT->FindObjectAny(name);
    if(obj) {
       obj->Delete();
    }
-   TGraph* graph = new TGraph(v.size());
+   auto* graph = new TGraph(v.size());
    graph->SetNameTitle(name, name);
 
    for(Int_t i = 0; i < v.size(); i++) {
@@ -32,7 +34,7 @@ TGraph* makeGraph(const vector<T>& v, const char* name = "vectorGraph")
 
 // construct a TH1 from an arbitrary STL vector, useful for ROOT plotting
 template <typename T, typename U>
-U* makeHistoCommon(const vector<T>& v, const char* hisName = "vectorHis")
+U* makeHistoCommon(const std::vector<T>& v, const char* hisName = "vectorHis")
 {
    TObject* obj = gROOT->FindObjectAny(hisName);
    if(obj) {
@@ -48,31 +50,31 @@ U* makeHistoCommon(const vector<T>& v, const char* hisName = "vectorHis")
 }
 
 // specific function for integer vectors
-TH1* makeHisto(const vector<int>& v, const char* hisName = "vectorHis")
+TH1* makeHisto(const std::vector<int>& v, const char* hisName = "vectorHis")
 {
    return makeHistoCommon<int, TH1I>(v, hisName);
 }
 
 // specific function for double vectors
-TH1* makeHisto(const vector<double>& v, const char* hisName = "vectorHis")
+TH1* makeHisto(const std::vector<double>& v, const char* hisName = "vectorHis")
 {
-   return makeHistoCommon<int, TH1D>(v, hisName);
+   return makeHistoCommon<double, TH1D>(v, hisName);
 }
 
 // specific function for short vectors
-TH1* makeHisto(const vector<short>& v, const char* hisName = "vectorHis")
+TH1* makeHisto(const std::vector<int16_t>& v, const char* hisName = "vectorHis")
 {
-   return makeHistoCommon<short, TH1S>(v, hisName);
+   return makeHistoCommon<int16_t, TH1S>(v, hisName);
 }
 
 // specific function for short vectors
-TH1* makeDescantHisto(const vector<short>& v, const char* hisName = "vectorHis")
+TH1* makeDescantHisto(const std::vector<int16_t>& v, const char* hisName = "vectorHis")
 {
    TObject* obj = gROOT->FindObjectAny(hisName);
-   if(obj) {
+   if(obj != nullptr) {
       obj->Delete();
    }
-   TH1* his = new TH1S(hisName, hisName, v.size() - 8, 0, v.size() - 8);
+   TH1* his = new TH1S(hisName, hisName, v.size() - 8, 0, static_cast<double>(v.size() - 8));
 
    for(Int_t i = 0; i < v.size(); i++) {
       // reorder so that samples 0-7 are: 7,6,1,0,3,2,5,4
@@ -94,55 +96,53 @@ TH1* makeDescantHisto(const vector<short>& v, const char* hisName = "vectorHis")
 }
 
 // draw the next waveform that we find associated with an event
-void DrawNext(void)
+void DrawNext()
 {
    static Int_t evno = 0;
 
    if(tree == nullptr) {
-      tree = (TTree*)gROOT->FindObject("FragmentTree");
+      tree = static_cast<TTree*>(gROOT->FindObject("FragmentTree"));
    }
    tree->SetBranchAddress("TFragment", &frag);
 
    do {
       tree->GetEntry(evno++);
-   } while(frag->wavebuffer.empty());
+   } while(!frag->HasWave());
 
-   cout << "Event number " << evno << endl;
+   std::cout << "Event number " << evno << std::endl;
    frag->Print();
 
-   // printf("wavebuffer.size() = %i\n",wavebuffer.size());
-   TH1*      his  = makeHisto(frag->wavebuffer);
-   TChannel* chan = TChannel::GetChannel(frag->ChannelAddress);
+   TH1*      his  = makeHisto(*(frag->GetWaveform()));
+   TChannel* chan = frag->GetChannel();
 
-   // if(chan && (strncmp(chan->GetChannelName(),"DSC",3)==0))
-   //    TH1 *his = makeDescantHisto(frag->wavebuffer);
-   if(chan)
-      his->SetTitle(chan->GetChannelName());
+   if(chan != nullptr) {
+      his->SetTitle(chan->GetName());
+   }
    his->Draw();
 }
 
 // draw the next waveform that we find associated with an event
-void DrawNextDescant(void)
+void DrawNextDescant()
 {
    static Int_t evno = 0;
 
    if(tree == nullptr) {
-      tree = (TTree*)gROOT->FindObject("FragmentTree");
+      tree = static_cast<TTree*>(gROOT->FindObject("FragmentTree"));
    }
    tree->SetBranchAddress("TFragment", &frag);
 
    do {
       tree->GetEntry(evno++);
-   } while(frag->wavebuffer.empty());
+   } while(!frag->HasWave());
 
-   cout << "Event number " << evno << endl;
+   std::cout << "Event number " << evno << std::endl;
    frag->Print();
 
-   // printf("wavebuffer.size() = %i\n",wavebuffer.size());
-   TH1*      his  = makeDescantHisto(frag->wavebuffer);
-   TChannel* chan = TChannel::GetChannel(frag->ChannelAddress);
-   if(chan)
-      his->SetTitle(chan->GetChannelName());
+   TH1*      his  = makeHisto(*(frag->GetWaveform()));
+   TChannel* chan = frag->GetChannel();
+   if(chan != nullptr) {
+      his->SetTitle(chan->GetName());
+   }
    his->Draw();
 }
 
@@ -153,12 +153,12 @@ void CompareDraw(TFile* f1, TFile* f2, const char* varexp, const char* hisrange,
 {
    TString expr;
 
-   tree = (TTree*)f1->FindObjectAny("FragmentTree");
+   tree = static_cast<TTree*>(f1->FindObjectAny("FragmentTree"));
    expr = TString(varexp) + ">>compdrw1" + TString(hisrange);
    tree->Draw(expr, selection, "goff");
    compdrw1->SetLineColor(1);
 
-   tree = (TTree*)f2->FindObjectAny("FragmentTree");
+   tree = static_cast<TTree*>(f2->FindObjectAny("FragmentTree"));
    expr = TString(varexp) + ">>compdrw2" + TString(hisrange);
    tree->Draw(expr, selection2, "goff");
    compdrw2->SetLineColor(2);
@@ -191,9 +191,9 @@ void scripts()
 
 // do th linking for the template functions if we are in an interactive session
 #ifdef __CINT__
-#pragma link C++ function makeGraph < int>(const vector<int>&, const char*)
-#pragma link C++ function makeGraph < double>(const vector<double>&, const char*)
-#pragma link C++ function makeHistoCommon < int, TH1I>(const vector<int>&, const char*)
-#pragma link C++ function makeHistoCommon < double, TH1D>(const vector<double>&, const char*)
-#pragma link C++ function makeHistoCommon < short, TH1S>(const vector<short>&, const char*)
+#pragma link C++ function makeGraph < int>(const std::vector<int>&, const char*)
+#pragma link C++ function makeGraph < double>(const std::vector<double>&, const char*)
+#pragma link C++ function makeHistoCommon < int, TH1I>(const std::vector<int>&, const char*)
+#pragma link C++ function makeHistoCommon < double, TH1D>(const std::vector<double>&, const char*)
+#pragma link C++ function makeHistoCommon < short, TH1S>(const std::vector<short>&, const char*)
 #endif

@@ -22,7 +22,7 @@
 
 #include "TFragment.h"
 
-TList* AnalyzeFragmentTree(TTree* tree, long entries = 0, TStopwatch* w = nullptr)
+TList* AnalyzeFragmentTree(TTree* tree, int64_t entries = 0, TStopwatch* w = nullptr)
 {
 
    if(w == nullptr) {
@@ -30,13 +30,13 @@ TList* AnalyzeFragmentTree(TTree* tree, long entries = 0, TStopwatch* w = nullpt
       w->Start();
    }
 
-   const size_t MEM_SIZE = (size_t)1024 * (size_t)1024 * (size_t)1024 * (size_t)8;   // 8 GB
+   const size_t MEM_SIZE = static_cast<size_t>(1024) * static_cast<size_t>(1024) * static_cast<size_t>(1024) * static_cast<size_t>(8);   // 8 GB
 
-   TList* list = new TList;
+   auto* list = new TList;
 
-   TFragment*                        currentFrag = 0;
-   std::vector<std::pair<long, int>> oldBetaTimeStamp;
-   std::vector<std::pair<long, int>> oldGammaTimeStamp;
+   TFragment*                           currentFrag = nullptr;
+   std::vector<std::pair<int64_t, int>> oldBetaTimeStamp;
+   std::vector<std::pair<int64_t, int>> oldGammaTimeStamp;
 
    bool last_beta_filled  = false;
    bool last_gamma_filled = false;
@@ -53,9 +53,9 @@ TList* AnalyzeFragmentTree(TTree* tree, long entries = 0, TStopwatch* w = nullpt
    tree->BuildIndex("TimeStampHigh", "TimeStampLow");
    printf(" done!\n");
 
-   TTreeIndex* index       = (TTreeIndex*)tree->GetTreeIndex();
-   Long64_t*   indexvalues = index->GetIndex();
-   int         fEntries    = index->GetN();
+   auto*     index       = static_cast<TTreeIndex*>(tree->GetTreeIndex());
+   Long64_t* indexvalues = index->GetIndex();
+   int       fEntries    = index->GetN();
 
    int minTime = -5000;
    int maxTime = 5000;
@@ -90,7 +90,7 @@ TList* AnalyzeFragmentTree(TTree* tree, long entries = 0, TStopwatch* w = nullpt
 
    tree->GetEntry(indexvalues[0]);
    FragsIn++;
-   long entry;
+   int64_t entry = 0;
    for(entry = 1; entry < fEntries; entry++) {
       if(tree->GetEntry(indexvalues[entry]) == -1) {   // move current frag to the next (x'th) entry in the tree
          printf("FIRE!!!"
@@ -100,29 +100,29 @@ TList* AnalyzeFragmentTree(TTree* tree, long entries = 0, TStopwatch* w = nullpt
 
       TFragment myFrag = *currentFrag;   // Set myfrag to be the x'th fragment before incrementing it.
 
-      if(myFrag.DetectorType == 1) {
+      if(myFrag.GetDetectorType() == 1) {
          gamma->Fill(myFrag.GetEnergy());
       }
 
-      long time      = currentFrag->GetTimeStamp();   // Get the timestamp of the x'th fragment
-      long timelow   = time + minTime;
-      long timehigh  = time + maxTime;
-      int  time_low  = (int)(timelow & 0x0fffffff);
-      int  time_high = (int)(timelow >> 28);
+      int64_t time      = currentFrag->GetTimeStamp();   // Get the timestamp of the x'th fragment
+      int64_t timelow   = time + minTime;
+      int64_t timehigh  = time + maxTime;
+      int     time_low  = static_cast<int>(timelow & 0x0fffffff);
+      int     time_high = static_cast<int>(timelow >> 28);
 
       // find the entry where the low part of the gate fits.
-      long start = index->FindValues(time_high, time_low);
+      int64_t start = index->FindValues(time_high, time_low);
 
-      time_low  = (int)(timehigh & 0x0fffffff);
-      time_high = (int)(timehigh >> 28);
+      time_low  = static_cast<int>(timehigh & 0x0fffffff);
+      time_high = static_cast<int>(timehigh >> 28);
 
       // Find the entry where the high part of the gate fits
-      long stop = index->FindValues(time_high, time_low);
+      int64_t stop = index->FindValues(time_high, time_low);
 
       // printf("\nlooping over y = %ld - %ld\n",start,stop);
 
       // printf("Multiplicity = %d\n",stop-start)
-      for(long y = start; y < stop; y++) {
+      for(int64_t y = start; y < stop; y++) {
          // If the index of the compared fragment equals the index of the first fragment, do nothing
          if(y == entry) {
             continue;
@@ -133,42 +133,42 @@ TList* AnalyzeFragmentTree(TTree* tree, long entries = 0, TStopwatch* w = nullpt
             continue;
          }
 
-         if(myFrag.DetectorType == 1) {
-            if(currentFrag->DetectorType == 1) {
+         if(myFrag.GetDetectorType() == 1) {
+            if(currentFrag->GetDetectorType() == 1) {
                gg_diff->Fill(myFrag.GetTimeStamp() - currentFrag->GetTimeStamp());
-            } else if(currentFrag->DetectorType == 2) {
+            } else if(currentFrag->GetDetectorType() == 2) {
                gb_diff->Fill(myFrag.GetTimeStamp() - currentFrag->GetTimeStamp());
                bg_coinc_gE->Fill(myFrag.GetEnergy());
                betaGamma->Fill(myFrag.GetEnergy());
             } else {
                // printf("Unknown detector type\n");
             }
-            griffinTimeDiff->Fill(currentFrag->DetectorType, myFrag.GetTimeStamp() - currentFrag->GetTimeStamp());
-         } else if(myFrag.DetectorType == 2) {
-            if(currentFrag->DetectorType == 1) {
+            griffinTimeDiff->Fill(currentFrag->GetDetectorType(), myFrag.GetTimeStamp() - currentFrag->GetTimeStamp());
+         } else if(myFrag.GetDetectorType() == 2) {
+            if(currentFrag->GetDetectorType() == 1) {
                bg_diff->Fill(myFrag.GetTimeStamp() - currentFrag->GetTimeStamp());
                bg_coinc_gE->Fill(currentFrag->GetEnergy());
                betaGamma->Fill(myFrag.GetEnergy());
-            } else if(currentFrag->DetectorType == 2) {
+            } else if(currentFrag->GetDetectorType() == 2) {
                bb_diff->Fill(myFrag.GetTimeStamp() - currentFrag->GetTimeStamp());
             } else {
                // printf("Unknown detector type\n");
             }
-            sceptarTimeDiff->Fill(currentFrag->DetectorType, myFrag.GetTimeStamp() - currentFrag->GetTimeStamp());
-         } else if(myFrag.DetectorType == 5) {
-            pacesTimeDiff->Fill(currentFrag->DetectorType, myFrag.GetTimeStamp() - currentFrag->GetTimeStamp());
-         } else if(myFrag.DetectorType == 6) {
-            descantTimeDiff->Fill(currentFrag->DetectorType, myFrag.GetTimeStamp() - currentFrag->GetTimeStamp());
+            sceptarTimeDiff->Fill(currentFrag->GetDetectorType(), myFrag.GetTimeStamp() - currentFrag->GetTimeStamp());
+         } else if(myFrag.GetDetectorType() == 5) {
+            pacesTimeDiff->Fill(currentFrag->GetDetectorType(), myFrag.GetTimeStamp() - currentFrag->GetTimeStamp());
+         } else if(myFrag.GetDetectorType() == 6) {
+            descantTimeDiff->Fill(currentFrag->GetDetectorType(), myFrag.GetTimeStamp() - currentFrag->GetTimeStamp());
          }
       }
 
       if(entry % 25000 == 0) {
-         std::cout << "\t" << entry << " / " << entries << " = " << (float)entry / entries * 100.0 << "%. " << w->RealTime() << " seconds"
+         std::cout << "\t" << entry << " / " << entries << " = " << (100. * entry) / entries << "%. " << w->RealTime() << " seconds"
                    << "\r" << std::flush;
          w->Continue();
       }
    }
-   std::cout << "\t" << entry << " / " << entries << " = " << (float)entry / entries * 100.0 << "%. " << w->RealTime() << " seconds" << std::endl
+   std::cout << "\t" << entry << " / " << entries << " = " << (100. * entry) / entries << "%. " << w->RealTime() << " seconds" << std::endl
              << std::endl;
    w->Continue();
 
@@ -191,8 +191,8 @@ int main(int argc, char** argv)
    std::string fileName;
    if(argc == 2) {
       fileName = argv[1];
-      if(fileName.find_last_of("/") != std::string::npos) {
-         fileName.insert(fileName.find_last_of("/") + 1, "matrices_");
+      if(fileName.find_last_of('/') != std::string::npos) {
+         fileName.insert(fileName.find_last_of('/') + 1, "matrices_");
       } else {
          fileName.insert(0, "diagn_");
       }
@@ -200,7 +200,7 @@ int main(int argc, char** argv)
       fileName = argv[2];
    }
 
-   TFile* file = new TFile(argv[1]);
+   auto* file = new TFile(argv[1]);
    if(file == nullptr) {
       printf("Failed to open file '%s'!\n", argv[1]);
       return 1;
@@ -210,7 +210,7 @@ int main(int argc, char** argv)
       return 1;
    }
 
-   TTree* tree = (TTree*)file->Get("FragmentTree");
+   auto* tree = static_cast<TTree*>(file->Get("FragmentTree"));
 
    if(tree == nullptr) {
       printf("Failed to find fragment tree in file '%s'!\n", argv[1]);
@@ -220,15 +220,14 @@ int main(int argc, char** argv)
    std::cout << argv[0] << ": starting AnalyzeFragmentTree after " << w.RealTime() << " seconds" << std::endl;
    w.Continue();
 
-   TList* list;
-   long   entries = tree->GetEntries();
+   int64_t entries = tree->GetEntries();
    if(argc == 4 && atoi(argv[3]) < entries) {
       entries = atoi(argv[3]);
       std::cout << "Limiting processing of fragment tree to " << entries << " entries!" << std::endl;
    }
-   list = AnalyzeFragmentTree(tree, entries, &w);
+   TList* list = AnalyzeFragmentTree(tree, entries, &w);
 
-   TFile* outfile = new TFile(fileName.c_str(), "recreate");
+   auto* outfile = new TFile(fileName.c_str(), "recreate");
    list->Write();
    outfile->Close();
 

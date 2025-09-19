@@ -1,5 +1,3 @@
-
-
 // Example to read and parse any xml file, supported by TXMLEngine class
 // // The input file, produced by xmlnewfile.C macro is used
 // // If you need full xml syntax support, use TXMLParser instead
@@ -11,12 +9,12 @@ void DisplayNode(TXMLEngine* xml, XMLNodePointer_t node, Int_t level);
 void xmlread(char* data)   // file(const char* filename = "example.xml")
 {
    // First create engine
-   TXMLEngine* xml = new TXMLEngine;
+   auto* xml = new TXMLEngine;
 
    // Now try to parse xml file
    // Only file with restricted xml syntax are supported
    XMLDocPointer_t xmldoc = xml->ParseString(data);
-   if(xmldoc == 0) {
+   if(xmldoc == nullptr) {
       delete xml;
       return;
    }
@@ -34,14 +32,14 @@ void xmlread(char* data)   // file(const char* filename = "example.xml")
 
 void DisplayNode(TXMLEngine* xml, XMLNodePointer_t node, Int_t level)
 {
-
    // this function display all accessible information about xml node and its children
    printf("%*c node: %s\n", level, ' ', xml->GetNodeName(node));
 
    // display namespace
    XMLNsPointer_t ns = xml->GetNS(node);
-   if(ns != 0)
+   if(ns != nullptr) {
       printf("%*c namespace: %s refer: %s\n", level + 2, ' ', xml->GetNSName(ns), xml->GetNSReference(ns));
+   }
 
    // display attributes
    XMLAttrPointer_t attr = xml->GetFirstAttr(node);
@@ -52,12 +50,13 @@ void DisplayNode(TXMLEngine* xml, XMLNodePointer_t node, Int_t level)
 
    // display content (if exists)
    const char* content = xml->GetNodeContent(node);
-   if(content != 0)
+   if(content != nullptr) {
       printf("%*c cont: %s\n", level + 2, ' ', content);
+   }
 
    // display all child nodes
    XMLNodePointer_t child = xml->GetChild(node);
-   while(child != 0) {
+   while(child != nullptr) {
       DisplayNode(xml, child, level + 2);
       child = xml->GetNext(child);
    }

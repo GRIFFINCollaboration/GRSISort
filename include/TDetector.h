@@ -5,17 +5,14 @@
  *  @{
  */
 
-#include <stdexcept>
 #include <cstdio>
 #include <vector>
 #ifndef __CINT__
 #include <memory>
 #endif
 
-#include "TVector3.h"
 #include "TObject.h"
 
-#include "Globals.h"
 #include "TFragment.h"
 #include "TDetectorHit.h"
 #include "TChannel.h"

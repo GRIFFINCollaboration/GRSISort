@@ -21,7 +21,7 @@ class TTerminalLoop : public StoppableThread {
 public:
    static TTerminalLoop* Get(std::string name = "")
    {
-      if(name.length() == 0) {
+      if(name.empty()) {
          name = "terminal_loop";
       }
 

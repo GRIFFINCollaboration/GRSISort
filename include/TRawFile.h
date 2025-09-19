@@ -30,8 +30,8 @@
 
 class TRawFile : public TObject {
 public:
-   enum class EOpenType { kRead,
-                          kWrite };
+   enum class EOpenType : std::uint8_t { kRead,
+                                         kWrite };
 
    TRawFile() = default;   ///< default constructor
    explicit TRawFile(const char*, EOpenType = EOpenType::kRead) {}

@@ -21,13 +21,13 @@
 
 TFragWriteLoop* TFragWriteLoop::Get(std::string name, std::string fOutputFilename)
 {
-   if(name.length() == 0) {
+   if(name.empty()) {
       name = "write_loop";
    }
 
    auto* loop = static_cast<TFragWriteLoop*>(StoppableThread::Get(name));
    if(loop == nullptr) {
-      if(fOutputFilename.length() == 0) {
+      if(fOutputFilename.empty()) {
          fOutputFilename = "temp.root";
       }
       loop = new TFragWriteLoop(name, fOutputFilename);

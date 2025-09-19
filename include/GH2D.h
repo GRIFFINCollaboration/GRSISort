@@ -2,7 +2,6 @@
 #define GH2D__H
 
 #include <cstdio>
-#include <map>
 
 #include <TNamed.h>
 #include <TH2.h>

@@ -5,8 +5,6 @@
  *  @{
  */
 
-#include <map>
-
 #include "TObject.h"
 #include "TFile.h"
 
@@ -53,6 +51,7 @@ public:
 
    const std::string& OutputFragmentFile() const { return fOutputFragmentFile; }
    const std::string& OutputAnalysisFile() const { return fOutputAnalysisFile; }
+   const std::string& OutputDiagnosticsFile() const { return fOutputDiagnosticsFile; }
 
    const std::string& OutputFilteredFile() const { return fOutputFilteredFile; }
    const std::string& OutputFragmentHistogramFile() const { return fOutputFragmentHistogramFile; }
@@ -93,6 +92,7 @@ public:
    bool WriteFragmentTree() const { return fWriteFragmentTree; }
    bool WriteBadFrags() const { return fWriteBadFrags; }
    bool WriteDiagnostics() const { return fWriteDiagnostics; }
+   bool CreateFragmentDiagnostics() const { return fCreateFragmentDiagnostics; }
    int  WordOffset() const { return fWordOffset; }
 
    bool Batch() const { return fBatch; }
@@ -162,8 +162,9 @@ private:
    std::vector<std::string> fInputWinFiles;   ///< A list of the input window files
    std::string              fInputRing;       ///< The name of hte input ring
 
-   std::string fOutputFragmentFile;   ///< The name of the fragment file to write to
-   std::string fOutputAnalysisFile;   ///< The name of the analysis file to write to
+   std::string fOutputFragmentFile;      ///< The name of the fragment file to write to
+   std::string fOutputAnalysisFile;      ///< The name of the analysis file to write to
+   std::string fOutputDiagnosticsFile;   ///< The name of the diagnostics file to write to
    std::string fOutputFilteredFile;
    std::string fOutputFragmentHistogramFile;   ///< The name of the fragment histogram file
    std::string fOutputAnalysisHistogramFile;   ///< The name of the analysis histogram file
@@ -189,12 +190,13 @@ private:
    bool fIgnoreOdbChannels;   ///< Flag to ignore channels from midas file odb (but do use EPICS from ODB)
    int  fDownscaling;         ///< Downscaling factor for raw events to be processed
 
-   bool fIgnoreScaler{false};        ///< Flag to ignore scalers in GRIFFIN
-   bool fIgnoreEpics{false};         ///< Flag to ignore epics
-   bool fWriteFragmentTree{false};   ///< Flag to write fragment tree
-   bool fWriteBadFrags{false};       ///< Flag to write bad fragments
-   bool fWriteDiagnostics{false};    ///< Flag to write diagnostics
-   int  fWordOffset{-1};             ///< Offset for word count in GRIFFIN header (default 1)
+   bool fIgnoreScaler{false};                ///< Flag to ignore scalers in GRIFFIN
+   bool fIgnoreEpics{false};                 ///< Flag to ignore epics
+   bool fWriteFragmentTree{false};           ///< Flag to write fragment tree
+   bool fWriteBadFrags{false};               ///< Flag to write bad fragments
+   bool fWriteDiagnostics{false};            ///< Flag to write diagnostics
+   bool fCreateFragmentDiagnostics{false};   ///< Flag to create diagnostics from the fragment loop
+   int  fWordOffset{-1};                     ///< Offset for word count in GRIFFIN header (default 1)
 
    bool fBatch{false};   ///< Flag to use batch mode (-b)
 

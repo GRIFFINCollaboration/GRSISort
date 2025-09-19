@@ -14,15 +14,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #ifndef __CINT__
-#include <atomic>
-#include <condition_variable>
 #include <memory>
-#include <thread>
 #endif
 
 #include <cstdlib>
-#include <iostream>
-#include <map>
 
 #include "StoppableThread.h"
 #include "ThreadsafeQueue.h"

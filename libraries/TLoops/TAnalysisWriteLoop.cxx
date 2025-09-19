@@ -19,13 +19,13 @@
 
 TAnalysisWriteLoop* TAnalysisWriteLoop::Get(std::string name, std::string outputFilename)
 {
-   if(name.length() == 0) {
+   if(name.empty()) {
       name = "write_loop";
    }
 
    auto* loop = static_cast<TAnalysisWriteLoop*>(StoppableThread::Get(name));
    if(loop == nullptr) {
-      if(outputFilename.length() == 0) {
+      if(outputFilename.empty()) {
          outputFilename = "temp.root";
       }
       loop = new TAnalysisWriteLoop(name, outputFilename);

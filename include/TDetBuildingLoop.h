@@ -13,12 +13,6 @@
 ///
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __CINT__
-#include <condition_variable>
-#include <mutex>
-#include <queue>
-#endif
-
 #include "StoppableThread.h"
 #include "ThreadsafeQueue.h"
 #include "TFragment.h"

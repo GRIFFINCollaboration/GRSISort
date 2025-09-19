@@ -5,8 +5,6 @@
 #include <string>
 #include <vector>
 
-#include "TGRSITypes.h"
-
 bool FileExists(const char* filename);
 bool DirectoryExists(const char* dirname);
 bool AllFilesExist(const std::vector<std::string>& filenames);

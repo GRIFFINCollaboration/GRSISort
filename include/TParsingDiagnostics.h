@@ -15,10 +15,6 @@
 ///
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <iostream>
-#include <iomanip>
-#include <string>
-#include <vector>
 #include <unordered_map>
 
 #ifndef __CINT__
@@ -26,7 +22,6 @@
 #endif
 
 #include "TObject.h"
-#include "TH1F.h"
 
 #include "TSingleton.h"
 #include "TPPG.h"

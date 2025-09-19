@@ -3,12 +3,11 @@
 
 #if __cplusplus >= 201703L
 
-#include <iostream>
 #include <vector>
 #include <map>
 #include <utility>
+#include <cstdint>
 
-#include "TColor.h"
 #include "TPolyLine.h"
 #include "TArrow.h"
 #include "TPaveLabel.h"
@@ -136,7 +135,7 @@ private:
    static float fTextSize;
 
    /// \cond CLASSIMP
-   ClassDefOverride(TGamma, 1)   // NOLINT(readability-else-after-return)
+   ClassDefOverride(TGamma, 2)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 
@@ -278,9 +277,9 @@ private:
 
 class TLevelScheme : public TPaveLabel {
 public:
-   enum class EGammaWidth { kNoWidth,
-                            kBand,
-                            kGlobal };
+   enum class EGammaWidth : char { kNoWidth,
+                                   kBand,
+                                   kGlobal };
 
    explicit TLevelScheme(const std::string& filename = "", bool debug = false);
    explicit TLevelScheme(const char* filename, bool debug = false) : TLevelScheme(std::string(filename), debug) {}

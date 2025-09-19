@@ -55,6 +55,8 @@ CheckOptions:
     value:           llvm
   - key:             modernize-replace-auto-ptr.IncludeStyle
     value:           llvm
+  - key:             modernize-use-auto.IgnoreMacros
+    value:           true
   - key:             modernize-use-auto.RemoveStars
     value:           '0'
   - key:             modernize-use-emplace.ContainersWithPushBack

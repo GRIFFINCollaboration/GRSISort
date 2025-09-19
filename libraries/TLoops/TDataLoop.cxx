@@ -15,7 +15,7 @@ TDataLoop::TDataLoop(std::string name, TRawFile* source)
 
 TDataLoop* TDataLoop::Get(std::string name, TRawFile* source)
 {
-   if(name.length() == 0) {
+   if(name.empty()) {
       name = "input_loop";
    }
    auto* loop = static_cast<TDataLoop*>(StoppableThread::Get(name));
