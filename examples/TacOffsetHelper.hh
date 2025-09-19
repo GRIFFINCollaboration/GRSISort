@@ -4,9 +4,6 @@
 #include "TGRSIHelper.h"
 
 #include "TGriffin.h"
-#include "TGriffinBgo.h"
-#include "TZeroDegree.h"
-#include "TSceptar.h"
 #include "TLaBr.h"
 #include "TTAC.h"
 

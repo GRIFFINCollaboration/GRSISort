@@ -99,14 +99,14 @@ void ComptonPolarimetryHelper::CreateHistograms(unsigned int slot)
 void ComptonPolarimetryHelper::Exec(unsigned int slot, TGriffin& fGriffin, TGriffinBgo& fGriffinBgo)
 {
    for(auto g1 = 0; g1 < fGriffin.GetMultiplicity(); ++g1) {
-      auto grif1 = fGriffin.GetGriffinHit(g1);
+      auto* grif1 = fGriffin.GetGriffinHit(g1);
       if(ExcludeDetector(grif1->GetDetector()) || ExcludeCrystal(grif1->GetArrayNumber())) { continue; }
 
       fH1[slot].at("gammaSingles")->Fill(grif1->GetEnergy());
       fH2[slot].at("gammaCrystal")->Fill(grif1->GetEnergy(), grif1->GetArrayNumber() - 1);
       for(auto g2 = 0; g2 < fGriffin.GetMultiplicity(); ++g2) {
          if(g1 == g2) { continue; }
-         auto grif2 = fGriffin.GetGriffinHit(g2);
+         auto* grif2 = fGriffin.GetGriffinHit(g2);
          if(ExcludeDetector(grif2->GetDetector()) || ExcludeCrystal(grif2->GetArrayNumber())) { continue; }
 
          fH2[slot].at("gammagamma")->Fill(grif1->GetEnergy(), grif2->GetEnergy());
@@ -128,7 +128,7 @@ void ComptonPolarimetryHelper::Exec(unsigned int slot, TGriffin& fGriffin, TGrif
 
          for(auto g3 = 0; g3 < fGriffin.GetMultiplicity(); ++g3) {
             if(g1 == g3 || g2 == g3) { continue; }
-            auto grif3 = fGriffin.GetGriffinHit(g3);
+            auto* grif3 = fGriffin.GetGriffinHit(g3);
             if(ExcludeDetector(grif3->GetDetector()) || ExcludeCrystal(grif3->GetArrayNumber())) { continue; }
             // skip hits in the same detector as hits 1 and 2
             if(grif1->GetDetector() == grif3->GetDetector()) { continue; }
@@ -164,10 +164,10 @@ void ComptonPolarimetryHelper::Exec(unsigned int slot, TGriffin& fGriffin, TGrif
 
          // Event mixing: loop over all stored events for this thread/slot and use them as the "third" gamma ray
          for(auto l = 0; l < fGriffinDeque[slot].size(); ++l) {
-            auto fLastGriffin = fGriffinDeque[slot][l];
+            auto* fLastGriffin = fGriffinDeque[slot][l];
             for(auto g3 = 0; g3 < fLastGriffin->GetMultiplicity(); ++g3) {
                if(g1 == g3 || g2 == g3) { continue; }
-               auto grif3 = fLastGriffin->GetGriffinHit(g3);
+               auto* grif3 = fLastGriffin->GetGriffinHit(g3);
                if(ExcludeDetector(grif3->GetDetector()) || ExcludeCrystal(grif3->GetArrayNumber())) { continue; }
                // skip hits in the same detector as hits 1 and 2
                if(grif1->GetDetector() == grif3->GetDetector()) { continue; }
