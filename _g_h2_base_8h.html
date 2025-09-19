@@ -107,17 +107,16 @@ $(function(){initNavTree('_g_h2_base_8h.html',''); initResizable(true); });
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;cstdio&gt;</code><br />
-<code>#include &lt;iostream&gt;</code><br />
-<code>#include &lt;map&gt;</code><br />
-<code>#include &lt;TNamed.h&gt;</code><br />
-<code>#include &lt;TH2.h&gt;</code><br />
-<code>#include &lt;TList.h&gt;</code><br />
+<code>#include &lt;cstdint&gt;</code><br />
+<code>#include &quot;TNamed.h&quot;</code><br />
+<code>#include &quot;TH2.h&quot;</code><br />
+<code>#include &quot;TList.h&quot;</code><br />
 </div><div class="textblock"><div id="dynsection-0" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Include dependency graph for GH2Base.h:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="_g_h2_base_8h__incl.svg" width="504" height="111"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="_g_h2_base_8h__incl.svg" width="423" height="111"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div id="dynsection-1" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> This graph shows which files directly or indirectly include this file:</div>
@@ -138,24 +137,24 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a3c4ccf159a5f08659648fc1d6e3dceac" id="r_a3c4ccf159a5f08659648fc1d6e3dceac"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3c4ccf159a5f08659648fc1d6e3dceac">EBackgroundSubtraction</a> { <br />
-&#160;&#160;<a class="el" href="#a3c4ccf159a5f08659648fc1d6e3dceacad04336b3ea25f429003ec5e1c611ec96">kNoBackground</a>
-, <a class="el" href="#a3c4ccf159a5f08659648fc1d6e3dceaca4b236ed4a84ae698d383dd75ef6d784a">kRegionBackground</a>
-, <a class="el" href="#a3c4ccf159a5f08659648fc1d6e3dceaca9f8c6d6a0457da354154731481ea0ee8">kMatchedLowerMarker</a>
-, <a class="el" href="#a3c4ccf159a5f08659648fc1d6e3dceaca7cfc0343171f7dafe532d2a216e07d0f">kSplitTwoMarker</a>
+<tr class="memitem:a6ddb57145563ad3958ee7bfbf2aaf590" id="r_a6ddb57145563ad3958ee7bfbf2aaf590"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6ddb57145563ad3958ee7bfbf2aaf590">EBackgroundSubtraction</a> : std::uint8_t { <br />
+&#160;&#160;<a class="el" href="#a6ddb57145563ad3958ee7bfbf2aaf590ad04336b3ea25f429003ec5e1c611ec96">kNoBackground</a>
+, <a class="el" href="#a6ddb57145563ad3958ee7bfbf2aaf590a4b236ed4a84ae698d383dd75ef6d784a">kRegionBackground</a>
+, <a class="el" href="#a6ddb57145563ad3958ee7bfbf2aaf590a9f8c6d6a0457da354154731481ea0ee8">kMatchedLowerMarker</a>
+, <a class="el" href="#a6ddb57145563ad3958ee7bfbf2aaf590a7cfc0343171f7dafe532d2a216e07d0f">kSplitTwoMarker</a>
 , <br />
-&#160;&#160;<a class="el" href="#a3c4ccf159a5f08659648fc1d6e3dceaca11c78b860cd3e3c90bed6cbd0f68a592">kTotalFraction</a>
+&#160;&#160;<a class="el" href="#a6ddb57145563ad3958ee7bfbf2aaf590a11c78b860cd3e3c90bed6cbd0f68a592">kTotalFraction</a>
 <br />
  }</td></tr>
-<tr class="separator:a3c4ccf159a5f08659648fc1d6e3dceac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb2b033915f6659a71a38b5aa6e4eb42" id="r_acb2b033915f6659a71a38b5aa6e4eb42"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acb2b033915f6659a71a38b5aa6e4eb42">EDirection</a> { <a class="el" href="#acb2b033915f6659a71a38b5aa6e4eb42af051266d55262c52bdbbcf68f8b75c77">kXDirection</a>
-, <a class="el" href="#acb2b033915f6659a71a38b5aa6e4eb42a6a1cdbeb819c4308a256dec327920d4f">kYDirection</a>
+<tr class="separator:a6ddb57145563ad3958ee7bfbf2aaf590"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0bc1c8ea7413d558f09bf9dd8a2148cd" id="r_a0bc1c8ea7413d558f09bf9dd8a2148cd"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0bc1c8ea7413d558f09bf9dd8a2148cd">EDirection</a> : std::uint8_t { <a class="el" href="#a0bc1c8ea7413d558f09bf9dd8a2148cdaf051266d55262c52bdbbcf68f8b75c77">kXDirection</a>
+, <a class="el" href="#a0bc1c8ea7413d558f09bf9dd8a2148cda6a1cdbeb819c4308a256dec327920d4f">kYDirection</a>
  }</td></tr>
-<tr class="separator:acb2b033915f6659a71a38b5aa6e4eb42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a0bc1c8ea7413d558f09bf9dd8a2148cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
-<a id="a3c4ccf159a5f08659648fc1d6e3dceac" name="a3c4ccf159a5f08659648fc1d6e3dceac"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3c4ccf159a5f08659648fc1d6e3dceac">&#9670;&#160;</a></span>EBackgroundSubtraction</h2>
+<a id="a6ddb57145563ad3958ee7bfbf2aaf590" name="a6ddb57145563ad3958ee7bfbf2aaf590"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ddb57145563ad3958ee7bfbf2aaf590">&#9670;&#160;</a></span>EBackgroundSubtraction</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -164,7 +163,7 @@ Enumerations</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum class <a class="el" href="#a3c4ccf159a5f08659648fc1d6e3dceac">EBackgroundSubtraction</a></td>
+          <td class="memname">enum class <a class="el" href="#a6ddb57145563ad3958ee7bfbf2aaf590">EBackgroundSubtraction</a> : std::uint8_t</td>
         </tr>
       </table>
   </td>
@@ -174,19 +173,19 @@ Enumerations</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a3c4ccf159a5f08659648fc1d6e3dceacad04336b3ea25f429003ec5e1c611ec96" name="a3c4ccf159a5f08659648fc1d6e3dceacad04336b3ea25f429003ec5e1c611ec96"></a>kNoBackground&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a3c4ccf159a5f08659648fc1d6e3dceaca4b236ed4a84ae698d383dd75ef6d784a" name="a3c4ccf159a5f08659648fc1d6e3dceaca4b236ed4a84ae698d383dd75ef6d784a"></a>kRegionBackground&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a3c4ccf159a5f08659648fc1d6e3dceaca9f8c6d6a0457da354154731481ea0ee8" name="a3c4ccf159a5f08659648fc1d6e3dceaca9f8c6d6a0457da354154731481ea0ee8"></a>kMatchedLowerMarker&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a3c4ccf159a5f08659648fc1d6e3dceaca7cfc0343171f7dafe532d2a216e07d0f" name="a3c4ccf159a5f08659648fc1d6e3dceaca7cfc0343171f7dafe532d2a216e07d0f"></a>kSplitTwoMarker&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a3c4ccf159a5f08659648fc1d6e3dceaca11c78b860cd3e3c90bed6cbd0f68a592" name="a3c4ccf159a5f08659648fc1d6e3dceaca11c78b860cd3e3c90bed6cbd0f68a592"></a>kTotalFraction&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a6ddb57145563ad3958ee7bfbf2aaf590ad04336b3ea25f429003ec5e1c611ec96" name="a6ddb57145563ad3958ee7bfbf2aaf590ad04336b3ea25f429003ec5e1c611ec96"></a>kNoBackground&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a6ddb57145563ad3958ee7bfbf2aaf590a4b236ed4a84ae698d383dd75ef6d784a" name="a6ddb57145563ad3958ee7bfbf2aaf590a4b236ed4a84ae698d383dd75ef6d784a"></a>kRegionBackground&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a6ddb57145563ad3958ee7bfbf2aaf590a9f8c6d6a0457da354154731481ea0ee8" name="a6ddb57145563ad3958ee7bfbf2aaf590a9f8c6d6a0457da354154731481ea0ee8"></a>kMatchedLowerMarker&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a6ddb57145563ad3958ee7bfbf2aaf590a7cfc0343171f7dafe532d2a216e07d0f" name="a6ddb57145563ad3958ee7bfbf2aaf590a7cfc0343171f7dafe532d2a216e07d0f"></a>kSplitTwoMarker&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a6ddb57145563ad3958ee7bfbf2aaf590a11c78b860cd3e3c90bed6cbd0f68a592" name="a6ddb57145563ad3958ee7bfbf2aaf590a11c78b860cd3e3c90bed6cbd0f68a592"></a>kTotalFraction&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_g_h2_base_8h_source.html#l00014">14</a> of file <a class="el" href="_g_h2_base_8h_source.html">GH2Base.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_h2_base_8h_source.html#l00013">13</a> of file <a class="el" href="_g_h2_base_8h_source.html">GH2Base.h</a>.</p>
 
 </div>
 </div>
-<a id="acb2b033915f6659a71a38b5aa6e4eb42" name="acb2b033915f6659a71a38b5aa6e4eb42"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acb2b033915f6659a71a38b5aa6e4eb42">&#9670;&#160;</a></span>EDirection</h2>
+<a id="a0bc1c8ea7413d558f09bf9dd8a2148cd" name="a0bc1c8ea7413d558f09bf9dd8a2148cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0bc1c8ea7413d558f09bf9dd8a2148cd">&#9670;&#160;</a></span>EDirection</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -195,7 +194,7 @@ Enumerations</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum class <a class="el" href="#acb2b033915f6659a71a38b5aa6e4eb42">EDirection</a></td>
+          <td class="memname">enum class <a class="el" href="#a0bc1c8ea7413d558f09bf9dd8a2148cd">EDirection</a> : std::uint8_t</td>
         </tr>
       </table>
   </td>
@@ -205,11 +204,11 @@ Enumerations</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="acb2b033915f6659a71a38b5aa6e4eb42af051266d55262c52bdbbcf68f8b75c77" name="acb2b033915f6659a71a38b5aa6e4eb42af051266d55262c52bdbbcf68f8b75c77"></a>kXDirection&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="acb2b033915f6659a71a38b5aa6e4eb42a6a1cdbeb819c4308a256dec327920d4f" name="acb2b033915f6659a71a38b5aa6e4eb42a6a1cdbeb819c4308a256dec327920d4f"></a>kYDirection&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a0bc1c8ea7413d558f09bf9dd8a2148cdaf051266d55262c52bdbbcf68f8b75c77" name="a0bc1c8ea7413d558f09bf9dd8a2148cdaf051266d55262c52bdbbcf68f8b75c77"></a>kXDirection&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a0bc1c8ea7413d558f09bf9dd8a2148cda6a1cdbeb819c4308a256dec327920d4f" name="a0bc1c8ea7413d558f09bf9dd8a2148cda6a1cdbeb819c4308a256dec327920d4f"></a>kYDirection&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_g_h2_base_8h_source.html#l00020">20</a> of file <a class="el" href="_g_h2_base_8h_source.html">GH2Base.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_h2_base_8h_source.html#l00019">19</a> of file <a class="el" href="_g_h2_base_8h_source.html">GH2Base.h</a>.</p>
 
 </div>
 </div>
@@ -220,7 +219,7 @@ Enumerations</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="_g_h2_base_8h.html">GH2Base.h</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Aug 26 2025 14:02:05.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Sep 19 2025 17:05:47.</li>
   </ul>
 </div>
 </body>

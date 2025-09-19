@@ -1,29 +1,29 @@
 var class_t_source_calibration =
 [
-    [ "EEntry", "class_t_source_calibration.html#a2c04101aac13d21c855387b80ee37c56", [
-      [ "kStartButton", "class_t_source_calibration.html#a2c04101aac13d21c855387b80ee37c56a32e00aa9774d7d2963502ecf9d48cb87", null ],
-      [ "kSourceBox", "class_t_source_calibration.html#a2c04101aac13d21c855387b80ee37c56a05274ccbd98e943bb5f4c2d42b188473", null ],
-      [ "kSigmaEntry", "class_t_source_calibration.html#a2c04101aac13d21c855387b80ee37c56a1266e8dd000013fbfd5a23db6e6dae03", null ],
-      [ "kThresholdEntry", "class_t_source_calibration.html#a2c04101aac13d21c855387b80ee37c56ac08d441b38b5b227ebd3b84448f114f8", null ],
-      [ "kDegreeEntry", "class_t_source_calibration.html#a2c04101aac13d21c855387b80ee37c56ae97a883af10bbfab632d3afedff37890", null ],
-      [ "kMaxResidualEntry", "class_t_source_calibration.html#a2c04101aac13d21c855387b80ee37c56ab8b1a7f0cc3c7b1994718abf04473ccc", null ],
-      [ "kApplyToAll", "class_t_source_calibration.html#a2c04101aac13d21c855387b80ee37c56af7818f02658ff57c109b0cfc115b0e75", null ],
-      [ "kWriteNonlinearities", "class_t_source_calibration.html#a2c04101aac13d21c855387b80ee37c56a1407463af4de11c31d3487850447656e", null ]
+    [ "EEntry", "class_t_source_calibration.html#a2b9d86a341dc92901a2c9e58700eb9ee", [
+      [ "kStartButton", "class_t_source_calibration.html#a2b9d86a341dc92901a2c9e58700eb9eea32e00aa9774d7d2963502ecf9d48cb87", null ],
+      [ "kSourceBox", "class_t_source_calibration.html#a2b9d86a341dc92901a2c9e58700eb9eea05274ccbd98e943bb5f4c2d42b188473", null ],
+      [ "kSigmaEntry", "class_t_source_calibration.html#a2b9d86a341dc92901a2c9e58700eb9eea1266e8dd000013fbfd5a23db6e6dae03", null ],
+      [ "kThresholdEntry", "class_t_source_calibration.html#a2b9d86a341dc92901a2c9e58700eb9eeac08d441b38b5b227ebd3b84448f114f8", null ],
+      [ "kDegreeEntry", "class_t_source_calibration.html#a2b9d86a341dc92901a2c9e58700eb9eeae97a883af10bbfab632d3afedff37890", null ],
+      [ "kMaxResidualEntry", "class_t_source_calibration.html#a2b9d86a341dc92901a2c9e58700eb9eeab8b1a7f0cc3c7b1994718abf04473ccc", null ],
+      [ "kApplyToAll", "class_t_source_calibration.html#a2b9d86a341dc92901a2c9e58700eb9eeaf7818f02658ff57c109b0cfc115b0e75", null ],
+      [ "kWriteNonlinearities", "class_t_source_calibration.html#a2b9d86a341dc92901a2c9e58700eb9eea1407463af4de11c31d3487850447656e", null ]
     ] ],
-    [ "EFitting", "class_t_source_calibration.html#af38ce0cdc864e9d077dd780264d8bbbf", [
-      [ "kFindSourcePeaks", "class_t_source_calibration.html#af38ce0cdc864e9d077dd780264d8bbbfafcf77ee51f3c92c132add3f625b4b11d", null ],
-      [ "kFindChannelPeaks", "class_t_source_calibration.html#af38ce0cdc864e9d077dd780264d8bbbfaa0d04e486d71a04c73c2baa1deea44dd", null ],
-      [ "kFindAllPeaks", "class_t_source_calibration.html#af38ce0cdc864e9d077dd780264d8bbbfad04def2cb82f6d7abe9e04e4f45e3687", null ],
-      [ "kCalibrate", "class_t_source_calibration.html#af38ce0cdc864e9d077dd780264d8bbbfa99c5d58181a808bc9633da5dec237401", null ],
-      [ "kRecursiveRemove", "class_t_source_calibration.html#af38ce0cdc864e9d077dd780264d8bbbfae26dd6de8e3e3f00869a2b6a9ae8b3f3", null ]
+    [ "EFitting", "class_t_source_calibration.html#a3e82d87db8e85cfd1f12fe5315aeba17", [
+      [ "kFindSourcePeaks", "class_t_source_calibration.html#a3e82d87db8e85cfd1f12fe5315aeba17afcf77ee51f3c92c132add3f625b4b11d", null ],
+      [ "kFindChannelPeaks", "class_t_source_calibration.html#a3e82d87db8e85cfd1f12fe5315aeba17aa0d04e486d71a04c73c2baa1deea44dd", null ],
+      [ "kFindAllPeaks", "class_t_source_calibration.html#a3e82d87db8e85cfd1f12fe5315aeba17ad04def2cb82f6d7abe9e04e4f45e3687", null ],
+      [ "kCalibrate", "class_t_source_calibration.html#a3e82d87db8e85cfd1f12fe5315aeba17a99c5d58181a808bc9633da5dec237401", null ],
+      [ "kRecursiveRemove", "class_t_source_calibration.html#a3e82d87db8e85cfd1f12fe5315aeba17ae26dd6de8e3e3f00869a2b6a9ae8b3f3", null ]
     ] ],
-    [ "ENavigate", "class_t_source_calibration.html#a3105481db7ddb67180bfa1a7e6ed3784", [
-      [ "kPrevious", "class_t_source_calibration.html#a3105481db7ddb67180bfa1a7e6ed3784a69fe0f253d301d3ee812a9fc66857016", null ],
-      [ "kDiscard", "class_t_source_calibration.html#a3105481db7ddb67180bfa1a7e6ed3784af7e042a71bb1d16a07ab2b959df80cf0", null ],
-      [ "kAccept", "class_t_source_calibration.html#a3105481db7ddb67180bfa1a7e6ed3784a913cd3d170ead4b5e8f29b1d168d3065", null ],
-      [ "kAcceptAll", "class_t_source_calibration.html#a3105481db7ddb67180bfa1a7e6ed3784a4e96b3603d233c58afc35e061cb8e084", null ],
-      [ "kWrite", "class_t_source_calibration.html#a3105481db7ddb67180bfa1a7e6ed3784ac7e74f23084a20aa48a805f87f1697b3", null ],
-      [ "kNext", "class_t_source_calibration.html#a3105481db7ddb67180bfa1a7e6ed3784ad8f78eea1e2ec21c78c65b775bf76018", null ]
+    [ "ENavigate", "class_t_source_calibration.html#a55387925bbffce211287d11148def3a4", [
+      [ "kPrevious", "class_t_source_calibration.html#a55387925bbffce211287d11148def3a4a69fe0f253d301d3ee812a9fc66857016", null ],
+      [ "kDiscard", "class_t_source_calibration.html#a55387925bbffce211287d11148def3a4af7e042a71bb1d16a07ab2b959df80cf0", null ],
+      [ "kAccept", "class_t_source_calibration.html#a55387925bbffce211287d11148def3a4a913cd3d170ead4b5e8f29b1d168d3065", null ],
+      [ "kAcceptAll", "class_t_source_calibration.html#a55387925bbffce211287d11148def3a4a4e96b3603d233c58afc35e061cb8e084", null ],
+      [ "kWrite", "class_t_source_calibration.html#a55387925bbffce211287d11148def3a4ac7e74f23084a20aa48a805f87f1697b3", null ],
+      [ "kNext", "class_t_source_calibration.html#a55387925bbffce211287d11148def3a4ad8f78eea1e2ec21c78c65b775bf76018", null ]
     ] ],
     [ "TSourceCalibration", "class_t_source_calibration.html#a1e5e607807cf0f62d338328aadea9168", null ],
     [ "TSourceCalibration", "class_t_source_calibration.html#a6b85c1dddaacbe730e1c39412c26331e", null ],

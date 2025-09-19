@@ -1,8 +1,8 @@
 var class_t_midas_file =
 [
-    [ "EOpenType", "class_t_midas_file.html#a4ef0129feb73111852d5592fdeb4fff2", [
-      [ "kRead", "class_t_midas_file.html#a4ef0129feb73111852d5592fdeb4fff2a8604cf55a79d6bfdcb30f77d1622839b", null ],
-      [ "kWrite", "class_t_midas_file.html#a4ef0129feb73111852d5592fdeb4fff2ad3ac0ba447a9859ad2db8e498056429f", null ]
+    [ "EOpenType", "class_t_midas_file.html#a7fe15fb5bf96b7e333e5a0ba54c496e2", [
+      [ "kRead", "class_t_midas_file.html#a7fe15fb5bf96b7e333e5a0ba54c496e2a8604cf55a79d6bfdcb30f77d1622839b", null ],
+      [ "kWrite", "class_t_midas_file.html#a7fe15fb5bf96b7e333e5a0ba54c496e2ad3ac0ba447a9859ad2db8e498056429f", null ]
     ] ],
     [ "TMidasFile", "class_t_midas_file.html#aa80ee7e7cc8cc07327f56d494f3864dc", null ],
     [ "TMidasFile", "class_t_midas_file.html#ae9124be7fa8cf49dc20229c847f6a712", null ],

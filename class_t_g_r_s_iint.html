@@ -115,7 +115,7 @@ $(function(){initNavTree('class_t_g_r_s_iint.html',''); initResizable(true); });
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="class_t_g_r_s_iint.html">TGRSIint</a> is a class that acts as an interpreter for GRSISort. The idea is that <a class="el" href="class_t_g_r_s_iint.html">TGRSIint</a> will read in cal, info, mid and root files and open them appropriately (order) and do the correct thing with them. It also applies the command line options. Finally, <a class="el" href="class_t_g_r_s_iint.html">TGRSIint</a> allows us to take over the interpreter to do some GRSI things. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8h_source.html#l00043">43</a> of file <a class="el" href="_t_g_r_s_iint_8h_source.html">TGRSIint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8h_source.html#l00039">39</a> of file <a class="el" href="_t_g_r_s_iint_8h_source.html">TGRSIint.h</a>.</p>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -271,11 +271,11 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Singleton constructor</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00063">63</a> of file <a class="el" href="_t_g_r_s_iint_8cxx_source.html">TGRSIint.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00064">64</a> of file <a class="el" href="_t_g_r_s_iint_8cxx_source.html">TGRSIint.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_g_r_s_iint_8h_source.html#l00048">fGRSIEnv</a>, <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00020">TGRSIOptions::Get()</a>, <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00271">PrintLogo()</a>, and <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00042">TGRSIOptions::ShouldExit()</a>.</p>
+<p class="reference">References <a class="el" href="_t_g_r_s_iint_8h_source.html#l00044">fGRSIEnv</a>, <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00020">TGRSIOptions::Get()</a>, <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00272">PrintLogo()</a>, and <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00040">TGRSIOptions::ShouldExit()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00053">instance()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00054">instance()</a>.</p>
 
 </div>
 </div>
@@ -379,11 +379,11 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Applies options from <a class="el" href="class_t_g_r_s_i_options.html">TGRSIOptions</a>. This include things such as batch sorting, reading material, and logo. Also includes the setup of what to do with mid and root files that are input.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00090">90</a> of file <a class="el" href="_t_g_r_s_iint_8cxx_source.html">TGRSIint.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00091">91</a> of file <a class="el" href="_t_g_r_s_iint_8cxx_source.html">TGRSIint.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_g_r_s_i_utilities_8cxx_source.html#l00039">AllFilesExist()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00073">StoppableThread::AllThreadHeader()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00098">TGRSIOptions::Batch()</a>, <a class="el" href="_t_run_info_8h_source.html#l00166">TRunInfo::ClearDate()</a>, <a class="el" href="_t_run_info_8h_source.html#l00154">TRunInfo::ClearFullVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00142">TRunInfo::ClearVersion()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00079">TGRSIOptions::CloseAfterSort()</a>, <a class="el" href="_globals_8h_source.html#l00018">DRED</a>, <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00020">TGRSIOptions::Get()</a>, <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TParserLibrary &gt;::Get()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00043">TGRSIOptions::InputFiles()</a>, <a class="el" href="_t_parser_library_8cxx_source.html#l00021">TParserLibrary::Load()</a>, <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00704">LoadGROOTGraphics()</a>, <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00164">LoopUntilDone()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00051">TGRSIOptions::MacroInputFiles()</a>, <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00371">OpenRawFile()</a>, <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00299">OpenRootFile()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00143">TGRSIOptions::ParserLibrary()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00086">TGRSIOptions::ReadingMaterial()</a>, <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00261">ReadTheNews()</a>, <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00044">TGRSIOptions::RootInputFiles()</a>, <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00671">RunMacroFile()</a>, <a class="el" href="_t_run_info_8h_source.html#l00167">TRunInfo::SetDate()</a>, <a class="el" href="_t_run_info_8h_source.html#l00155">TRunInfo::SetFullVersion()</a>, <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00399">SetupPipeline()</a>, <a class="el" href="_t_run_info_8h_source.html#l00143">TRunInfo::SetVersion()</a>, <a class="el" href="_g_root_commands_8cxx_source.html#l00617">StartGUI()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00074">TGRSIOptions::StartGui()</a>, and <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00193">Terminate()</a>.</p>
+<p class="reference">References <a class="el" href="_t_g_r_s_i_utilities_8cxx_source.html#l00039">AllFilesExist()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00073">StoppableThread::AllThreadHeader()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00098">TGRSIOptions::Batch()</a>, <a class="el" href="_t_run_info_8h_source.html#l00166">TRunInfo::ClearDate()</a>, <a class="el" href="_t_run_info_8h_source.html#l00154">TRunInfo::ClearFullVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00142">TRunInfo::ClearVersion()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00078">TGRSIOptions::CloseAfterSort()</a>, <a class="el" href="_globals_8h_source.html#l00018">DRED</a>, <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00020">TGRSIOptions::Get()</a>, <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TParserLibrary &gt;::Get()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00041">TGRSIOptions::InputFiles()</a>, <a class="el" href="_t_parser_library_8cxx_source.html#l00021">TParserLibrary::Load()</a>, <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00719">LoadGROOTGraphics()</a>, <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00165">LoopUntilDone()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00049">TGRSIOptions::MacroInputFiles()</a>, <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00372">OpenRawFile()</a>, <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00300">OpenRootFile()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00143">TGRSIOptions::ParserLibrary()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00085">TGRSIOptions::ReadingMaterial()</a>, <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00262">ReadTheNews()</a>, <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00042">TGRSIOptions::RootInputFiles()</a>, <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00686">RunMacroFile()</a>, <a class="el" href="_t_run_info_8h_source.html#l00167">TRunInfo::SetDate()</a>, <a class="el" href="_t_run_info_8h_source.html#l00155">TRunInfo::SetFullVersion()</a>, <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00400">SetupPipeline()</a>, <a class="el" href="_t_run_info_8h_source.html#l00143">TRunInfo::SetVersion()</a>, <a class="el" href="_g_root_commands_8cxx_source.html#l00617">StartGUI()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00073">TGRSIOptions::StartGui()</a>, and <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00194">Terminate()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00053">instance()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00054">instance()</a>.</p>
 
 </div>
 </div>
@@ -410,9 +410,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00773">773</a> of file <a class="el" href="_t_g_r_s_iint_8cxx_source.html">TGRSIint.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00788">788</a> of file <a class="el" href="_t_g_r_s_iint_8cxx_source.html">TGRSIint.cxx</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00234">ProcessLine()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00235">ProcessLine()</a>.</p>
 
 </div>
 </div>
@@ -431,9 +431,9 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00790">790</a> of file <a class="el" href="_t_g_r_s_iint_8cxx_source.html">TGRSIint.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00805">805</a> of file <a class="el" href="_t_g_r_s_iint_8cxx_source.html">TGRSIint.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00234">ProcessLine()</a>.</p>
+<p class="reference">References <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00235">ProcessLine()</a>.</p>
 
 </div>
 </div>
@@ -461,11 +461,11 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Draws the logo. Can be suppressed with -l</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00697">697</a> of file <a class="el" href="_t_g_r_s_iint_8cxx_source.html">TGRSIint.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00712">712</a> of file <a class="el" href="_t_g_r_s_iint_8cxx_source.html">TGRSIint.cxx</a>.</p>
 
 <p class="reference">References <a class="el" href="grsixx_8cxx_source.html#l00289">PopupLogo()</a>, and <a class="el" href="grsixx_8cxx_source.html#l00376">WaitLogo()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00271">PrintLogo()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00272">PrintLogo()</a>.</p>
 
 </div>
 </div>
@@ -492,9 +492,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8h_source.html#l00072">72</a> of file <a class="el" href="_t_g_r_s_iint_8h_source.html">TGRSIint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8h_source.html#l00068">68</a> of file <a class="el" href="_t_g_r_s_iint_8h_source.html">TGRSIint.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_g_r_s_iint_8h_source.html#l00048">fGRSIEnv</a>.</p>
+<p class="reference">References <a class="el" href="_t_g_r_s_iint_8h_source.html#l00044">fGRSIEnv</a>.</p>
 
 </div>
 </div>
@@ -522,7 +522,7 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Handles terminal input via TRint</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00187">187</a> of file <a class="el" href="_t_g_r_s_iint_8cxx_source.html">TGRSIint.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00188">188</a> of file <a class="el" href="_t_g_r_s_iint_8cxx_source.html">TGRSIint.cxx</a>.</p>
 
 </div>
 </div>
@@ -574,11 +574,11 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Singleton constructor instance</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00053">53</a> of file <a class="el" href="_t_g_r_s_iint_8cxx_source.html">TGRSIint.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00054">54</a> of file <a class="el" href="_t_g_r_s_iint_8cxx_source.html">TGRSIint.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00063">TGRSIint()</a>, <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00090">ApplyOptions()</a>, and <a class="el" href="_t_g_r_s_iint_8h_source.html#l00051">fTGRSIint</a>.</p>
+<p class="reference">References <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00064">TGRSIint()</a>, <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00091">ApplyOptions()</a>, and <a class="el" href="_t_g_r_s_iint_8h_source.html#l00047">fTGRSIint</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="grsisort_8cxx_source.html#l00062">main()</a>, <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00724">TGRSIInterruptHandler::Notify()</a>, <a class="el" href="_t_analysis_hist_loop_8cxx_source.html#l00071">TAnalysisHistLoop::OpenFile()</a>, and <a class="el" href="_t_frag_hist_loop_8cxx_source.html#l00071">TFragHistLoop::OpenFile()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="grsisort_8cxx_source.html#l00062">main()</a>, <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00739">TGRSIInterruptHandler::Notify()</a>, <a class="el" href="_t_analysis_hist_loop_8cxx_source.html#l00071">TAnalysisHistLoop::OpenFile()</a>, and <a class="el" href="_t_frag_hist_loop_8cxx_source.html#l00071">TFragHistLoop::OpenFile()</a>.</p>
 
 </div>
 </div>
@@ -631,9 +631,9 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Loads root graphics in unless -b is used for batch mode.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00704">704</a> of file <a class="el" href="_t_g_r_s_iint_8cxx_source.html">TGRSIint.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00719">719</a> of file <a class="el" href="_t_g_r_s_iint_8cxx_source.html">TGRSIint.cxx</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00090">ApplyOptions()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00091">ApplyOptions()</a>.</p>
 
 </div>
 </div>
@@ -661,11 +661,11 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Outputs the thread status until all of the threads are complete.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00164">164</a> of file <a class="el" href="_t_g_r_s_iint_8cxx_source.html">TGRSIint.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00165">165</a> of file <a class="el" href="_t_g_r_s_iint_8cxx_source.html">TGRSIint.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_stoppable_thread_8cxx_source.html#l00059">StoppableThread::AllThreadProgress()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00083">StoppableThread::AllThreadStatus()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00037">StoppableThread::AnyThreadRunning()</a>, <a class="el" href="_t_g_r_s_iint_8h_source.html#l00094">fAllowedToTerminate</a>, and <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00020">TGRSIOptions::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_stoppable_thread_8cxx_source.html#l00059">StoppableThread::AllThreadProgress()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00083">StoppableThread::AllThreadStatus()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00037">StoppableThread::AnyThreadRunning()</a>, <a class="el" href="_t_g_r_s_iint_8h_source.html#l00090">fAllowedToTerminate</a>, and <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00020">TGRSIOptions::Get()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00090">ApplyOptions()</a>, and <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00193">Terminate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00091">ApplyOptions()</a>, and <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00194">Terminate()</a>.</p>
 
 </div>
 </div>
@@ -685,11 +685,11 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Opens Raw input file and stores them in _raw if successfuly opened.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00371">371</a> of file <a class="el" href="_t_g_r_s_iint_8cxx_source.html">TGRSIint.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00372">372</a> of file <a class="el" href="_t_g_r_s_iint_8cxx_source.html">TGRSIint.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_globals_8h_source.html#l00006">BLUE</a>, <a class="el" href="_t_parser_library_8h_source.html#l00018">TParserLibrary::CreateRawFile()</a>, <a class="el" href="_t_g_r_s_i_utilities_8cxx_source.html#l00013">FileExists()</a>, <a class="el" href="_t_g_r_s_iint_8h_source.html#l00099">fRawFiles</a>, <a class="el" href="_t_g_r_s_iint_8h_source.html#l00096">fRawFilesOpened</a>, <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TParserLibrary &gt;::Get()</a>, <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00234">ProcessLine()</a>, and <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>.</p>
+<p class="reference">References <a class="el" href="_globals_8h_source.html#l00006">BLUE</a>, <a class="el" href="_t_parser_library_8h_source.html#l00018">TParserLibrary::CreateRawFile()</a>, <a class="el" href="_t_g_r_s_i_utilities_8cxx_source.html#l00013">FileExists()</a>, <a class="el" href="_t_g_r_s_iint_8h_source.html#l00095">fRawFiles</a>, <a class="el" href="_t_g_r_s_iint_8h_source.html#l00092">fRawFilesOpened</a>, <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TParserLibrary &gt;::Get()</a>, <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00235">ProcessLine()</a>, and <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00090">ApplyOptions()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00091">ApplyOptions()</a>.</p>
 
 </div>
 </div>
@@ -713,11 +713,11 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Opens root files provided on the command line. Also tells you where these files are stored (ie _file0). If these files are analysis or fragment trees, they are automatically chained into chains called gFragment and gAnalysis. Once this is complete, the TChannels, GValues and RunInfo are also read in.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00299">299</a> of file <a class="el" href="_t_g_r_s_iint_8cxx_source.html">TGRSIint.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00300">300</a> of file <a class="el" href="_t_g_r_s_iint_8cxx_source.html">TGRSIint.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_root_commands_8cxx_source.html#l00646">AddFileToGUI()</a>, <a class="el" href="_globals_8h_source.html#l00006">BLUE</a>, <a class="el" href="_t_g_r_s_iint_8h_source.html#l00095">fRootFilesOpened</a>, <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00051">gAnalysis</a>, <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00050">gFragment</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00015">TRunInfo::ReadInfoFromFile()</a>, and <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>.</p>
+<p class="reference">References <a class="el" href="_g_root_commands_8cxx_source.html#l00646">AddFileToGUI()</a>, <a class="el" href="_globals_8h_source.html#l00006">BLUE</a>, <a class="el" href="_t_g_r_s_iint_8h_source.html#l00091">fRootFilesOpened</a>, <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00052">gAnalysis</a>, <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00051">gFragment</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00015">TRunInfo::ReadInfoFromFile()</a>, and <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00090">ApplyOptions()</a>, <a class="el" href="_t_analysis_hist_loop_8cxx_source.html#l00071">TAnalysisHistLoop::OpenFile()</a>, and <a class="el" href="_t_frag_hist_loop_8cxx_source.html#l00071">TFragHistLoop::OpenFile()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00091">ApplyOptions()</a>, <a class="el" href="_t_analysis_hist_loop_8cxx_source.html#l00071">TAnalysisHistLoop::OpenFile()</a>, and <a class="el" href="_t_frag_hist_loop_8cxx_source.html#l00071">TFragHistLoop::OpenFile()</a>.</p>
 
 </div>
 </div>
@@ -795,7 +795,7 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Prints the help. Not sure this is used anymore.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00715">715</a> of file <a class="el" href="_t_g_r_s_iint_8cxx_source.html">TGRSIint.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00730">730</a> of file <a class="el" href="_t_g_r_s_iint_8cxx_source.html">TGRSIint.cxx</a>.</p>
 
 <p class="reference">References <a class="el" href="_globals_8h_source.html#l00024">BG_WHITE</a>, <a class="el" href="_globals_8h_source.html#l00018">DRED</a>, and <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>.</p>
 
@@ -825,11 +825,11 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Prints the GRSISort logo to terminal</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00271">271</a> of file <a class="el" href="_t_g_r_s_iint_8cxx_source.html">TGRSIint.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00272">272</a> of file <a class="el" href="_t_g_r_s_iint_8cxx_source.html">TGRSIint.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00697">DrawLogo()</a>, and <a class="el" href="_globals_8h.html#adabe8b638495d5c9a0a84c40b66ca111">ProgramName()</a>.</p>
+<p class="reference">References <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00712">DrawLogo()</a>, and <a class="el" href="_globals_8h.html#adabe8b638495d5c9a0a84c40b66ca111">ProgramName()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00063">TGRSIint()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00064">TGRSIint()</a>.</p>
 
 </div>
 </div>
@@ -869,11 +869,11 @@ Static Private Attributes</h2></td></tr>
 <li>To block TCanvas from opening, and to instead use our <a class="el" href="class_g_canvas.html">GCanvas</a>.</li>
 </ol>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00234">234</a> of file <a class="el" href="_t_g_r_s_iint_8cxx_source.html">TGRSIint.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00235">235</a> of file <a class="el" href="_t_g_r_s_iint_8cxx_source.html">TGRSIint.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00773">DelayedProcessLine()</a>, <a class="el" href="_t_g_r_s_iint_8h_source.html#l00093">fIsTabComplete</a>, and <a class="el" href="_t_g_r_s_iint_8h_source.html#l00090">main_thread_id</a>.</p>
+<p class="reference">References <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00788">DelayedProcessLine()</a>, <a class="el" href="_t_g_r_s_iint_8h_source.html#l00089">fIsTabComplete</a>, and <a class="el" href="_t_g_r_s_iint_8h_source.html#l00086">main_thread_id</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00790">DelayedProcessLine_Action()</a>, <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00371">OpenRawFile()</a>, and <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00671">RunMacroFile()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00805">DelayedProcessLine_Action()</a>, <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00372">OpenRawFile()</a>, and <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00686">RunMacroFile()</a>.</p>
 
 </div>
 </div>
@@ -893,11 +893,11 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Runs a macro file. This happens when a .C file is provided on the command line</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00671">671</a> of file <a class="el" href="_t_g_r_s_iint_8cxx_source.html">TGRSIint.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00686">686</a> of file <a class="el" href="_t_g_r_s_iint_8cxx_source.html">TGRSIint.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_g_r_s_i_utilities_8cxx_source.html#l00013">FileExists()</a>, and <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00234">ProcessLine()</a>.</p>
+<p class="reference">References <a class="el" href="_t_g_r_s_i_utilities_8cxx_source.html#l00013">FileExists()</a>, and <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00235">ProcessLine()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00090">ApplyOptions()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00091">ApplyOptions()</a>.</p>
 
 </div>
 </div>
@@ -925,11 +925,11 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Finds all of the files input as well as flags provided and makes all of the decisions about what to sort and what order to open everything up in. This also creates the output files. Starts the threads and gets the sorting going. This is really the brains of the command line sorting routine.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00399">399</a> of file <a class="el" href="_t_g_r_s_iint_8cxx_source.html">TGRSIint.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00400">400</a> of file <a class="el" href="_t_g_r_s_iint_8cxx_source.html">TGRSIint.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_unpacking_loop_8h_source.html#l00044">TUnpackingLoop::AddGoodOutputQueue()</a>, <a class="el" href="_t_det_building_loop_8h_source.html#l00046">TDetBuildingLoop::AddOutputQueue()</a>, <a class="el" href="_t_fragment_chain_loop_8h_source.html#l00041">TFragmentChainLoop::AddOutputQueue()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00062">TGRSIOptions::AnalysisHistogramLib()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00070">TGRSIOptions::AnalysisOptions()</a>, <a class="el" href="_t_frag_write_loop_8h_source.html#l00042">TFragWriteLoop::BadInputQueue()</a>, <a class="el" href="_t_unpacking_loop_8h_source.html#l00048">TUnpackingLoop::BadOutputQueue()</a>, <a class="el" href="_t_detector_information_8h_source.html#l00031">TDetectorInformation::BuildMode()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00045">TGRSIOptions::CalInputFiles()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00079">TGRSIOptions::CloseAfterSort()</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00082">StoppableThread::ColumnWidth()</a>, <a class="el" href="_globals_8h_source.html#l00018">DRED</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00048">TGRSIOptions::ExternalRunInfo()</a>, <a class="el" href="_t_g_r_s_i_utilities_8cxx_source.html#l00013">FileExists()</a>, <a class="el" href="_t_g_r_s_iint_8h_source.html#l00097">fNewFragmentFile</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00061">TGRSIOptions::FragmentHistogramLib()</a>, <a class="el" href="_t_g_r_s_iint_8h_source.html#l00099">fRawFiles</a>, <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00051">gAnalysis</a>, <a class="el" href="_t_analysis_hist_loop_8cxx_source.html#l00013">TAnalysisHistLoop::Get()</a>, <a class="el" href="_t_analysis_write_loop_8cxx_source.html#l00020">TAnalysisWriteLoop::Get()</a>, <a class="el" href="_t_data_loop_8cxx_source.html#l00016">TDataLoop::Get()</a>, <a class="el" href="_t_det_building_loop_8cxx_source.html#l00008">TDetBuildingLoop::Get()</a>, <a class="el" href="_t_event_building_loop_8cxx_source.html#l00009">TEventBuildingLoop::Get()</a>, <a class="el" href="_t_frag_hist_loop_8cxx_source.html#l00013">TFragHistLoop::Get()</a>, <a class="el" href="_t_fragment_chain_loop_8cxx_source.html#l00009">TFragmentChainLoop::Get()</a>, <a class="el" href="_t_frag_write_loop_8cxx_source.html#l00022">TFragWriteLoop::Get()</a>, <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00020">TGRSIOptions::Get()</a>, <a class="el" href="_t_unpacking_loop_8cxx_source.html#l00011">TUnpackingLoop::Get()</a>, <a class="el" href="_t_run_info_8h_source.html#l00286">TRunInfo::GetDetectorInformation()</a>, <a class="el" href="_t_g_r_s_i_utilities_8cxx_source.html#l00067">GetRunNumber()</a>, <a class="el" href="_t_g_r_s_i_utilities_8cxx_source.html#l00090">GetSubRunNumber()</a>, <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00050">gFragment</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00043">TGRSIOptions::InputFiles()</a>, <a class="el" href="_t_analysis_hist_loop_8h_source.html#l00037">TAnalysisHistLoop::InputQueue()</a>, <a class="el" href="_t_det_building_loop_8h_source.html#l00042">TDetBuildingLoop::InputQueue()</a>, <a class="el" href="_t_event_building_loop_8h_source.html#l00043">TEventBuildingLoop::InputQueue()</a>, <a class="el" href="_t_frag_hist_loop_8h_source.html#l00036">TFragHistLoop::InputQueue()</a>, <a class="el" href="_t_frag_write_loop_8h_source.html#l00038">TFragWriteLoop::InputQueue()</a>, <a class="el" href="_t_unpacking_loop_8h_source.html#l00040">TUnpackingLoop::InputQueue()</a>, <a class="el" href="class_t_event_building_loop.html#a10dabb2c35e194c8ad7c384b727f0c88a6867faeaa475fda467e48267db2bb8a8">TEventBuildingLoop::kDefault</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00084">TGRSIOptions::MakeAnalysisTree()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00104">TGRSIOptions::MakeHistos()</a>, <a class="el" href="_t_event_building_loop_8h_source.html#l00051">TEventBuildingLoop::OutOfOrderQueue()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00055">TGRSIOptions::OutputAnalysisFile()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00059">TGRSIOptions::OutputAnalysisHistogramFile()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00054">TGRSIOptions::OutputFragmentFile()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00058">TGRSIOptions::OutputFragmentHistogramFile()</a>, <a class="el" href="_t_data_loop_8h_source.html#l00042">TDataLoop::OutputQueue()</a>, <a class="el" href="_t_event_building_loop_8h_source.html#l00047">TEventBuildingLoop::OutputQueue()</a>, <a class="el" href="_t_analysis_options_8cxx_source.html#l00028">TAnalysisOptions::Print()</a>, <a class="el" href="_t_channel_8cxx_source.html#l01104">TChannel::ReadCalFile()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00174">TRunInfo::ReadInfoFile()</a>, <a class="el" href="_g_value_8cxx_source.html#l00194">GValue::ReadValFile()</a>, <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00104">StoppableThread::ResumeAll()</a>, <a class="el" href="_t_frag_write_loop_8h_source.html#l00043">TFragWriteLoop::ScalerInputQueue()</a>, <a class="el" href="_t_unpacking_loop_8h_source.html#l00052">TUnpackingLoop::ScalerOutputQueue()</a>, <a class="el" href="_t_detector_information_8h_source.html#l00030">TDetectorInformation::Set()</a>, <a class="el" href="_t_analysis_hist_loop_8cxx_source.html#l00131">TAnalysisHistLoop::SetOutputFilename()</a>, <a class="el" href="_t_frag_hist_loop_8cxx_source.html#l00131">TFragHistLoop::SetOutputFilename()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00135">TRunInfo::SetRunInfo()</a>, <a class="el" href="_t_data_loop_8h_source.html#l00065">TDataLoop::SetSelfStopping()</a>, <a class="el" href="_t_fragment_chain_loop_8h_source.html#l00057">TFragmentChainLoop::SetSelfStopping()</a>, <a class="el" href="_t_event_building_loop_8h_source.html#l00066">TEventBuildingLoop::SetSortDepth()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00118">TGRSIOptions::SortDepth()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00102">TGRSIOptions::SortRaw()</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00083">StoppableThread::StatusWidth()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00085">TGRSIOptions::UseRnTuple()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00046">TGRSIOptions::ValInputFiles()</a>, and <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00093">TGRSIOptions::WriteFragmentTree()</a>.</p>
+<p class="reference">References <a class="el" href="_t_unpacking_loop_8h_source.html#l00044">TUnpackingLoop::AddGoodOutputQueue()</a>, <a class="el" href="_t_det_building_loop_8h_source.html#l00040">TDetBuildingLoop::AddOutputQueue()</a>, <a class="el" href="_t_fragment_chain_loop_8h_source.html#l00039">TFragmentChainLoop::AddOutputQueue()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00061">TGRSIOptions::AnalysisHistogramLib()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00069">TGRSIOptions::AnalysisOptions()</a>, <a class="el" href="_t_frag_write_loop_8h_source.html#l00036">TFragWriteLoop::BadInputQueue()</a>, <a class="el" href="_t_unpacking_loop_8h_source.html#l00048">TUnpackingLoop::BadOutputQueue()</a>, <a class="el" href="_t_detector_information_8h_source.html#l00031">TDetectorInformation::BuildMode()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00043">TGRSIOptions::CalInputFiles()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00078">TGRSIOptions::CloseAfterSort()</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00081">StoppableThread::ColumnWidth()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00095">TGRSIOptions::CreateFragmentDiagnostics()</a>, <a class="el" href="_globals_8h_source.html#l00018">DRED</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00046">TGRSIOptions::ExternalRunInfo()</a>, <a class="el" href="_t_g_r_s_i_utilities_8cxx_source.html#l00013">FileExists()</a>, <a class="el" href="_t_g_r_s_iint_8h_source.html#l00093">fNewFragmentFile</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00060">TGRSIOptions::FragmentHistogramLib()</a>, <a class="el" href="_t_g_r_s_iint_8h_source.html#l00095">fRawFiles</a>, <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00052">gAnalysis</a>, <a class="el" href="_t_analysis_hist_loop_8cxx_source.html#l00013">TAnalysisHistLoop::Get()</a>, <a class="el" href="_t_analysis_write_loop_8cxx_source.html#l00020">TAnalysisWriteLoop::Get()</a>, <a class="el" href="_t_data_loop_8cxx_source.html#l00016">TDataLoop::Get()</a>, <a class="el" href="_t_det_building_loop_8cxx_source.html#l00008">TDetBuildingLoop::Get()</a>, <a class="el" href="_t_event_building_loop_8cxx_source.html#l00009">TEventBuildingLoop::Get()</a>, <a class="el" href="_t_frag_diagnostics_loop_8cxx_source.html#l00023">TFragDiagnosticsLoop::Get()</a>, <a class="el" href="_t_frag_hist_loop_8cxx_source.html#l00013">TFragHistLoop::Get()</a>, <a class="el" href="_t_fragment_chain_loop_8cxx_source.html#l00009">TFragmentChainLoop::Get()</a>, <a class="el" href="_t_frag_write_loop_8cxx_source.html#l00022">TFragWriteLoop::Get()</a>, <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00020">TGRSIOptions::Get()</a>, <a class="el" href="_t_unpacking_loop_8cxx_source.html#l00011">TUnpackingLoop::Get()</a>, <a class="el" href="_t_run_info_8h_source.html#l00286">TRunInfo::GetDetectorInformation()</a>, <a class="el" href="_t_g_r_s_i_utilities_8cxx_source.html#l00067">GetRunNumber()</a>, <a class="el" href="_t_g_r_s_i_utilities_8cxx_source.html#l00090">GetSubRunNumber()</a>, <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00051">gFragment</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00041">TGRSIOptions::InputFiles()</a>, <a class="el" href="_t_analysis_hist_loop_8h_source.html#l00037">TAnalysisHistLoop::InputQueue()</a>, <a class="el" href="_t_det_building_loop_8h_source.html#l00036">TDetBuildingLoop::InputQueue()</a>, <a class="el" href="_t_event_building_loop_8h_source.html#l00044">TEventBuildingLoop::InputQueue()</a>, <a class="el" href="_t_frag_diagnostics_loop_8h_source.html#l00036">TFragDiagnosticsLoop::InputQueue()</a>, <a class="el" href="_t_frag_hist_loop_8h_source.html#l00036">TFragHistLoop::InputQueue()</a>, <a class="el" href="_t_frag_write_loop_8h_source.html#l00035">TFragWriteLoop::InputQueue()</a>, <a class="el" href="_t_unpacking_loop_8h_source.html#l00040">TUnpackingLoop::InputQueue()</a>, <a class="el" href="class_t_event_building_loop.html#a79db94b12943add9c17e9c44912733c3a6867faeaa475fda467e48267db2bb8a8">TEventBuildingLoop::kDefault</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00083">TGRSIOptions::MakeAnalysisTree()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00104">TGRSIOptions::MakeHistos()</a>, <a class="el" href="_t_event_building_loop_8h_source.html#l00052">TEventBuildingLoop::OutOfOrderQueue()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00053">TGRSIOptions::OutputAnalysisFile()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00058">TGRSIOptions::OutputAnalysisHistogramFile()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00054">TGRSIOptions::OutputDiagnosticsFile()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00052">TGRSIOptions::OutputFragmentFile()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00057">TGRSIOptions::OutputFragmentHistogramFile()</a>, <a class="el" href="_t_data_loop_8h_source.html#l00037">TDataLoop::OutputQueue()</a>, <a class="el" href="_t_event_building_loop_8h_source.html#l00048">TEventBuildingLoop::OutputQueue()</a>, <a class="el" href="_t_analysis_options_8cxx_source.html#l00028">TAnalysisOptions::Print()</a>, <a class="el" href="_t_channel_8cxx_source.html#l01105">TChannel::ReadCalFile()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00174">TRunInfo::ReadInfoFile()</a>, <a class="el" href="_g_value_8cxx_source.html#l00194">GValue::ReadValFile()</a>, <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00104">StoppableThread::ResumeAll()</a>, <a class="el" href="_t_frag_write_loop_8h_source.html#l00037">TFragWriteLoop::ScalerInputQueue()</a>, <a class="el" href="_t_unpacking_loop_8h_source.html#l00052">TUnpackingLoop::ScalerOutputQueue()</a>, <a class="el" href="_t_detector_information_8h_source.html#l00030">TDetectorInformation::Set()</a>, <a class="el" href="_t_analysis_hist_loop_8cxx_source.html#l00131">TAnalysisHistLoop::SetOutputFilename()</a>, <a class="el" href="_t_frag_hist_loop_8cxx_source.html#l00131">TFragHistLoop::SetOutputFilename()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00135">TRunInfo::SetRunInfo()</a>, <a class="el" href="_t_data_loop_8h_source.html#l00060">TDataLoop::SetSelfStopping()</a>, <a class="el" href="_t_fragment_chain_loop_8h_source.html#l00055">TFragmentChainLoop::SetSelfStopping()</a>, <a class="el" href="_t_event_building_loop_8h_source.html#l00067">TEventBuildingLoop::SetSortDepth()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00118">TGRSIOptions::SortDepth()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00102">TGRSIOptions::SortRaw()</a>, <a class="el" href="_stoppable_thread_8h_source.html#l00082">StoppableThread::StatusWidth()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00084">TGRSIOptions::UseRnTuple()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00044">TGRSIOptions::ValInputFiles()</a>, and <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00092">TGRSIOptions::WriteFragmentTree()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00090">ApplyOptions()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00091">ApplyOptions()</a>.</p>
 
 </div>
 </div>
@@ -966,9 +966,9 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Tries to do a tab completion. Returns false if unsuccsessful</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00225">225</a> of file <a class="el" href="_t_g_r_s_iint_8cxx_source.html">TGRSIint.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00226">226</a> of file <a class="el" href="_t_g_r_s_iint_8cxx_source.html">TGRSIint.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_g_r_s_iint_8h_source.html#l00093">fIsTabComplete</a>.</p>
+<p class="reference">References <a class="el" href="_t_g_r_s_iint_8h_source.html#l00089">fIsTabComplete</a>.</p>
 
 </div>
 </div>
@@ -996,11 +996,11 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Kills all of the threads if the process is allowed to terminate. This sends an error to <a class="el" href="class_t_sorting_diagnostics.html">TSortingDiagnostics</a> if an analysis tree is being created</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00193">193</a> of file <a class="el" href="_t_g_r_s_iint_8cxx_source.html">TGRSIint.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00194">194</a> of file <a class="el" href="_t_g_r_s_iint_8cxx_source.html">TGRSIint.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_g_r_s_iint_8h_source.html#l00094">fAllowedToTerminate</a>, <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00020">TGRSIOptions::Get()</a>, <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TSortingDiagnostics &gt;::Get()</a>, <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00164">LoopUntilDone()</a>, <a class="el" href="_t_sorting_diagnostics_8cxx_source.html#l00084">TSortingDiagnostics::Print()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00135">StoppableThread::SendStop()</a>, and <a class="el" href="_stoppable_thread_8cxx_source.html#l00147">StoppableThread::StopAll()</a>.</p>
+<p class="reference">References <a class="el" href="_t_g_r_s_iint_8h_source.html#l00090">fAllowedToTerminate</a>, <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00020">TGRSIOptions::Get()</a>, <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TSortingDiagnostics &gt;::Get()</a>, <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00165">LoopUntilDone()</a>, <a class="el" href="_t_sorting_diagnostics_8cxx_source.html#l00084">TSortingDiagnostics::Print()</a>, <a class="el" href="_stoppable_thread_8cxx_source.html#l00135">StoppableThread::SendStop()</a>, and <a class="el" href="_stoppable_thread_8cxx_source.html#l00147">StoppableThread::StopAll()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00090">ApplyOptions()</a>, and <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00724">TGRSIInterruptHandler::Notify()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00091">ApplyOptions()</a>, and <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00739">TGRSIInterruptHandler::Notify()</a>.</p>
 
 </div>
 </div>
@@ -1027,9 +1027,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>Flag for shutting down GRSISort. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8h_source.html#l00094">94</a> of file <a class="el" href="_t_g_r_s_iint_8h_source.html">TGRSIint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8h_source.html#l00090">90</a> of file <a class="el" href="_t_g_r_s_iint_8h_source.html">TGRSIint.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00164">LoopUntilDone()</a>, and <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00193">Terminate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00165">LoopUntilDone()</a>, and <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00194">Terminate()</a>.</p>
 
 </div>
 </div>
@@ -1055,9 +1055,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>GRSI environment. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8h_source.html#l00048">48</a> of file <a class="el" href="_t_g_r_s_iint_8h_source.html">TGRSIint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8h_source.html#l00044">44</a> of file <a class="el" href="_t_g_r_s_iint_8h_source.html">TGRSIint.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00063">TGRSIint()</a>, and <a class="el" href="_t_g_r_s_iint_8h_source.html#l00072">GetEnv()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00064">TGRSIint()</a>, and <a class="el" href="_t_g_r_s_iint_8h_source.html#l00068">GetEnv()</a>.</p>
 
 </div>
 </div>
@@ -1083,9 +1083,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>Flag for tab completion hook. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8h_source.html#l00093">93</a> of file <a class="el" href="_t_g_r_s_iint_8h_source.html">TGRSIint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8h_source.html#l00089">89</a> of file <a class="el" href="_t_g_r_s_iint_8h_source.html">TGRSIint.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00234">ProcessLine()</a>, and <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00225">TabCompletionHook()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00235">ProcessLine()</a>, and <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00226">TabCompletionHook()</a>.</p>
 
 </div>
 </div>
@@ -1111,7 +1111,7 @@ Static Private Attributes</h2></td></tr>
 
 <p>Time of process. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8h_source.html#l00088">88</a> of file <a class="el" href="_t_g_r_s_iint_8h_source.html">TGRSIint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8h_source.html#l00084">84</a> of file <a class="el" href="_t_g_r_s_iint_8h_source.html">TGRSIint.h</a>.</p>
 
 </div>
 </div>
@@ -1137,9 +1137,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>New fragment file name. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8h_source.html#l00097">97</a> of file <a class="el" href="_t_g_r_s_iint_8h_source.html">TGRSIint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8h_source.html#l00093">93</a> of file <a class="el" href="_t_g_r_s_iint_8h_source.html">TGRSIint.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00399">SetupPipeline()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00400">SetupPipeline()</a>.</p>
 
 </div>
 </div>
@@ -1165,9 +1165,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>List of Raw files opened. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8h_source.html#l00099">99</a> of file <a class="el" href="_t_g_r_s_iint_8h_source.html">TGRSIint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8h_source.html#l00095">95</a> of file <a class="el" href="_t_g_r_s_iint_8h_source.html">TGRSIint.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00371">OpenRawFile()</a>, and <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00399">SetupPipeline()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00372">OpenRawFile()</a>, and <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00400">SetupPipeline()</a>.</p>
 
 </div>
 </div>
@@ -1193,9 +1193,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>Number of Raw Files opened. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8h_source.html#l00096">96</a> of file <a class="el" href="_t_g_r_s_iint_8h_source.html">TGRSIint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8h_source.html#l00092">92</a> of file <a class="el" href="_t_g_r_s_iint_8h_source.html">TGRSIint.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00371">OpenRawFile()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00372">OpenRawFile()</a>.</p>
 
 </div>
 </div>
@@ -1221,9 +1221,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>Number of ROOT files opened. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8h_source.html#l00095">95</a> of file <a class="el" href="_t_g_r_s_iint_8h_source.html">TGRSIint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8h_source.html#l00091">91</a> of file <a class="el" href="_t_g_r_s_iint_8h_source.html">TGRSIint.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00299">OpenRootFile()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00300">OpenRootFile()</a>.</p>
 
 </div>
 </div>
@@ -1249,9 +1249,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>Static pointer (singleton) </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8h_source.html#l00051">51</a> of file <a class="el" href="_t_g_r_s_iint_8h_source.html">TGRSIint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8h_source.html#l00047">47</a> of file <a class="el" href="_t_g_r_s_iint_8h_source.html">TGRSIint.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00053">instance()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00054">instance()</a>.</p>
 
 </div>
 </div>
@@ -1277,9 +1277,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>Main sorting thread id. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8h_source.html#l00090">90</a> of file <a class="el" href="_t_g_r_s_iint_8h_source.html">TGRSIint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_iint_8h_source.html#l00086">86</a> of file <a class="el" href="_t_g_r_s_iint_8h_source.html">TGRSIint.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00234">ProcessLine()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00235">ProcessLine()</a>.</p>
 
 </div>
 </div>
@@ -1290,7 +1290,7 @@ Static Private Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_t_g_r_s_iint.html">TGRSIint</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Aug 26 2025 14:02:08.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Sep 19 2025 17:05:51.</li>
   </ul>
 </div>
 </body>

@@ -128,7 +128,7 @@ $(function(){initNavTree('_t_terminal_loop_8h_source.html',''); initResizable(tr
 <div class="foldopen" id="foldopen00022" data-start="{" data-end="}">
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="class_t_terminal_loop.html#a15fa953d5f542568e4b3b9153c0b6039">   22</a></span>   <span class="keyword">static</span> <a class="code hl_class" href="class_t_terminal_loop.html">TTerminalLoop</a>* <a class="code hl_function" href="class_t_terminal_loop.html#a15fa953d5f542568e4b3b9153c0b6039">Get</a>(std::string name = <span class="stringliteral">&quot;&quot;</span>)</div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>   {</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>      <span class="keywordflow">if</span>(name.length() == 0) {</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>      <span class="keywordflow">if</span>(name.empty()) {</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>         name = <span class="stringliteral">&quot;terminal_loop&quot;</span>;</div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>      }</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
@@ -214,7 +214,7 @@ $(function(){initNavTree('_t_terminal_loop_8h_source.html',''); initResizable(tr
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="preprocessor">#endif </span><span class="comment">/* _TTERMINALLOOP_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="a_stoppable_thread_8h_html"><div class="ttname"><a href="_stoppable_thread_8h.html">StoppableThread.h</a></div></div>
 <div class="ttc" id="a_threadsafe_queue_8h_html"><div class="ttname"><a href="_threadsafe_queue_8h.html">ThreadsafeQueue.h</a></div></div>
-<div class="ttc" id="aclass_stoppable_thread_html"><div class="ttname"><a href="class_stoppable_thread.html">StoppableThread</a></div><div class="ttdef"><b>Definition</b> <a href="_stoppable_thread_8h_source.html#l00029">StoppableThread.h:29</a></div></div>
+<div class="ttc" id="aclass_stoppable_thread_html"><div class="ttname"><a href="class_stoppable_thread.html">StoppableThread</a></div><div class="ttdef"><b>Definition</b> <a href="_stoppable_thread_8h_source.html#l00028">StoppableThread.h:28</a></div></div>
 <div class="ttc" id="aclass_stoppable_thread_html_a95125f7225e246004fc7b5e9bf535963"><div class="ttname"><a href="class_stoppable_thread.html#a95125f7225e246004fc7b5e9bf535963">StoppableThread::Get</a></div><div class="ttdeci">static StoppableThread * Get(const std::string &amp;name)</div><div class="ttdef"><b>Definition</b> <a href="_stoppable_thread_8cxx_source.html#l00173">StoppableThread.cxx:173</a></div></div>
 <div class="ttc" id="aclass_t_terminal_loop_html"><div class="ttname"><a href="class_t_terminal_loop.html">TTerminalLoop</a></div><div class="ttdef"><b>Definition</b> <a href="#l00020">TTerminalLoop.h:20</a></div></div>
 <div class="ttc" id="aclass_t_terminal_loop_html_a0cc2660d5d7521baaff0cdd1508cb6da"><div class="ttname"><a href="class_t_terminal_loop.html#a0cc2660d5d7521baaff0cdd1508cb6da">TTerminalLoop::ClearQueue</a></div><div class="ttdeci">void ClearQueue() override</div><div class="ttdef"><b>Definition</b> <a href="#l00048">TTerminalLoop.h:48</a></div></div>
@@ -229,7 +229,7 @@ $(function(){initNavTree('_t_terminal_loop_8h_source.html',''); initResizable(tr
 <div class="ttc" id="aclass_t_terminal_loop_html_ab207f4172b15a5308537acac21327fc6"><div class="ttname"><a href="class_t_terminal_loop.html#ab207f4172b15a5308537acac21327fc6">TTerminalLoop::GetItemsCurrent</a></div><div class="ttdeci">size_t GetItemsCurrent() override</div><div class="ttdef"><b>Definition</b> <a href="#l00062">TTerminalLoop.h:62</a></div></div>
 <div class="ttc" id="aclass_t_terminal_loop_html_ab3761348a0c6920f28dc5e11e8276622"><div class="ttname"><a href="class_t_terminal_loop.html#ab3761348a0c6920f28dc5e11e8276622">TTerminalLoop::TTerminalLoop</a></div><div class="ttdeci">TTerminalLoop(std::string name)</div><div class="ttdef"><b>Definition</b> <a href="#l00084">TTerminalLoop.h:84</a></div></div>
 <div class="ttc" id="aclass_t_terminal_loop_html_adc657e2eddae8e2199f3047d3773c588"><div class="ttname"><a href="class_t_terminal_loop.html#adc657e2eddae8e2199f3047d3773c588">TTerminalLoop::fInputQueue</a></div><div class="ttdeci">std::shared_ptr&lt; ThreadsafeQueue&lt; std::shared_ptr&lt; T &gt; &gt; &gt; fInputQueue</div><div class="ttdef"><b>Definition</b> <a href="#l00090">TTerminalLoop.h:90</a></div></div>
-<div class="ttc" id="aclass_threadsafe_queue_html"><div class="ttname"><a href="class_threadsafe_queue.html">ThreadsafeQueue</a></div><div class="ttdef"><b>Definition</b> <a href="_threadsafe_queue_8h_source.html#l00028">ThreadsafeQueue.h:28</a></div></div>
+<div class="ttc" id="aclass_threadsafe_queue_html"><div class="ttname"><a href="class_threadsafe_queue.html">ThreadsafeQueue</a></div><div class="ttdef"><b>Definition</b> <a href="_threadsafe_queue_8h_source.html#l00027">ThreadsafeQueue.h:27</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.9.8-->
@@ -237,7 +237,7 @@ $(function(){initNavTree('_t_terminal_loop_8h_source.html',''); initResizable(tr
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="_t_terminal_loop_8h.html">TTerminalLoop.h</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Aug 26 2025 14:02:03.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Sep 19 2025 17:05:46.</li>
   </ul>
 </div>
 </body>

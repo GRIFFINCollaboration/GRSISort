@@ -1,37 +1,37 @@
 var group___g_u_i =
 [
     [ "TBGSubtraction", "class_t_b_g_subtraction.html", [
-      [ "EEntries", "class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42c", [
-        [ "kBGParamEntry", "class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42ca0fae5eca459a8b1baadfd67d528dd701", null ],
-        [ "kGateLowEntry", "class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42cad17d053b10ad5d5fde31ae4b996a14a2", null ],
-        [ "kGateHighEntry", "class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42cae7ee8229eae83645246a07c7c3346a98", null ],
-        [ "kPeakLowEntry", "class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42cafc787741b6ab1e62cc03a47329faace2", null ],
-        [ "kPeakHighEntry", "class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42ca9560d213d210e648440854e119b8c486", null ],
-        [ "kPeakEntry", "class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42ca8d1f910484c45a1a03ef654f5c0734ca", null ],
-        [ "kBGLowEntry1", "class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42ca90d2b83fe8c3eef846d7efd9be4c0537", null ],
-        [ "kBGHighEntry1", "class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42cadac7746416c60bc96fe4e0edf520bdf0", null ],
-        [ "kBGLowEntry2", "class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42ca9fcace162abb86b1f1d67bc655223ab1", null ],
-        [ "kBGHighEntry2", "class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42ca00fc1d30565d1d985f5ed77efc8077a7", null ],
-        [ "kWrite2FileNameEntry", "class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42cad1f5eff5b2f356f781f645ecbb459fbc", null ],
-        [ "kHistogramDescriptionEntry", "class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42ca18cf004b3e1693128025f021494e89fd", null ],
-        [ "kComboAxisEntry", "class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42cafc02626a801ac1f70830afc0faf7ac07", null ],
-        [ "kComboPeakEntry", "class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42cad39d4556d567586c934bd5a261ae2b54", null ],
-        [ "kBGCheckButton1", "class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42cac8af2628893d343f8355df22cfd59d55", null ],
-        [ "kBGCheckButton2", "class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42ca0bc76c2ff33430b204e02dae5349aaca", null ],
-        [ "kAutoUpdateCheckButton", "class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42cac301236be55a88500bf4422b3c7ea584", null ]
+      [ "EEntries", "class_t_b_g_subtraction.html#a17330de04499e33831e4e44020176c71", [
+        [ "kBGParamEntry", "class_t_b_g_subtraction.html#a17330de04499e33831e4e44020176c71a0fae5eca459a8b1baadfd67d528dd701", null ],
+        [ "kGateLowEntry", "class_t_b_g_subtraction.html#a17330de04499e33831e4e44020176c71ad17d053b10ad5d5fde31ae4b996a14a2", null ],
+        [ "kGateHighEntry", "class_t_b_g_subtraction.html#a17330de04499e33831e4e44020176c71ae7ee8229eae83645246a07c7c3346a98", null ],
+        [ "kPeakLowEntry", "class_t_b_g_subtraction.html#a17330de04499e33831e4e44020176c71afc787741b6ab1e62cc03a47329faace2", null ],
+        [ "kPeakHighEntry", "class_t_b_g_subtraction.html#a17330de04499e33831e4e44020176c71a9560d213d210e648440854e119b8c486", null ],
+        [ "kPeakEntry", "class_t_b_g_subtraction.html#a17330de04499e33831e4e44020176c71a8d1f910484c45a1a03ef654f5c0734ca", null ],
+        [ "kBGLowEntry1", "class_t_b_g_subtraction.html#a17330de04499e33831e4e44020176c71a90d2b83fe8c3eef846d7efd9be4c0537", null ],
+        [ "kBGHighEntry1", "class_t_b_g_subtraction.html#a17330de04499e33831e4e44020176c71adac7746416c60bc96fe4e0edf520bdf0", null ],
+        [ "kBGLowEntry2", "class_t_b_g_subtraction.html#a17330de04499e33831e4e44020176c71a9fcace162abb86b1f1d67bc655223ab1", null ],
+        [ "kBGHighEntry2", "class_t_b_g_subtraction.html#a17330de04499e33831e4e44020176c71a00fc1d30565d1d985f5ed77efc8077a7", null ],
+        [ "kWrite2FileNameEntry", "class_t_b_g_subtraction.html#a17330de04499e33831e4e44020176c71ad1f5eff5b2f356f781f645ecbb459fbc", null ],
+        [ "kHistogramDescriptionEntry", "class_t_b_g_subtraction.html#a17330de04499e33831e4e44020176c71a18cf004b3e1693128025f021494e89fd", null ],
+        [ "kComboAxisEntry", "class_t_b_g_subtraction.html#a17330de04499e33831e4e44020176c71afc02626a801ac1f70830afc0faf7ac07", null ],
+        [ "kComboPeakEntry", "class_t_b_g_subtraction.html#a17330de04499e33831e4e44020176c71ad39d4556d567586c934bd5a261ae2b54", null ],
+        [ "kBGCheckButton1", "class_t_b_g_subtraction.html#a17330de04499e33831e4e44020176c71ac8af2628893d343f8355df22cfd59d55", null ],
+        [ "kBGCheckButton2", "class_t_b_g_subtraction.html#a17330de04499e33831e4e44020176c71a0bc76c2ff33430b204e02dae5349aaca", null ],
+        [ "kAutoUpdateCheckButton", "class_t_b_g_subtraction.html#a17330de04499e33831e4e44020176c71ac301236be55a88500bf4422b3c7ea584", null ]
       ] ],
-      [ "EPeaks", "class_t_b_g_subtraction.html#a3e4d25108b1d71c2d1568c5e8d334c47", [
-        [ "kGauss", "class_t_b_g_subtraction.html#a3e4d25108b1d71c2d1568c5e8d334c47aa4327302c3780589780c99a0e1c22ad3", null ],
-        [ "kRWPeak", "class_t_b_g_subtraction.html#a3e4d25108b1d71c2d1568c5e8d334c47aea234f1d37912dde9943b5290439df42", null ],
-        [ "kABPeak", "class_t_b_g_subtraction.html#a3e4d25108b1d71c2d1568c5e8d334c47ab0acdbb6f7194a17876ed123b9acbef3", null ],
-        [ "kAB3Peak", "class_t_b_g_subtraction.html#a3e4d25108b1d71c2d1568c5e8d334c47a0650c4900bd89dd9b332486f6199c233", null ]
+      [ "EPeaks", "class_t_b_g_subtraction.html#ae065a48fc69be47b112ae7ca26d9c0f7", [
+        [ "kGauss", "class_t_b_g_subtraction.html#ae065a48fc69be47b112ae7ca26d9c0f7aa4327302c3780589780c99a0e1c22ad3", null ],
+        [ "kRWPeak", "class_t_b_g_subtraction.html#ae065a48fc69be47b112ae7ca26d9c0f7aea234f1d37912dde9943b5290439df42", null ],
+        [ "kABPeak", "class_t_b_g_subtraction.html#ae065a48fc69be47b112ae7ca26d9c0f7ab0acdbb6f7194a17876ed123b9acbef3", null ],
+        [ "kAB3Peak", "class_t_b_g_subtraction.html#ae065a48fc69be47b112ae7ca26d9c0f7a0650c4900bd89dd9b332486f6199c233", null ]
       ] ],
-      [ "ESliders", "class_t_b_g_subtraction.html#ac96d733d0749077da7d267b17dcf07a1", [
-        [ "kGateSlider", "class_t_b_g_subtraction.html#ac96d733d0749077da7d267b17dcf07a1a2b7bbf209d6726b523f76c2014176a2b", null ],
-        [ "kBGSlider1", "class_t_b_g_subtraction.html#ac96d733d0749077da7d267b17dcf07a1aa22ad3089b15b60656042297c83d05ce", null ],
-        [ "kBGSlider2", "class_t_b_g_subtraction.html#ac96d733d0749077da7d267b17dcf07a1aa94a29ebcd03bebb69de4c6f6c5b8fea", null ],
-        [ "kPeakSlider", "class_t_b_g_subtraction.html#ac96d733d0749077da7d267b17dcf07a1a812494f753d27909d2c3f2f25f7d987b", null ],
-        [ "kBinningSlider", "class_t_b_g_subtraction.html#ac96d733d0749077da7d267b17dcf07a1a8a8e17befaea043c6a175f8633e23658", null ]
+      [ "ESliders", "class_t_b_g_subtraction.html#aeb399f7bf158d4a47578927b893e9763", [
+        [ "kGateSlider", "class_t_b_g_subtraction.html#aeb399f7bf158d4a47578927b893e9763a2b7bbf209d6726b523f76c2014176a2b", null ],
+        [ "kBGSlider1", "class_t_b_g_subtraction.html#aeb399f7bf158d4a47578927b893e9763aa22ad3089b15b60656042297c83d05ce", null ],
+        [ "kBGSlider2", "class_t_b_g_subtraction.html#aeb399f7bf158d4a47578927b893e9763aa94a29ebcd03bebb69de4c6f6c5b8fea", null ],
+        [ "kPeakSlider", "class_t_b_g_subtraction.html#aeb399f7bf158d4a47578927b893e9763a812494f753d27909d2c3f2f25f7d987b", null ],
+        [ "kBinningSlider", "class_t_b_g_subtraction.html#aeb399f7bf158d4a47578927b893e9763a8a8e17befaea043c6a175f8633e23658", null ]
       ] ],
       [ "TBGSubtraction", "class_t_b_g_subtraction.html#a68fccc6625a2bfdc6e5f2f03fdeefc0e", null ],
       [ "TBGSubtraction", "class_t_b_g_subtraction.html#a791c50a4121d416fb48cb090411e9b30", null ],
@@ -149,36 +149,36 @@ var group___g_u_i =
       [ "fWrite2FileName", "class_t_b_g_subtraction.html#a4323d4772c804ca9bae994d8ed153805", null ]
     ] ],
     [ "TCalibrateDescant", "class_t_calibrate_descant.html", [
-      [ "EParameter", "class_t_calibrate_descant.html#abe2f775fb4f21d84213e8a36b7a3a9fb", [
-        [ "kAmplitude", "class_t_calibrate_descant.html#abe2f775fb4f21d84213e8a36b7a3a9fba8cc4a8f272fd1cfb285b57eec8701d36", null ],
-        [ "kPosition", "class_t_calibrate_descant.html#abe2f775fb4f21d84213e8a36b7a3a9fbac961598a44603e9325424a9f42d9b126", null ],
-        [ "kSigma", "class_t_calibrate_descant.html#abe2f775fb4f21d84213e8a36b7a3a9fba484005d769d79afff83972a55bbc97f9", null ],
-        [ "kDSigma", "class_t_calibrate_descant.html#abe2f775fb4f21d84213e8a36b7a3a9fba0dbae33feec17e400c506f53c0869897", null ],
-        [ "kPeakAmp", "class_t_calibrate_descant.html#abe2f775fb4f21d84213e8a36b7a3a9fba55f8cf883817fee313c1704ccfb3e0c2", null ],
-        [ "kPeakPos", "class_t_calibrate_descant.html#abe2f775fb4f21d84213e8a36b7a3a9fba9486cb18d23226da7f3cdf1501f33e91", null ],
-        [ "kPeakSigma", "class_t_calibrate_descant.html#abe2f775fb4f21d84213e8a36b7a3a9fbadcada2bf3f88b2a4852696df145a70c2", null ],
-        [ "kNoiseAmp", "class_t_calibrate_descant.html#abe2f775fb4f21d84213e8a36b7a3a9fbaf8e8fb92e9645f576d05b0556c53843c", null ],
-        [ "kNoisePos", "class_t_calibrate_descant.html#abe2f775fb4f21d84213e8a36b7a3a9fbab5ed5d10575229be9b184e5a6cb5d4c6", null ],
-        [ "kNoiseSigma", "class_t_calibrate_descant.html#abe2f775fb4f21d84213e8a36b7a3a9fba96281263a32e2f7ee8994596718ab0c2", null ],
-        [ "kThreshold", "class_t_calibrate_descant.html#abe2f775fb4f21d84213e8a36b7a3a9fba108f5176e4c71adb3be3dc2d842312c1", null ],
-        [ "kThresholdSigma", "class_t_calibrate_descant.html#abe2f775fb4f21d84213e8a36b7a3a9fba220b2db93e9ffec354493938b9114173", null ],
-        [ "kBgConst", "class_t_calibrate_descant.html#abe2f775fb4f21d84213e8a36b7a3a9fbad7761cf3013f20dc6d819877b74539ed", null ],
-        [ "kBgAmp", "class_t_calibrate_descant.html#abe2f775fb4f21d84213e8a36b7a3a9fba752047a1866f4db408e5bea6b5eac7dd", null ],
-        [ "kBgDecayConst", "class_t_calibrate_descant.html#abe2f775fb4f21d84213e8a36b7a3a9fba0082aa910c3d227750c799e02779df97", null ],
-        [ "kCutoff", "class_t_calibrate_descant.html#abe2f775fb4f21d84213e8a36b7a3a9fba5531c173084f79e227df872a59bd7649", null ]
+      [ "EParameter", "class_t_calibrate_descant.html#ac6036b64178d9b06ac65a4eb360728fe", [
+        [ "kAmplitude", "class_t_calibrate_descant.html#ac6036b64178d9b06ac65a4eb360728fea8cc4a8f272fd1cfb285b57eec8701d36", null ],
+        [ "kPosition", "class_t_calibrate_descant.html#ac6036b64178d9b06ac65a4eb360728feac961598a44603e9325424a9f42d9b126", null ],
+        [ "kSigma", "class_t_calibrate_descant.html#ac6036b64178d9b06ac65a4eb360728fea484005d769d79afff83972a55bbc97f9", null ],
+        [ "kDSigma", "class_t_calibrate_descant.html#ac6036b64178d9b06ac65a4eb360728fea0dbae33feec17e400c506f53c0869897", null ],
+        [ "kPeakAmp", "class_t_calibrate_descant.html#ac6036b64178d9b06ac65a4eb360728fea55f8cf883817fee313c1704ccfb3e0c2", null ],
+        [ "kPeakPos", "class_t_calibrate_descant.html#ac6036b64178d9b06ac65a4eb360728fea9486cb18d23226da7f3cdf1501f33e91", null ],
+        [ "kPeakSigma", "class_t_calibrate_descant.html#ac6036b64178d9b06ac65a4eb360728feadcada2bf3f88b2a4852696df145a70c2", null ],
+        [ "kNoiseAmp", "class_t_calibrate_descant.html#ac6036b64178d9b06ac65a4eb360728feaf8e8fb92e9645f576d05b0556c53843c", null ],
+        [ "kNoisePos", "class_t_calibrate_descant.html#ac6036b64178d9b06ac65a4eb360728feab5ed5d10575229be9b184e5a6cb5d4c6", null ],
+        [ "kNoiseSigma", "class_t_calibrate_descant.html#ac6036b64178d9b06ac65a4eb360728fea96281263a32e2f7ee8994596718ab0c2", null ],
+        [ "kThreshold", "class_t_calibrate_descant.html#ac6036b64178d9b06ac65a4eb360728fea108f5176e4c71adb3be3dc2d842312c1", null ],
+        [ "kThresholdSigma", "class_t_calibrate_descant.html#ac6036b64178d9b06ac65a4eb360728fea220b2db93e9ffec354493938b9114173", null ],
+        [ "kBgConst", "class_t_calibrate_descant.html#ac6036b64178d9b06ac65a4eb360728fead7761cf3013f20dc6d819877b74539ed", null ],
+        [ "kBgAmp", "class_t_calibrate_descant.html#ac6036b64178d9b06ac65a4eb360728fea752047a1866f4db408e5bea6b5eac7dd", null ],
+        [ "kBgDecayConst", "class_t_calibrate_descant.html#ac6036b64178d9b06ac65a4eb360728fea0082aa910c3d227750c799e02779df97", null ],
+        [ "kCutoff", "class_t_calibrate_descant.html#ac6036b64178d9b06ac65a4eb360728fea5531c173084f79e227df872a59bd7649", null ]
       ] ],
-      [ "ESourceType", "class_t_calibrate_descant.html#a298a052dabd68552ecaab640e8472a75", [
-        [ "k22NaLow", "class_t_calibrate_descant.html#a298a052dabd68552ecaab640e8472a75ac112a4e8803f8edcc34c3153a15cb335", null ],
-        [ "k22NaHigh", "class_t_calibrate_descant.html#a298a052dabd68552ecaab640e8472a75aeebc2accc0ac8b087e116d4d80b1538c", null ],
-        [ "k24NaLow", "class_t_calibrate_descant.html#a298a052dabd68552ecaab640e8472a75a7ad76be8ee3bf6befc89efd6d001348b", null ],
-        [ "k24NaHigh", "class_t_calibrate_descant.html#a298a052dabd68552ecaab640e8472a75a9408949d73c905200bfcfbec2a388ff8", null ],
-        [ "k60Co", "class_t_calibrate_descant.html#a298a052dabd68552ecaab640e8472a75add5ca8b39af4cc7d0a6fb9dd74244351", null ],
-        [ "k137Cs", "class_t_calibrate_descant.html#a298a052dabd68552ecaab640e8472a75add0d5541b8471d244e7347ce367c2aed", null ],
-        [ "k152Eu121", "class_t_calibrate_descant.html#a298a052dabd68552ecaab640e8472a75a74c01fb45d634d6f1e2660ea9d271ff4", null ],
-        [ "k152Eu344", "class_t_calibrate_descant.html#a298a052dabd68552ecaab640e8472a75aa994f4904103c047e6f8f555da7db5e3", null ],
-        [ "k152Eu1408", "class_t_calibrate_descant.html#a298a052dabd68552ecaab640e8472a75a82a80613be0239c210b1d413dd9d66bc", null ],
-        [ "k241AmEdge", "class_t_calibrate_descant.html#a298a052dabd68552ecaab640e8472a75aeddfbccf33a0c7d8785504923444cf86", null ],
-        [ "k241Am", "class_t_calibrate_descant.html#a298a052dabd68552ecaab640e8472a75a9eaacff515e3575fad968fc76d09079e", null ]
+      [ "ESourceType", "class_t_calibrate_descant.html#a6ddc2dcce91840f123cd2627c1fc85a0", [
+        [ "k22NaLow", "class_t_calibrate_descant.html#a6ddc2dcce91840f123cd2627c1fc85a0ac112a4e8803f8edcc34c3153a15cb335", null ],
+        [ "k22NaHigh", "class_t_calibrate_descant.html#a6ddc2dcce91840f123cd2627c1fc85a0aeebc2accc0ac8b087e116d4d80b1538c", null ],
+        [ "k24NaLow", "class_t_calibrate_descant.html#a6ddc2dcce91840f123cd2627c1fc85a0a7ad76be8ee3bf6befc89efd6d001348b", null ],
+        [ "k24NaHigh", "class_t_calibrate_descant.html#a6ddc2dcce91840f123cd2627c1fc85a0a9408949d73c905200bfcfbec2a388ff8", null ],
+        [ "k60Co", "class_t_calibrate_descant.html#a6ddc2dcce91840f123cd2627c1fc85a0add5ca8b39af4cc7d0a6fb9dd74244351", null ],
+        [ "k137Cs", "class_t_calibrate_descant.html#a6ddc2dcce91840f123cd2627c1fc85a0add0d5541b8471d244e7347ce367c2aed", null ],
+        [ "k152Eu121", "class_t_calibrate_descant.html#a6ddc2dcce91840f123cd2627c1fc85a0a74c01fb45d634d6f1e2660ea9d271ff4", null ],
+        [ "k152Eu344", "class_t_calibrate_descant.html#a6ddc2dcce91840f123cd2627c1fc85a0aa994f4904103c047e6f8f555da7db5e3", null ],
+        [ "k152Eu1408", "class_t_calibrate_descant.html#a6ddc2dcce91840f123cd2627c1fc85a0a82a80613be0239c210b1d413dd9d66bc", null ],
+        [ "k241AmEdge", "class_t_calibrate_descant.html#a6ddc2dcce91840f123cd2627c1fc85a0aeddfbccf33a0c7d8785504923444cf86", null ],
+        [ "k241Am", "class_t_calibrate_descant.html#a6ddc2dcce91840f123cd2627c1fc85a0a9eaacff515e3575fad968fc76d09079e", null ]
       ] ],
       [ "TCalibrateDescant", "class_t_calibrate_descant.html#a115aaea56129bcf52d5a09cd681f705b", null ],
       [ "TCalibrateDescant", "class_t_calibrate_descant.html#a7dca99adb0f35789176138e6b95567d4", null ],

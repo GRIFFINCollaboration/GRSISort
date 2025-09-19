@@ -45,7 +45,7 @@ var searchData=
   ['refresh_42',['Refresh',['../class_g_root_browser.html#aa3391d94c17936de947081bdd73fb17b',1,'GRootBrowser']]],
   ['refreshhistograms_43',['RefreshHistograms',['../classpygui_1_1mainwindow_1_1_main_window.html#a468940fe4ed28e45acdf747ade5b6d63',1,'pygui::mainwindow::MainWindow']]],
   ['register_5ftag_44',['register_tag',['../classpygui_1_1_ansi_color_text_1_1_ansi_color_text.html#a35882aac13240871913081888441a857',1,'pygui::AnsiColorText::AnsiColorText']]],
-  ['reject_45',['Reject',['../class_efficiency_helper.html#af6704ff1cc58fb261bb705b3849c27c2',1,'EfficiencyHelper']]],
+  ['reject_45',['Reject',['../class_efficiency_helper.html#ab8fbad7b8c60209efa4a29617c7c08f0',1,'EfficiencyHelper']]],
   ['rejectcrosstalk_46',['RejectCrosstalk',['../class_t_si_li.html#aba924ea958789e72d22e57b66349d458',1,'TSiLi']]],
   ['release_47',['Release',['../class_t_single_decay.html#ae0a8350d86dffaab46f6180572d1615d',1,'TSingleDecay']]],
   ['releasebackground_48',['ReleaseBackground',['../class_t_decay.html#abed3fa27a3b021a24c434c31d5902f92',1,'TDecay']]],

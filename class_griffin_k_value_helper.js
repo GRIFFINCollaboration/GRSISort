@@ -25,6 +25,7 @@ var class_griffin_k_value_helper =
     [ "fH2", "class_griffin_k_value_helper.html#a27adae6a07b011a2c5beb6a572acaa42", null ],
     [ "fH3", "class_griffin_k_value_helper.html#af70ba099fb02f24961d985d47f7a568d", null ],
     [ "fLists", "class_griffin_k_value_helper.html#aad7e7d8ceee2f9fa1d96256a4e15138b", null ],
+    [ "fMaxKValue", "class_griffin_k_value_helper.html#a1e1ab2ab4770d7d0272d0d99dcafc6c5", null ],
     [ "fObject", "class_griffin_k_value_helper.html#a50d7d9d2fb783c2d70056cb5203f89b1", null ],
     [ "fPpg", "class_griffin_k_value_helper.html#ac7ce3378d3b7c730f9cbd73dd2cf7ab3", null ],
     [ "fPrefix", "class_griffin_k_value_helper.html#a67b6f5f70635c0bd67ae1b8bf1c1197a", null ],

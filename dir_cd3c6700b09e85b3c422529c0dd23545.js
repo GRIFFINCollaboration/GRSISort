@@ -9,6 +9,7 @@ var dir_cd3c6700b09e85b3c422529c0dd23545 =
     [ "TDataLoop.cxx", "_t_data_loop_8cxx.html", null ],
     [ "TDetBuildingLoop.cxx", "_t_det_building_loop_8cxx.html", null ],
     [ "TEventBuildingLoop.cxx", "_t_event_building_loop_8cxx.html", null ],
+    [ "TFragDiagnosticsLoop.cxx", "_t_frag_diagnostics_loop_8cxx.html", null ],
     [ "TFragHistLoop.cxx", "_t_frag_hist_loop_8cxx.html", null ],
     [ "TFragmentChainLoop.cxx", "_t_fragment_chain_loop_8cxx.html", null ],
     [ "TFragWriteLoop.cxx", "_t_frag_write_loop_8cxx.html", null ],

@@ -1,36 +1,36 @@
 var class_t_b_g_subtraction =
 [
-    [ "EEntries", "class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42c", [
-      [ "kBGParamEntry", "class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42ca0fae5eca459a8b1baadfd67d528dd701", null ],
-      [ "kGateLowEntry", "class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42cad17d053b10ad5d5fde31ae4b996a14a2", null ],
-      [ "kGateHighEntry", "class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42cae7ee8229eae83645246a07c7c3346a98", null ],
-      [ "kPeakLowEntry", "class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42cafc787741b6ab1e62cc03a47329faace2", null ],
-      [ "kPeakHighEntry", "class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42ca9560d213d210e648440854e119b8c486", null ],
-      [ "kPeakEntry", "class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42ca8d1f910484c45a1a03ef654f5c0734ca", null ],
-      [ "kBGLowEntry1", "class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42ca90d2b83fe8c3eef846d7efd9be4c0537", null ],
-      [ "kBGHighEntry1", "class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42cadac7746416c60bc96fe4e0edf520bdf0", null ],
-      [ "kBGLowEntry2", "class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42ca9fcace162abb86b1f1d67bc655223ab1", null ],
-      [ "kBGHighEntry2", "class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42ca00fc1d30565d1d985f5ed77efc8077a7", null ],
-      [ "kWrite2FileNameEntry", "class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42cad1f5eff5b2f356f781f645ecbb459fbc", null ],
-      [ "kHistogramDescriptionEntry", "class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42ca18cf004b3e1693128025f021494e89fd", null ],
-      [ "kComboAxisEntry", "class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42cafc02626a801ac1f70830afc0faf7ac07", null ],
-      [ "kComboPeakEntry", "class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42cad39d4556d567586c934bd5a261ae2b54", null ],
-      [ "kBGCheckButton1", "class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42cac8af2628893d343f8355df22cfd59d55", null ],
-      [ "kBGCheckButton2", "class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42ca0bc76c2ff33430b204e02dae5349aaca", null ],
-      [ "kAutoUpdateCheckButton", "class_t_b_g_subtraction.html#aca725af94ff9541055167fbdf8eae42cac301236be55a88500bf4422b3c7ea584", null ]
+    [ "EEntries", "class_t_b_g_subtraction.html#a17330de04499e33831e4e44020176c71", [
+      [ "kBGParamEntry", "class_t_b_g_subtraction.html#a17330de04499e33831e4e44020176c71a0fae5eca459a8b1baadfd67d528dd701", null ],
+      [ "kGateLowEntry", "class_t_b_g_subtraction.html#a17330de04499e33831e4e44020176c71ad17d053b10ad5d5fde31ae4b996a14a2", null ],
+      [ "kGateHighEntry", "class_t_b_g_subtraction.html#a17330de04499e33831e4e44020176c71ae7ee8229eae83645246a07c7c3346a98", null ],
+      [ "kPeakLowEntry", "class_t_b_g_subtraction.html#a17330de04499e33831e4e44020176c71afc787741b6ab1e62cc03a47329faace2", null ],
+      [ "kPeakHighEntry", "class_t_b_g_subtraction.html#a17330de04499e33831e4e44020176c71a9560d213d210e648440854e119b8c486", null ],
+      [ "kPeakEntry", "class_t_b_g_subtraction.html#a17330de04499e33831e4e44020176c71a8d1f910484c45a1a03ef654f5c0734ca", null ],
+      [ "kBGLowEntry1", "class_t_b_g_subtraction.html#a17330de04499e33831e4e44020176c71a90d2b83fe8c3eef846d7efd9be4c0537", null ],
+      [ "kBGHighEntry1", "class_t_b_g_subtraction.html#a17330de04499e33831e4e44020176c71adac7746416c60bc96fe4e0edf520bdf0", null ],
+      [ "kBGLowEntry2", "class_t_b_g_subtraction.html#a17330de04499e33831e4e44020176c71a9fcace162abb86b1f1d67bc655223ab1", null ],
+      [ "kBGHighEntry2", "class_t_b_g_subtraction.html#a17330de04499e33831e4e44020176c71a00fc1d30565d1d985f5ed77efc8077a7", null ],
+      [ "kWrite2FileNameEntry", "class_t_b_g_subtraction.html#a17330de04499e33831e4e44020176c71ad1f5eff5b2f356f781f645ecbb459fbc", null ],
+      [ "kHistogramDescriptionEntry", "class_t_b_g_subtraction.html#a17330de04499e33831e4e44020176c71a18cf004b3e1693128025f021494e89fd", null ],
+      [ "kComboAxisEntry", "class_t_b_g_subtraction.html#a17330de04499e33831e4e44020176c71afc02626a801ac1f70830afc0faf7ac07", null ],
+      [ "kComboPeakEntry", "class_t_b_g_subtraction.html#a17330de04499e33831e4e44020176c71ad39d4556d567586c934bd5a261ae2b54", null ],
+      [ "kBGCheckButton1", "class_t_b_g_subtraction.html#a17330de04499e33831e4e44020176c71ac8af2628893d343f8355df22cfd59d55", null ],
+      [ "kBGCheckButton2", "class_t_b_g_subtraction.html#a17330de04499e33831e4e44020176c71a0bc76c2ff33430b204e02dae5349aaca", null ],
+      [ "kAutoUpdateCheckButton", "class_t_b_g_subtraction.html#a17330de04499e33831e4e44020176c71ac301236be55a88500bf4422b3c7ea584", null ]
     ] ],
-    [ "EPeaks", "class_t_b_g_subtraction.html#a3e4d25108b1d71c2d1568c5e8d334c47", [
-      [ "kGauss", "class_t_b_g_subtraction.html#a3e4d25108b1d71c2d1568c5e8d334c47aa4327302c3780589780c99a0e1c22ad3", null ],
-      [ "kRWPeak", "class_t_b_g_subtraction.html#a3e4d25108b1d71c2d1568c5e8d334c47aea234f1d37912dde9943b5290439df42", null ],
-      [ "kABPeak", "class_t_b_g_subtraction.html#a3e4d25108b1d71c2d1568c5e8d334c47ab0acdbb6f7194a17876ed123b9acbef3", null ],
-      [ "kAB3Peak", "class_t_b_g_subtraction.html#a3e4d25108b1d71c2d1568c5e8d334c47a0650c4900bd89dd9b332486f6199c233", null ]
+    [ "EPeaks", "class_t_b_g_subtraction.html#ae065a48fc69be47b112ae7ca26d9c0f7", [
+      [ "kGauss", "class_t_b_g_subtraction.html#ae065a48fc69be47b112ae7ca26d9c0f7aa4327302c3780589780c99a0e1c22ad3", null ],
+      [ "kRWPeak", "class_t_b_g_subtraction.html#ae065a48fc69be47b112ae7ca26d9c0f7aea234f1d37912dde9943b5290439df42", null ],
+      [ "kABPeak", "class_t_b_g_subtraction.html#ae065a48fc69be47b112ae7ca26d9c0f7ab0acdbb6f7194a17876ed123b9acbef3", null ],
+      [ "kAB3Peak", "class_t_b_g_subtraction.html#ae065a48fc69be47b112ae7ca26d9c0f7a0650c4900bd89dd9b332486f6199c233", null ]
     ] ],
-    [ "ESliders", "class_t_b_g_subtraction.html#ac96d733d0749077da7d267b17dcf07a1", [
-      [ "kGateSlider", "class_t_b_g_subtraction.html#ac96d733d0749077da7d267b17dcf07a1a2b7bbf209d6726b523f76c2014176a2b", null ],
-      [ "kBGSlider1", "class_t_b_g_subtraction.html#ac96d733d0749077da7d267b17dcf07a1aa22ad3089b15b60656042297c83d05ce", null ],
-      [ "kBGSlider2", "class_t_b_g_subtraction.html#ac96d733d0749077da7d267b17dcf07a1aa94a29ebcd03bebb69de4c6f6c5b8fea", null ],
-      [ "kPeakSlider", "class_t_b_g_subtraction.html#ac96d733d0749077da7d267b17dcf07a1a812494f753d27909d2c3f2f25f7d987b", null ],
-      [ "kBinningSlider", "class_t_b_g_subtraction.html#ac96d733d0749077da7d267b17dcf07a1a8a8e17befaea043c6a175f8633e23658", null ]
+    [ "ESliders", "class_t_b_g_subtraction.html#aeb399f7bf158d4a47578927b893e9763", [
+      [ "kGateSlider", "class_t_b_g_subtraction.html#aeb399f7bf158d4a47578927b893e9763a2b7bbf209d6726b523f76c2014176a2b", null ],
+      [ "kBGSlider1", "class_t_b_g_subtraction.html#aeb399f7bf158d4a47578927b893e9763aa22ad3089b15b60656042297c83d05ce", null ],
+      [ "kBGSlider2", "class_t_b_g_subtraction.html#aeb399f7bf158d4a47578927b893e9763aa94a29ebcd03bebb69de4c6f6c5b8fea", null ],
+      [ "kPeakSlider", "class_t_b_g_subtraction.html#aeb399f7bf158d4a47578927b893e9763a812494f753d27909d2c3f2f25f7d987b", null ],
+      [ "kBinningSlider", "class_t_b_g_subtraction.html#aeb399f7bf158d4a47578927b893e9763a8a8e17befaea043c6a175f8633e23658", null ]
     ] ],
     [ "TBGSubtraction", "class_t_b_g_subtraction.html#a68fccc6625a2bfdc6e5f2f03fdeefc0e", null ],
     [ "TBGSubtraction", "class_t_b_g_subtraction.html#a791c50a4121d416fb48cb090411e9b30", null ],

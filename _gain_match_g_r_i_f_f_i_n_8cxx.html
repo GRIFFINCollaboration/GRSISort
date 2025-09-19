@@ -109,28 +109,29 @@ $(function(){initNavTree('_gain_match_g_r_i_f_f_i_n_8cxx.html',''); initResizabl
 <div class="textblock"><code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
-<code>#include &lt;TFile.h&gt;</code><br />
-<code>#include &lt;TH1.h&gt;</code><br />
-<code>#include &lt;TH2.h&gt;</code><br />
-<code>#include &lt;THStack.h&gt;</code><br />
-<code>#include &lt;TSpectrum.h&gt;</code><br />
-<code>#include &lt;TGraph.h&gt;</code><br />
-<code>#include &lt;TGraphErrors.h&gt;</code><br />
-<code>#include &lt;TMultiGraph.h&gt;</code><br />
-<code>#include &lt;TF1.h&gt;</code><br />
-<code>#include &lt;TCanvas.h&gt;</code><br />
-<code>#include &lt;TList.h&gt;</code><br />
-<code>#include &lt;TMinuit.h&gt;</code><br />
-<code>#include &lt;<a class="el" href="_t_fragment_8h_source.html">TFragment.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="_t_griffin_8h_source.html">TGriffin.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="_t_griffin_hit_8h_source.html">TGriffinHit.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="_t_channel_8h_source.html">TChannel.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="_t_peak_8h_source.html">TPeak.h</a>&gt;</code><br />
-<code>#include &lt;TBranch.h&gt;</code><br />
-<code>#include &lt;TGaxis.h&gt;</code><br />
-<code>#include &lt;TStyle.h&gt;</code><br />
-<code>#include &lt;TLegend.h&gt;</code><br />
-<code>#include &lt;TSystem.h&gt;</code><br />
+<code>#include &lt;fstream&gt;</code><br />
+<code>#include &quot;TFile.h&quot;</code><br />
+<code>#include &quot;TH1.h&quot;</code><br />
+<code>#include &quot;TH2.h&quot;</code><br />
+<code>#include &quot;THStack.h&quot;</code><br />
+<code>#include &quot;TSpectrum.h&quot;</code><br />
+<code>#include &quot;TGraph.h&quot;</code><br />
+<code>#include &quot;TGraphErrors.h&quot;</code><br />
+<code>#include &quot;TMultiGraph.h&quot;</code><br />
+<code>#include &quot;TF1.h&quot;</code><br />
+<code>#include &quot;TCanvas.h&quot;</code><br />
+<code>#include &quot;TList.h&quot;</code><br />
+<code>#include &quot;TMinuit.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="_t_fragment_8h_source.html">TFragment.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_t_griffin_8h_source.html">TGriffin.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_t_griffin_hit_8h_source.html">TGriffinHit.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_t_channel_8h_source.html">TChannel.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_t_peak_8h_source.html">TPeak.h</a>&quot;</code><br />
+<code>#include &quot;TBranch.h&quot;</code><br />
+<code>#include &quot;TGaxis.h&quot;</code><br />
+<code>#include &quot;TStyle.h&quot;</code><br />
+<code>#include &quot;TLegend.h&quot;</code><br />
+<code>#include &quot;TSystem.h&quot;</code><br />
 </div><div class="textblock"><div id="dynsection-0" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Include dependency graph for GainMatchGRIFFIN.cxx:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
@@ -232,7 +233,7 @@ Functions</h2></td></tr>
 <tr><td class="fieldname"><a id="ad5d0e87f61ba99c47a539492df7917a1a5d941fc691a6fd2523e8ac6da8bce298" name="ad5d0e87f61ba99c47a539492df7917a1a5d941fc691a6fd2523e8ac6da8bce298"></a>kTSpectrum&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00028">28</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00030">30</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
 
 </div>
 </div>
@@ -291,9 +292,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00722">722</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00724">724</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00578">check_calibration()</a>.</p>
+<p class="reference">References <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00580">check_calibration()</a>.</p>
 
 </div>
 </div>
@@ -346,9 +347,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00716">716</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00718">718</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00578">check_calibration()</a>.</p>
+<p class="reference">References <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00580">check_calibration()</a>.</p>
 
 </div>
 </div>
@@ -396,9 +397,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00709">709</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00711">711</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00578">check_calibration()</a>.</p>
+<p class="reference">References <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00580">check_calibration()</a>.</p>
 
 </div>
 </div>
@@ -461,11 +462,11 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00578">578</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00580">580</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00784">FWHM()</a>, <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00789">FWTM()</a>, and <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00100">GetCentroid()</a>.</p>
+<p class="reference">References <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00786">FWHM()</a>, <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00791">FWTM()</a>, and <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00102">GetCentroid()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00722">check_calibration()</a>, <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00716">check_calibration()</a>, <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00709">check_calibration()</a>, and <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00796">main()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00724">check_calibration()</a>, <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00718">check_calibration()</a>, <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00711">check_calibration()</a>, and <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00798">main()</a>.</p>
 
 </div>
 </div>
@@ -533,9 +534,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00232">232</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00234">234</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00323">gainmatch_peaks()</a>, and <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00113">GetRoughGain()</a>.</p>
+<p class="reference">References <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00325">gainmatch_peaks()</a>, and <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00115">GetRoughGain()</a>.</p>
 
 </div>
 </div>
@@ -598,7 +599,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00317">317</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00319">319</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
 
 <p class="reference">References <a class="el" href="#a92c1d7cd69241dc11d03fdddda92f097">create_gainmatch_graphs()</a>.</p>
 
@@ -663,7 +664,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00317">create_gainmatch_graphs()</a>, and <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00796">main()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00319">create_gainmatch_graphs()</a>, and <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00798">main()</a>.</p>
 
 </div>
 </div>
@@ -711,11 +712,11 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00492">492</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00494">494</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00492">create_GRIFFIN_cal()</a>.</p>
+<p class="reference">References <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00494">create_GRIFFIN_cal()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00492">create_GRIFFIN_cal()</a>, and <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00796">main()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00494">create_GRIFFIN_cal()</a>, and <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00798">main()</a>.</p>
 
 </div>
 </div>
@@ -768,7 +769,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00347">347</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00349">349</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
 
 </div>
 </div>
@@ -796,11 +797,11 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00784">784</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00786">786</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00729">FWXM()</a>.</p>
+<p class="reference">References <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00731">FWXM()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00578">check_calibration()</a>, and <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00079">GetCentroidTPeak()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00580">check_calibration()</a>, and <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00081">GetCentroidTPeak()</a>.</p>
 
 </div>
 </div>
@@ -828,11 +829,11 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00789">789</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00791">791</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00729">FWXM()</a>.</p>
+<p class="reference">References <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00731">FWXM()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00578">check_calibration()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00580">check_calibration()</a>.</p>
 
 </div>
 </div>
@@ -865,9 +866,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00729">729</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00731">731</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00784">FWHM()</a>, and <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00789">FWTM()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00786">FWHM()</a>, and <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00791">FWTM()</a>.</p>
 
 </div>
 </div>
@@ -905,11 +906,11 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00323">323</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00325">325</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00100">GetCentroid()</a>.</p>
+<p class="reference">References <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00102">GetCentroid()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00232">create_gainmatch_graphs()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00234">create_gainmatch_graphs()</a>.</p>
 
 </div>
 </div>
@@ -942,11 +943,11 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00100">100</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00102">102</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00060">GetCentroidMaxBin()</a>, <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00079">GetCentroidTPeak()</a>, <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00069">GetCentroidTSpectrum()</a>, <a class="el" href="#ad5d0e87f61ba99c47a539492df7917a1a553347d926b88adee123fa75da6e25a7">kMaxBin</a>, <a class="el" href="#ad5d0e87f61ba99c47a539492df7917a1a41de1e96935c1d8874e509b84eae1d3f">kTPeak</a>, and <a class="el" href="#ad5d0e87f61ba99c47a539492df7917a1a5d941fc691a6fd2523e8ac6da8bce298">kTSpectrum</a>.</p>
+<p class="reference">References <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00062">GetCentroidMaxBin()</a>, <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00081">GetCentroidTPeak()</a>, <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00071">GetCentroidTSpectrum()</a>, <a class="el" href="#ad5d0e87f61ba99c47a539492df7917a1a553347d926b88adee123fa75da6e25a7">kMaxBin</a>, <a class="el" href="#ad5d0e87f61ba99c47a539492df7917a1a41de1e96935c1d8874e509b84eae1d3f">kTPeak</a>, and <a class="el" href="#ad5d0e87f61ba99c47a539492df7917a1a5d941fc691a6fd2523e8ac6da8bce298">kTSpectrum</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00578">check_calibration()</a>, and <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00323">gainmatch_peaks()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00580">check_calibration()</a>, and <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00325">gainmatch_peaks()</a>.</p>
 
 </div>
 </div>
@@ -974,9 +975,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00060">60</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00062">62</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00100">GetCentroid()</a>, and <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00079">GetCentroidTPeak()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00102">GetCentroid()</a>, and <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00081">GetCentroidTPeak()</a>.</p>
 
 </div>
 </div>
@@ -1004,11 +1005,11 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00079">79</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00081">81</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_peak_8cxx_source.html#l00191">TPeak::Fit()</a>, <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00784">FWHM()</a>, <a class="el" href="_t_peak_8h_source.html#l00051">TPeak::GetCentroid()</a>, and <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00060">GetCentroidMaxBin()</a>.</p>
+<p class="reference">References <a class="el" href="_t_peak_8cxx_source.html#l00196">TPeak::Fit()</a>, <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00786">FWHM()</a>, <a class="el" href="_t_peak_8h_source.html#l00046">TPeak::GetCentroid()</a>, and <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00062">GetCentroidMaxBin()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00100">GetCentroid()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00102">GetCentroid()</a>.</p>
 
 </div>
 </div>
@@ -1036,9 +1037,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00069">69</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00071">71</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00100">GetCentroid()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00102">GetCentroid()</a>.</p>
 
 </div>
 </div>
@@ -1076,9 +1077,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00113">113</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00115">115</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00232">create_gainmatch_graphs()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00234">create_gainmatch_graphs()</a>.</p>
 
 </div>
 </div>
@@ -1101,9 +1102,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00796">796</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00798">798</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00578">check_calibration()</a>, <a class="el" href="#a92c1d7cd69241dc11d03fdddda92f097">create_gainmatch_graphs()</a>, <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00492">create_GRIFFIN_cal()</a>, <a class="el" href="#ad5d0e87f61ba99c47a539492df7917a1a41de1e96935c1d8874e509b84eae1d3f">kTPeak</a>, <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00151">make_calibration_histograms()</a>, and <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00498">recalibrate_spectra()</a>.</p>
+<p class="reference">References <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00580">check_calibration()</a>, <a class="el" href="#a92c1d7cd69241dc11d03fdddda92f097">create_gainmatch_graphs()</a>, <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00494">create_GRIFFIN_cal()</a>, <a class="el" href="#ad5d0e87f61ba99c47a539492df7917a1a41de1e96935c1d8874e509b84eae1d3f">kTPeak</a>, <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00153">make_calibration_histograms()</a>, and <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00500">recalibrate_spectra()</a>.</p>
 
 </div>
 </div>
@@ -1156,11 +1157,11 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00151">151</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00153">153</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00226">MakeGRIFFINChargeHsts()</a>, and <a class="el" href="_t_channel_8cxx_source.html#l01078">TChannel::ReadCalFromTree()</a>.</p>
+<p class="reference">References <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00228">MakeGRIFFINChargeHsts()</a>, and <a class="el" href="_t_channel_8cxx_source.html#l01079">TChannel::ReadCalFromTree()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00796">main()</a>, and <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00172">make_calibration_histograms()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00798">main()</a>, and <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00174">make_calibration_histograms()</a>.</p>
 
 </div>
 </div>
@@ -1208,9 +1209,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00172">172</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00174">174</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00151">make_calibration_histograms()</a>.</p>
+<p class="reference">References <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00153">make_calibration_histograms()</a>.</p>
 
 </div>
 </div>
@@ -1258,9 +1259,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00178">178</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00180">180</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_channel_8h_source.html#l00170">TChannel::GetAddress()</a>, <a class="el" href="_t_channel_8cxx_source.html#l00482">TChannel::GetChannelByNumber()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00218">TDetectorHit::GetChannelNumber()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00058">TDetectorHit::GetCharge()</a>, <a class="el" href="_t_fragment_8h_source.html#l00072">TFragment::GetDetectorType()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00146">TDetectorHit::GetKValue()</a>, and <a class="el" href="_t_channel_8cxx_source.html#l01078">TChannel::ReadCalFromTree()</a>.</p>
+<p class="reference">References <a class="el" href="_t_channel_8h_source.html#l00165">TChannel::GetAddress()</a>, <a class="el" href="_t_channel_8cxx_source.html#l00483">TChannel::GetChannelByNumber()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00218">TDetectorHit::GetChannelNumber()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00058">TDetectorHit::GetCharge()</a>, <a class="el" href="_t_fragment_8h_source.html#l00071">TFragment::GetDetectorType()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00143">TDetectorHit::GetKValue()</a>, and <a class="el" href="_t_channel_8cxx_source.html#l01079">TChannel::ReadCalFromTree()</a>.</p>
 
 </div>
 </div>
@@ -1303,11 +1304,11 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00226">226</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00228">228</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00226">MakeGRIFFINChargeHsts()</a>.</p>
+<p class="reference">References <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00228">MakeGRIFFINChargeHsts()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00151">make_calibration_histograms()</a>, and <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00226">MakeGRIFFINChargeHsts()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00153">make_calibration_histograms()</a>, and <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00228">MakeGRIFFINChargeHsts()</a>.</p>
 
 </div>
 </div>
@@ -1360,9 +1361,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00525">525</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00527">527</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_channel_8h_source.html#l00170">TChannel::GetAddress()</a>, <a class="el" href="_t_channel_8cxx_source.html#l00482">TChannel::GetChannelByNumber()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00218">TDetectorHit::GetChannelNumber()</a>, <a class="el" href="_t_fragment_8h_source.html#l00072">TFragment::GetDetectorType()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00073">TDetectorHit::GetEnergy()</a>, and <a class="el" href="_t_channel_8cxx_source.html#l01104">TChannel::ReadCalFile()</a>.</p>
+<p class="reference">References <a class="el" href="_t_channel_8h_source.html#l00165">TChannel::GetAddress()</a>, <a class="el" href="_t_channel_8cxx_source.html#l00483">TChannel::GetChannelByNumber()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00218">TDetectorHit::GetChannelNumber()</a>, <a class="el" href="_t_fragment_8h_source.html#l00071">TFragment::GetDetectorType()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00073">TDetectorHit::GetEnergy()</a>, and <a class="el" href="_t_channel_8cxx_source.html#l01105">TChannel::ReadCalFile()</a>.</p>
 
 </div>
 </div>
@@ -1410,11 +1411,11 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00571">571</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00573">573</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00571">MakeGRIFFINEnergyHsts()</a>.</p>
+<p class="reference">References <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00573">MakeGRIFFINEnergyHsts()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00571">MakeGRIFFINEnergyHsts()</a>, and <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00498">recalibrate_spectra()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00573">MakeGRIFFINEnergyHsts()</a>, and <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00500">recalibrate_spectra()</a>.</p>
 
 </div>
 </div>
@@ -1472,11 +1473,11 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00498">498</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00500">500</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00571">MakeGRIFFINEnergyHsts()</a>, and <a class="el" href="_t_channel_8cxx_source.html#l01104">TChannel::ReadCalFile()</a>.</p>
+<p class="reference">References <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00573">MakeGRIFFINEnergyHsts()</a>, and <a class="el" href="_t_channel_8cxx_source.html#l01105">TChannel::ReadCalFile()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00796">main()</a>, and <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00519">recalibrate_spectra()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00798">main()</a>, and <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00521">recalibrate_spectra()</a>.</p>
 
 </div>
 </div>
@@ -1529,9 +1530,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00519">519</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00521">521</a> of file <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html">GainMatchGRIFFIN.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00498">recalibrate_spectra()</a>.</p>
+<p class="reference">References <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00500">recalibrate_spectra()</a>.</p>
 
 </div>
 </div>
@@ -1542,7 +1543,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_1d7397b112c23d4eb2fe49dc66ace00a.html">GRSIData</a></li><li class="navelem"><a class="el" href="dir_8965781c9f424dd985c8251b0fe5e6e9.html">util</a></li><li class="navelem"><a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx.html">GainMatchGRIFFIN.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Aug 26 2025 14:02:05.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Sep 19 2025 17:05:47.</li>
   </ul>
 </div>
 </body>

@@ -93,31 +93,31 @@ var group___g_r_o_o_t =
       [ "fLineY", "class_g_marker.html#a630eee95e09ade34659611d8013b0194", null ]
     ] ],
     [ "GRootBrowser", "class_g_root_browser.html", [
-      [ "EInsertPosition", "class_g_root_browser.html#ad4a1457a292dfc2fb4e93bb13b8f7a87", [
-        [ "kLeft", "class_g_root_browser.html#ad4a1457a292dfc2fb4e93bb13b8f7a87a2d5fde1d924910a2a01ecd8e70a87c28", null ],
-        [ "kRight", "class_g_root_browser.html#ad4a1457a292dfc2fb4e93bb13b8f7a87a2dd2b017192f8a09367d48c7648213c9", null ],
-        [ "kBottom", "class_g_root_browser.html#ad4a1457a292dfc2fb4e93bb13b8f7a87a78cd851b433d8d6864110dd678e43586", null ]
+      [ "EInsertPosition", "class_g_root_browser.html#a7f8edaebba649d61b9668de28dcfb1c4", [
+        [ "kLeft", "class_g_root_browser.html#a7f8edaebba649d61b9668de28dcfb1c4a2d5fde1d924910a2a01ecd8e70a87c28", null ],
+        [ "kRight", "class_g_root_browser.html#a7f8edaebba649d61b9668de28dcfb1c4a2dd2b017192f8a09367d48c7648213c9", null ],
+        [ "kBottom", "class_g_root_browser.html#a7f8edaebba649d61b9668de28dcfb1c4a78cd851b433d8d6864110dd678e43586", null ]
       ] ],
-      [ "ENewBrowserMessages", "class_g_root_browser.html#a91f2ddbafff7fcab3e856c33e01bb8da", [
-        [ "kBrowse", "class_g_root_browser.html#a91f2ddbafff7fcab3e856c33e01bb8daa546a37bde5591e054ec4a0762e59d5c2", null ],
-        [ "kOpenFile", "class_g_root_browser.html#a91f2ddbafff7fcab3e856c33e01bb8daa2c348457b827ca12fd6d4d18eee1b516", null ],
-        [ "kClone", "class_g_root_browser.html#a91f2ddbafff7fcab3e856c33e01bb8daa026970425911930059fc1717b4a1eaff", null ],
-        [ "kHelpAbout", "class_g_root_browser.html#a91f2ddbafff7fcab3e856c33e01bb8daaba08e19e3879af380942f73358212719", null ],
-        [ "kHelpOnBrowser", "class_g_root_browser.html#a91f2ddbafff7fcab3e856c33e01bb8daa92d2391d3d42a1cc743d1fdebc55b485", null ],
-        [ "kHelpOnCanvas", "class_g_root_browser.html#a91f2ddbafff7fcab3e856c33e01bb8daa773eaf4018e1e07906c270acbc8ef653", null ],
-        [ "kHelpOnMenus", "class_g_root_browser.html#a91f2ddbafff7fcab3e856c33e01bb8daa1571969b484bec78fdf5b436b601178c", null ],
-        [ "kHelpOnGraphicsEd", "class_g_root_browser.html#a91f2ddbafff7fcab3e856c33e01bb8daaf6f9bdab947824f536977efbbafb6fff", null ],
-        [ "kHelpOnObjects", "class_g_root_browser.html#a91f2ddbafff7fcab3e856c33e01bb8daae97894e5052f3c569b6b077d1d908fa6", null ],
-        [ "kHelpOnPS", "class_g_root_browser.html#a91f2ddbafff7fcab3e856c33e01bb8daa3590846bcc210be4b3772a4488c48b73", null ],
-        [ "kHelpOnRemote", "class_g_root_browser.html#a91f2ddbafff7fcab3e856c33e01bb8daaf7f6e1043ff14c5af211d553ee885b38", null ],
-        [ "kNewEditor", "class_g_root_browser.html#a91f2ddbafff7fcab3e856c33e01bb8daa6fe61797544dc1d56af00bbafeaafa4f", null ],
-        [ "kNewCanvas", "class_g_root_browser.html#a91f2ddbafff7fcab3e856c33e01bb8daac63918ba3ccb94a3e812fbdb3fd97285", null ],
-        [ "kNewHtml", "class_g_root_browser.html#a91f2ddbafff7fcab3e856c33e01bb8daa455b45af619051978198ef4da906fc22", null ],
-        [ "kExecPluginMacro", "class_g_root_browser.html#a91f2ddbafff7fcab3e856c33e01bb8daa73ef0888cc30849f5f5932803514f1d3", null ],
-        [ "kExecPluginCmd", "class_g_root_browser.html#a91f2ddbafff7fcab3e856c33e01bb8daac0e316060ad7cc35caa51549889955bd", null ],
-        [ "kCloseTab", "class_g_root_browser.html#a91f2ddbafff7fcab3e856c33e01bb8daa170da316905af209513d5f81dfcde443", null ],
-        [ "kCloseWindow", "class_g_root_browser.html#a91f2ddbafff7fcab3e856c33e01bb8daab6622d79f01736a45551ad07a3ab27f4", null ],
-        [ "kQuitRoot", "class_g_root_browser.html#a91f2ddbafff7fcab3e856c33e01bb8daa8354136a5a4347a90e08553576f42c14", null ]
+      [ "ENewBrowserMessages", "class_g_root_browser.html#a5004df3046d1b9ecca3fd6ead35c25ad", [
+        [ "kBrowse", "class_g_root_browser.html#a5004df3046d1b9ecca3fd6ead35c25ada546a37bde5591e054ec4a0762e59d5c2", null ],
+        [ "kOpenFile", "class_g_root_browser.html#a5004df3046d1b9ecca3fd6ead35c25ada2c348457b827ca12fd6d4d18eee1b516", null ],
+        [ "kClone", "class_g_root_browser.html#a5004df3046d1b9ecca3fd6ead35c25ada026970425911930059fc1717b4a1eaff", null ],
+        [ "kHelpAbout", "class_g_root_browser.html#a5004df3046d1b9ecca3fd6ead35c25adaba08e19e3879af380942f73358212719", null ],
+        [ "kHelpOnBrowser", "class_g_root_browser.html#a5004df3046d1b9ecca3fd6ead35c25ada92d2391d3d42a1cc743d1fdebc55b485", null ],
+        [ "kHelpOnCanvas", "class_g_root_browser.html#a5004df3046d1b9ecca3fd6ead35c25ada773eaf4018e1e07906c270acbc8ef653", null ],
+        [ "kHelpOnMenus", "class_g_root_browser.html#a5004df3046d1b9ecca3fd6ead35c25ada1571969b484bec78fdf5b436b601178c", null ],
+        [ "kHelpOnGraphicsEd", "class_g_root_browser.html#a5004df3046d1b9ecca3fd6ead35c25adaf6f9bdab947824f536977efbbafb6fff", null ],
+        [ "kHelpOnObjects", "class_g_root_browser.html#a5004df3046d1b9ecca3fd6ead35c25adae97894e5052f3c569b6b077d1d908fa6", null ],
+        [ "kHelpOnPS", "class_g_root_browser.html#a5004df3046d1b9ecca3fd6ead35c25ada3590846bcc210be4b3772a4488c48b73", null ],
+        [ "kHelpOnRemote", "class_g_root_browser.html#a5004df3046d1b9ecca3fd6ead35c25adaf7f6e1043ff14c5af211d553ee885b38", null ],
+        [ "kNewEditor", "class_g_root_browser.html#a5004df3046d1b9ecca3fd6ead35c25ada6fe61797544dc1d56af00bbafeaafa4f", null ],
+        [ "kNewCanvas", "class_g_root_browser.html#a5004df3046d1b9ecca3fd6ead35c25adac63918ba3ccb94a3e812fbdb3fd97285", null ],
+        [ "kNewHtml", "class_g_root_browser.html#a5004df3046d1b9ecca3fd6ead35c25ada455b45af619051978198ef4da906fc22", null ],
+        [ "kExecPluginMacro", "class_g_root_browser.html#a5004df3046d1b9ecca3fd6ead35c25ada73ef0888cc30849f5f5932803514f1d3", null ],
+        [ "kExecPluginCmd", "class_g_root_browser.html#a5004df3046d1b9ecca3fd6ead35c25adac0e316060ad7cc35caa51549889955bd", null ],
+        [ "kCloseTab", "class_g_root_browser.html#a5004df3046d1b9ecca3fd6ead35c25ada170da316905af209513d5f81dfcde443", null ],
+        [ "kCloseWindow", "class_g_root_browser.html#a5004df3046d1b9ecca3fd6ead35c25adab6622d79f01736a45551ad07a3ab27f4", null ],
+        [ "kQuitRoot", "class_g_root_browser.html#a5004df3046d1b9ecca3fd6ead35c25ada8354136a5a4347a90e08553576f42c14", null ]
       ] ],
       [ "GRootBrowser", "class_g_root_browser.html#abac176fdb7275a20c0921ef0604460a8", null ],
       [ "GRootBrowser", "class_g_root_browser.html#ab4ba81a28bede6f2b3b36c686dd46043", null ],

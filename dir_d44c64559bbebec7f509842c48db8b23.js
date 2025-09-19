@@ -61,6 +61,7 @@ var dir_d44c64559bbebec7f509842c48db8b23 =
     [ "TEnergyCal.h", "_t_energy_cal_8h.html", null ],
     [ "TEpicsFrag.h", "_t_epics_frag_8h.html", null ],
     [ "TEventBuildingLoop.h", "_t_event_building_loop_8h.html", null ],
+    [ "TFragDiagnosticsLoop.h", "_t_frag_diagnostics_loop_8h.html", null ],
     [ "TFragHistLoop.h", "_t_frag_hist_loop_8h.html", null ],
     [ "TFragment.h", "_t_fragment_8h.html", null ],
     [ "TFragmentChainLoop.h", "_t_fragment_chain_loop_8h.html", null ],

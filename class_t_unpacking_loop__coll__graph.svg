@@ -170,8 +170,8 @@ var sectionId = 'dynsection-1';
 <text text-anchor="middle" x="458.38" y="-929.96" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">fOutputAnalysisFile</text>
 <text text-anchor="start" x="401.38" y="-918.71" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">fOutputAnalysisHistogram</text>
 <text text-anchor="middle" x="458.38" y="-907.46" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">File</text>
-<text text-anchor="middle" x="458.38" y="-896.21" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">fOutputFilteredFile</text>
-<text text-anchor="middle" x="458.38" y="-884.96" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">fOutputFragmentFile</text>
+<text text-anchor="middle" x="458.38" y="-896.21" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">fOutputDiagnosticsFile</text>
+<text text-anchor="middle" x="458.38" y="-884.96" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">fOutputFilteredFile</text>
 <text text-anchor="middle" x="458.38" y="-873.71" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">...</text>
 </g>
 <!-- Node4 -->

@@ -91,32 +91,32 @@ var group___sorting =
       [ "fWaveformFitting", "class_t_analysis_options.html#ade11d462a7d7e916ef63e1edb6cf97eb", null ]
     ] ],
     [ "TBadFragment", "class_t_bad_fragment.html", [
-      [ "EBitFlag", "class_t_bad_fragment.html#ada323f08a38cd73186465ecb4f9b72eb", [
-        [ "kIsEnergySet", "class_t_bad_fragment.html#ada323f08a38cd73186465ecb4f9b72eba7433dc57f9db1fc472789e8796527f19", null ],
-        [ "kIsChannelSet", "class_t_bad_fragment.html#ada323f08a38cd73186465ecb4f9b72eba2eb1e43d1f624b58f25b306dacc7456e", null ],
-        [ "kBit2", "class_t_bad_fragment.html#ada323f08a38cd73186465ecb4f9b72ebaf9d85f4b6d79edf8e10b667b80366121", null ],
-        [ "kBit3", "class_t_bad_fragment.html#ada323f08a38cd73186465ecb4f9b72ebaf6bfaf7b6e94f57eacbdb0a843778541", null ],
-        [ "kIsPPGSet", "class_t_bad_fragment.html#ada323f08a38cd73186465ecb4f9b72ebada12718f81ebb26c5299da96b70a03bf", null ],
-        [ "kIsTimeSet", "class_t_bad_fragment.html#ada323f08a38cd73186465ecb4f9b72eba377ea2e41439f212e05aeb08fc352cb2", null ],
-        [ "kBit6", "class_t_bad_fragment.html#ada323f08a38cd73186465ecb4f9b72eba642cd2e286b8be8deaf8a9ce839969de", null ],
-        [ "kBit7", "class_t_bad_fragment.html#ada323f08a38cd73186465ecb4f9b72ebad4826be5c215ecd23478e9a4c7dcbe01", null ],
-        [ "kBit8", "class_t_bad_fragment.html#ada323f08a38cd73186465ecb4f9b72ebaa0ac660d426d24973e8e577cbbd2956d", null ],
-        [ "kDetHitBit0", "class_t_bad_fragment.html#ada323f08a38cd73186465ecb4f9b72eba39a6ce5f6b4b66bc2bf85f3ae6c40817", null ],
-        [ "kDetHitBit1", "class_t_bad_fragment.html#ada323f08a38cd73186465ecb4f9b72eba59d97a49ea9366a78241ca68d8bfb0b2", null ],
-        [ "kDetHitBit2", "class_t_bad_fragment.html#ada323f08a38cd73186465ecb4f9b72ebaf68add0f8356cbe681ca0b1207df069a", null ],
-        [ "kDetHitBit3", "class_t_bad_fragment.html#ada323f08a38cd73186465ecb4f9b72eba41cb5aedd98614cd326ab6348400df82", null ],
-        [ "kDetHitBit4", "class_t_bad_fragment.html#ada323f08a38cd73186465ecb4f9b72eba75a188ec1639bee31019afaa2bb5607a", null ],
-        [ "kDetHitBit5", "class_t_bad_fragment.html#ada323f08a38cd73186465ecb4f9b72ebaec4f433bab5a24aa6a4aa0862ef0eb59", null ],
-        [ "kDetHitBit6", "class_t_bad_fragment.html#ada323f08a38cd73186465ecb4f9b72ebacc77ad5a75191c50f792a9e981af004f", null ],
-        [ "kBase", "class_t_bad_fragment.html#ada323f08a38cd73186465ecb4f9b72ebad972115f06325253781715b97744abdd", null ],
-        [ "kIsAllSet", "class_t_bad_fragment.html#ada323f08a38cd73186465ecb4f9b72eba8ae5d0cf4967beedfb2b3937b4855ed3", null ]
+      [ "EBitFlag", "class_t_bad_fragment.html#a187897c681b829247a98022bbb81fffe", [
+        [ "kIsEnergySet", "class_t_bad_fragment.html#a187897c681b829247a98022bbb81fffea7433dc57f9db1fc472789e8796527f19", null ],
+        [ "kIsChannelSet", "class_t_bad_fragment.html#a187897c681b829247a98022bbb81fffea2eb1e43d1f624b58f25b306dacc7456e", null ],
+        [ "kBit2", "class_t_bad_fragment.html#a187897c681b829247a98022bbb81fffeaf9d85f4b6d79edf8e10b667b80366121", null ],
+        [ "kBit3", "class_t_bad_fragment.html#a187897c681b829247a98022bbb81fffeaf6bfaf7b6e94f57eacbdb0a843778541", null ],
+        [ "kIsPPGSet", "class_t_bad_fragment.html#a187897c681b829247a98022bbb81fffeada12718f81ebb26c5299da96b70a03bf", null ],
+        [ "kIsTimeSet", "class_t_bad_fragment.html#a187897c681b829247a98022bbb81fffea377ea2e41439f212e05aeb08fc352cb2", null ],
+        [ "kBit6", "class_t_bad_fragment.html#a187897c681b829247a98022bbb81fffea642cd2e286b8be8deaf8a9ce839969de", null ],
+        [ "kBit7", "class_t_bad_fragment.html#a187897c681b829247a98022bbb81fffead4826be5c215ecd23478e9a4c7dcbe01", null ],
+        [ "kBit8", "class_t_bad_fragment.html#a187897c681b829247a98022bbb81fffeaa0ac660d426d24973e8e577cbbd2956d", null ],
+        [ "kDetHitBit0", "class_t_bad_fragment.html#a187897c681b829247a98022bbb81fffea39a6ce5f6b4b66bc2bf85f3ae6c40817", null ],
+        [ "kDetHitBit1", "class_t_bad_fragment.html#a187897c681b829247a98022bbb81fffea59d97a49ea9366a78241ca68d8bfb0b2", null ],
+        [ "kDetHitBit2", "class_t_bad_fragment.html#a187897c681b829247a98022bbb81fffeaf68add0f8356cbe681ca0b1207df069a", null ],
+        [ "kDetHitBit3", "class_t_bad_fragment.html#a187897c681b829247a98022bbb81fffea41cb5aedd98614cd326ab6348400df82", null ],
+        [ "kDetHitBit4", "class_t_bad_fragment.html#a187897c681b829247a98022bbb81fffea75a188ec1639bee31019afaa2bb5607a", null ],
+        [ "kDetHitBit5", "class_t_bad_fragment.html#a187897c681b829247a98022bbb81fffeaec4f433bab5a24aa6a4aa0862ef0eb59", null ],
+        [ "kDetHitBit6", "class_t_bad_fragment.html#a187897c681b829247a98022bbb81fffeacc77ad5a75191c50f792a9e981af004f", null ],
+        [ "kBase", "class_t_bad_fragment.html#a187897c681b829247a98022bbb81fffead972115f06325253781715b97744abdd", null ],
+        [ "kIsAllSet", "class_t_bad_fragment.html#a187897c681b829247a98022bbb81fffea8ae5d0cf4967beedfb2b3937b4855ed3", null ]
       ] ],
-      [ "ETimeFlag", "class_t_bad_fragment.html#a2a4a599dd0b1ba9e685aa01229876df6", [
-        [ "kNoneSet", "class_t_bad_fragment.html#a2a4a599dd0b1ba9e685aa01229876df6ac46818fff0cdb9892bdca69fca363333", null ],
-        [ "kCFD", "class_t_bad_fragment.html#a2a4a599dd0b1ba9e685aa01229876df6ac8f4925a383e3bfc8c12746da1370f00", null ],
-        [ "kWalk", "class_t_bad_fragment.html#a2a4a599dd0b1ba9e685aa01229876df6a30c7a6c70a2592413069d0a46e2309d4", null ],
-        [ "kOffset", "class_t_bad_fragment.html#a2a4a599dd0b1ba9e685aa01229876df6a383fd110f350f2b35dbc1b245a216d19", null ],
-        [ "kAll", "class_t_bad_fragment.html#a2a4a599dd0b1ba9e685aa01229876df6a34bdbffdb1c0e1b603f58fc0d49548b6", null ]
+      [ "ETimeFlag", "class_t_bad_fragment.html#a9677bfb19ee70b9ce819ea8d1fceb00e", [
+        [ "kNoneSet", "class_t_bad_fragment.html#a9677bfb19ee70b9ce819ea8d1fceb00eac46818fff0cdb9892bdca69fca363333", null ],
+        [ "kCFD", "class_t_bad_fragment.html#a9677bfb19ee70b9ce819ea8d1fceb00eac8f4925a383e3bfc8c12746da1370f00", null ],
+        [ "kWalk", "class_t_bad_fragment.html#a9677bfb19ee70b9ce819ea8d1fceb00ea30c7a6c70a2592413069d0a46e2309d4", null ],
+        [ "kOffset", "class_t_bad_fragment.html#a9677bfb19ee70b9ce819ea8d1fceb00ea383fd110f350f2b35dbc1b245a216d19", null ],
+        [ "kAll", "class_t_bad_fragment.html#a9677bfb19ee70b9ce819ea8d1fceb00ea34bdbffdb1c0e1b603f58fc0d49548b6", null ]
       ] ],
       [ "TBadFragment", "class_t_bad_fragment.html#a85a7417fbc187867dc14bfc215a5b6d9", null ],
       [ "TBadFragment", "class_t_bad_fragment.html#a4a9258c467b7ba948271d9e06671a93f", null ],
@@ -464,16 +464,16 @@ var group___sorting =
       [ "WaveFormShape", "class_t_channel.html#a73ad581f230f851fc0c16782ed371180", null ]
     ] ],
     [ "TDataParser", "class_t_data_parser.html", [
-      [ "EBank", "class_t_data_parser.html#a3393bc2e122d9fc941b5c3bc838a0afb", [
-        [ "kWFDN", "class_t_data_parser.html#a3393bc2e122d9fc941b5c3bc838a0afbaa2e2998e0e13392bfe6563114ec48e58", null ],
-        [ "kGRF1", "class_t_data_parser.html#a3393bc2e122d9fc941b5c3bc838a0afba07512a013c438c8346494728863ccbce", null ],
-        [ "kGRF2", "class_t_data_parser.html#a3393bc2e122d9fc941b5c3bc838a0afba73f1121f4520884497a1b3bc650a4a37", null ],
-        [ "kGRF3", "class_t_data_parser.html#a3393bc2e122d9fc941b5c3bc838a0afba5d1d106ce0d8a1037614f063f2bf2482", null ],
-        [ "kGRF4", "class_t_data_parser.html#a3393bc2e122d9fc941b5c3bc838a0afbab9335a5aeda5f3a6020643f3ab8bf36d", null ],
-        [ "kFME0", "class_t_data_parser.html#a3393bc2e122d9fc941b5c3bc838a0afba6eee1f7aaacdd093eaf361336ebab28b", null ],
-        [ "kFME1", "class_t_data_parser.html#a3393bc2e122d9fc941b5c3bc838a0afbaa7676c8fb4b4207507a8e11280eaa3d1", null ],
-        [ "kFME2", "class_t_data_parser.html#a3393bc2e122d9fc941b5c3bc838a0afbab63a0cbccf02efe8e8a4bec6aa2ff38d", null ],
-        [ "kFME3", "class_t_data_parser.html#a3393bc2e122d9fc941b5c3bc838a0afba681befaa78468d5279799de6e80b08f1", null ]
+      [ "EBank", "class_t_data_parser.html#ace2e5858b417a15e2ecfa39c39244d77", [
+        [ "kWFDN", "class_t_data_parser.html#ace2e5858b417a15e2ecfa39c39244d77aa2e2998e0e13392bfe6563114ec48e58", null ],
+        [ "kGRF1", "class_t_data_parser.html#ace2e5858b417a15e2ecfa39c39244d77a07512a013c438c8346494728863ccbce", null ],
+        [ "kGRF2", "class_t_data_parser.html#ace2e5858b417a15e2ecfa39c39244d77a73f1121f4520884497a1b3bc650a4a37", null ],
+        [ "kGRF3", "class_t_data_parser.html#ace2e5858b417a15e2ecfa39c39244d77a5d1d106ce0d8a1037614f063f2bf2482", null ],
+        [ "kGRF4", "class_t_data_parser.html#ace2e5858b417a15e2ecfa39c39244d77ab9335a5aeda5f3a6020643f3ab8bf36d", null ],
+        [ "kFME0", "class_t_data_parser.html#ace2e5858b417a15e2ecfa39c39244d77a6eee1f7aaacdd093eaf361336ebab28b", null ],
+        [ "kFME1", "class_t_data_parser.html#ace2e5858b417a15e2ecfa39c39244d77aa7676c8fb4b4207507a8e11280eaa3d1", null ],
+        [ "kFME2", "class_t_data_parser.html#ace2e5858b417a15e2ecfa39c39244d77ab63a0cbccf02efe8e8a4bec6aa2ff38d", null ],
+        [ "kFME3", "class_t_data_parser.html#ace2e5858b417a15e2ecfa39c39244d77a681befaa78468d5279799de6e80b08f1", null ]
       ] ],
       [ "TDataParser", "class_t_data_parser.html#abf0bcd6e1a12af1bae73339437ade8f9", null ],
       [ "TDataParser", "class_t_data_parser.html#a2c0d34af1c1650812dcca9e05e2918ca", null ],
@@ -622,32 +622,32 @@ var group___sorting =
       [ "fSmallestTime", "class_t_epics_frag.html#aafb568f76f1d1865707c02f3b4771b75", null ]
     ] ],
     [ "TFragment", "class_t_fragment.html", [
-      [ "EBitFlag", "class_t_fragment.html#ada323f08a38cd73186465ecb4f9b72eb", [
-        [ "kIsEnergySet", "class_t_fragment.html#ada323f08a38cd73186465ecb4f9b72eba7433dc57f9db1fc472789e8796527f19", null ],
-        [ "kIsChannelSet", "class_t_fragment.html#ada323f08a38cd73186465ecb4f9b72eba2eb1e43d1f624b58f25b306dacc7456e", null ],
-        [ "kBit2", "class_t_fragment.html#ada323f08a38cd73186465ecb4f9b72ebaf9d85f4b6d79edf8e10b667b80366121", null ],
-        [ "kBit3", "class_t_fragment.html#ada323f08a38cd73186465ecb4f9b72ebaf6bfaf7b6e94f57eacbdb0a843778541", null ],
-        [ "kIsPPGSet", "class_t_fragment.html#ada323f08a38cd73186465ecb4f9b72ebada12718f81ebb26c5299da96b70a03bf", null ],
-        [ "kIsTimeSet", "class_t_fragment.html#ada323f08a38cd73186465ecb4f9b72eba377ea2e41439f212e05aeb08fc352cb2", null ],
-        [ "kBit6", "class_t_fragment.html#ada323f08a38cd73186465ecb4f9b72eba642cd2e286b8be8deaf8a9ce839969de", null ],
-        [ "kBit7", "class_t_fragment.html#ada323f08a38cd73186465ecb4f9b72ebad4826be5c215ecd23478e9a4c7dcbe01", null ],
-        [ "kBit8", "class_t_fragment.html#ada323f08a38cd73186465ecb4f9b72ebaa0ac660d426d24973e8e577cbbd2956d", null ],
-        [ "kDetHitBit0", "class_t_fragment.html#ada323f08a38cd73186465ecb4f9b72eba39a6ce5f6b4b66bc2bf85f3ae6c40817", null ],
-        [ "kDetHitBit1", "class_t_fragment.html#ada323f08a38cd73186465ecb4f9b72eba59d97a49ea9366a78241ca68d8bfb0b2", null ],
-        [ "kDetHitBit2", "class_t_fragment.html#ada323f08a38cd73186465ecb4f9b72ebaf68add0f8356cbe681ca0b1207df069a", null ],
-        [ "kDetHitBit3", "class_t_fragment.html#ada323f08a38cd73186465ecb4f9b72eba41cb5aedd98614cd326ab6348400df82", null ],
-        [ "kDetHitBit4", "class_t_fragment.html#ada323f08a38cd73186465ecb4f9b72eba75a188ec1639bee31019afaa2bb5607a", null ],
-        [ "kDetHitBit5", "class_t_fragment.html#ada323f08a38cd73186465ecb4f9b72ebaec4f433bab5a24aa6a4aa0862ef0eb59", null ],
-        [ "kDetHitBit6", "class_t_fragment.html#ada323f08a38cd73186465ecb4f9b72ebacc77ad5a75191c50f792a9e981af004f", null ],
-        [ "kBase", "class_t_fragment.html#ada323f08a38cd73186465ecb4f9b72ebad972115f06325253781715b97744abdd", null ],
-        [ "kIsAllSet", "class_t_fragment.html#ada323f08a38cd73186465ecb4f9b72eba8ae5d0cf4967beedfb2b3937b4855ed3", null ]
+      [ "EBitFlag", "class_t_fragment.html#a187897c681b829247a98022bbb81fffe", [
+        [ "kIsEnergySet", "class_t_fragment.html#a187897c681b829247a98022bbb81fffea7433dc57f9db1fc472789e8796527f19", null ],
+        [ "kIsChannelSet", "class_t_fragment.html#a187897c681b829247a98022bbb81fffea2eb1e43d1f624b58f25b306dacc7456e", null ],
+        [ "kBit2", "class_t_fragment.html#a187897c681b829247a98022bbb81fffeaf9d85f4b6d79edf8e10b667b80366121", null ],
+        [ "kBit3", "class_t_fragment.html#a187897c681b829247a98022bbb81fffeaf6bfaf7b6e94f57eacbdb0a843778541", null ],
+        [ "kIsPPGSet", "class_t_fragment.html#a187897c681b829247a98022bbb81fffeada12718f81ebb26c5299da96b70a03bf", null ],
+        [ "kIsTimeSet", "class_t_fragment.html#a187897c681b829247a98022bbb81fffea377ea2e41439f212e05aeb08fc352cb2", null ],
+        [ "kBit6", "class_t_fragment.html#a187897c681b829247a98022bbb81fffea642cd2e286b8be8deaf8a9ce839969de", null ],
+        [ "kBit7", "class_t_fragment.html#a187897c681b829247a98022bbb81fffead4826be5c215ecd23478e9a4c7dcbe01", null ],
+        [ "kBit8", "class_t_fragment.html#a187897c681b829247a98022bbb81fffeaa0ac660d426d24973e8e577cbbd2956d", null ],
+        [ "kDetHitBit0", "class_t_fragment.html#a187897c681b829247a98022bbb81fffea39a6ce5f6b4b66bc2bf85f3ae6c40817", null ],
+        [ "kDetHitBit1", "class_t_fragment.html#a187897c681b829247a98022bbb81fffea59d97a49ea9366a78241ca68d8bfb0b2", null ],
+        [ "kDetHitBit2", "class_t_fragment.html#a187897c681b829247a98022bbb81fffeaf68add0f8356cbe681ca0b1207df069a", null ],
+        [ "kDetHitBit3", "class_t_fragment.html#a187897c681b829247a98022bbb81fffea41cb5aedd98614cd326ab6348400df82", null ],
+        [ "kDetHitBit4", "class_t_fragment.html#a187897c681b829247a98022bbb81fffea75a188ec1639bee31019afaa2bb5607a", null ],
+        [ "kDetHitBit5", "class_t_fragment.html#a187897c681b829247a98022bbb81fffeaec4f433bab5a24aa6a4aa0862ef0eb59", null ],
+        [ "kDetHitBit6", "class_t_fragment.html#a187897c681b829247a98022bbb81fffeacc77ad5a75191c50f792a9e981af004f", null ],
+        [ "kBase", "class_t_fragment.html#a187897c681b829247a98022bbb81fffead972115f06325253781715b97744abdd", null ],
+        [ "kIsAllSet", "class_t_fragment.html#a187897c681b829247a98022bbb81fffea8ae5d0cf4967beedfb2b3937b4855ed3", null ]
       ] ],
-      [ "ETimeFlag", "class_t_fragment.html#a2a4a599dd0b1ba9e685aa01229876df6", [
-        [ "kNoneSet", "class_t_fragment.html#a2a4a599dd0b1ba9e685aa01229876df6ac46818fff0cdb9892bdca69fca363333", null ],
-        [ "kCFD", "class_t_fragment.html#a2a4a599dd0b1ba9e685aa01229876df6ac8f4925a383e3bfc8c12746da1370f00", null ],
-        [ "kWalk", "class_t_fragment.html#a2a4a599dd0b1ba9e685aa01229876df6a30c7a6c70a2592413069d0a46e2309d4", null ],
-        [ "kOffset", "class_t_fragment.html#a2a4a599dd0b1ba9e685aa01229876df6a383fd110f350f2b35dbc1b245a216d19", null ],
-        [ "kAll", "class_t_fragment.html#a2a4a599dd0b1ba9e685aa01229876df6a34bdbffdb1c0e1b603f58fc0d49548b6", null ]
+      [ "ETimeFlag", "class_t_fragment.html#a9677bfb19ee70b9ce819ea8d1fceb00e", [
+        [ "kNoneSet", "class_t_fragment.html#a9677bfb19ee70b9ce819ea8d1fceb00eac46818fff0cdb9892bdca69fca363333", null ],
+        [ "kCFD", "class_t_fragment.html#a9677bfb19ee70b9ce819ea8d1fceb00eac8f4925a383e3bfc8c12746da1370f00", null ],
+        [ "kWalk", "class_t_fragment.html#a9677bfb19ee70b9ce819ea8d1fceb00ea30c7a6c70a2592413069d0a46e2309d4", null ],
+        [ "kOffset", "class_t_fragment.html#a9677bfb19ee70b9ce819ea8d1fceb00ea383fd110f350f2b35dbc1b245a216d19", null ],
+        [ "kAll", "class_t_fragment.html#a9677bfb19ee70b9ce819ea8d1fceb00ea34bdbffdb1c0e1b603f58fc0d49548b6", null ]
       ] ],
       [ "TFragment", "class_t_fragment.html#a106f8163123f99a926c2534749658411", null ],
       [ "TFragment", "class_t_fragment.html#a805ff6ada61c5e7d959f2cd97874ed00", null ],
@@ -1141,6 +1141,7 @@ var group___sorting =
       [ "CloseAfterSort", "class_t_g_r_s_i_options.html#a9b5f494830509afc70fd1e51667ddb8c", null ],
       [ "ColumnWidth", "class_t_g_r_s_i_options.html#ad89e04a8769d46e1defcaa91a8fe444b", null ],
       [ "CompiledFilterFile", "class_t_g_r_s_i_options.html#a436072e00490e308f185484cfd2e8ef0", null ],
+      [ "CreateFragmentDiagnostics", "class_t_g_r_s_i_options.html#a5723b2de0a91e54f832faa9436aa29a2", null ],
       [ "DataFrameLibrary", "class_t_g_r_s_i_options.html#a5aa4fe34caf616ee493c7667cecaab08", null ],
       [ "Debug", "class_t_g_r_s_i_options.html#acace454b98268a94f8bb00cd6b6998c0", null ],
       [ "DetermineFileType", "class_t_g_r_s_i_options.html#a17d2ad4aced4fb8a162170422d16c6a1", null ],
@@ -1174,6 +1175,7 @@ var group___sorting =
       [ "OptionFiles", "class_t_g_r_s_i_options.html#afec98c3793e6951d0d6799d4f34a0274", null ],
       [ "OutputAnalysisFile", "class_t_g_r_s_i_options.html#afeca7f10c37c1bf2b7247ffc888dc4e7", null ],
       [ "OutputAnalysisHistogramFile", "class_t_g_r_s_i_options.html#a65dad1a47c5299b59c7a58f09c9bcaf2", null ],
+      [ "OutputDiagnosticsFile", "class_t_g_r_s_i_options.html#ac881edd27b36d8f6b3e6a2e844db0434", null ],
       [ "OutputFilteredFile", "class_t_g_r_s_i_options.html#a72365fa161b3436867a514ce0e563357", null ],
       [ "OutputFragmentFile", "class_t_g_r_s_i_options.html#af5f4737580f7ade9d61245b160417025", null ],
       [ "OutputFragmentHistogramFile", "class_t_g_r_s_i_options.html#a45126fa811c3ff0074b1b8f2b6159497", null ],
@@ -1223,6 +1225,7 @@ var group___sorting =
       [ "fCloseAfterSort", "class_t_g_r_s_i_options.html#a18f283d7f258ee48526b51acfc186e24", null ],
       [ "fColumnWidth", "class_t_g_r_s_i_options.html#a9d56c29e6d67bad413b9f4ebe51c405a", null ],
       [ "fCompiledFilterFile", "class_t_g_r_s_i_options.html#aad12b2b3c1151219047f9a6660a84f31", null ],
+      [ "fCreateFragmentDiagnostics", "class_t_g_r_s_i_options.html#a405c9912b04647941b628ad928cac205", null ],
       [ "fDataFrameLibrary", "class_t_g_r_s_i_options.html#a5f43ad4140f6d45326fc435735d19c43", null ],
       [ "fDebug", "class_t_g_r_s_i_options.html#abb9b2ad613e88a80e53df8ec810a2bc7", null ],
       [ "fDownscaling", "class_t_g_r_s_i_options.html#a43bbdbb5450dd505ea9e24fcf411c4f6", null ],
@@ -1257,6 +1260,7 @@ var group___sorting =
       [ "fOptionsFile", "class_t_g_r_s_i_options.html#a4bbd09ef6237b9ed8f51bd873f0d6293", null ],
       [ "fOutputAnalysisFile", "class_t_g_r_s_i_options.html#a7d32202460fb7707e877423380e4f61b", null ],
       [ "fOutputAnalysisHistogramFile", "class_t_g_r_s_i_options.html#a8ec02fdae51b65ac09fec1118ff2fbe9", null ],
+      [ "fOutputDiagnosticsFile", "class_t_g_r_s_i_options.html#a91419be06de640ffb4aabb3276830309", null ],
       [ "fOutputFilteredFile", "class_t_g_r_s_i_options.html#a4e15e475b5dc85bf8b03dcef070e997b", null ],
       [ "fOutputFragmentFile", "class_t_g_r_s_i_options.html#a35949fab528f580d491fc0b4bd1c217b", null ],
       [ "fOutputFragmentHistogramFile", "class_t_g_r_s_i_options.html#af7b15c68d52b9e25230050efb2ce01a5", null ],
@@ -1476,32 +1480,32 @@ var group___sorting =
       [ "fPinDiode", "class_t_h_i_l_detector_information.html#ab0119fe48a9472848aff39f2cd06c660", null ]
     ] ],
     [ "THILFragment", "class_t_h_i_l_fragment.html", [
-      [ "EBitFlag", "class_t_h_i_l_fragment.html#ada323f08a38cd73186465ecb4f9b72eb", [
-        [ "kIsEnergySet", "class_t_h_i_l_fragment.html#ada323f08a38cd73186465ecb4f9b72eba7433dc57f9db1fc472789e8796527f19", null ],
-        [ "kIsChannelSet", "class_t_h_i_l_fragment.html#ada323f08a38cd73186465ecb4f9b72eba2eb1e43d1f624b58f25b306dacc7456e", null ],
-        [ "kBit2", "class_t_h_i_l_fragment.html#ada323f08a38cd73186465ecb4f9b72ebaf9d85f4b6d79edf8e10b667b80366121", null ],
-        [ "kBit3", "class_t_h_i_l_fragment.html#ada323f08a38cd73186465ecb4f9b72ebaf6bfaf7b6e94f57eacbdb0a843778541", null ],
-        [ "kIsPPGSet", "class_t_h_i_l_fragment.html#ada323f08a38cd73186465ecb4f9b72ebada12718f81ebb26c5299da96b70a03bf", null ],
-        [ "kIsTimeSet", "class_t_h_i_l_fragment.html#ada323f08a38cd73186465ecb4f9b72eba377ea2e41439f212e05aeb08fc352cb2", null ],
-        [ "kBit6", "class_t_h_i_l_fragment.html#ada323f08a38cd73186465ecb4f9b72eba642cd2e286b8be8deaf8a9ce839969de", null ],
-        [ "kBit7", "class_t_h_i_l_fragment.html#ada323f08a38cd73186465ecb4f9b72ebad4826be5c215ecd23478e9a4c7dcbe01", null ],
-        [ "kBit8", "class_t_h_i_l_fragment.html#ada323f08a38cd73186465ecb4f9b72ebaa0ac660d426d24973e8e577cbbd2956d", null ],
-        [ "kDetHitBit0", "class_t_h_i_l_fragment.html#ada323f08a38cd73186465ecb4f9b72eba39a6ce5f6b4b66bc2bf85f3ae6c40817", null ],
-        [ "kDetHitBit1", "class_t_h_i_l_fragment.html#ada323f08a38cd73186465ecb4f9b72eba59d97a49ea9366a78241ca68d8bfb0b2", null ],
-        [ "kDetHitBit2", "class_t_h_i_l_fragment.html#ada323f08a38cd73186465ecb4f9b72ebaf68add0f8356cbe681ca0b1207df069a", null ],
-        [ "kDetHitBit3", "class_t_h_i_l_fragment.html#ada323f08a38cd73186465ecb4f9b72eba41cb5aedd98614cd326ab6348400df82", null ],
-        [ "kDetHitBit4", "class_t_h_i_l_fragment.html#ada323f08a38cd73186465ecb4f9b72eba75a188ec1639bee31019afaa2bb5607a", null ],
-        [ "kDetHitBit5", "class_t_h_i_l_fragment.html#ada323f08a38cd73186465ecb4f9b72ebaec4f433bab5a24aa6a4aa0862ef0eb59", null ],
-        [ "kDetHitBit6", "class_t_h_i_l_fragment.html#ada323f08a38cd73186465ecb4f9b72ebacc77ad5a75191c50f792a9e981af004f", null ],
-        [ "kBase", "class_t_h_i_l_fragment.html#ada323f08a38cd73186465ecb4f9b72ebad972115f06325253781715b97744abdd", null ],
-        [ "kIsAllSet", "class_t_h_i_l_fragment.html#ada323f08a38cd73186465ecb4f9b72eba8ae5d0cf4967beedfb2b3937b4855ed3", null ]
+      [ "EBitFlag", "class_t_h_i_l_fragment.html#a187897c681b829247a98022bbb81fffe", [
+        [ "kIsEnergySet", "class_t_h_i_l_fragment.html#a187897c681b829247a98022bbb81fffea7433dc57f9db1fc472789e8796527f19", null ],
+        [ "kIsChannelSet", "class_t_h_i_l_fragment.html#a187897c681b829247a98022bbb81fffea2eb1e43d1f624b58f25b306dacc7456e", null ],
+        [ "kBit2", "class_t_h_i_l_fragment.html#a187897c681b829247a98022bbb81fffeaf9d85f4b6d79edf8e10b667b80366121", null ],
+        [ "kBit3", "class_t_h_i_l_fragment.html#a187897c681b829247a98022bbb81fffeaf6bfaf7b6e94f57eacbdb0a843778541", null ],
+        [ "kIsPPGSet", "class_t_h_i_l_fragment.html#a187897c681b829247a98022bbb81fffeada12718f81ebb26c5299da96b70a03bf", null ],
+        [ "kIsTimeSet", "class_t_h_i_l_fragment.html#a187897c681b829247a98022bbb81fffea377ea2e41439f212e05aeb08fc352cb2", null ],
+        [ "kBit6", "class_t_h_i_l_fragment.html#a187897c681b829247a98022bbb81fffea642cd2e286b8be8deaf8a9ce839969de", null ],
+        [ "kBit7", "class_t_h_i_l_fragment.html#a187897c681b829247a98022bbb81fffead4826be5c215ecd23478e9a4c7dcbe01", null ],
+        [ "kBit8", "class_t_h_i_l_fragment.html#a187897c681b829247a98022bbb81fffeaa0ac660d426d24973e8e577cbbd2956d", null ],
+        [ "kDetHitBit0", "class_t_h_i_l_fragment.html#a187897c681b829247a98022bbb81fffea39a6ce5f6b4b66bc2bf85f3ae6c40817", null ],
+        [ "kDetHitBit1", "class_t_h_i_l_fragment.html#a187897c681b829247a98022bbb81fffea59d97a49ea9366a78241ca68d8bfb0b2", null ],
+        [ "kDetHitBit2", "class_t_h_i_l_fragment.html#a187897c681b829247a98022bbb81fffeaf68add0f8356cbe681ca0b1207df069a", null ],
+        [ "kDetHitBit3", "class_t_h_i_l_fragment.html#a187897c681b829247a98022bbb81fffea41cb5aedd98614cd326ab6348400df82", null ],
+        [ "kDetHitBit4", "class_t_h_i_l_fragment.html#a187897c681b829247a98022bbb81fffea75a188ec1639bee31019afaa2bb5607a", null ],
+        [ "kDetHitBit5", "class_t_h_i_l_fragment.html#a187897c681b829247a98022bbb81fffeaec4f433bab5a24aa6a4aa0862ef0eb59", null ],
+        [ "kDetHitBit6", "class_t_h_i_l_fragment.html#a187897c681b829247a98022bbb81fffeacc77ad5a75191c50f792a9e981af004f", null ],
+        [ "kBase", "class_t_h_i_l_fragment.html#a187897c681b829247a98022bbb81fffead972115f06325253781715b97744abdd", null ],
+        [ "kIsAllSet", "class_t_h_i_l_fragment.html#a187897c681b829247a98022bbb81fffea8ae5d0cf4967beedfb2b3937b4855ed3", null ]
       ] ],
-      [ "ETimeFlag", "class_t_h_i_l_fragment.html#a2a4a599dd0b1ba9e685aa01229876df6", [
-        [ "kNoneSet", "class_t_h_i_l_fragment.html#a2a4a599dd0b1ba9e685aa01229876df6ac46818fff0cdb9892bdca69fca363333", null ],
-        [ "kCFD", "class_t_h_i_l_fragment.html#a2a4a599dd0b1ba9e685aa01229876df6ac8f4925a383e3bfc8c12746da1370f00", null ],
-        [ "kWalk", "class_t_h_i_l_fragment.html#a2a4a599dd0b1ba9e685aa01229876df6a30c7a6c70a2592413069d0a46e2309d4", null ],
-        [ "kOffset", "class_t_h_i_l_fragment.html#a2a4a599dd0b1ba9e685aa01229876df6a383fd110f350f2b35dbc1b245a216d19", null ],
-        [ "kAll", "class_t_h_i_l_fragment.html#a2a4a599dd0b1ba9e685aa01229876df6a34bdbffdb1c0e1b603f58fc0d49548b6", null ]
+      [ "ETimeFlag", "class_t_h_i_l_fragment.html#a9677bfb19ee70b9ce819ea8d1fceb00e", [
+        [ "kNoneSet", "class_t_h_i_l_fragment.html#a9677bfb19ee70b9ce819ea8d1fceb00eac46818fff0cdb9892bdca69fca363333", null ],
+        [ "kCFD", "class_t_h_i_l_fragment.html#a9677bfb19ee70b9ce819ea8d1fceb00eac8f4925a383e3bfc8c12746da1370f00", null ],
+        [ "kWalk", "class_t_h_i_l_fragment.html#a9677bfb19ee70b9ce819ea8d1fceb00ea30c7a6c70a2592413069d0a46e2309d4", null ],
+        [ "kOffset", "class_t_h_i_l_fragment.html#a9677bfb19ee70b9ce819ea8d1fceb00ea383fd110f350f2b35dbc1b245a216d19", null ],
+        [ "kAll", "class_t_h_i_l_fragment.html#a9677bfb19ee70b9ce819ea8d1fceb00ea34bdbffdb1c0e1b603f58fc0d49548b6", null ]
       ] ],
       [ "THILFragment", "class_t_h_i_l_fragment.html#abd2d027e0e62b956feeadba52d6b5e4e", null ],
       [ "THILFragment", "class_t_h_i_l_fragment.html#a199aca98fb7fded01a5b454d67c2d0a0", null ],
@@ -1832,9 +1836,9 @@ var group___sorting =
       [ "fLstVersion", "class_t_lst_event.html#a3b02b642d10391b3c44882db94a3941a", null ]
     ] ],
     [ "TLstFile", "class_t_lst_file.html", [
-      [ "EOpenType", "class_t_lst_file.html#a4ef0129feb73111852d5592fdeb4fff2", [
-        [ "kRead", "class_t_lst_file.html#a4ef0129feb73111852d5592fdeb4fff2a8604cf55a79d6bfdcb30f77d1622839b", null ],
-        [ "kWrite", "class_t_lst_file.html#a4ef0129feb73111852d5592fdeb4fff2ad3ac0ba447a9859ad2db8e498056429f", null ]
+      [ "EOpenType", "class_t_lst_file.html#a7fe15fb5bf96b7e333e5a0ba54c496e2", [
+        [ "kRead", "class_t_lst_file.html#a7fe15fb5bf96b7e333e5a0ba54c496e2a8604cf55a79d6bfdcb30f77d1622839b", null ],
+        [ "kWrite", "class_t_lst_file.html#a7fe15fb5bf96b7e333e5a0ba54c496e2ad3ac0ba447a9859ad2db8e498056429f", null ]
       ] ],
       [ "TLstFile", "class_t_lst_file.html#abf43eb15c5b133ef499a68137ce16446", null ],
       [ "TLstFile", "class_t_lst_file.html#a574d24fca1599fa170ba48ad10545514", null ],
@@ -1958,9 +1962,9 @@ var group___sorting =
       [ "fGoodFrags", "class_t_midas_event.html#a842ee9d55ece75f079c259bb8f7f8fa2", null ]
     ] ],
     [ "TMidasFile", "class_t_midas_file.html", [
-      [ "EOpenType", "class_t_midas_file.html#a4ef0129feb73111852d5592fdeb4fff2", [
-        [ "kRead", "class_t_midas_file.html#a4ef0129feb73111852d5592fdeb4fff2a8604cf55a79d6bfdcb30f77d1622839b", null ],
-        [ "kWrite", "class_t_midas_file.html#a4ef0129feb73111852d5592fdeb4fff2ad3ac0ba447a9859ad2db8e498056429f", null ]
+      [ "EOpenType", "class_t_midas_file.html#a7fe15fb5bf96b7e333e5a0ba54c496e2", [
+        [ "kRead", "class_t_midas_file.html#a7fe15fb5bf96b7e333e5a0ba54c496e2a8604cf55a79d6bfdcb30f77d1622839b", null ],
+        [ "kWrite", "class_t_midas_file.html#a7fe15fb5bf96b7e333e5a0ba54c496e2ad3ac0ba447a9859ad2db8e498056429f", null ]
       ] ],
       [ "TMidasFile", "class_t_midas_file.html#aa80ee7e7cc8cc07327f56d494f3864dc", null ],
       [ "TMidasFile", "class_t_midas_file.html#ae9124be7fa8cf49dc20229c847f6a712", null ],
@@ -2271,9 +2275,9 @@ var group___sorting =
       [ "fGoodFrags", "class_t_raw_event.html#a842ee9d55ece75f079c259bb8f7f8fa2", null ]
     ] ],
     [ "TRawFile", "class_t_raw_file.html", [
-      [ "EOpenType", "class_t_raw_file.html#a4ef0129feb73111852d5592fdeb4fff2", [
-        [ "kRead", "class_t_raw_file.html#a4ef0129feb73111852d5592fdeb4fff2a8604cf55a79d6bfdcb30f77d1622839b", null ],
-        [ "kWrite", "class_t_raw_file.html#a4ef0129feb73111852d5592fdeb4fff2ad3ac0ba447a9859ad2db8e498056429f", null ]
+      [ "EOpenType", "class_t_raw_file.html#a7fe15fb5bf96b7e333e5a0ba54c496e2", [
+        [ "kRead", "class_t_raw_file.html#a7fe15fb5bf96b7e333e5a0ba54c496e2a8604cf55a79d6bfdcb30f77d1622839b", null ],
+        [ "kWrite", "class_t_raw_file.html#a7fe15fb5bf96b7e333e5a0ba54c496e2ad3ac0ba447a9859ad2db8e498056429f", null ]
       ] ],
       [ "TRawFile", "class_t_raw_file.html#a0cf3989c3f1ba246b3489a8f235a3372", null ],
       [ "TRawFile", "class_t_raw_file.html#a99e4bd8c55bcd2327349ce3607c8a69d", null ],
@@ -2328,9 +2332,9 @@ var group___sorting =
       [ "fGoodFrags", "class_t_rlmd_event.html#a842ee9d55ece75f079c259bb8f7f8fa2", null ]
     ] ],
     [ "TRlmdFile", "class_t_rlmd_file.html", [
-      [ "EOpenType", "class_t_rlmd_file.html#a4ef0129feb73111852d5592fdeb4fff2", [
-        [ "kRead", "class_t_rlmd_file.html#a4ef0129feb73111852d5592fdeb4fff2a8604cf55a79d6bfdcb30f77d1622839b", null ],
-        [ "kWrite", "class_t_rlmd_file.html#a4ef0129feb73111852d5592fdeb4fff2ad3ac0ba447a9859ad2db8e498056429f", null ]
+      [ "EOpenType", "class_t_rlmd_file.html#a7fe15fb5bf96b7e333e5a0ba54c496e2", [
+        [ "kRead", "class_t_rlmd_file.html#a7fe15fb5bf96b7e333e5a0ba54c496e2a8604cf55a79d6bfdcb30f77d1622839b", null ],
+        [ "kWrite", "class_t_rlmd_file.html#a7fe15fb5bf96b7e333e5a0ba54c496e2ad3ac0ba447a9859ad2db8e498056429f", null ]
       ] ],
       [ "TRlmdFile", "class_t_rlmd_file.html#ab34b7cbe72407314ede107bcfee2bc2d", null ],
       [ "TRlmdFile", "class_t_rlmd_file.html#a24e3b15cf3bed5cd692cadbdfa6779cd", null ],
@@ -2762,9 +2766,9 @@ var group___sorting =
       [ "fTape", "struct_t_tdr_event_header.html#a03978ed2d6bea50f9dcc7afba27d7429", null ]
     ] ],
     [ "TTdrFile", "class_t_tdr_file.html", [
-      [ "EOpenType", "class_t_tdr_file.html#a4ef0129feb73111852d5592fdeb4fff2", [
-        [ "kRead", "class_t_tdr_file.html#a4ef0129feb73111852d5592fdeb4fff2a8604cf55a79d6bfdcb30f77d1622839b", null ],
-        [ "kWrite", "class_t_tdr_file.html#a4ef0129feb73111852d5592fdeb4fff2ad3ac0ba447a9859ad2db8e498056429f", null ]
+      [ "EOpenType", "class_t_tdr_file.html#a7fe15fb5bf96b7e333e5a0ba54c496e2", [
+        [ "kRead", "class_t_tdr_file.html#a7fe15fb5bf96b7e333e5a0ba54c496e2a8604cf55a79d6bfdcb30f77d1622839b", null ],
+        [ "kWrite", "class_t_tdr_file.html#a7fe15fb5bf96b7e333e5a0ba54c496e2ad3ac0ba447a9859ad2db8e498056429f", null ]
       ] ],
       [ "TTdrFile", "class_t_tdr_file.html#af755613ee356e20237c5475727b72e6a", null ],
       [ "TTdrFile", "class_t_tdr_file.html#a14700d47abc1ec2c587b15bb4a931a84", null ],
@@ -2906,19 +2910,19 @@ var group___sorting =
     [ "COMMENT_LEN", "group___sorting.html#gadd6bc7c7d55596db605ee1c9c7ef0e4b", null ],
     [ "FNAME_LEN", "group___sorting.html#ga277898027d5b8fc40d6faf91905a5cce", null ],
     [ "TEMPLEN", "group___sorting.html#gac542498acdb249d5b69fce0d6633d709", null ],
-    [ "EPpgPattern", "group___sorting.html#gab6809cdce78a7710ee2ac3719016868c", [
-      [ "EPpgPattern::kBeamOn", "group___sorting.html#ggab6809cdce78a7710ee2ac3719016868ca66c1faacc785547469c3f1f707a20098", null ],
-      [ "EPpgPattern::kDecay", "group___sorting.html#ggab6809cdce78a7710ee2ac3719016868ca43c061be9ae4c7d7cc51bbab2ed1e4b8", null ],
-      [ "EPpgPattern::kTapeMove", "group___sorting.html#ggab6809cdce78a7710ee2ac3719016868caf6e2831b9dfb13b09331f6047d259e3b", null ],
-      [ "EPpgPattern::kBackground", "group___sorting.html#ggab6809cdce78a7710ee2ac3719016868ca7c58afb43537a264dcd68e698a7b8e3b", null ],
-      [ "EPpgPattern::kJunk", "group___sorting.html#ggab6809cdce78a7710ee2ac3719016868caa4ee53181d6c56eee8eb881a240608de", null ]
+    [ "EPpgPattern", "group___sorting.html#gab0daad83ab0c2b7ad41c69944b3dd915", [
+      [ "EPpgPattern::kBeamOn", "group___sorting.html#ggab0daad83ab0c2b7ad41c69944b3dd915a66c1faacc785547469c3f1f707a20098", null ],
+      [ "EPpgPattern::kDecay", "group___sorting.html#ggab0daad83ab0c2b7ad41c69944b3dd915a43c061be9ae4c7d7cc51bbab2ed1e4b8", null ],
+      [ "EPpgPattern::kTapeMove", "group___sorting.html#ggab0daad83ab0c2b7ad41c69944b3dd915af6e2831b9dfb13b09331f6047d259e3b", null ],
+      [ "EPpgPattern::kBackground", "group___sorting.html#ggab0daad83ab0c2b7ad41c69944b3dd915a7c58afb43537a264dcd68e698a7b8e3b", null ],
+      [ "EPpgPattern::kJunk", "group___sorting.html#ggab0daad83ab0c2b7ad41c69944b3dd915aa4ee53181d6c56eee8eb881a240608de", null ]
     ] ],
-    [ "EPriority", "group___sorting.html#gab2f7d9a4aad2358e33b9d06138a12f10", [
-      [ "EPriority::kDefault", "group___sorting.html#ggab2f7d9a4aad2358e33b9d06138a12f10a6867faeaa475fda467e48267db2bb8a8", null ],
-      [ "EPriority::kRootFile", "group___sorting.html#ggab2f7d9a4aad2358e33b9d06138a12f10a7f3e15ad8d36aab526dd135471b4394f", null ],
-      [ "EPriority::kInputFile", "group___sorting.html#ggab2f7d9a4aad2358e33b9d06138a12f10a902d3f6fcccc89fe95b073a1da77b7cd", null ],
-      [ "EPriority::kUser", "group___sorting.html#ggab2f7d9a4aad2358e33b9d06138a12f10a3ea6f9f6140b78f0c5a050d926097f56", null ],
-      [ "EPriority::kForce", "group___sorting.html#ggab2f7d9a4aad2358e33b9d06138a12f10a5f1cd95b5107d0b426a753a484765cc9", null ]
+    [ "EPriority", "group___sorting.html#ga1986d2f445dfbc16c31afd49df8b23a2", [
+      [ "EPriority::kDefault", "group___sorting.html#gga1986d2f445dfbc16c31afd49df8b23a2a6867faeaa475fda467e48267db2bb8a8", null ],
+      [ "EPriority::kRootFile", "group___sorting.html#gga1986d2f445dfbc16c31afd49df8b23a2a7f3e15ad8d36aab526dd135471b4394f", null ],
+      [ "EPriority::kInputFile", "group___sorting.html#gga1986d2f445dfbc16c31afd49df8b23a2a902d3f6fcccc89fe95b073a1da77b7cd", null ],
+      [ "EPriority::kUser", "group___sorting.html#gga1986d2f445dfbc16c31afd49df8b23a2a3ea6f9f6140b78f0c5a050d926097f56", null ],
+      [ "EPriority::kForce", "group___sorting.html#gga1986d2f445dfbc16c31afd49df8b23a2a5f1cd95b5107d0b426a753a484765cc9", null ]
     ] ],
     [ "operator<<", "group___sorting.html#ga9fd218568f5fb973251e82e1355572f6", null ],
     [ "TSingleton::fDir", "group___sorting.html#ga9513ce653b3004bfc4511c2b8c3312b8", null ],

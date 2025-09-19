@@ -12,7 +12,7 @@ var class_angular_correlation_helper =
     [ "Finalize", "class_angular_correlation_helper.html#a0e505d1c617db78984dd90345c10d50e", null ],
     [ "GetActionName", "class_angular_correlation_helper.html#add19941df642bbd2f8994a3b799d4760", null ],
     [ "GetResultPtr", "class_angular_correlation_helper.html#a23db3e61978039fa768fa3a90c1cd982", null ],
-    [ "GoodCycleTime", "class_angular_correlation_helper.html#a4b48efbf37f665a21e47a9c6b1ac7c25", null ],
+    [ "GoodCycleTime", "class_angular_correlation_helper.html#a3b1c722ffe334a66170f7977f28a6232", null ],
     [ "Initialize", "class_angular_correlation_helper.html#a6d813805cfc33d42cbaaa839ad4a21dc", null ],
     [ "InitTask", "class_angular_correlation_helper.html#ac8e3b2c0233863390b3d8afd443b6241", null ],
     [ "Ppg", "class_angular_correlation_helper.html#ae2c692144a9b683f3bd206bf70dda117", null ],

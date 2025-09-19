@@ -151,8 +151,8 @@ $(function(){initNavTree('_t_fragment_map_8h_source.html',''); initResizable(tru
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>                      std::multimap&lt;UInt_t, std::tuple&lt;std::shared_ptr&lt;TFragment&gt;, std::vector&lt;Int_t&gt;, std::vector&lt;Short_t&gt;&gt;&gt;::iterator&gt;&amp; range);</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="class_t_fragment_map.html#ad74790fe55671b5f771dddf99f9f4e01">   47</a></span>   std::multimap&lt;UInt_t, std::tuple&lt;std::shared_ptr&lt;TFragment&gt;, std::vector&lt;Int_t&gt;, std::vector&lt;Short_t&gt;&gt;&gt; <a class="code hl_variable" href="class_t_fragment_map.html#ad74790fe55671b5f771dddf99f9f4e01">fMap</a>;</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="class_t_fragment_map.html#a86b510511ba8bd97816f6271bd720703">   48</a></span>   std::vector&lt;std::shared_ptr&lt;ThreadsafeQueue&lt;std::shared_ptr&lt;const TFragment&gt;&gt;&gt;&gt;&amp;                        <a class="code hl_variable" href="class_t_fragment_map.html#a86b510511ba8bd97816f6271bd720703">fGoodOutputQueue</a>;</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="class_t_fragment_map.html#a87ada3a85b765f3f69068221aaae0d20">   49</a></span>   std::shared_ptr&lt;ThreadsafeQueue&lt;std::shared_ptr&lt;const TBadFragment&gt;&gt;&gt;&amp;                                  <a class="code hl_variable" href="class_t_fragment_map.html#a87ada3a85b765f3f69068221aaae0d20">fBadOutputQueue</a>;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="class_t_fragment_map.html#a86b510511ba8bd97816f6271bd720703">   48</a></span>   std::vector&lt;std::shared_ptr&lt;ThreadsafeQueue&lt;std::shared_ptr&lt;const TFragment&gt;&gt;&gt;&gt;&amp;                        <a class="code hl_variable" href="class_t_fragment_map.html#a86b510511ba8bd97816f6271bd720703">fGoodOutputQueue</a>;   <span class="comment">//NOLINT(cppcoreguidelines-avoid-const-or-ref-data-members)</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="class_t_fragment_map.html#a87ada3a85b765f3f69068221aaae0d20">   49</a></span>   std::shared_ptr&lt;ThreadsafeQueue&lt;std::shared_ptr&lt;const TBadFragment&gt;&gt;&gt;&amp;                                  <a class="code hl_variable" href="class_t_fragment_map.html#a87ada3a85b765f3f69068221aaae0d20">fBadOutputQueue</a>;    <span class="comment">//NOLINT(cppcoreguidelines-avoid-const-or-ref-data-members)</span></div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>};<span class="comment"></span></div>
 </div>
@@ -170,7 +170,7 @@ $(function(){initNavTree('_t_fragment_map_8h_source.html',''); initResizable(tru
 <div class="ttc" id="aclass_t_fragment_map_html_a9f722865678b66b4cccc6cb4712d133d"><div class="ttname"><a href="class_t_fragment_map.html#a9f722865678b66b4cccc6cb4712d133d">TFragmentMap::Solve</a></div><div class="ttdeci">void Solve(std::vector&lt; std::shared_ptr&lt; TFragment &gt; &gt;, std::vector&lt; Float_t &gt;, std::vector&lt; Long_t &gt;, int situation=-1)</div><div class="ttdef"><b>Definition</b> <a href="_t_fragment_map_8cxx_source.html#l00341">TFragmentMap.cxx:341</a></div></div>
 <div class="ttc" id="aclass_t_fragment_map_html_ad74790fe55671b5f771dddf99f9f4e01"><div class="ttname"><a href="class_t_fragment_map.html#ad74790fe55671b5f771dddf99f9f4e01">TFragmentMap::fMap</a></div><div class="ttdeci">std::multimap&lt; UInt_t, std::tuple&lt; std::shared_ptr&lt; TFragment &gt;, std::vector&lt; Int_t &gt;, std::vector&lt; Short_t &gt; &gt; &gt; fMap</div><div class="ttdef"><b>Definition</b> <a href="#l00047">TFragmentMap.h:47</a></div></div>
 <div class="ttc" id="aclass_t_fragment_map_html_afb2c0ba3106c0332513629a96f2df275"><div class="ttname"><a href="class_t_fragment_map.html#afb2c0ba3106c0332513629a96f2df275">TFragmentMap::fDebug</a></div><div class="ttdeci">static bool fDebug</div><div class="ttdef"><b>Definition</b> <a href="#l00040">TFragmentMap.h:40</a></div></div>
-<div class="ttc" id="aclass_threadsafe_queue_html"><div class="ttname"><a href="class_threadsafe_queue.html">ThreadsafeQueue</a></div><div class="ttdef"><b>Definition</b> <a href="_threadsafe_queue_8h_source.html#l00028">ThreadsafeQueue.h:28</a></div></div>
+<div class="ttc" id="aclass_threadsafe_queue_html"><div class="ttname"><a href="class_threadsafe_queue.html">ThreadsafeQueue</a></div><div class="ttdef"><b>Definition</b> <a href="_threadsafe_queue_8h_source.html#l00027">ThreadsafeQueue.h:27</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.9.8-->
@@ -178,7 +178,7 @@ $(function(){initNavTree('_t_fragment_map_8h_source.html',''); initResizable(tru
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="_t_fragment_map_8h.html">TFragmentMap.h</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Aug 26 2025 14:02:03.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Sep 19 2025 17:05:45.</li>
   </ul>
 </div>
 </body>

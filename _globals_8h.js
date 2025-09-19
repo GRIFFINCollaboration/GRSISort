@@ -28,12 +28,12 @@ var _globals_8h =
     [ "SHOW_CURSOR", "_globals_8h.html#a09ec0b302bee7262f9959add53ccd0c4", null ],
     [ "WHITE", "_globals_8h.html#a87b537f5fa5c109d3c05c13d6b18f382", null ],
     [ "YELLOW", "_globals_8h.html#abf681265909adf3d3e8116c93c0ba179", null ],
-    [ "EVerbosity", "_globals_8h.html#a56eed0e4beb7cba0f5e9fb51c8573285", [
-      [ "kQuiet", "_globals_8h.html#a56eed0e4beb7cba0f5e9fb51c8573285a18add7cdc87dcd1cd9c0da99195a3f2b", null ],
-      [ "kBasicFlow", "_globals_8h.html#a56eed0e4beb7cba0f5e9fb51c8573285af382a254d195b14196723d9ea326a436", null ],
-      [ "kSubroutines", "_globals_8h.html#a56eed0e4beb7cba0f5e9fb51c8573285a33678380b1c3bd3ef3d404c30aaf6660", null ],
-      [ "kLoops", "_globals_8h.html#a56eed0e4beb7cba0f5e9fb51c8573285a4213e54734cc754057a80e455399ca03", null ],
-      [ "kAll", "_globals_8h.html#a56eed0e4beb7cba0f5e9fb51c8573285a8d857bf5569760ac7306382a558cb092", null ]
+    [ "EVerbosity", "_globals_8h.html#abb4e78a946cba701b4127ed5191b3b1e", [
+      [ "kQuiet", "_globals_8h.html#abb4e78a946cba701b4127ed5191b3b1ead5b5f7a288e14dd7c92464e7c34ffb65", null ],
+      [ "kBasicFlow", "_globals_8h.html#abb4e78a946cba701b4127ed5191b3b1ea240c34831599da865612bde24d5da4ea", null ],
+      [ "kSubroutines", "_globals_8h.html#abb4e78a946cba701b4127ed5191b3b1eaba4d26749ebc6d663c277c3b3fc34629", null ],
+      [ "kLoops", "_globals_8h.html#abb4e78a946cba701b4127ed5191b3b1ea257bef9f5f6ed5605aa8a5221716ac87", null ],
+      [ "kAll", "_globals_8h.html#abb4e78a946cba701b4127ed5191b3b1ea34bdbffdb1c0e1b603f58fc0d49548b6", null ]
     ] ],
     [ "Append", "_globals_8h.html#ab4d555551318d9c3b1c7e4db09cf70a6", null ],
     [ "Append", "_globals_8h.html#a60dc849f507cdfa934fe9fd40a640c3c", null ],

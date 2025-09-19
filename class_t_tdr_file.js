@@ -1,8 +1,8 @@
 var class_t_tdr_file =
 [
-    [ "EOpenType", "class_t_tdr_file.html#a4ef0129feb73111852d5592fdeb4fff2", [
-      [ "kRead", "class_t_tdr_file.html#a4ef0129feb73111852d5592fdeb4fff2a8604cf55a79d6bfdcb30f77d1622839b", null ],
-      [ "kWrite", "class_t_tdr_file.html#a4ef0129feb73111852d5592fdeb4fff2ad3ac0ba447a9859ad2db8e498056429f", null ]
+    [ "EOpenType", "class_t_tdr_file.html#a7fe15fb5bf96b7e333e5a0ba54c496e2", [
+      [ "kRead", "class_t_tdr_file.html#a7fe15fb5bf96b7e333e5a0ba54c496e2a8604cf55a79d6bfdcb30f77d1622839b", null ],
+      [ "kWrite", "class_t_tdr_file.html#a7fe15fb5bf96b7e333e5a0ba54c496e2ad3ac0ba447a9859ad2db8e498056429f", null ]
     ] ],
     [ "TTdrFile", "class_t_tdr_file.html#af755613ee356e20237c5475727b72e6a", null ],
     [ "TTdrFile", "class_t_tdr_file.html#a14700d47abc1ec2c587b15bb4a931a84", null ],

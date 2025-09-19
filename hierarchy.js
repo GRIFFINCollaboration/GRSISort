@@ -76,6 +76,7 @@ var hierarchy =
       [ "ExampleFragmentHelper", "class_example_fragment_helper.html", null ],
       [ "ExampleTreeHelper", "class_example_tree_helper.html", null ],
       [ "GriffinKValueHelper", "class_griffin_k_value_helper.html", null ],
+      [ "TacOffsetHelper", "class_tac_offset_helper.html", null ],
       [ "TimeWalkHelper", "class_time_walk_helper.html", null ]
     ] ],
     [ "RlmdBufferHeader", "struct_rlmd_buffer_header.html", null ],
@@ -89,6 +90,7 @@ var hierarchy =
       [ "TDataLoop", "class_t_data_loop.html", null ],
       [ "TDetBuildingLoop", "class_t_det_building_loop.html", null ],
       [ "TEventBuildingLoop", "class_t_event_building_loop.html", null ],
+      [ "TFragDiagnosticsLoop", "class_t_frag_diagnostics_loop.html", null ],
       [ "TFragHistLoop", "class_t_frag_hist_loop.html", null ],
       [ "TFragWriteLoop", "class_t_frag_write_loop.html", null ],
       [ "TFragmentChainLoop", "class_t_fragment_chain_loop.html", null ],
@@ -351,6 +353,7 @@ var hierarchy =
         [ "ExampleFragmentHelper", "class_example_fragment_helper.html", null ],
         [ "ExampleTreeHelper", "class_example_tree_helper.html", null ],
         [ "GriffinKValueHelper", "class_griffin_k_value_helper.html", null ],
+        [ "TacOffsetHelper", "class_tac_offset_helper.html", null ],
         [ "TimeWalkHelper", "class_time_walk_helper.html", null ]
       ] ],
       [ "TGRSIOptions", "class_t_g_r_s_i_options.html", null ],

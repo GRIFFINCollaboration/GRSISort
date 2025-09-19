@@ -116,45 +116,45 @@ $(function(){initNavTree('class_g_root_browser.html',''); initResizable(true); }
 <p>create a new browser: TBrowser b;</p>
 <p>create a new TCanvas in a new top right tab element: b.ExecPlugin("Canvas", 0, "new TCanvas()");</p>
 <p>create a new top right tab element embedding the TGMainFrame created by the macro 'myMacro.C': b.ExecPlugin("MyPlugin", "myMacro.C");</p>
-<p>create a new bottom tab element embedding the TGMainFrame created by the macro 'myMacro.C': b.ExecPlugin("MyPlugin", "myMacro.C", 0, <a class="el" href="#ad4a1457a292dfc2fb4e93bb13b8f7a87a78cd851b433d8d6864110dd678e43586">GRootBrowser::kBottom</a>);</p>
+<p>create a new bottom tab element embedding the TGMainFrame created by the macro 'myMacro.C': b.ExecPlugin("MyPlugin", "myMacro.C", 0, <a class="el" href="#a7f8edaebba649d61b9668de28dcfb1c4a78cd851b433d8d6864110dd678e43586">GRootBrowser::kBottom</a>);</p>
 <p>this browser implementation can be selected via the env 'Browser.Name' in .rootrc, (<a class="el" href="class_g_root_browser.html">GRootBrowser</a> or GRootBrowserLite) the default being GRootBrowserLite (old browser) a list of options (plugins) for the new <a class="el" href="class_g_root_browser.html">GRootBrowser</a> is also specified via the env 'Browser.Options' in .rootrc, the default being: FECI Here is the list of available options: F: File browser E: Text Editor H: HTML browser C: Canvas I: I/O redirection P: Proof G: GL viewer </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00100">100</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00102">102</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:ad4a1457a292dfc2fb4e93bb13b8f7a87" id="r_ad4a1457a292dfc2fb4e93bb13b8f7a87"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad4a1457a292dfc2fb4e93bb13b8f7a87">EInsertPosition</a> { <a class="el" href="#ad4a1457a292dfc2fb4e93bb13b8f7a87a2d5fde1d924910a2a01ecd8e70a87c28">kLeft</a>
-, <a class="el" href="#ad4a1457a292dfc2fb4e93bb13b8f7a87a2dd2b017192f8a09367d48c7648213c9">kRight</a>
-, <a class="el" href="#ad4a1457a292dfc2fb4e93bb13b8f7a87a78cd851b433d8d6864110dd678e43586">kBottom</a>
+<tr class="memitem:a7f8edaebba649d61b9668de28dcfb1c4" id="r_a7f8edaebba649d61b9668de28dcfb1c4"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7f8edaebba649d61b9668de28dcfb1c4">EInsertPosition</a> : std::uint8_t { <a class="el" href="#a7f8edaebba649d61b9668de28dcfb1c4a2d5fde1d924910a2a01ecd8e70a87c28">kLeft</a>
+, <a class="el" href="#a7f8edaebba649d61b9668de28dcfb1c4a2dd2b017192f8a09367d48c7648213c9">kRight</a>
+, <a class="el" href="#a7f8edaebba649d61b9668de28dcfb1c4a78cd851b433d8d6864110dd678e43586">kBottom</a>
  }</td></tr>
-<tr class="separator:ad4a1457a292dfc2fb4e93bb13b8f7a87"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a91f2ddbafff7fcab3e856c33e01bb8da" id="r_a91f2ddbafff7fcab3e856c33e01bb8da"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8da">ENewBrowserMessages</a> { <br />
-&#160;&#160;<a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa546a37bde5591e054ec4a0762e59d5c2">kBrowse</a> = 11011
-, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa2c348457b827ca12fd6d4d18eee1b516">kOpenFile</a>
-, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa026970425911930059fc1717b4a1eaff">kClone</a>
-, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daaba08e19e3879af380942f73358212719">kHelpAbout</a>
+<tr class="separator:a7f8edaebba649d61b9668de28dcfb1c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5004df3046d1b9ecca3fd6ead35c25ad" id="r_a5004df3046d1b9ecca3fd6ead35c25ad"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ad">ENewBrowserMessages</a> : std::uint16_t { <br />
+&#160;&#160;<a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada546a37bde5591e054ec4a0762e59d5c2">kBrowse</a> = 11011
+, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada2c348457b827ca12fd6d4d18eee1b516">kOpenFile</a>
+, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada026970425911930059fc1717b4a1eaff">kClone</a>
+, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25adaba08e19e3879af380942f73358212719">kHelpAbout</a>
 , <br />
-&#160;&#160;<a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa92d2391d3d42a1cc743d1fdebc55b485">kHelpOnBrowser</a>
-, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa773eaf4018e1e07906c270acbc8ef653">kHelpOnCanvas</a>
-, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa1571969b484bec78fdf5b436b601178c">kHelpOnMenus</a>
-, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daaf6f9bdab947824f536977efbbafb6fff">kHelpOnGraphicsEd</a>
+&#160;&#160;<a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada92d2391d3d42a1cc743d1fdebc55b485">kHelpOnBrowser</a>
+, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada773eaf4018e1e07906c270acbc8ef653">kHelpOnCanvas</a>
+, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada1571969b484bec78fdf5b436b601178c">kHelpOnMenus</a>
+, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25adaf6f9bdab947824f536977efbbafb6fff">kHelpOnGraphicsEd</a>
 , <br />
-&#160;&#160;<a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daae97894e5052f3c569b6b077d1d908fa6">kHelpOnObjects</a>
-, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa3590846bcc210be4b3772a4488c48b73">kHelpOnPS</a>
-, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daaf7f6e1043ff14c5af211d553ee885b38">kHelpOnRemote</a>
-, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa6fe61797544dc1d56af00bbafeaafa4f">kNewEditor</a>
+&#160;&#160;<a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25adae97894e5052f3c569b6b077d1d908fa6">kHelpOnObjects</a>
+, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada3590846bcc210be4b3772a4488c48b73">kHelpOnPS</a>
+, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25adaf7f6e1043ff14c5af211d553ee885b38">kHelpOnRemote</a>
+, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada6fe61797544dc1d56af00bbafeaafa4f">kNewEditor</a>
 , <br />
-&#160;&#160;<a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daac63918ba3ccb94a3e812fbdb3fd97285">kNewCanvas</a>
-, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa455b45af619051978198ef4da906fc22">kNewHtml</a>
-, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa73ef0888cc30849f5f5932803514f1d3">kExecPluginMacro</a>
-, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daac0e316060ad7cc35caa51549889955bd">kExecPluginCmd</a>
+&#160;&#160;<a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25adac63918ba3ccb94a3e812fbdb3fd97285">kNewCanvas</a>
+, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada455b45af619051978198ef4da906fc22">kNewHtml</a>
+, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada73ef0888cc30849f5f5932803514f1d3">kExecPluginMacro</a>
+, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25adac0e316060ad7cc35caa51549889955bd">kExecPluginCmd</a>
 , <br />
-&#160;&#160;<a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa170da316905af209513d5f81dfcde443">kCloseTab</a>
-, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daab6622d79f01736a45551ad07a3ab27f4">kCloseWindow</a>
-, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa8354136a5a4347a90e08553576f42c14">kQuitRoot</a>
+&#160;&#160;<a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada170da316905af209513d5f81dfcde443">kCloseTab</a>
+, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25adab6622d79f01736a45551ad07a3ab27f4">kCloseWindow</a>
+, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada8354136a5a4347a90e08553576f42c14">kQuitRoot</a>
 <br />
  }</td></tr>
-<tr class="separator:a91f2ddbafff7fcab3e856c33e01bb8da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a5004df3046d1b9ecca3fd6ead35c25ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -186,7 +186,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ae027c7019321a8a88e932259b00dce59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae357d2ba07e0793947edfaf1d1f07cb8" id="r_ae357d2ba07e0793947edfaf1d1f07cb8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae357d2ba07e0793947edfaf1d1f07cb8">EventInfo</a> (Int_t event, Int_t px, Int_t py, TObject *selected)</td></tr>
 <tr class="separator:ae357d2ba07e0793947edfaf1d1f07cb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1806feeddbe40161b44d3f6174eb58a2" id="r_a1806feeddbe40161b44d3f6174eb58a2"><td class="memItemLeft" align="right" valign="top">Long_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1806feeddbe40161b44d3f6174eb58a2">ExecPlugin</a> (const char *name=nullptr, const char *fname=nullptr, const char *cmd=nullptr, Int_t pos=static_cast&lt; Int_t &gt;(<a class="el" href="#ad4a1457a292dfc2fb4e93bb13b8f7a87a2dd2b017192f8a09367d48c7648213c9">EInsertPosition::kRight</a>), Int_t subpos=-1) override</td></tr>
+<tr class="memitem:a1806feeddbe40161b44d3f6174eb58a2" id="r_a1806feeddbe40161b44d3f6174eb58a2"><td class="memItemLeft" align="right" valign="top">Long_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1806feeddbe40161b44d3f6174eb58a2">ExecPlugin</a> (const char *name=nullptr, const char *fname=nullptr, const char *cmd=nullptr, Int_t pos=static_cast&lt; Int_t &gt;(<a class="el" href="#a7f8edaebba649d61b9668de28dcfb1c4a2dd2b017192f8a09367d48c7648213c9">EInsertPosition::kRight</a>), Int_t subpos=-1) override</td></tr>
 <tr class="separator:a1806feeddbe40161b44d3f6174eb58a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89aeb762140ecc29e99a5d05f68392bd" id="r_a89aeb762140ecc29e99a5d05f68392bd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a89aeb762140ecc29e99a5d05f68392bd">ExecuteDefaultAction</a> (TObject *obj) override</td></tr>
 <tr class="separator:a89aeb762140ecc29e99a5d05f68392bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -230,9 +230,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a5245e18b82a6fe5ecc73db31bf9612a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b1803dfa20954a038710720c01cc886" id="r_a1b1803dfa20954a038710720c01cc886"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1b1803dfa20954a038710720c01cc886">SetStatusText</a> (const char *txt, Int_t col) override</td></tr>
 <tr class="separator:a1b1803dfa20954a038710720c01cc886"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3da234fc55a5e8d94c3181941ca5ae45" id="r_a3da234fc55a5e8d94c3181941ca5ae45"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3da234fc55a5e8d94c3181941ca5ae45">SetTab</a> (Int_t pos=static_cast&lt; Int_t &gt;(<a class="el" href="#ad4a1457a292dfc2fb4e93bb13b8f7a87a2dd2b017192f8a09367d48c7648213c9">EInsertPosition::kRight</a>), Int_t subpos=-1)</td></tr>
+<tr class="memitem:a3da234fc55a5e8d94c3181941ca5ae45" id="r_a3da234fc55a5e8d94c3181941ca5ae45"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3da234fc55a5e8d94c3181941ca5ae45">SetTab</a> (Int_t pos=static_cast&lt; Int_t &gt;(<a class="el" href="#a7f8edaebba649d61b9668de28dcfb1c4a2dd2b017192f8a09367d48c7648213c9">EInsertPosition::kRight</a>), Int_t subpos=-1)</td></tr>
 <tr class="separator:a3da234fc55a5e8d94c3181941ca5ae45"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a454419841c0e53a67e78bafedc1676aa" id="r_a454419841c0e53a67e78bafedc1676aa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a454419841c0e53a67e78bafedc1676aa">SetTabTitle</a> (const char *title, Int_t pos=static_cast&lt; Int_t &gt;(<a class="el" href="#ad4a1457a292dfc2fb4e93bb13b8f7a87a2dd2b017192f8a09367d48c7648213c9">EInsertPosition::kRight</a>), Int_t subpos=-1)</td></tr>
+<tr class="memitem:a454419841c0e53a67e78bafedc1676aa" id="r_a454419841c0e53a67e78bafedc1676aa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a454419841c0e53a67e78bafedc1676aa">SetTabTitle</a> (const char *title, Int_t pos=static_cast&lt; Int_t &gt;(<a class="el" href="#a7f8edaebba649d61b9668de28dcfb1c4a2dd2b017192f8a09367d48c7648213c9">EInsertPosition::kRight</a>), Int_t subpos=-1)</td></tr>
 <tr class="separator:a454419841c0e53a67e78bafedc1676aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a79f5b5d59c0a3f32431014d8059e26bc" id="r_a79f5b5d59c0a3f32431014d8059e26bc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a79f5b5d59c0a3f32431014d8059e26bc">Show</a> () override</td></tr>
 <tr class="separator:a79f5b5d59c0a3f32431014d8059e26bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -240,7 +240,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a95b95279f4fb99a3c97dc9001538892e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf7ba5401f3335807bd57b3217fad490" id="r_adf7ba5401f3335807bd57b3217fad490"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adf7ba5401f3335807bd57b3217fad490">ShowMenu</a> (TGCompositeFrame *menu)</td></tr>
 <tr class="separator:adf7ba5401f3335807bd57b3217fad490"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a38ae6c5dea0c6a436134e02141d83b79" id="r_a38ae6c5dea0c6a436134e02141d83b79"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a38ae6c5dea0c6a436134e02141d83b79">StartEmbedding</a> (Int_t pos=static_cast&lt; Int_t &gt;(<a class="el" href="#ad4a1457a292dfc2fb4e93bb13b8f7a87a2dd2b017192f8a09367d48c7648213c9">EInsertPosition::kRight</a>), Int_t subpos=-1) override</td></tr>
+<tr class="memitem:a38ae6c5dea0c6a436134e02141d83b79" id="r_a38ae6c5dea0c6a436134e02141d83b79"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a38ae6c5dea0c6a436134e02141d83b79">StartEmbedding</a> (Int_t pos=static_cast&lt; Int_t &gt;(<a class="el" href="#a7f8edaebba649d61b9668de28dcfb1c4a2dd2b017192f8a09367d48c7648213c9">EInsertPosition::kRight</a>), Int_t subpos=-1) override</td></tr>
 <tr class="separator:a38ae6c5dea0c6a436134e02141d83b79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f69665227e16bfe66c56ff980e4b5f8" id="r_a2f69665227e16bfe66c56ff980e4b5f8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2f69665227e16bfe66c56ff980e4b5f8">StopEmbedding</a> (const char *name, TGLayoutHints *layout)</td></tr>
 <tr class="separator:a2f69665227e16bfe66c56ff980e4b5f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -369,8 +369,8 @@ Private Attributes</h2></td></tr>
 <div class="center"><iframe scrolling="no" frameborder="0" src="class_g_root_browser__coll__graph.svg" width="398" height="140"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <h2 class="groupheader">Member Enumeration Documentation</h2>
-<a id="ad4a1457a292dfc2fb4e93bb13b8f7a87" name="ad4a1457a292dfc2fb4e93bb13b8f7a87"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad4a1457a292dfc2fb4e93bb13b8f7a87">&#9670;&#160;</a></span>EInsertPosition</h2>
+<a id="a7f8edaebba649d61b9668de28dcfb1c4" name="a7f8edaebba649d61b9668de28dcfb1c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f8edaebba649d61b9668de28dcfb1c4">&#9670;&#160;</a></span>EInsertPosition</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -379,7 +379,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum class <a class="el" href="#ad4a1457a292dfc2fb4e93bb13b8f7a87">GRootBrowser::EInsertPosition</a></td>
+          <td class="memname">enum class <a class="el" href="#a7f8edaebba649d61b9668de28dcfb1c4">GRootBrowser::EInsertPosition</a> : std::uint8_t</td>
         </tr>
       </table>
   </td>
@@ -389,17 +389,17 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ad4a1457a292dfc2fb4e93bb13b8f7a87a2d5fde1d924910a2a01ecd8e70a87c28" name="ad4a1457a292dfc2fb4e93bb13b8f7a87a2d5fde1d924910a2a01ecd8e70a87c28"></a>kLeft&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="ad4a1457a292dfc2fb4e93bb13b8f7a87a2dd2b017192f8a09367d48c7648213c9" name="ad4a1457a292dfc2fb4e93bb13b8f7a87a2dd2b017192f8a09367d48c7648213c9"></a>kRight&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="ad4a1457a292dfc2fb4e93bb13b8f7a87a78cd851b433d8d6864110dd678e43586" name="ad4a1457a292dfc2fb4e93bb13b8f7a87a78cd851b433d8d6864110dd678e43586"></a>kBottom&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a7f8edaebba649d61b9668de28dcfb1c4a2d5fde1d924910a2a01ecd8e70a87c28" name="a7f8edaebba649d61b9668de28dcfb1c4a2d5fde1d924910a2a01ecd8e70a87c28"></a>kLeft&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a7f8edaebba649d61b9668de28dcfb1c4a2dd2b017192f8a09367d48c7648213c9" name="a7f8edaebba649d61b9668de28dcfb1c4a2dd2b017192f8a09367d48c7648213c9"></a>kRight&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a7f8edaebba649d61b9668de28dcfb1c4a78cd851b433d8d6864110dd678e43586" name="a7f8edaebba649d61b9668de28dcfb1c4a78cd851b433d8d6864110dd678e43586"></a>kBottom&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00173">173</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00175">175</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
 </div>
 </div>
-<a id="a91f2ddbafff7fcab3e856c33e01bb8da" name="a91f2ddbafff7fcab3e856c33e01bb8da"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a91f2ddbafff7fcab3e856c33e01bb8da">&#9670;&#160;</a></span>ENewBrowserMessages</h2>
+<a id="a5004df3046d1b9ecca3fd6ead35c25ad" name="a5004df3046d1b9ecca3fd6ead35c25ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5004df3046d1b9ecca3fd6ead35c25ad">&#9670;&#160;</a></span>ENewBrowserMessages</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -408,7 +408,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum class <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8da">GRootBrowser::ENewBrowserMessages</a></td>
+          <td class="memname">enum class <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ad">GRootBrowser::ENewBrowserMessages</a> : std::uint16_t</td>
         </tr>
       </table>
   </td>
@@ -418,28 +418,28 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a91f2ddbafff7fcab3e856c33e01bb8daa546a37bde5591e054ec4a0762e59d5c2" name="a91f2ddbafff7fcab3e856c33e01bb8daa546a37bde5591e054ec4a0762e59d5c2"></a>kBrowse&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a91f2ddbafff7fcab3e856c33e01bb8daa2c348457b827ca12fd6d4d18eee1b516" name="a91f2ddbafff7fcab3e856c33e01bb8daa2c348457b827ca12fd6d4d18eee1b516"></a>kOpenFile&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a91f2ddbafff7fcab3e856c33e01bb8daa026970425911930059fc1717b4a1eaff" name="a91f2ddbafff7fcab3e856c33e01bb8daa026970425911930059fc1717b4a1eaff"></a>kClone&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a91f2ddbafff7fcab3e856c33e01bb8daaba08e19e3879af380942f73358212719" name="a91f2ddbafff7fcab3e856c33e01bb8daaba08e19e3879af380942f73358212719"></a>kHelpAbout&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a91f2ddbafff7fcab3e856c33e01bb8daa92d2391d3d42a1cc743d1fdebc55b485" name="a91f2ddbafff7fcab3e856c33e01bb8daa92d2391d3d42a1cc743d1fdebc55b485"></a>kHelpOnBrowser&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a91f2ddbafff7fcab3e856c33e01bb8daa773eaf4018e1e07906c270acbc8ef653" name="a91f2ddbafff7fcab3e856c33e01bb8daa773eaf4018e1e07906c270acbc8ef653"></a>kHelpOnCanvas&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a91f2ddbafff7fcab3e856c33e01bb8daa1571969b484bec78fdf5b436b601178c" name="a91f2ddbafff7fcab3e856c33e01bb8daa1571969b484bec78fdf5b436b601178c"></a>kHelpOnMenus&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a91f2ddbafff7fcab3e856c33e01bb8daaf6f9bdab947824f536977efbbafb6fff" name="a91f2ddbafff7fcab3e856c33e01bb8daaf6f9bdab947824f536977efbbafb6fff"></a>kHelpOnGraphicsEd&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a91f2ddbafff7fcab3e856c33e01bb8daae97894e5052f3c569b6b077d1d908fa6" name="a91f2ddbafff7fcab3e856c33e01bb8daae97894e5052f3c569b6b077d1d908fa6"></a>kHelpOnObjects&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a91f2ddbafff7fcab3e856c33e01bb8daa3590846bcc210be4b3772a4488c48b73" name="a91f2ddbafff7fcab3e856c33e01bb8daa3590846bcc210be4b3772a4488c48b73"></a>kHelpOnPS&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a91f2ddbafff7fcab3e856c33e01bb8daaf7f6e1043ff14c5af211d553ee885b38" name="a91f2ddbafff7fcab3e856c33e01bb8daaf7f6e1043ff14c5af211d553ee885b38"></a>kHelpOnRemote&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a91f2ddbafff7fcab3e856c33e01bb8daa6fe61797544dc1d56af00bbafeaafa4f" name="a91f2ddbafff7fcab3e856c33e01bb8daa6fe61797544dc1d56af00bbafeaafa4f"></a>kNewEditor&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a91f2ddbafff7fcab3e856c33e01bb8daac63918ba3ccb94a3e812fbdb3fd97285" name="a91f2ddbafff7fcab3e856c33e01bb8daac63918ba3ccb94a3e812fbdb3fd97285"></a>kNewCanvas&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a91f2ddbafff7fcab3e856c33e01bb8daa455b45af619051978198ef4da906fc22" name="a91f2ddbafff7fcab3e856c33e01bb8daa455b45af619051978198ef4da906fc22"></a>kNewHtml&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a91f2ddbafff7fcab3e856c33e01bb8daa73ef0888cc30849f5f5932803514f1d3" name="a91f2ddbafff7fcab3e856c33e01bb8daa73ef0888cc30849f5f5932803514f1d3"></a>kExecPluginMacro&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a91f2ddbafff7fcab3e856c33e01bb8daac0e316060ad7cc35caa51549889955bd" name="a91f2ddbafff7fcab3e856c33e01bb8daac0e316060ad7cc35caa51549889955bd"></a>kExecPluginCmd&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a91f2ddbafff7fcab3e856c33e01bb8daa170da316905af209513d5f81dfcde443" name="a91f2ddbafff7fcab3e856c33e01bb8daa170da316905af209513d5f81dfcde443"></a>kCloseTab&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a91f2ddbafff7fcab3e856c33e01bb8daab6622d79f01736a45551ad07a3ab27f4" name="a91f2ddbafff7fcab3e856c33e01bb8daab6622d79f01736a45551ad07a3ab27f4"></a>kCloseWindow&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a91f2ddbafff7fcab3e856c33e01bb8daa8354136a5a4347a90e08553576f42c14" name="a91f2ddbafff7fcab3e856c33e01bb8daa8354136a5a4347a90e08553576f42c14"></a>kQuitRoot&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a5004df3046d1b9ecca3fd6ead35c25ada546a37bde5591e054ec4a0762e59d5c2" name="a5004df3046d1b9ecca3fd6ead35c25ada546a37bde5591e054ec4a0762e59d5c2"></a>kBrowse&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5004df3046d1b9ecca3fd6ead35c25ada2c348457b827ca12fd6d4d18eee1b516" name="a5004df3046d1b9ecca3fd6ead35c25ada2c348457b827ca12fd6d4d18eee1b516"></a>kOpenFile&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5004df3046d1b9ecca3fd6ead35c25ada026970425911930059fc1717b4a1eaff" name="a5004df3046d1b9ecca3fd6ead35c25ada026970425911930059fc1717b4a1eaff"></a>kClone&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5004df3046d1b9ecca3fd6ead35c25adaba08e19e3879af380942f73358212719" name="a5004df3046d1b9ecca3fd6ead35c25adaba08e19e3879af380942f73358212719"></a>kHelpAbout&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5004df3046d1b9ecca3fd6ead35c25ada92d2391d3d42a1cc743d1fdebc55b485" name="a5004df3046d1b9ecca3fd6ead35c25ada92d2391d3d42a1cc743d1fdebc55b485"></a>kHelpOnBrowser&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5004df3046d1b9ecca3fd6ead35c25ada773eaf4018e1e07906c270acbc8ef653" name="a5004df3046d1b9ecca3fd6ead35c25ada773eaf4018e1e07906c270acbc8ef653"></a>kHelpOnCanvas&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5004df3046d1b9ecca3fd6ead35c25ada1571969b484bec78fdf5b436b601178c" name="a5004df3046d1b9ecca3fd6ead35c25ada1571969b484bec78fdf5b436b601178c"></a>kHelpOnMenus&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5004df3046d1b9ecca3fd6ead35c25adaf6f9bdab947824f536977efbbafb6fff" name="a5004df3046d1b9ecca3fd6ead35c25adaf6f9bdab947824f536977efbbafb6fff"></a>kHelpOnGraphicsEd&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5004df3046d1b9ecca3fd6ead35c25adae97894e5052f3c569b6b077d1d908fa6" name="a5004df3046d1b9ecca3fd6ead35c25adae97894e5052f3c569b6b077d1d908fa6"></a>kHelpOnObjects&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5004df3046d1b9ecca3fd6ead35c25ada3590846bcc210be4b3772a4488c48b73" name="a5004df3046d1b9ecca3fd6ead35c25ada3590846bcc210be4b3772a4488c48b73"></a>kHelpOnPS&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5004df3046d1b9ecca3fd6ead35c25adaf7f6e1043ff14c5af211d553ee885b38" name="a5004df3046d1b9ecca3fd6ead35c25adaf7f6e1043ff14c5af211d553ee885b38"></a>kHelpOnRemote&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5004df3046d1b9ecca3fd6ead35c25ada6fe61797544dc1d56af00bbafeaafa4f" name="a5004df3046d1b9ecca3fd6ead35c25ada6fe61797544dc1d56af00bbafeaafa4f"></a>kNewEditor&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5004df3046d1b9ecca3fd6ead35c25adac63918ba3ccb94a3e812fbdb3fd97285" name="a5004df3046d1b9ecca3fd6ead35c25adac63918ba3ccb94a3e812fbdb3fd97285"></a>kNewCanvas&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5004df3046d1b9ecca3fd6ead35c25ada455b45af619051978198ef4da906fc22" name="a5004df3046d1b9ecca3fd6ead35c25ada455b45af619051978198ef4da906fc22"></a>kNewHtml&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5004df3046d1b9ecca3fd6ead35c25ada73ef0888cc30849f5f5932803514f1d3" name="a5004df3046d1b9ecca3fd6ead35c25ada73ef0888cc30849f5f5932803514f1d3"></a>kExecPluginMacro&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5004df3046d1b9ecca3fd6ead35c25adac0e316060ad7cc35caa51549889955bd" name="a5004df3046d1b9ecca3fd6ead35c25adac0e316060ad7cc35caa51549889955bd"></a>kExecPluginCmd&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5004df3046d1b9ecca3fd6ead35c25ada170da316905af209513d5f81dfcde443" name="a5004df3046d1b9ecca3fd6ead35c25ada170da316905af209513d5f81dfcde443"></a>kCloseTab&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5004df3046d1b9ecca3fd6ead35c25adab6622d79f01736a45551ad07a3ab27f4" name="a5004df3046d1b9ecca3fd6ead35c25adab6622d79f01736a45551ad07a3ab27f4"></a>kCloseWindow&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5004df3046d1b9ecca3fd6ead35c25ada8354136a5a4347a90e08553576f42c14" name="a5004df3046d1b9ecca3fd6ead35c25ada8354136a5a4347a90e08553576f42c14"></a>kQuitRoot&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00151">151</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00153">153</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
 </div>
 </div>
@@ -467,7 +467,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l01163">NewBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l01153">NewBrowser()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l01160">NewBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l01150">NewBrowser()</a>.</p>
 
 </div>
 </div>
@@ -544,9 +544,9 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Create browser with a specified width and height.</p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00043">43</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00040">40</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_root_browser_8cxx_source.html#l00076">CreateBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00716">InitPlugins()</a>.</p>
+<p class="reference">References <a class="el" href="_g_root_browser_8cxx_source.html#l00073">CreateBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00713">InitPlugins()</a>.</p>
 
 </div>
 </div>
@@ -600,9 +600,9 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Create browser with a specified width and height and at position x, y.</p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00059">59</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00056">56</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_root_browser_8cxx_source.html#l00076">CreateBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00716">InitPlugins()</a>.</p>
+<p class="reference">References <a class="el" href="_g_root_browser_8cxx_source.html#l00073">CreateBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00713">InitPlugins()</a>.</p>
 
 </div>
 </div>
@@ -622,9 +622,9 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Clean up all widgets, frames and layouthints that were used</p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00225">225</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00222">222</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00123">fH1</a>, <a class="el" href="_g_root_browser_8h_source.html#l00124">fH2</a>, <a class="el" href="_g_root_browser_8h_source.html#l00122">fHf</a>, <a class="el" href="_g_root_browser_8h_source.html#l00128">fHSplitter</a>, <a class="el" href="_g_root_browser_8h_source.html#l00148">fIconPic</a>, <a class="el" href="_g_root_browser_8h_source.html#l00107">fLH0</a>, <a class="el" href="_g_root_browser_8h_source.html#l00108">fLH1</a>, <a class="el" href="_g_root_browser_8h_source.html#l00109">fLH2</a>, <a class="el" href="_g_root_browser_8h_source.html#l00110">fLH3</a>, <a class="el" href="_g_root_browser_8h_source.html#l00111">fLH4</a>, <a class="el" href="_g_root_browser_8h_source.html#l00112">fLH5</a>, <a class="el" href="_g_root_browser_8h_source.html#l00113">fLH6</a>, <a class="el" href="_g_root_browser_8h_source.html#l00114">fLH7</a>, <a class="el" href="_g_root_browser_8h_source.html#l00134">fMenuBar</a>, <a class="el" href="_g_root_browser_8h_source.html#l00136">fMenuExecPlugin</a>, <a class="el" href="_g_root_browser_8h_source.html#l00135">fMenuFile</a>, <a class="el" href="_g_root_browser_8h_source.html#l00132">fMenuFrame</a>, <a class="el" href="_g_root_browser_8h_source.html#l00137">fMenuHelp</a>, <a class="el" href="_g_root_browser_8h_source.html#l00131">fPreMenuFrame</a>, <a class="el" href="_g_root_browser_8h_source.html#l00142">fStatusBar</a>, <a class="el" href="_g_root_browser_8h_source.html#l00117">fTabBottom</a>, <a class="el" href="_g_root_browser_8h_source.html#l00115">fTabLeft</a>, <a class="el" href="_g_root_browser_8h_source.html#l00116">fTabRight</a>, <a class="el" href="_g_root_browser_8h_source.html#l00133">fToolbarFrame</a>, <a class="el" href="_g_root_browser_8h_source.html#l00130">fTopMenuFrame</a>, <a class="el" href="_g_root_browser_8h_source.html#l00125">fV1</a>, <a class="el" href="_g_root_browser_8h_source.html#l00126">fV2</a>, <a class="el" href="_g_root_browser_8h_source.html#l00121">fVf</a>, and <a class="el" href="_g_root_browser_8h_source.html#l00127">fVSplitter</a>.</p>
+<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00125">fH1</a>, <a class="el" href="_g_root_browser_8h_source.html#l00126">fH2</a>, <a class="el" href="_g_root_browser_8h_source.html#l00124">fHf</a>, <a class="el" href="_g_root_browser_8h_source.html#l00130">fHSplitter</a>, <a class="el" href="_g_root_browser_8h_source.html#l00150">fIconPic</a>, <a class="el" href="_g_root_browser_8h_source.html#l00109">fLH0</a>, <a class="el" href="_g_root_browser_8h_source.html#l00110">fLH1</a>, <a class="el" href="_g_root_browser_8h_source.html#l00111">fLH2</a>, <a class="el" href="_g_root_browser_8h_source.html#l00112">fLH3</a>, <a class="el" href="_g_root_browser_8h_source.html#l00113">fLH4</a>, <a class="el" href="_g_root_browser_8h_source.html#l00114">fLH5</a>, <a class="el" href="_g_root_browser_8h_source.html#l00115">fLH6</a>, <a class="el" href="_g_root_browser_8h_source.html#l00116">fLH7</a>, <a class="el" href="_g_root_browser_8h_source.html#l00136">fMenuBar</a>, <a class="el" href="_g_root_browser_8h_source.html#l00138">fMenuExecPlugin</a>, <a class="el" href="_g_root_browser_8h_source.html#l00137">fMenuFile</a>, <a class="el" href="_g_root_browser_8h_source.html#l00134">fMenuFrame</a>, <a class="el" href="_g_root_browser_8h_source.html#l00139">fMenuHelp</a>, <a class="el" href="_g_root_browser_8h_source.html#l00133">fPreMenuFrame</a>, <a class="el" href="_g_root_browser_8h_source.html#l00144">fStatusBar</a>, <a class="el" href="_g_root_browser_8h_source.html#l00119">fTabBottom</a>, <a class="el" href="_g_root_browser_8h_source.html#l00117">fTabLeft</a>, <a class="el" href="_g_root_browser_8h_source.html#l00118">fTabRight</a>, <a class="el" href="_g_root_browser_8h_source.html#l00135">fToolbarFrame</a>, <a class="el" href="_g_root_browser_8h_source.html#l00132">fTopMenuFrame</a>, <a class="el" href="_g_root_browser_8h_source.html#l00127">fV1</a>, <a class="el" href="_g_root_browser_8h_source.html#l00128">fV2</a>, <a class="el" href="_g_root_browser_8h_source.html#l00123">fVf</a>, and <a class="el" href="_g_root_browser_8h_source.html#l00129">fVSplitter</a>.</p>
 
 </div>
 </div>
@@ -662,9 +662,9 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Add items to the actual browser. This function has to be called by the Browse() member function of objects when they are called by a browser. If check &lt; 0 (default) no check box is drawn, if 0 then unchecked checkbox is added, if 1 checked checkbox is added.</p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00265">265</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00262">262</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00139">fActBrowser</a>.</p>
+<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00141">fActBrowser</a>.</p>
 
 </div>
 </div>
@@ -692,9 +692,9 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Browse object. This, in turn, will trigger the calling of <a class="el" href="#a45f64a21a24ae7481bcdb97e11e62763">GRootBrowser::Add()</a> which will fill the IconBox and the tree. Emits signal "BrowseObj(TObject*)".</p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00286">286</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00283">283</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00139">fActBrowser</a>.</p>
+<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00141">fActBrowser</a>.</p>
 
 </div>
 </div>
@@ -726,7 +726,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Emits signal when double clicking on icon.</p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l01136">1136</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l01133">1133</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
 
 </div>
 </div>
@@ -746,11 +746,11 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Clone the browser. A new Browser will be created, with the same plugins executed in the current one.</p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00299">299</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00296">296</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00043">GBrowserPlugin::fCommand</a>, <a class="el" href="_g_root_browser_8h_source.html#l00143">fNbInitPlugins</a>, <a class="el" href="_g_root_browser_8h_source.html#l00141">fPlugins</a>, <a class="el" href="_g_root_browser_8h_source.html#l00042">GBrowserPlugin::fSubTab</a>, and <a class="el" href="_g_root_browser_8h_source.html#l00041">GBrowserPlugin::fTab</a>.</p>
+<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00045">GBrowserPlugin::fCommand</a>, <a class="el" href="_g_root_browser_8h_source.html#l00145">fNbInitPlugins</a>, <a class="el" href="_g_root_browser_8h_source.html#l00143">fPlugins</a>, <a class="el" href="_g_root_browser_8h_source.html#l00044">GBrowserPlugin::fSubTab</a>, and <a class="el" href="_g_root_browser_8h_source.html#l00043">GBrowserPlugin::fTab</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00574">HandleMenu()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00571">HandleMenu()</a>.</p>
 
 </div>
 </div>
@@ -778,11 +778,11 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Remove tab element id from right tab.</p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00317">317</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00314">314</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="#ad4a1457a292dfc2fb4e93bb13b8f7a87a2dd2b017192f8a09367d48c7648213c9">kRight</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00846">RemoveTab()</a>.</p>
+<p class="reference">References <a class="el" href="#a7f8edaebba649d61b9668de28dcfb1c4a2dd2b017192f8a09367d48c7648213c9">kRight</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00843">RemoveTab()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00574">HandleMenu()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00571">HandleMenu()</a>.</p>
 
 </div>
 </div>
@@ -810,11 +810,11 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Properly close the mainframes embedded in the different tabs</p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00325">325</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00322">322</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_root_browser_8cxx_source.html#l00421">CloseWindow()</a>, <a class="el" href="_g_root_browser_8h_source.html#l00139">fActBrowser</a>, <a class="el" href="_g_root_browser_8h_source.html#l00135">fMenuFile</a>, <a class="el" href="_g_root_browser_8h_source.html#l00141">fPlugins</a>, <a class="el" href="_g_root_browser_8h_source.html#l00117">fTabBottom</a>, <a class="el" href="_g_root_browser_8h_source.html#l00115">fTabLeft</a>, and <a class="el" href="_g_root_browser_8h_source.html#l00116">fTabRight</a>.</p>
+<p class="reference">References <a class="el" href="_g_root_browser_8cxx_source.html#l00418">CloseWindow()</a>, <a class="el" href="_g_root_browser_8h_source.html#l00141">fActBrowser</a>, <a class="el" href="_g_root_browser_8h_source.html#l00137">fMenuFile</a>, <a class="el" href="_g_root_browser_8h_source.html#l00143">fPlugins</a>, <a class="el" href="_g_root_browser_8h_source.html#l00119">fTabBottom</a>, <a class="el" href="_g_root_browser_8h_source.html#l00117">fTabLeft</a>, and <a class="el" href="_g_root_browser_8h_source.html#l00118">fTabRight</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00421">CloseWindow()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00418">CloseWindow()</a>.</p>
 
 </div>
 </div>
@@ -842,11 +842,11 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Called when window is closed via the window manager.</p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00421">421</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00418">418</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_root_browser_8cxx_source.html#l00325">CloseTabs()</a>.</p>
+<p class="reference">References <a class="el" href="_g_root_browser_8cxx_source.html#l00322">CloseTabs()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00325">CloseTabs()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00574">HandleMenu()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00846">RemoveTab()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00322">CloseTabs()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00571">HandleMenu()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00843">RemoveTab()</a>.</p>
 
 </div>
 </div>
@@ -866,11 +866,11 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Create the actual interface.</p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00076">76</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00073">73</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00138">fActMenuBar</a>, <a class="el" href="_g_root_browser_8h_source.html#l00145">fCrTab</a>, <a class="el" href="_g_root_browser_8h_source.html#l00129">fEditFrame</a>, <a class="el" href="_g_root_browser_8h_source.html#l00119">fEditPos</a>, <a class="el" href="_g_root_browser_8h_source.html#l00120">fEditSubPos</a>, <a class="el" href="_g_root_browser_8h_source.html#l00118">fEditTab</a>, <a class="el" href="_g_root_browser_8h_source.html#l00123">fH1</a>, <a class="el" href="_g_root_browser_8h_source.html#l00124">fH2</a>, <a class="el" href="_g_root_browser_8h_source.html#l00122">fHf</a>, <a class="el" href="_g_root_browser_8h_source.html#l00128">fHSplitter</a>, <a class="el" href="_g_root_browser_8h_source.html#l00148">fIconPic</a>, <a class="el" href="_g_root_browser_8h_source.html#l00107">fLH0</a>, <a class="el" href="_g_root_browser_8h_source.html#l00108">fLH1</a>, <a class="el" href="_g_root_browser_8h_source.html#l00109">fLH2</a>, <a class="el" href="_g_root_browser_8h_source.html#l00110">fLH3</a>, <a class="el" href="_g_root_browser_8h_source.html#l00111">fLH4</a>, <a class="el" href="_g_root_browser_8h_source.html#l00112">fLH5</a>, <a class="el" href="_g_root_browser_8h_source.html#l00113">fLH6</a>, <a class="el" href="_g_root_browser_8h_source.html#l00114">fLH7</a>, <a class="el" href="_g_root_browser_8h_source.html#l00134">fMenuBar</a>, <a class="el" href="_g_root_browser_8h_source.html#l00136">fMenuExecPlugin</a>, <a class="el" href="_g_root_browser_8h_source.html#l00135">fMenuFile</a>, <a class="el" href="_g_root_browser_8h_source.html#l00132">fMenuFrame</a>, <a class="el" href="_g_root_browser_8h_source.html#l00137">fMenuHelp</a>, <a class="el" href="_g_root_browser_8h_source.html#l00143">fNbInitPlugins</a>, <a class="el" href="_g_root_browser_8h_source.html#l00144">fNbTab</a>, <a class="el" href="_g_root_browser_8h_source.html#l00131">fPreMenuFrame</a>, <a class="el" href="_g_root_browser_8h_source.html#l00142">fStatusBar</a>, <a class="el" href="_g_root_browser_8h_source.html#l00117">fTabBottom</a>, <a class="el" href="_g_root_browser_8h_source.html#l00115">fTabLeft</a>, <a class="el" href="_g_root_browser_8h_source.html#l00116">fTabRight</a>, <a class="el" href="_g_root_browser_8h_source.html#l00133">fToolbarFrame</a>, <a class="el" href="_g_root_browser_8h_source.html#l00130">fTopMenuFrame</a>, <a class="el" href="_g_root_browser_8h_source.html#l00125">fV1</a>, <a class="el" href="_g_root_browser_8h_source.html#l00126">fV2</a>, <a class="el" href="_g_root_browser_8h_source.html#l00121">fVf</a>, <a class="el" href="_g_root_browser_8h_source.html#l00127">fVSplitter</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa546a37bde5591e054ec4a0762e59d5c2">kBrowse</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa026970425911930059fc1717b4a1eaff">kClone</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa170da316905af209513d5f81dfcde443">kCloseTab</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daab6622d79f01736a45551ad07a3ab27f4">kCloseWindow</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daac0e316060ad7cc35caa51549889955bd">kExecPluginCmd</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa73ef0888cc30849f5f5932803514f1d3">kExecPluginMacro</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daaba08e19e3879af380942f73358212719">kHelpAbout</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa92d2391d3d42a1cc743d1fdebc55b485">kHelpOnBrowser</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa773eaf4018e1e07906c270acbc8ef653">kHelpOnCanvas</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daaf6f9bdab947824f536977efbbafb6fff">kHelpOnGraphicsEd</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa1571969b484bec78fdf5b436b601178c">kHelpOnMenus</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daae97894e5052f3c569b6b077d1d908fa6">kHelpOnObjects</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa3590846bcc210be4b3772a4488c48b73">kHelpOnPS</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daaf7f6e1043ff14c5af211d553ee885b38">kHelpOnRemote</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daac63918ba3ccb94a3e812fbdb3fd97285">kNewCanvas</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa6fe61797544dc1d56af00bbafeaafa4f">kNewEditor</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa455b45af619051978198ef4da906fc22">kNewHtml</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa2c348457b827ca12fd6d4d18eee1b516">kOpenFile</a>, and <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa8354136a5a4347a90e08553576f42c14">kQuitRoot</a>.</p>
+<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00140">fActMenuBar</a>, <a class="el" href="_g_root_browser_8h_source.html#l00147">fCrTab</a>, <a class="el" href="_g_root_browser_8h_source.html#l00131">fEditFrame</a>, <a class="el" href="_g_root_browser_8h_source.html#l00121">fEditPos</a>, <a class="el" href="_g_root_browser_8h_source.html#l00122">fEditSubPos</a>, <a class="el" href="_g_root_browser_8h_source.html#l00120">fEditTab</a>, <a class="el" href="_g_root_browser_8h_source.html#l00125">fH1</a>, <a class="el" href="_g_root_browser_8h_source.html#l00126">fH2</a>, <a class="el" href="_g_root_browser_8h_source.html#l00124">fHf</a>, <a class="el" href="_g_root_browser_8h_source.html#l00130">fHSplitter</a>, <a class="el" href="_g_root_browser_8h_source.html#l00150">fIconPic</a>, <a class="el" href="_g_root_browser_8h_source.html#l00109">fLH0</a>, <a class="el" href="_g_root_browser_8h_source.html#l00110">fLH1</a>, <a class="el" href="_g_root_browser_8h_source.html#l00111">fLH2</a>, <a class="el" href="_g_root_browser_8h_source.html#l00112">fLH3</a>, <a class="el" href="_g_root_browser_8h_source.html#l00113">fLH4</a>, <a class="el" href="_g_root_browser_8h_source.html#l00114">fLH5</a>, <a class="el" href="_g_root_browser_8h_source.html#l00115">fLH6</a>, <a class="el" href="_g_root_browser_8h_source.html#l00116">fLH7</a>, <a class="el" href="_g_root_browser_8h_source.html#l00136">fMenuBar</a>, <a class="el" href="_g_root_browser_8h_source.html#l00138">fMenuExecPlugin</a>, <a class="el" href="_g_root_browser_8h_source.html#l00137">fMenuFile</a>, <a class="el" href="_g_root_browser_8h_source.html#l00134">fMenuFrame</a>, <a class="el" href="_g_root_browser_8h_source.html#l00139">fMenuHelp</a>, <a class="el" href="_g_root_browser_8h_source.html#l00145">fNbInitPlugins</a>, <a class="el" href="_g_root_browser_8h_source.html#l00146">fNbTab</a>, <a class="el" href="_g_root_browser_8h_source.html#l00133">fPreMenuFrame</a>, <a class="el" href="_g_root_browser_8h_source.html#l00144">fStatusBar</a>, <a class="el" href="_g_root_browser_8h_source.html#l00119">fTabBottom</a>, <a class="el" href="_g_root_browser_8h_source.html#l00117">fTabLeft</a>, <a class="el" href="_g_root_browser_8h_source.html#l00118">fTabRight</a>, <a class="el" href="_g_root_browser_8h_source.html#l00135">fToolbarFrame</a>, <a class="el" href="_g_root_browser_8h_source.html#l00132">fTopMenuFrame</a>, <a class="el" href="_g_root_browser_8h_source.html#l00127">fV1</a>, <a class="el" href="_g_root_browser_8h_source.html#l00128">fV2</a>, <a class="el" href="_g_root_browser_8h_source.html#l00123">fVf</a>, <a class="el" href="_g_root_browser_8h_source.html#l00129">fVSplitter</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada546a37bde5591e054ec4a0762e59d5c2">kBrowse</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada026970425911930059fc1717b4a1eaff">kClone</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada170da316905af209513d5f81dfcde443">kCloseTab</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25adab6622d79f01736a45551ad07a3ab27f4">kCloseWindow</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25adac0e316060ad7cc35caa51549889955bd">kExecPluginCmd</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada73ef0888cc30849f5f5932803514f1d3">kExecPluginMacro</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25adaba08e19e3879af380942f73358212719">kHelpAbout</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada92d2391d3d42a1cc743d1fdebc55b485">kHelpOnBrowser</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada773eaf4018e1e07906c270acbc8ef653">kHelpOnCanvas</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25adaf6f9bdab947824f536977efbbafb6fff">kHelpOnGraphicsEd</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada1571969b484bec78fdf5b436b601178c">kHelpOnMenus</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25adae97894e5052f3c569b6b077d1d908fa6">kHelpOnObjects</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada3590846bcc210be4b3772a4488c48b73">kHelpOnPS</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25adaf7f6e1043ff14c5af211d553ee885b38">kHelpOnRemote</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25adac63918ba3ccb94a3e812fbdb3fd97285">kNewCanvas</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada6fe61797544dc1d56af00bbafeaafa4f">kNewEditor</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada455b45af619051978198ef4da906fc22">kNewHtml</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada2c348457b827ca12fd6d4d18eee1b516">kOpenFile</a>, and <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada8354136a5a4347a90e08553576f42c14">kQuitRoot</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00059">GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00043">GRootBrowser()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00056">GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00040">GRootBrowser()</a>.</p>
 
 </div>
 </div>
@@ -890,9 +890,9 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Handle Tab navigation.</p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00432">432</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00429">429</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00116">fTabRight</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l01056">SwitchMenus()</a>.</p>
+<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00118">fTabRight</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l01053">SwitchMenus()</a>.</p>
 
 </div>
 </div>
@@ -920,7 +920,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Emits signal when double clicking on icon.</p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l01129">1129</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l01126">1126</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
 
 </div>
 </div>
@@ -954,9 +954,9 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Display a tooltip with infos about the primitive below the cursor.</p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00443">443</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00440">440</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_root_browser_8cxx_source.html#l00948">SetStatusText()</a>.</p>
+<p class="reference">References <a class="el" href="_g_root_browser_8cxx_source.html#l00945">SetStatusText()</a>.</p>
 
 </div>
 </div>
@@ -987,7 +987,7 @@ Private Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Int_t</td>          <td class="paramname"><span class="paramname"><em>pos</em></span><span class="paramdefsep"> = </span><span class="paramdefval">static_cast&lt;Int_t&gt;(<a class="el" href="#ad4a1457a292dfc2fb4e93bb13b8f7a87a2dd2b017192f8a09367d48c7648213c9">EInsertPosition::kRight</a>)</span>, </td>
+          <td class="paramtype">Int_t</td>          <td class="paramname"><span class="paramname"><em>pos</em></span><span class="paramdefsep"> = </span><span class="paramdefval">static_cast&lt;Int_t&gt;(<a class="el" href="#a7f8edaebba649d61b9668de28dcfb1c4a2dd2b017192f8a09367d48c7648213c9">EInsertPosition::kRight</a>)</span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1003,11 +1003,11 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Execute a macro and embed the created frame in the tab "pos" and tab element "subpos".</p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00468">468</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00465">465</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00141">fPlugins</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00924">SetTabTitle()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00985">StartEmbedding()</a>, and <a class="el" href="_g_root_browser_8h_source.html#l00205">StopEmbedding()</a>.</p>
+<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00143">fPlugins</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00921">SetTabTitle()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00982">StartEmbedding()</a>, and <a class="el" href="_g_root_browser_8h_source.html#l00207">StopEmbedding()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00574">HandleMenu()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00716">InitPlugins()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00571">HandleMenu()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00713">InitPlugins()</a>.</p>
 
 </div>
 </div>
@@ -1035,7 +1035,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Emits signal "ExecuteDefaultAction(TObject*)".</p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l01146">1146</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l01143">1143</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
 
 </div>
 </div>
@@ -1062,9 +1062,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00190">190</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00192">192</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00129">fEditFrame</a>.</p>
+<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00131">fEditFrame</a>.</p>
 
 </div>
 </div>
@@ -1092,9 +1092,9 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Returns drawing option.</p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00507">507</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00504">504</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00139">fActBrowser</a>.</p>
+<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00141">fActBrowser</a>.</p>
 
 </div>
 </div>
@@ -1121,7 +1121,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00219">219</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00221">221</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
 </div>
 </div>
@@ -1148,9 +1148,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00192">192</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00194">194</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00142">fStatusBar</a>.</p>
+<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00144">fStatusBar</a>.</p>
 
 </div>
 </div>
@@ -1170,11 +1170,11 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Returns the TGTab at position pos.</p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00518">518</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00515">515</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00117">fTabBottom</a>, <a class="el" href="_g_root_browser_8h_source.html#l00115">fTabLeft</a>, <a class="el" href="_g_root_browser_8h_source.html#l00116">fTabRight</a>, <a class="el" href="#ad4a1457a292dfc2fb4e93bb13b8f7a87a78cd851b433d8d6864110dd678e43586">kBottom</a>, <a class="el" href="#ad4a1457a292dfc2fb4e93bb13b8f7a87a2d5fde1d924910a2a01ecd8e70a87c28">kLeft</a>, and <a class="el" href="#ad4a1457a292dfc2fb4e93bb13b8f7a87a2dd2b017192f8a09367d48c7648213c9">kRight</a>.</p>
+<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00119">fTabBottom</a>, <a class="el" href="_g_root_browser_8h_source.html#l00117">fTabLeft</a>, <a class="el" href="_g_root_browser_8h_source.html#l00118">fTabRight</a>, <a class="el" href="#a7f8edaebba649d61b9668de28dcfb1c4a78cd851b433d8d6864110dd678e43586">kBottom</a>, <a class="el" href="#a7f8edaebba649d61b9668de28dcfb1c4a2d5fde1d924910a2a01ecd8e70a87c28">kLeft</a>, and <a class="el" href="#a7f8edaebba649d61b9668de28dcfb1c4a2dd2b017192f8a09367d48c7648213c9">kRight</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00906">SetTab()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00924">SetTabTitle()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00985">StartEmbedding()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00903">SetTab()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00921">SetTabTitle()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00982">StartEmbedding()</a>.</p>
 
 </div>
 </div>
@@ -1201,9 +1201,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00195">195</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00197">197</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00117">fTabBottom</a>.</p>
+<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00119">fTabBottom</a>.</p>
 
 </div>
 </div>
@@ -1230,9 +1230,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00193">193</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00195">195</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00115">fTabLeft</a>.</p>
+<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00117">fTabLeft</a>.</p>
 
 </div>
 </div>
@@ -1259,9 +1259,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00194">194</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00196">196</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00116">fTabRight</a>.</p>
+<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00118">fTabRight</a>.</p>
 
 </div>
 </div>
@@ -1288,9 +1288,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00191">191</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00193">193</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00133">fToolbarFrame</a>.</p>
+<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00135">fToolbarFrame</a>.</p>
 
 </div>
 </div>
@@ -1318,9 +1318,9 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Handle keyboard events.</p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00531">531</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00528">528</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00135">fMenuFile</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa546a37bde5591e054ec4a0762e59d5c2">kBrowse</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa026970425911930059fc1717b4a1eaff">kClone</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa170da316905af209513d5f81dfcde443">kCloseTab</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daab6622d79f01736a45551ad07a3ab27f4">kCloseWindow</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daac63918ba3ccb94a3e812fbdb3fd97285">kNewCanvas</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa6fe61797544dc1d56af00bbafeaafa4f">kNewEditor</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa455b45af619051978198ef4da906fc22">kNewHtml</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa2c348457b827ca12fd6d4d18eee1b516">kOpenFile</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa8354136a5a4347a90e08553576f42c14">kQuitRoot</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00836">Refresh()</a>.</p>
+<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00137">fMenuFile</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada546a37bde5591e054ec4a0762e59d5c2">kBrowse</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada026970425911930059fc1717b4a1eaff">kClone</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada170da316905af209513d5f81dfcde443">kCloseTab</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25adab6622d79f01736a45551ad07a3ab27f4">kCloseWindow</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25adac63918ba3ccb94a3e812fbdb3fd97285">kNewCanvas</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada6fe61797544dc1d56af00bbafeaafa4f">kNewEditor</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada455b45af619051978198ef4da906fc22">kNewHtml</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada2c348457b827ca12fd6d4d18eee1b516">kOpenFile</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada8354136a5a4347a90e08553576f42c14">kQuitRoot</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00833">Refresh()</a>.</p>
 
 </div>
 </div>
@@ -1340,9 +1340,9 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Handle menu entries events.</p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00574">574</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00571">571</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_root_browser_8cxx_source.html#l00299">CloneBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00317">CloseTab()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00421">CloseWindow()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00468">ExecPlugin()</a>, <a class="el" href="_g_root_browser_8h_source.html#l00139">fActBrowser</a>, <a class="el" href="_g_root_browser_8h_source.html#l00135">fMenuFile</a>, <a class="el" href="_g_root_browser_8h_source.html#l00116">fTabRight</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00038">gOpenFileTypes</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00040">gPluginFileTypes</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa546a37bde5591e054ec4a0762e59d5c2">kBrowse</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa026970425911930059fc1717b4a1eaff">kClone</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa170da316905af209513d5f81dfcde443">kCloseTab</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daab6622d79f01736a45551ad07a3ab27f4">kCloseWindow</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daac0e316060ad7cc35caa51549889955bd">kExecPluginCmd</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa73ef0888cc30849f5f5932803514f1d3">kExecPluginMacro</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daaba08e19e3879af380942f73358212719">kHelpAbout</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa92d2391d3d42a1cc743d1fdebc55b485">kHelpOnBrowser</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa773eaf4018e1e07906c270acbc8ef653">kHelpOnCanvas</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daaf6f9bdab947824f536977efbbafb6fff">kHelpOnGraphicsEd</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa1571969b484bec78fdf5b436b601178c">kHelpOnMenus</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daae97894e5052f3c569b6b077d1d908fa6">kHelpOnObjects</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa3590846bcc210be4b3772a4488c48b73">kHelpOnPS</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daaf7f6e1043ff14c5af211d553ee885b38">kHelpOnRemote</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daac63918ba3ccb94a3e812fbdb3fd97285">kNewCanvas</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa6fe61797544dc1d56af00bbafeaafa4f">kNewEditor</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa455b45af619051978198ef4da906fc22">kNewHtml</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa2c348457b827ca12fd6d4d18eee1b516">kOpenFile</a>, <a class="el" href="#a91f2ddbafff7fcab3e856c33e01bb8daa8354136a5a4347a90e08553576f42c14">kQuitRoot</a>, and <a class="el" href="#ad4a1457a292dfc2fb4e93bb13b8f7a87a2dd2b017192f8a09367d48c7648213c9">kRight</a>.</p>
+<p class="reference">References <a class="el" href="_g_root_browser_8cxx_source.html#l00296">CloneBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00314">CloseTab()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00418">CloseWindow()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00465">ExecPlugin()</a>, <a class="el" href="_g_root_browser_8h_source.html#l00141">fActBrowser</a>, <a class="el" href="_g_root_browser_8h_source.html#l00137">fMenuFile</a>, <a class="el" href="_g_root_browser_8h_source.html#l00118">fTabRight</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00035">gOpenFileTypes</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00037">gPluginFileTypes</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada546a37bde5591e054ec4a0762e59d5c2">kBrowse</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada026970425911930059fc1717b4a1eaff">kClone</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada170da316905af209513d5f81dfcde443">kCloseTab</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25adab6622d79f01736a45551ad07a3ab27f4">kCloseWindow</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25adac0e316060ad7cc35caa51549889955bd">kExecPluginCmd</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada73ef0888cc30849f5f5932803514f1d3">kExecPluginMacro</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25adaba08e19e3879af380942f73358212719">kHelpAbout</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada92d2391d3d42a1cc743d1fdebc55b485">kHelpOnBrowser</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada773eaf4018e1e07906c270acbc8ef653">kHelpOnCanvas</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25adaf6f9bdab947824f536977efbbafb6fff">kHelpOnGraphicsEd</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada1571969b484bec78fdf5b436b601178c">kHelpOnMenus</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25adae97894e5052f3c569b6b077d1d908fa6">kHelpOnObjects</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada3590846bcc210be4b3772a4488c48b73">kHelpOnPS</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25adaf7f6e1043ff14c5af211d553ee885b38">kHelpOnRemote</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25adac63918ba3ccb94a3e812fbdb3fd97285">kNewCanvas</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada6fe61797544dc1d56af00bbafeaafa4f">kNewEditor</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada455b45af619051978198ef4da906fc22">kNewHtml</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada2c348457b827ca12fd6d4d18eee1b516">kOpenFile</a>, <a class="el" href="#a5004df3046d1b9ecca3fd6ead35c25ada8354136a5a4347a90e08553576f42c14">kQuitRoot</a>, and <a class="el" href="#a7f8edaebba649d61b9668de28dcfb1c4a2dd2b017192f8a09367d48c7648213c9">kRight</a>.</p>
 
 </div>
 </div>
@@ -1367,14 +1367,14 @@ Private Attributes</h2></td></tr>
 <div class="line">   ph-&gt;ExecPlugin(3, gClient-&gt;GetRoot(), 200, 500);</div>
 <div class="line">}</div>
 <div class="line"><a class="code hl_function" href="#aca0fee389f8575c753f06a1c97b28840">StopEmbedding</a>();</div>
-<div class="ttc" id="aclass_g_root_browser_html_a38ae6c5dea0c6a436134e02141d83b79"><div class="ttname"><a href="#a38ae6c5dea0c6a436134e02141d83b79">GRootBrowser::StartEmbedding</a></div><div class="ttdeci">void StartEmbedding(Int_t pos=static_cast&lt; Int_t &gt;(EInsertPosition::kRight), Int_t subpos=-1) override</div><div class="ttdef"><b>Definition</b> <a href="_g_root_browser_8cxx_source.html#l00985">GRootBrowser.cxx:985</a></div></div>
-<div class="ttc" id="aclass_g_root_browser_html_aca0fee389f8575c753f06a1c97b28840"><div class="ttname"><a href="#aca0fee389f8575c753f06a1c97b28840">GRootBrowser::StopEmbedding</a></div><div class="ttdeci">void StopEmbedding(const char *name=nullptr) override</div><div class="ttdef"><b>Definition</b> <a href="_g_root_browser_8h_source.html#l00205">GRootBrowser.h:205</a></div></div>
+<div class="ttc" id="aclass_g_root_browser_html_a38ae6c5dea0c6a436134e02141d83b79"><div class="ttname"><a href="#a38ae6c5dea0c6a436134e02141d83b79">GRootBrowser::StartEmbedding</a></div><div class="ttdeci">void StartEmbedding(Int_t pos=static_cast&lt; Int_t &gt;(EInsertPosition::kRight), Int_t subpos=-1) override</div><div class="ttdef"><b>Definition</b> <a href="_g_root_browser_8cxx_source.html#l00982">GRootBrowser.cxx:982</a></div></div>
+<div class="ttc" id="aclass_g_root_browser_html_aca0fee389f8575c753f06a1c97b28840"><div class="ttname"><a href="#aca0fee389f8575c753f06a1c97b28840">GRootBrowser::StopEmbedding</a></div><div class="ttdeci">void StopEmbedding(const char *name=nullptr) override</div><div class="ttdef"><b>Definition</b> <a href="_g_root_browser_8h_source.html#l00207">GRootBrowser.h:207</a></div></div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00716">716</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00713">713</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_root_browser_8cxx_source.html#l00468">ExecPlugin()</a>, <a class="el" href="_g_root_browser_8h_source.html#l00143">fNbInitPlugins</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00906">SetTab()</a>.</p>
+<p class="reference">References <a class="el" href="_g_root_browser_8cxx_source.html#l00465">ExecPlugin()</a>, <a class="el" href="_g_root_browser_8h_source.html#l00145">fNbInitPlugins</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00903">SetTab()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00059">GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00043">GRootBrowser()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00056">GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00040">GRootBrowser()</a>.</p>
 
 </div>
 </div>
@@ -1401,9 +1401,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00227">227</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00229">229</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00147">fShowCloseTab</a>.</p>
+<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00149">fShowCloseTab</a>.</p>
 
 </div>
 </div>
@@ -1460,7 +1460,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>static contructor returning TBrowserImp, as needed by the plugin mechanism.</p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l01163">1163</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l01160">1160</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
 
 <p class="reference">References <a class="el" href="#abac176fdb7275a20c0921ef0604460a8">GRootBrowser()</a>.</p>
 
@@ -1509,7 +1509,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>static contructor returning TBrowserImp, as needed by the plugin mechanism.</p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l01153">1153</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l01150">1150</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
 
 <p class="reference">References <a class="el" href="#abac176fdb7275a20c0921ef0604460a8">GRootBrowser()</a>.</p>
 
@@ -1589,7 +1589,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Really delete the browser and the this GUI.</p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00802">802</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00799">799</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
 
 </div>
 </div>
@@ -1617,9 +1617,9 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Recursively remove object from browser.</p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00811">811</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00808">808</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00139">fActBrowser</a>.</p>
+<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00141">fActBrowser</a>.</p>
 
 </div>
 </div>
@@ -1639,11 +1639,11 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Recursively reparent TGPopupMenu to gClient-&gt;GetDefaultRoot().</p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00821">821</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00818">818</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_root_browser_8cxx_source.html#l00821">RecursiveReparent()</a>.</p>
+<p class="reference">References <a class="el" href="_g_root_browser_8cxx_source.html#l00818">RecursiveReparent()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00821">RecursiveReparent()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l01056">SwitchMenus()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00818">RecursiveReparent()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l01053">SwitchMenus()</a>.</p>
 
 </div>
 </div>
@@ -1671,11 +1671,11 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Refresh the actual browser contents.</p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00836">836</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00833">833</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00139">fActBrowser</a>.</p>
+<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00141">fActBrowser</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00531">HandleKey()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00528">HandleKey()</a>.</p>
 
 </div>
 </div>
@@ -1699,11 +1699,11 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Remove tab element "subpos" from tab "pos".</p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00846">846</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00843">843</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_root_browser_8cxx_source.html#l00421">CloseWindow()</a>, <a class="el" href="_g_root_browser_8h_source.html#l00138">fActMenuBar</a>, <a class="el" href="_g_root_browser_8h_source.html#l00132">fMenuFrame</a>, <a class="el" href="_g_root_browser_8h_source.html#l00144">fNbTab</a>, <a class="el" href="_g_root_browser_8h_source.html#l00141">fPlugins</a>, <a class="el" href="_g_root_browser_8h_source.html#l00117">fTabBottom</a>, <a class="el" href="_g_root_browser_8h_source.html#l00115">fTabLeft</a>, <a class="el" href="_g_root_browser_8h_source.html#l00116">fTabRight</a>, <a class="el" href="#ad4a1457a292dfc2fb4e93bb13b8f7a87a78cd851b433d8d6864110dd678e43586">kBottom</a>, <a class="el" href="#ad4a1457a292dfc2fb4e93bb13b8f7a87a2d5fde1d924910a2a01ecd8e70a87c28">kLeft</a>, <a class="el" href="#ad4a1457a292dfc2fb4e93bb13b8f7a87a2dd2b017192f8a09367d48c7648213c9">kRight</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l01056">SwitchMenus()</a>.</p>
+<p class="reference">References <a class="el" href="_g_root_browser_8cxx_source.html#l00418">CloseWindow()</a>, <a class="el" href="_g_root_browser_8h_source.html#l00140">fActMenuBar</a>, <a class="el" href="_g_root_browser_8h_source.html#l00134">fMenuFrame</a>, <a class="el" href="_g_root_browser_8h_source.html#l00146">fNbTab</a>, <a class="el" href="_g_root_browser_8h_source.html#l00143">fPlugins</a>, <a class="el" href="_g_root_browser_8h_source.html#l00119">fTabBottom</a>, <a class="el" href="_g_root_browser_8h_source.html#l00117">fTabLeft</a>, <a class="el" href="_g_root_browser_8h_source.html#l00118">fTabRight</a>, <a class="el" href="#a7f8edaebba649d61b9668de28dcfb1c4a78cd851b433d8d6864110dd678e43586">kBottom</a>, <a class="el" href="#a7f8edaebba649d61b9668de28dcfb1c4a2d5fde1d924910a2a01ecd8e70a87c28">kLeft</a>, <a class="el" href="#a7f8edaebba649d61b9668de28dcfb1c4a2dd2b017192f8a09367d48c7648213c9">kRight</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l01053">SwitchMenus()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00317">CloseTab()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00314">CloseTab()</a>.</p>
 
 </div>
 </div>
@@ -1730,9 +1730,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00202">202</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00204">204</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00139">fActBrowser</a>.</p>
+<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00141">fActBrowser</a>.</p>
 
 </div>
 </div>
@@ -1764,11 +1764,11 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Set text in culumn col in status bar.</p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00948">948</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00945">945</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00142">fStatusBar</a>.</p>
+<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00144">fStatusBar</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00443">EventInfo()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00440">EventInfo()</a>.</p>
 
 </div>
 </div>
@@ -1781,7 +1781,7 @@ Private Attributes</h2></td></tr>
         <tr>
           <td class="memname">void GRootBrowser::SetTab </td>
           <td>(</td>
-          <td class="paramtype">Int_t</td>          <td class="paramname"><span class="paramname"><em>pos</em></span><span class="paramdefsep"> = </span><span class="paramdefval">static_cast&lt;Int_t&gt;(<a class="el" href="#ad4a1457a292dfc2fb4e93bb13b8f7a87a2dd2b017192f8a09367d48c7648213c9">EInsertPosition::kRight</a>)</span>, </td>
+          <td class="paramtype">Int_t</td>          <td class="paramname"><span class="paramname"><em>pos</em></span><span class="paramdefsep"> = </span><span class="paramdefval">static_cast&lt;Int_t&gt;(<a class="el" href="#a7f8edaebba649d61b9668de28dcfb1c4a2dd2b017192f8a09367d48c7648213c9">EInsertPosition::kRight</a>)</span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1792,11 +1792,11 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Switch to Tab "subpos" in TGTab "pos".</p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00906">906</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00903">903</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00145">fCrTab</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00518">GetTab()</a>, <a class="el" href="#ad4a1457a292dfc2fb4e93bb13b8f7a87a2dd2b017192f8a09367d48c7648213c9">kRight</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l01056">SwitchMenus()</a>.</p>
+<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00147">fCrTab</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00515">GetTab()</a>, <a class="el" href="#a7f8edaebba649d61b9668de28dcfb1c4a2dd2b017192f8a09367d48c7648213c9">kRight</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l01053">SwitchMenus()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00716">InitPlugins()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00713">InitPlugins()</a>.</p>
 
 </div>
 </div>
@@ -1814,7 +1814,7 @@ Private Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Int_t</td>          <td class="paramname"><span class="paramname"><em>pos</em></span><span class="paramdefsep"> = </span><span class="paramdefval">static_cast&lt;Int_t&gt;(<a class="el" href="#ad4a1457a292dfc2fb4e93bb13b8f7a87a2dd2b017192f8a09367d48c7648213c9">EInsertPosition::kRight</a>)</span>, </td>
+          <td class="paramtype">Int_t</td>          <td class="paramname"><span class="paramname"><em>pos</em></span><span class="paramdefsep"> = </span><span class="paramdefval">static_cast&lt;Int_t&gt;(<a class="el" href="#a7f8edaebba649d61b9668de28dcfb1c4a2dd2b017192f8a09367d48c7648213c9">EInsertPosition::kRight</a>)</span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1825,11 +1825,11 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Set text "title" of Tab "subpos" in TGTab "pos".</p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00924">924</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00921">921</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00145">fCrTab</a>, <a class="el" href="_g_root_browser_8h_source.html#l00141">fPlugins</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00518">GetTab()</a>.</p>
+<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00147">fCrTab</a>, <a class="el" href="_g_root_browser_8h_source.html#l00143">fPlugins</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00515">GetTab()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00468">ExecPlugin()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l01023">StopEmbedding()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00465">ExecPlugin()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l01020">StopEmbedding()</a>.</p>
 
 </div>
 </div>
@@ -1856,7 +1856,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00217">217</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00219">219</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
 </div>
 </div>
@@ -1883,9 +1883,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00226">226</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00228">228</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00147">fShowCloseTab</a>.</p>
+<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00149">fShowCloseTab</a>.</p>
 
 </div>
 </div>
@@ -1905,11 +1905,11 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Show the selected frame's menu and hide previous one.</p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00956">956</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00953">953</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00138">fActMenuBar</a>, <a class="el" href="_g_root_browser_8h_source.html#l00134">fMenuBar</a>, and <a class="el" href="_g_root_browser_8h_source.html#l00132">fMenuFrame</a>.</p>
+<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00140">fActMenuBar</a>, <a class="el" href="_g_root_browser_8h_source.html#l00136">fMenuBar</a>, and <a class="el" href="_g_root_browser_8h_source.html#l00134">fMenuFrame</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l01056">SwitchMenus()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l01053">SwitchMenus()</a>.</p>
 
 </div>
 </div>
@@ -1925,7 +1925,7 @@ Private Attributes</h2></td></tr>
         <tr>
           <td class="memname">void GRootBrowser::StartEmbedding </td>
           <td>(</td>
-          <td class="paramtype">Int_t</td>          <td class="paramname"><span class="paramname"><em>pos</em></span><span class="paramdefsep"> = </span><span class="paramdefval">static_cast&lt;Int_t&gt;(<a class="el" href="#ad4a1457a292dfc2fb4e93bb13b8f7a87a2dd2b017192f8a09367d48c7648213c9">EInsertPosition::kRight</a>)</span>, </td>
+          <td class="paramtype">Int_t</td>          <td class="paramname"><span class="paramname"><em>pos</em></span><span class="paramdefsep"> = </span><span class="paramdefval">static_cast&lt;Int_t&gt;(<a class="el" href="#a7f8edaebba649d61b9668de28dcfb1c4a2dd2b017192f8a09367d48c7648213c9">EInsertPosition::kRight</a>)</span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1941,11 +1941,11 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Start embedding external frame in the tab "pos" and tab element "subpos".</p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00985">985</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l00982">982</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00145">fCrTab</a>, <a class="el" href="_g_root_browser_8h_source.html#l00129">fEditFrame</a>, <a class="el" href="_g_root_browser_8h_source.html#l00119">fEditPos</a>, <a class="el" href="_g_root_browser_8h_source.html#l00120">fEditSubPos</a>, <a class="el" href="_g_root_browser_8h_source.html#l00118">fEditTab</a>, <a class="el" href="_g_root_browser_8h_source.html#l00144">fNbTab</a>, <a class="el" href="_g_root_browser_8h_source.html#l00147">fShowCloseTab</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00518">GetTab()</a>.</p>
+<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00147">fCrTab</a>, <a class="el" href="_g_root_browser_8h_source.html#l00131">fEditFrame</a>, <a class="el" href="_g_root_browser_8h_source.html#l00121">fEditPos</a>, <a class="el" href="_g_root_browser_8h_source.html#l00122">fEditSubPos</a>, <a class="el" href="_g_root_browser_8h_source.html#l00120">fEditTab</a>, <a class="el" href="_g_root_browser_8h_source.html#l00146">fNbTab</a>, <a class="el" href="_g_root_browser_8h_source.html#l00149">fShowCloseTab</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00515">GetTab()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00468">ExecPlugin()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00465">ExecPlugin()</a>.</p>
 
 </div>
 </div>
@@ -1969,9 +1969,9 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Stop embedding external frame in the current editable frame.</p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l01023">1023</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l01020">1020</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00129">fEditFrame</a>, <a class="el" href="_g_root_browser_8h_source.html#l00119">fEditPos</a>, <a class="el" href="_g_root_browser_8h_source.html#l00120">fEditSubPos</a>, <a class="el" href="_g_root_browser_8h_source.html#l00118">fEditTab</a>, <a class="el" href="_g_root_browser_8h_source.html#l00116">fTabRight</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00924">SetTabTitle()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l01056">SwitchMenus()</a>.</p>
+<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00131">fEditFrame</a>, <a class="el" href="_g_root_browser_8h_source.html#l00121">fEditPos</a>, <a class="el" href="_g_root_browser_8h_source.html#l00122">fEditSubPos</a>, <a class="el" href="_g_root_browser_8h_source.html#l00120">fEditTab</a>, <a class="el" href="_g_root_browser_8h_source.html#l00118">fTabRight</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00921">SetTabTitle()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l01053">SwitchMenus()</a>.</p>
 
 </div>
 </div>
@@ -1998,11 +1998,11 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00205">205</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00207">207</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00205">StopEmbedding()</a>.</p>
+<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00207">StopEmbedding()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00468">ExecPlugin()</a>, and <a class="el" href="_g_root_browser_8h_source.html#l00205">StopEmbedding()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00465">ExecPlugin()</a>, and <a class="el" href="_g_root_browser_8h_source.html#l00207">StopEmbedding()</a>.</p>
 
 </div>
 </div>
@@ -2022,11 +2022,11 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Move the menu from original frame to our TGMenuFrame, or display the menu associated to the current tab.</p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l01056">1056</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8cxx_source.html#l01053">1053</a> of file <a class="el" href="_g_root_browser_8cxx_source.html">GRootBrowser.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00138">fActMenuBar</a>, <a class="el" href="_g_root_browser_8h_source.html#l00109">fLH2</a>, <a class="el" href="_g_root_browser_8h_source.html#l00134">fMenuBar</a>, <a class="el" href="_g_root_browser_8h_source.html#l00132">fMenuFrame</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00821">RecursiveReparent()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00956">ShowMenu()</a>.</p>
+<p class="reference">References <a class="el" href="_g_root_browser_8h_source.html#l00140">fActMenuBar</a>, <a class="el" href="_g_root_browser_8h_source.html#l00111">fLH2</a>, <a class="el" href="_g_root_browser_8h_source.html#l00136">fMenuBar</a>, <a class="el" href="_g_root_browser_8h_source.html#l00134">fMenuFrame</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00818">RecursiveReparent()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00953">ShowMenu()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00432">DoTab()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00846">RemoveTab()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00906">SetTab()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l01023">StopEmbedding()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00429">DoTab()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00843">RemoveTab()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00903">SetTab()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l01020">StopEmbedding()</a>.</p>
 
 </div>
 </div>
@@ -2053,9 +2053,9 @@ Private Attributes</h2></td></tr>
 
 <p>Actual (active) browser imp. </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00139">139</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00141">141</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00265">Add()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00286">BrowseObj()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00325">CloseTabs()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00507">GetDrawOption()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00574">HandleMenu()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00811">RecursiveRemove()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00836">Refresh()</a>, and <a class="el" href="_g_root_browser_8h_source.html#l00202">SetActBrowser()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00262">Add()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00283">BrowseObj()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00322">CloseTabs()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00504">GetDrawOption()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00571">HandleMenu()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00808">RecursiveRemove()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00833">Refresh()</a>, and <a class="el" href="_g_root_browser_8h_source.html#l00204">SetActBrowser()</a>.</p>
 
 </div>
 </div>
@@ -2081,9 +2081,9 @@ Private Attributes</h2></td></tr>
 
 <p>Actual (active) menu bar. </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00138">138</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00140">140</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00076">CreateBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00846">RemoveTab()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00956">ShowMenu()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l01056">SwitchMenus()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00073">CreateBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00843">RemoveTab()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00953">ShowMenu()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l01053">SwitchMenus()</a>.</p>
 
 </div>
 </div>
@@ -2109,7 +2109,7 @@ Private Attributes</h2></td></tr>
 
 <p>List of (sub)browsers. </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00140">140</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00142">142</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
 </div>
 </div>
@@ -2135,9 +2135,9 @@ Private Attributes</h2></td></tr>
 
 <p>Actual (active) tab elements (for each Tab) </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00145">145</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00147">147</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00076">CreateBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00906">SetTab()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00924">SetTabTitle()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00985">StartEmbedding()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00073">CreateBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00903">SetTab()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00921">SetTabTitle()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00982">StartEmbedding()</a>.</p>
 
 </div>
 </div>
@@ -2163,9 +2163,9 @@ Private Attributes</h2></td></tr>
 
 <p>Frame in "Edit" mode. </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00129">129</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00131">131</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00076">CreateBrowser()</a>, <a class="el" href="_g_root_browser_8h_source.html#l00190">GetActFrame()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00985">StartEmbedding()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l01023">StopEmbedding()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00073">CreateBrowser()</a>, <a class="el" href="_g_root_browser_8h_source.html#l00192">GetActFrame()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00982">StartEmbedding()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l01020">StopEmbedding()</a>.</p>
 
 </div>
 </div>
@@ -2191,9 +2191,9 @@ Private Attributes</h2></td></tr>
 
 <p>Id of tab in "Edit" mode. </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00119">119</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00121">121</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00076">CreateBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00985">StartEmbedding()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l01023">StopEmbedding()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00073">CreateBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00982">StartEmbedding()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l01020">StopEmbedding()</a>.</p>
 
 </div>
 </div>
@@ -2219,9 +2219,9 @@ Private Attributes</h2></td></tr>
 
 <p>Id of subtab in "Edit" mode. </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00120">120</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00122">122</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00076">CreateBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00985">StartEmbedding()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l01023">StopEmbedding()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00073">CreateBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00982">StartEmbedding()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l01020">StopEmbedding()</a>.</p>
 
 </div>
 </div>
@@ -2247,9 +2247,9 @@ Private Attributes</h2></td></tr>
 
 <p>Tab in "Edit" mode. </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00118">118</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00120">120</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00076">CreateBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00985">StartEmbedding()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l01023">StopEmbedding()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00073">CreateBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00982">StartEmbedding()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l01020">StopEmbedding()</a>.</p>
 
 </div>
 </div>
@@ -2275,9 +2275,9 @@ Private Attributes</h2></td></tr>
 
 <p>Horizontal frame. </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00123">123</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00125">125</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00225">~GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00076">CreateBrowser()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00222">~GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00073">CreateBrowser()</a>.</p>
 
 </div>
 </div>
@@ -2303,9 +2303,9 @@ Private Attributes</h2></td></tr>
 
 <p>Horizontal frame. </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00124">124</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00126">126</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00225">~GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00076">CreateBrowser()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00222">~GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00073">CreateBrowser()</a>.</p>
 
 </div>
 </div>
@@ -2331,9 +2331,9 @@ Private Attributes</h2></td></tr>
 
 <p>Horizontal frame. </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00122">122</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00124">124</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00225">~GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00076">CreateBrowser()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00222">~GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00073">CreateBrowser()</a>.</p>
 
 </div>
 </div>
@@ -2359,9 +2359,9 @@ Private Attributes</h2></td></tr>
 
 <p>Horizontal splitter. </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00128">128</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00130">130</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00225">~GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00076">CreateBrowser()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00222">~GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00073">CreateBrowser()</a>.</p>
 
 </div>
 </div>
@@ -2387,9 +2387,9 @@ Private Attributes</h2></td></tr>
 
 <p>icon picture </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00148">148</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00150">150</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00225">~GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00076">CreateBrowser()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00222">~GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00073">CreateBrowser()</a>.</p>
 
 </div>
 </div>
@@ -2415,9 +2415,9 @@ Private Attributes</h2></td></tr>
 
 <p>Layout hints, part 1. </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00107">107</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00109">109</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00225">~GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00076">CreateBrowser()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00222">~GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00073">CreateBrowser()</a>.</p>
 
 </div>
 </div>
@@ -2443,9 +2443,9 @@ Private Attributes</h2></td></tr>
 
 <p>Layout hints, part 2. </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00108">108</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00110">110</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00225">~GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00076">CreateBrowser()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00222">~GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00073">CreateBrowser()</a>.</p>
 
 </div>
 </div>
@@ -2471,9 +2471,9 @@ Private Attributes</h2></td></tr>
 
 <p>Layout hints, part 3. </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00109">109</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00111">111</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00225">~GRootBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00076">CreateBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l01056">SwitchMenus()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00222">~GRootBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00073">CreateBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l01053">SwitchMenus()</a>.</p>
 
 </div>
 </div>
@@ -2499,9 +2499,9 @@ Private Attributes</h2></td></tr>
 
 <p>Layout hints, part 4. </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00110">110</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00112">112</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00225">~GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00076">CreateBrowser()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00222">~GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00073">CreateBrowser()</a>.</p>
 
 </div>
 </div>
@@ -2527,9 +2527,9 @@ Private Attributes</h2></td></tr>
 
 <p>Layout hints, part 5. </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00111">111</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00113">113</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00225">~GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00076">CreateBrowser()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00222">~GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00073">CreateBrowser()</a>.</p>
 
 </div>
 </div>
@@ -2555,9 +2555,9 @@ Private Attributes</h2></td></tr>
 
 <p>Layout hints, part 6. </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00112">112</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00114">114</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00225">~GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00076">CreateBrowser()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00222">~GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00073">CreateBrowser()</a>.</p>
 
 </div>
 </div>
@@ -2583,9 +2583,9 @@ Private Attributes</h2></td></tr>
 
 <p>Layout hints, part 7. </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00113">113</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00115">115</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00225">~GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00076">CreateBrowser()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00222">~GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00073">CreateBrowser()</a>.</p>
 
 </div>
 </div>
@@ -2611,9 +2611,9 @@ Private Attributes</h2></td></tr>
 
 <p>Layout hints, part 8. </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00114">114</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00116">116</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00225">~GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00076">CreateBrowser()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00222">~GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00073">CreateBrowser()</a>.</p>
 
 </div>
 </div>
@@ -2639,9 +2639,9 @@ Private Attributes</h2></td></tr>
 
 <p>Main (owned) menu bar. </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00134">134</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00136">136</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00225">~GRootBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00076">CreateBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00956">ShowMenu()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l01056">SwitchMenus()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00222">~GRootBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00073">CreateBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00953">ShowMenu()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l01053">SwitchMenus()</a>.</p>
 
 </div>
 </div>
@@ -2667,9 +2667,9 @@ Private Attributes</h2></td></tr>
 
 <p>"Exec Plugin" popup menu </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00136">136</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00138">138</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00225">~GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00076">CreateBrowser()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00222">~GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00073">CreateBrowser()</a>.</p>
 
 </div>
 </div>
@@ -2695,9 +2695,9 @@ Private Attributes</h2></td></tr>
 
 <p>"File" popup menu </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00135">135</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00137">137</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00225">~GRootBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00325">CloseTabs()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00076">CreateBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00531">HandleKey()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00574">HandleMenu()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00222">~GRootBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00322">CloseTabs()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00073">CreateBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00528">HandleKey()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00571">HandleMenu()</a>.</p>
 
 </div>
 </div>
@@ -2723,9 +2723,9 @@ Private Attributes</h2></td></tr>
 
 <p>Shared menu frame. </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00132">132</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00134">134</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00225">~GRootBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00076">CreateBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00846">RemoveTab()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00956">ShowMenu()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l01056">SwitchMenus()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00222">~GRootBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00073">CreateBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00843">RemoveTab()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00953">ShowMenu()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l01053">SwitchMenus()</a>.</p>
 
 </div>
 </div>
@@ -2751,9 +2751,9 @@ Private Attributes</h2></td></tr>
 
 <p>"Browser Help" popup menu </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00137">137</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00139">139</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00225">~GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00076">CreateBrowser()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00222">~GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00073">CreateBrowser()</a>.</p>
 
 </div>
 </div>
@@ -2779,9 +2779,9 @@ Private Attributes</h2></td></tr>
 
 <p>Number of initial plugins (from .rootrc) </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00143">143</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00145">145</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00299">CloneBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00076">CreateBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00716">InitPlugins()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00296">CloneBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00073">CreateBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00713">InitPlugins()</a>.</p>
 
 </div>
 </div>
@@ -2807,9 +2807,9 @@ Private Attributes</h2></td></tr>
 
 <p>Number of tab elements (for each Tab) </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00144">144</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00146">146</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00076">CreateBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00846">RemoveTab()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00985">StartEmbedding()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00073">CreateBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00843">RemoveTab()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00982">StartEmbedding()</a>.</p>
 
 </div>
 </div>
@@ -2835,7 +2835,7 @@ Private Attributes</h2></td></tr>
 
 <p>Current process id. </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00146">146</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00148">148</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
 </div>
 </div>
@@ -2861,9 +2861,9 @@ Private Attributes</h2></td></tr>
 
 <p>List of plugins. </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00141">141</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00143">143</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00299">CloneBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00325">CloseTabs()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00468">ExecPlugin()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00846">RemoveTab()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00924">SetTabTitle()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00296">CloneBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00322">CloseTabs()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00465">ExecPlugin()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00843">RemoveTab()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00921">SetTabTitle()</a>.</p>
 
 </div>
 </div>
@@ -2889,9 +2889,9 @@ Private Attributes</h2></td></tr>
 
 <p>First (owned) menu frame. </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00131">131</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00133">133</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00225">~GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00076">CreateBrowser()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00222">~GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00073">CreateBrowser()</a>.</p>
 
 </div>
 </div>
@@ -2917,9 +2917,9 @@ Private Attributes</h2></td></tr>
 
 <p>kTRUE to show close icon on tab elements </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00147">147</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00149">149</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8h_source.html#l00227">IsCloseTabShown()</a>, <a class="el" href="_g_root_browser_8h_source.html#l00226">ShowCloseTab()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00985">StartEmbedding()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8h_source.html#l00229">IsCloseTabShown()</a>, <a class="el" href="_g_root_browser_8h_source.html#l00228">ShowCloseTab()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00982">StartEmbedding()</a>.</p>
 
 </div>
 </div>
@@ -2945,9 +2945,9 @@ Private Attributes</h2></td></tr>
 
 <p>Status bar. </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00142">142</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00144">144</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00225">~GRootBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00076">CreateBrowser()</a>, <a class="el" href="_g_root_browser_8h_source.html#l00192">GetStatusBar()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00948">SetStatusText()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00222">~GRootBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00073">CreateBrowser()</a>, <a class="el" href="_g_root_browser_8h_source.html#l00194">GetStatusBar()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00945">SetStatusText()</a>.</p>
 
 </div>
 </div>
@@ -2973,9 +2973,9 @@ Private Attributes</h2></td></tr>
 
 <p>Bottom Tab. </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00117">117</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00119">119</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00225">~GRootBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00325">CloseTabs()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00076">CreateBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00518">GetTab()</a>, <a class="el" href="_g_root_browser_8h_source.html#l00195">GetTabBottom()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00846">RemoveTab()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00222">~GRootBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00322">CloseTabs()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00073">CreateBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00515">GetTab()</a>, <a class="el" href="_g_root_browser_8h_source.html#l00197">GetTabBottom()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00843">RemoveTab()</a>.</p>
 
 </div>
 </div>
@@ -3001,9 +3001,9 @@ Private Attributes</h2></td></tr>
 
 <p>Left Tab. </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00115">115</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00117">117</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00225">~GRootBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00325">CloseTabs()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00076">CreateBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00518">GetTab()</a>, <a class="el" href="_g_root_browser_8h_source.html#l00193">GetTabLeft()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00846">RemoveTab()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00222">~GRootBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00322">CloseTabs()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00073">CreateBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00515">GetTab()</a>, <a class="el" href="_g_root_browser_8h_source.html#l00195">GetTabLeft()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00843">RemoveTab()</a>.</p>
 
 </div>
 </div>
@@ -3029,9 +3029,9 @@ Private Attributes</h2></td></tr>
 
 <p>Right Tab. </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00116">116</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00118">118</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00225">~GRootBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00325">CloseTabs()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00076">CreateBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00432">DoTab()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00518">GetTab()</a>, <a class="el" href="_g_root_browser_8h_source.html#l00194">GetTabRight()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00574">HandleMenu()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00846">RemoveTab()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l01023">StopEmbedding()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00222">~GRootBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00322">CloseTabs()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00073">CreateBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00429">DoTab()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00515">GetTab()</a>, <a class="el" href="_g_root_browser_8h_source.html#l00196">GetTabRight()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00571">HandleMenu()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00843">RemoveTab()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l01020">StopEmbedding()</a>.</p>
 
 </div>
 </div>
@@ -3057,9 +3057,9 @@ Private Attributes</h2></td></tr>
 
 <p>Toolbar frame. </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00133">133</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00135">135</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00225">~GRootBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00076">CreateBrowser()</a>, and <a class="el" href="_g_root_browser_8h_source.html#l00191">GetToolbarFrame()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00222">~GRootBrowser()</a>, <a class="el" href="_g_root_browser_8cxx_source.html#l00073">CreateBrowser()</a>, and <a class="el" href="_g_root_browser_8h_source.html#l00193">GetToolbarFrame()</a>.</p>
 
 </div>
 </div>
@@ -3085,9 +3085,9 @@ Private Attributes</h2></td></tr>
 
 <p>Top menu frame. </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00130">130</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00132">132</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00225">~GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00076">CreateBrowser()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00222">~GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00073">CreateBrowser()</a>.</p>
 
 </div>
 </div>
@@ -3113,9 +3113,9 @@ Private Attributes</h2></td></tr>
 
 <p>Vertical frame. </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00125">125</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00127">127</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00225">~GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00076">CreateBrowser()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00222">~GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00073">CreateBrowser()</a>.</p>
 
 </div>
 </div>
@@ -3141,9 +3141,9 @@ Private Attributes</h2></td></tr>
 
 <p>Vertical frame. </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00126">126</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00128">128</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00225">~GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00076">CreateBrowser()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00222">~GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00073">CreateBrowser()</a>.</p>
 
 </div>
 </div>
@@ -3169,9 +3169,9 @@ Private Attributes</h2></td></tr>
 
 <p>Vertical frame. </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00121">121</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00123">123</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00225">~GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00076">CreateBrowser()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00222">~GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00073">CreateBrowser()</a>.</p>
 
 </div>
 </div>
@@ -3197,9 +3197,9 @@ Private Attributes</h2></td></tr>
 
 <p>Vertical splitter. </p>
 
-<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00127">127</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_g_root_browser_8h_source.html#l00129">129</a> of file <a class="el" href="_g_root_browser_8h_source.html">GRootBrowser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00225">~GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00076">CreateBrowser()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_g_root_browser_8cxx_source.html#l00222">~GRootBrowser()</a>, and <a class="el" href="_g_root_browser_8cxx_source.html#l00073">CreateBrowser()</a>.</p>
 
 </div>
 </div>
@@ -3210,7 +3210,7 @@ Private Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_g_root_browser.html">GRootBrowser</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Aug 26 2025 14:02:06.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Sep 19 2025 17:05:48.</li>
   </ul>
 </div>
 </body>

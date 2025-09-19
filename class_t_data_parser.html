@@ -114,25 +114,25 @@ $(function(){initNavTree('class_t_data_parser.html',''); initResizable(true); })
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The <a class="el" href="class_t_data_parser.html">TDataParser</a> is the DAQ dependent part of GRSISort. It takes raw data and converts it into a generic <a class="el" href="class_t_fragment.html">TFragment</a> that the rest of GRSISort can deal with. This is where event word masks are applied, and any changes to the event format must be implemented. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00042">42</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00040">40</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a3393bc2e122d9fc941b5c3bc838a0afb" id="r_a3393bc2e122d9fc941b5c3bc838a0afb"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3393bc2e122d9fc941b5c3bc838a0afb">EBank</a> { <br />
-&#160;&#160;<a class="el" href="#a3393bc2e122d9fc941b5c3bc838a0afbaa2e2998e0e13392bfe6563114ec48e58">kWFDN</a>
-, <a class="el" href="#a3393bc2e122d9fc941b5c3bc838a0afba07512a013c438c8346494728863ccbce">kGRF1</a>
-, <a class="el" href="#a3393bc2e122d9fc941b5c3bc838a0afba73f1121f4520884497a1b3bc650a4a37">kGRF2</a>
-, <a class="el" href="#a3393bc2e122d9fc941b5c3bc838a0afba5d1d106ce0d8a1037614f063f2bf2482">kGRF3</a>
+<tr class="memitem:ace2e5858b417a15e2ecfa39c39244d77" id="r_ace2e5858b417a15e2ecfa39c39244d77"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ace2e5858b417a15e2ecfa39c39244d77">EBank</a> : std::uint8_t { <br />
+&#160;&#160;<a class="el" href="#ace2e5858b417a15e2ecfa39c39244d77aa2e2998e0e13392bfe6563114ec48e58">kWFDN</a>
+, <a class="el" href="#ace2e5858b417a15e2ecfa39c39244d77a07512a013c438c8346494728863ccbce">kGRF1</a>
+, <a class="el" href="#ace2e5858b417a15e2ecfa39c39244d77a73f1121f4520884497a1b3bc650a4a37">kGRF2</a>
+, <a class="el" href="#ace2e5858b417a15e2ecfa39c39244d77a5d1d106ce0d8a1037614f063f2bf2482">kGRF3</a>
 , <br />
-&#160;&#160;<a class="el" href="#a3393bc2e122d9fc941b5c3bc838a0afbab9335a5aeda5f3a6020643f3ab8bf36d">kGRF4</a>
-, <a class="el" href="#a3393bc2e122d9fc941b5c3bc838a0afba6eee1f7aaacdd093eaf361336ebab28b">kFME0</a>
-, <a class="el" href="#a3393bc2e122d9fc941b5c3bc838a0afbaa7676c8fb4b4207507a8e11280eaa3d1">kFME1</a>
-, <a class="el" href="#a3393bc2e122d9fc941b5c3bc838a0afbab63a0cbccf02efe8e8a4bec6aa2ff38d">kFME2</a>
+&#160;&#160;<a class="el" href="#ace2e5858b417a15e2ecfa39c39244d77ab9335a5aeda5f3a6020643f3ab8bf36d">kGRF4</a>
+, <a class="el" href="#ace2e5858b417a15e2ecfa39c39244d77a6eee1f7aaacdd093eaf361336ebab28b">kFME0</a>
+, <a class="el" href="#ace2e5858b417a15e2ecfa39c39244d77aa7676c8fb4b4207507a8e11280eaa3d1">kFME1</a>
+, <a class="el" href="#ace2e5858b417a15e2ecfa39c39244d77ab63a0cbccf02efe8e8a4bec6aa2ff38d">kFME2</a>
 , <br />
-&#160;&#160;<a class="el" href="#a3393bc2e122d9fc941b5c3bc838a0afba681befaa78468d5279799de6e80b08f1">kFME3</a>
+&#160;&#160;<a class="el" href="#ace2e5858b417a15e2ecfa39c39244d77a681befaa78468d5279799de6e80b08f1">kFME3</a>
 <br />
  }</td></tr>
-<tr class="separator:a3393bc2e122d9fc941b5c3bc838a0afb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:ace2e5858b417a15e2ecfa39c39244d77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -282,8 +282,8 @@ Static Private Attributes</h2></td></tr>
 <div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_data_parser__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <h2 class="groupheader">Member Enumeration Documentation</h2>
-<a id="a3393bc2e122d9fc941b5c3bc838a0afb" name="a3393bc2e122d9fc941b5c3bc838a0afb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3393bc2e122d9fc941b5c3bc838a0afb">&#9670;&#160;</a></span>EBank</h2>
+<a id="ace2e5858b417a15e2ecfa39c39244d77" name="ace2e5858b417a15e2ecfa39c39244d77"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace2e5858b417a15e2ecfa39c39244d77">&#9670;&#160;</a></span>EBank</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -292,7 +292,7 @@ Static Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum class <a class="el" href="#a3393bc2e122d9fc941b5c3bc838a0afb">TDataParser::EBank</a></td>
+          <td class="memname">enum class <a class="el" href="#ace2e5858b417a15e2ecfa39c39244d77">TDataParser::EBank</a> : std::uint8_t</td>
         </tr>
       </table>
   </td>
@@ -302,18 +302,18 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a3393bc2e122d9fc941b5c3bc838a0afbaa2e2998e0e13392bfe6563114ec48e58" name="a3393bc2e122d9fc941b5c3bc838a0afbaa2e2998e0e13392bfe6563114ec48e58"></a>kWFDN&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a3393bc2e122d9fc941b5c3bc838a0afba07512a013c438c8346494728863ccbce" name="a3393bc2e122d9fc941b5c3bc838a0afba07512a013c438c8346494728863ccbce"></a>kGRF1&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a3393bc2e122d9fc941b5c3bc838a0afba73f1121f4520884497a1b3bc650a4a37" name="a3393bc2e122d9fc941b5c3bc838a0afba73f1121f4520884497a1b3bc650a4a37"></a>kGRF2&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a3393bc2e122d9fc941b5c3bc838a0afba5d1d106ce0d8a1037614f063f2bf2482" name="a3393bc2e122d9fc941b5c3bc838a0afba5d1d106ce0d8a1037614f063f2bf2482"></a>kGRF3&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a3393bc2e122d9fc941b5c3bc838a0afbab9335a5aeda5f3a6020643f3ab8bf36d" name="a3393bc2e122d9fc941b5c3bc838a0afbab9335a5aeda5f3a6020643f3ab8bf36d"></a>kGRF4&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a3393bc2e122d9fc941b5c3bc838a0afba6eee1f7aaacdd093eaf361336ebab28b" name="a3393bc2e122d9fc941b5c3bc838a0afba6eee1f7aaacdd093eaf361336ebab28b"></a>kFME0&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a3393bc2e122d9fc941b5c3bc838a0afbaa7676c8fb4b4207507a8e11280eaa3d1" name="a3393bc2e122d9fc941b5c3bc838a0afbaa7676c8fb4b4207507a8e11280eaa3d1"></a>kFME1&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a3393bc2e122d9fc941b5c3bc838a0afbab63a0cbccf02efe8e8a4bec6aa2ff38d" name="a3393bc2e122d9fc941b5c3bc838a0afbab63a0cbccf02efe8e8a4bec6aa2ff38d"></a>kFME2&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a3393bc2e122d9fc941b5c3bc838a0afba681befaa78468d5279799de6e80b08f1" name="a3393bc2e122d9fc941b5c3bc838a0afba681befaa78468d5279799de6e80b08f1"></a>kFME3&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ace2e5858b417a15e2ecfa39c39244d77aa2e2998e0e13392bfe6563114ec48e58" name="ace2e5858b417a15e2ecfa39c39244d77aa2e2998e0e13392bfe6563114ec48e58"></a>kWFDN&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ace2e5858b417a15e2ecfa39c39244d77a07512a013c438c8346494728863ccbce" name="ace2e5858b417a15e2ecfa39c39244d77a07512a013c438c8346494728863ccbce"></a>kGRF1&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ace2e5858b417a15e2ecfa39c39244d77a73f1121f4520884497a1b3bc650a4a37" name="ace2e5858b417a15e2ecfa39c39244d77a73f1121f4520884497a1b3bc650a4a37"></a>kGRF2&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ace2e5858b417a15e2ecfa39c39244d77a5d1d106ce0d8a1037614f063f2bf2482" name="ace2e5858b417a15e2ecfa39c39244d77a5d1d106ce0d8a1037614f063f2bf2482"></a>kGRF3&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ace2e5858b417a15e2ecfa39c39244d77ab9335a5aeda5f3a6020643f3ab8bf36d" name="ace2e5858b417a15e2ecfa39c39244d77ab9335a5aeda5f3a6020643f3ab8bf36d"></a>kGRF4&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ace2e5858b417a15e2ecfa39c39244d77a6eee1f7aaacdd093eaf361336ebab28b" name="ace2e5858b417a15e2ecfa39c39244d77a6eee1f7aaacdd093eaf361336ebab28b"></a>kFME0&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ace2e5858b417a15e2ecfa39c39244d77aa7676c8fb4b4207507a8e11280eaa3d1" name="ace2e5858b417a15e2ecfa39c39244d77aa7676c8fb4b4207507a8e11280eaa3d1"></a>kFME1&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ace2e5858b417a15e2ecfa39c39244d77ab63a0cbccf02efe8e8a4bec6aa2ff38d" name="ace2e5858b417a15e2ecfa39c39244d77ab63a0cbccf02efe8e8a4bec6aa2ff38d"></a>kFME2&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ace2e5858b417a15e2ecfa39c39244d77a681befaa78468d5279799de6e80b08f1" name="ace2e5858b417a15e2ecfa39c39244d77a681befaa78468d5279799de6e80b08f1"></a>kFME3&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00054">54</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00052">52</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
 </div>
 </div>
@@ -412,7 +412,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_data_parser_8cxx_source.html#l00027">27</a> of file <a class="el" href="_t_data_parser_8cxx_source.html">TDataParser.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00171">fChannel</a>.</p>
+<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00169">fChannel</a>.</p>
 
 </div>
 </div>
@@ -440,9 +440,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00065">65</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00063">63</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00164">fGoodOutputQueues</a>.</p>
+<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00162">fGoodOutputQueues</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_unpacking_loop_8h_source.html#l00044">TUnpackingLoop::AddGoodOutputQueue()</a>.</p>
 
@@ -471,9 +471,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00073">73</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00071">71</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00165">fBadOutputQueue</a>.</p>
+<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00163">fBadOutputQueue</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_unpacking_loop_8h_source.html#l00048">TUnpackingLoop::BadOutputQueue()</a>, <a class="el" href="_t_h_i_l_data_parser_8cxx_source.html#l00058">THILDataParser::EagleEventToFragment()</a>, <a class="el" href="_t_g_r_s_i_data_parser_8cxx_source.html#l02086">TGRSIDataParser::EmmaTdcDataToFragment()</a>, <a class="el" href="_t_g_r_s_i_data_parser_8cxx_source.html#l00502">TGRSIDataParser::GriffinDataToFragment()</a>, <a class="el" href="_t_g_r_s_i_data_parser_8cxx_source.html#l01241">TGRSIDataParser::RFScalerToFragment()</a>, <a class="el" href="_t_tdr_data_parser_8cxx_source.html#l00037">TTdrDataParser::TdrToFragment()</a>, <a class="el" href="_t_i_l_l_data_parser_8cxx_source.html#l00055">TILLDataParser::V1SingleFippsEventToFragment()</a>, and <a class="el" href="_t_i_l_l_data_parser_8cxx_source.html#l00107">TILLDataParser::V2SingleFippsEventToFragment()</a>.</p>
 
@@ -502,9 +502,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00105">105</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00103">103</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00171">fChannel</a>.</p>
+<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00169">fChannel</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_data_parser_8cxx_source.html#l02015">TGRSIDataParser::EmmaMadcDataToFragment()</a>, and <a class="el" href="_t_g_r_s_i_data_parser_8cxx_source.html#l00278">TGRSIDataParser::SetTIGCharge()</a>.</p>
 
@@ -535,7 +535,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_data_parser_8cxx_source.html#l00032">32</a> of file <a class="el" href="_t_data_parser_8cxx_source.html">TDataParser.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00165">fBadOutputQueue</a>, <a class="el" href="_t_data_parser_8h_source.html#l00164">fGoodOutputQueues</a>, and <a class="el" href="_t_data_parser_8h_source.html#l00166">fScalerOutputQueue</a>.</p>
+<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00163">fBadOutputQueue</a>, <a class="el" href="_t_data_parser_8h_source.html#l00162">fGoodOutputQueues</a>, and <a class="el" href="_t_data_parser_8h_source.html#l00164">fScalerOutputQueue</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_unpacking_loop_8cxx_source.html#l00039">TUnpackingLoop::ClearQueue()</a>.</p>
 
@@ -564,9 +564,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00157">157</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00155">155</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00189">fInputSize</a>.</p>
+<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00187">fInputSize</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_h_i_l_data_parser_8cxx_source.html#l00029">THILDataParser::Process()</a>, <a class="el" href="_t_i_l_l_data_parser_8cxx_source.html#l00029">TILLDataParser::Process()</a>, and <a class="el" href="_t_tdr_data_parser_8cxx_source.html#l00037">TTdrDataParser::TdrToFragment()</a>.</p>
 
@@ -595,9 +595,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00153">153</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00151">151</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00188">fItemsPopped</a>.</p>
+<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00186">fItemsPopped</a>.</p>
 
 </div>
 </div>
@@ -624,9 +624,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00112">112</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00110">110</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00179">fFragmentHasWaveform</a>.</p>
+<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00177">fFragmentHasWaveform</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_data_parser_8cxx_source.html#l00502">TGRSIDataParser::GriffinDataToFragment()</a>, and <a class="el" href="_t_g_r_s_i_data_parser_8cxx_source.html#l01116">TGRSIDataParser::SetGRIFPrimaryFilterPattern()</a>.</p>
 
@@ -655,9 +655,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00122">122</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00120">120</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00179">fFragmentHasWaveform</a>.</p>
+<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00177">fFragmentHasWaveform</a>.</p>
 
 </div>
 </div>
@@ -684,9 +684,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00114">114</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00112">112</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00181">fFragmentMap</a>.</p>
+<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00179">fFragmentMap</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_data_parser_8cxx_source.html#l00502">TGRSIDataParser::GriffinDataToFragment()</a>.</p>
 
@@ -715,9 +715,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00101">101</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00099">99</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00164">fGoodOutputQueues</a>.</p>
+<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00162">fGoodOutputQueues</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_data_parser_8cxx_source.html#l01792">TGRSIDataParser::CaenPhaToFragment()</a>, <a class="el" href="_t_g_r_s_i_data_parser_8cxx_source.html#l01589">TGRSIDataParser::CaenPsdToFragment()</a>, <a class="el" href="_t_h_i_l_data_parser_8cxx_source.html#l00058">THILDataParser::EagleEventToFragment()</a>, <a class="el" href="_t_g_r_s_i_data_parser_8cxx_source.html#l02015">TGRSIDataParser::EmmaMadcDataToFragment()</a>, <a class="el" href="_t_g_r_s_i_data_parser_8cxx_source.html#l02086">TGRSIDataParser::EmmaTdcDataToFragment()</a>, <a class="el" href="_t_g_r_s_i_data_parser_8cxx_source.html#l00502">TGRSIDataParser::GriffinDataToFragment()</a>, <a class="el" href="_t_g_r_s_i_data_parser_8cxx_source.html#l01241">TGRSIDataParser::RFScalerToFragment()</a>, <a class="el" href="_t_tdr_data_parser_8cxx_source.html#l00037">TTdrDataParser::TdrToFragment()</a>, <a class="el" href="_t_g_r_s_i_data_parser_8cxx_source.html#l00138">TGRSIDataParser::TigressDataToFragment()</a>, <a class="el" href="_t_i_l_l_data_parser_8cxx_source.html#l00055">TILLDataParser::V1SingleFippsEventToFragment()</a>, and <a class="el" href="_t_i_l_l_data_parser_8cxx_source.html#l00107">TILLDataParser::V2SingleFippsEventToFragment()</a>.</p>
 
@@ -746,9 +746,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00139">139</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00137">137</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00189">fInputSize</a>.</p>
+<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00187">fInputSize</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_i_l_l_data_parser_8cxx_source.html#l00029">TILLDataParser::Process()</a>, and <a class="el" href="_t_tdr_data_parser_8cxx_source.html#l00037">TTdrDataParser::TdrToFragment()</a>.</p>
 
@@ -777,9 +777,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00148">148</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00146">146</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00189">fInputSize</a>.</p>
+<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00187">fInputSize</a>.</p>
 
 </div>
 </div>
@@ -806,9 +806,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00135">135</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00133">133</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00188">fItemsPopped</a>.</p>
+<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00186">fItemsPopped</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_h_i_l_data_parser_8cxx_source.html#l00029">THILDataParser::Process()</a>, <a class="el" href="_t_i_l_l_data_parser_8cxx_source.html#l00029">TILLDataParser::Process()</a>, and <a class="el" href="_t_tdr_data_parser_8cxx_source.html#l00037">TTdrDataParser::TdrToFragment()</a>.</p>
 
@@ -837,9 +837,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00144">144</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00142">142</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00188">fItemsPopped</a>.</p>
+<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00186">fItemsPopped</a>.</p>
 
 </div>
 </div>
@@ -866,9 +866,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00130">130</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00128">128</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00189">fInputSize</a>.</p>
+<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00187">fInputSize</a>.</p>
 
 </div>
 </div>
@@ -895,9 +895,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00126">126</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00124">124</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00188">fItemsPopped</a>.</p>
+<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00186">fItemsPopped</a>.</p>
 
 </div>
 </div>
@@ -924,9 +924,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00088">88</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00086">86</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00164">fGoodOutputQueues</a>.</p>
+<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00162">fGoodOutputQueues</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_unpacking_loop_8h_source.html#l00062">TUnpackingLoop::GetItemsPushed()</a>.</p>
 
@@ -955,9 +955,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00108">108</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00106">106</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00174">fLastDaqId</a>.</p>
+<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00172">fLastDaqId</a>.</p>
 
 </div>
 </div>
@@ -984,9 +984,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00110">110</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00108">108</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00176">fLastNetworkPacket</a>.</p>
+<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00174">fLastNetworkPacket</a>.</p>
 
 </div>
 </div>
@@ -1013,9 +1013,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00115">115</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00113">113</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00183">fLastTimeStampMap</a>.</p>
+<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00181">fLastTimeStampMap</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_data_parser_8cxx_source.html#l00502">TGRSIDataParser::GriffinDataToFragment()</a>.</p>
 
@@ -1044,9 +1044,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00109">109</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00107">107</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00175">fLastTriggerId</a>.</p>
+<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00173">fLastTriggerId</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_data_parser_8cxx_source.html#l00310">TGRSIDataParser::SetTIGTriggerID()</a>.</p>
 
@@ -1075,9 +1075,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00120">120</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00118">118</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00175">fLastTriggerId</a>.</p>
+<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00173">fLastTriggerId</a>.</p>
 
 </div>
 </div>
@@ -1104,9 +1104,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00107">107</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00105">105</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00173">fMaxTriggerId</a>.</p>
+<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00171">fMaxTriggerId</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_data_parser_8cxx_source.html#l00310">TGRSIDataParser::SetTIGTriggerID()</a>.</p>
 
@@ -1135,9 +1135,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00103">103</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00101">101</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00169">fNoWaveforms</a>.</p>
+<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00167">fNoWaveforms</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_data_parser_8cxx_source.html#l00502">TGRSIDataParser::GriffinDataToFragment()</a>, and <a class="el" href="_t_g_r_s_i_data_parser_8cxx_source.html#l00138">TGRSIDataParser::TigressDataToFragment()</a>.</p>
 
@@ -1216,9 +1216,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00117">117</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00115">115</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00185">fOptions</a>.</p>
+<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00183">fOptions</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_data_parser_8cxx_source.html#l01792">TGRSIDataParser::CaenPhaToFragment()</a>, <a class="el" href="_t_g_r_s_i_data_parser_8cxx_source.html#l01589">TGRSIDataParser::CaenPsdToFragment()</a>, and <a class="el" href="_t_g_r_s_i_data_parser_8cxx_source.html#l00502">TGRSIDataParser::GriffinDataToFragment()</a>.</p>
 
@@ -1247,9 +1247,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00124">124</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00122">122</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00185">fOptions</a>.</p>
+<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00183">fOptions</a>.</p>
 
 </div>
 </div>
@@ -1278,7 +1278,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_data_parser_8cxx_source.html#l00078">78</a> of file <a class="el" href="_t_data_parser_8cxx_source.html">TDataParser.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00164">fGoodOutputQueues</a>.</p>
+<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00162">fGoodOutputQueues</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_unpacking_loop_8cxx_source.html#l00076">TUnpackingLoop::EndStatus()</a>.</p>
 
@@ -1334,7 +1334,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_data_parser_8cxx_source.html#l00059">59</a> of file <a class="el" href="_t_data_parser_8cxx_source.html">TDataParser.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00178">fFragmentIdMap</a>.</p>
+<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00176">fFragmentIdMap</a>.</p>
 
 </div>
 </div>
@@ -1359,7 +1359,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_data_parser_8cxx_source.html#l00070">70</a> of file <a class="el" href="_t_data_parser_8cxx_source.html">TDataParser.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00178">fFragmentIdMap</a>.</p>
+<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00176">fFragmentIdMap</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_data_parser_8cxx_source.html#l01792">TGRSIDataParser::CaenPhaToFragment()</a>, <a class="el" href="_t_g_r_s_i_data_parser_8cxx_source.html#l01589">TGRSIDataParser::CaenPsdToFragment()</a>, <a class="el" href="_t_h_i_l_data_parser_8cxx_source.html#l00058">THILDataParser::EagleEventToFragment()</a>, <a class="el" href="_t_g_r_s_i_data_parser_8cxx_source.html#l02015">TGRSIDataParser::EmmaMadcDataToFragment()</a>, <a class="el" href="_t_g_r_s_i_data_parser_8cxx_source.html#l02086">TGRSIDataParser::EmmaTdcDataToFragment()</a>, <a class="el" href="_t_g_r_s_i_data_parser_8cxx_source.html#l00502">TGRSIDataParser::GriffinDataToFragment()</a>, <a class="el" href="_t_g_r_s_i_data_parser_8cxx_source.html#l01241">TGRSIDataParser::RFScalerToFragment()</a>, <a class="el" href="_t_tdr_data_parser_8cxx_source.html#l00037">TTdrDataParser::TdrToFragment()</a>, <a class="el" href="_t_g_r_s_i_data_parser_8cxx_source.html#l00138">TGRSIDataParser::TigressDataToFragment()</a>, <a class="el" href="_t_i_l_l_data_parser_8cxx_source.html#l00055">TILLDataParser::V1SingleFippsEventToFragment()</a>, and <a class="el" href="_t_i_l_l_data_parser_8cxx_source.html#l00107">TILLDataParser::V2SingleFippsEventToFragment()</a>.</p>
 
@@ -1388,9 +1388,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00104">104</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00102">102</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00170">fRecordDiag</a>.</p>
+<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00168">fRecordDiag</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_h_i_l_data_parser_8cxx_source.html#l00058">THILDataParser::EagleEventToFragment()</a>, <a class="el" href="_t_g_r_s_i_data_parser_8cxx_source.html#l00502">TGRSIDataParser::GriffinDataToFragment()</a>, <a class="el" href="_t_tdr_data_parser_8cxx_source.html#l00037">TTdrDataParser::TdrToFragment()</a>, <a class="el" href="_t_i_l_l_data_parser_8cxx_source.html#l00055">TILLDataParser::V1SingleFippsEventToFragment()</a>, and <a class="el" href="_t_i_l_l_data_parser_8cxx_source.html#l00107">TILLDataParser::V2SingleFippsEventToFragment()</a>.</p>
 
@@ -1419,9 +1419,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00075">75</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00073">73</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00166">fScalerOutputQueue</a>.</p>
+<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00164">fScalerOutputQueue</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_data_parser_8cxx_source.html#l01987">TGRSIDataParser::EPIXToScalar()</a>, and <a class="el" href="_t_unpacking_loop_8h_source.html#l00052">TUnpackingLoop::ScalerOutputQueue()</a>.</p>
 
@@ -1452,7 +1452,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_data_parser_8cxx_source.html#l00050">50</a> of file <a class="el" href="_t_data_parser_8cxx_source.html">TDataParser.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00165">fBadOutputQueue</a>, <a class="el" href="_t_data_parser_8h_source.html#l00164">fGoodOutputQueues</a>, and <a class="el" href="_t_data_parser_8h_source.html#l00166">fScalerOutputQueue</a>.</p>
+<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00163">fBadOutputQueue</a>, <a class="el" href="_t_data_parser_8h_source.html#l00162">fGoodOutputQueues</a>, and <a class="el" href="_t_data_parser_8h_source.html#l00164">fScalerOutputQueue</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_unpacking_loop_8cxx_source.html#l00049">TUnpackingLoop::Iteration()</a>.</p>
 
@@ -1481,9 +1481,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00050">50</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00048">48</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00169">fNoWaveforms</a>.</p>
+<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00167">fNoWaveforms</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_unpacking_loop_8h_source.html#l00036">TUnpackingLoop::SetNoWaveForms()</a>.</p>
 
@@ -1512,9 +1512,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00051">51</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00049">49</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00170">fRecordDiag</a>.</p>
+<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00168">fRecordDiag</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_unpacking_loop_8h_source.html#l00037">TUnpackingLoop::SetRecordDiag()</a>.</p>
 
@@ -1547,9 +1547,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00077">77</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00075">75</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00189">fInputSize</a>, and <a class="el" href="_t_data_parser_8h_source.html#l00188">fItemsPopped</a>.</p>
+<p class="reference">References <a class="el" href="_t_data_parser_8h_source.html#l00187">fInputSize</a>, and <a class="el" href="_t_data_parser_8h_source.html#l00186">fItemsPopped</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_unpacking_loop_8cxx_source.html#l00049">TUnpackingLoop::Iteration()</a>.</p>
 
@@ -1576,9 +1576,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00165">165</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00163">163</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_data_parser_8h_source.html#l00073">BadOutputQueue()</a>, <a class="el" href="_t_data_parser_8cxx_source.html#l00032">ClearQueue()</a>, and <a class="el" href="_t_data_parser_8cxx_source.html#l00050">SetFinished()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_data_parser_8h_source.html#l00071">BadOutputQueue()</a>, <a class="el" href="_t_data_parser_8cxx_source.html#l00032">ClearQueue()</a>, and <a class="el" href="_t_data_parser_8cxx_source.html#l00050">SetFinished()</a>.</p>
 
 </div>
 </div>
@@ -1602,9 +1602,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00171">171</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00169">169</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_data_parser_8cxx_source.html#l00027">~TDataParser()</a>, and <a class="el" href="_t_data_parser_8h_source.html#l00105">Channel()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_data_parser_8cxx_source.html#l00027">~TDataParser()</a>, and <a class="el" href="_t_data_parser_8h_source.html#l00103">Channel()</a>.</p>
 
 </div>
 </div>
@@ -1628,9 +1628,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00179">179</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00177">177</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_data_parser_8h_source.html#l00112">FragmentHasWaveform()</a>, and <a class="el" href="_t_data_parser_8h_source.html#l00122">FragmentHasWaveform()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_data_parser_8h_source.html#l00110">FragmentHasWaveform()</a>, and <a class="el" href="_t_data_parser_8h_source.html#l00120">FragmentHasWaveform()</a>.</p>
 
 </div>
 </div>
@@ -1654,7 +1654,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00178">178</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00176">176</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_data_parser_8cxx_source.html#l00059">Push()</a>, and <a class="el" href="_t_data_parser_8cxx_source.html#l00070">Push()</a>.</p>
 
@@ -1682,9 +1682,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>Class that holds a map of fragments per address, takes care of calculating charges for GRF4 banks. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00181">181</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00179">179</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_data_parser_8h_source.html#l00114">FragmentMap()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_data_parser_8h_source.html#l00112">FragmentMap()</a>.</p>
 
 </div>
 </div>
@@ -1708,9 +1708,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00164">164</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00162">162</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_data_parser_8h_source.html#l00065">AddGoodOutputQueue()</a>, <a class="el" href="_t_data_parser_8cxx_source.html#l00032">ClearQueue()</a>, <a class="el" href="_t_data_parser_8h_source.html#l00101">GoodOutputQueues()</a>, <a class="el" href="_t_data_parser_8h_source.html#l00088">ItemsPushed()</a>, <a class="el" href="_t_data_parser_8cxx_source.html#l00078">OutputQueueStatus()</a>, and <a class="el" href="_t_data_parser_8cxx_source.html#l00050">SetFinished()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_data_parser_8h_source.html#l00063">AddGoodOutputQueue()</a>, <a class="el" href="_t_data_parser_8cxx_source.html#l00032">ClearQueue()</a>, <a class="el" href="_t_data_parser_8h_source.html#l00099">GoodOutputQueues()</a>, <a class="el" href="_t_data_parser_8h_source.html#l00086">ItemsPushed()</a>, <a class="el" href="_t_data_parser_8cxx_source.html#l00078">OutputQueueStatus()</a>, and <a class="el" href="_t_data_parser_8cxx_source.html#l00050">SetFinished()</a>.</p>
 
 </div>
 </div>
@@ -1734,9 +1734,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00189">189</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00187">187</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_data_parser_8h_source.html#l00157">DecrementInputSize()</a>, <a class="el" href="_t_data_parser_8h_source.html#l00139">IncrementInputSize()</a>, <a class="el" href="_t_data_parser_8h_source.html#l00148">IncrementInputSize()</a>, <a class="el" href="_t_data_parser_8h_source.html#l00130">InputSize()</a>, and <a class="el" href="_t_data_parser_8h_source.html#l00077">SetStatusVariables()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_data_parser_8h_source.html#l00155">DecrementInputSize()</a>, <a class="el" href="_t_data_parser_8h_source.html#l00137">IncrementInputSize()</a>, <a class="el" href="_t_data_parser_8h_source.html#l00146">IncrementInputSize()</a>, <a class="el" href="_t_data_parser_8h_source.html#l00128">InputSize()</a>, and <a class="el" href="_t_data_parser_8h_source.html#l00075">SetStatusVariables()</a>.</p>
 
 </div>
 </div>
@@ -1760,9 +1760,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00188">188</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00186">186</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_data_parser_8h_source.html#l00153">DecrementItemsPopped()</a>, <a class="el" href="_t_data_parser_8h_source.html#l00135">IncrementItemsPopped()</a>, <a class="el" href="_t_data_parser_8h_source.html#l00144">IncrementItemsPopped()</a>, <a class="el" href="_t_data_parser_8h_source.html#l00126">ItemsPopped()</a>, and <a class="el" href="_t_data_parser_8h_source.html#l00077">SetStatusVariables()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_data_parser_8h_source.html#l00151">DecrementItemsPopped()</a>, <a class="el" href="_t_data_parser_8h_source.html#l00133">IncrementItemsPopped()</a>, <a class="el" href="_t_data_parser_8h_source.html#l00142">IncrementItemsPopped()</a>, <a class="el" href="_t_data_parser_8h_source.html#l00124">ItemsPopped()</a>, and <a class="el" href="_t_data_parser_8h_source.html#l00075">SetStatusVariables()</a>.</p>
 
 </div>
 </div>
@@ -1788,9 +1788,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>The last daq ID in the raw file. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00174">174</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00172">172</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_data_parser_8h_source.html#l00108">LastDaqId()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_data_parser_8h_source.html#l00106">LastDaqId()</a>.</p>
 
 </div>
 </div>
@@ -1816,9 +1816,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>The last network packet recieved. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00176">176</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00174">174</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_data_parser_8h_source.html#l00110">LastNetworkPacket()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_data_parser_8h_source.html#l00108">LastNetworkPacket()</a>.</p>
 
 </div>
 </div>
@@ -1842,9 +1842,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00183">183</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00181">181</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_data_parser_8h_source.html#l00115">LastTimeStampMap()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_data_parser_8h_source.html#l00113">LastTimeStampMap()</a>.</p>
 
 </div>
 </div>
@@ -1870,9 +1870,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>The last Trigged ID in the raw File. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00175">175</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00173">173</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_data_parser_8h_source.html#l00109">LastTriggerId()</a>, and <a class="el" href="_t_data_parser_8h_source.html#l00120">LastTriggerId()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_data_parser_8h_source.html#l00107">LastTriggerId()</a>, and <a class="el" href="_t_data_parser_8h_source.html#l00118">LastTriggerId()</a>.</p>
 
 </div>
 </div>
@@ -1896,11 +1896,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>The last trigger ID Called. </p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00171">171</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00173">173</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="_t_data_parser_8h_source.html#l00107">MaxTriggerId()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_data_parser_8h_source.html#l00105">MaxTriggerId()</a>.</p>
 
 </div>
 </div>
@@ -1926,9 +1924,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>The flag to turn wave_forms on or off. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00169">169</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00167">167</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_data_parser_8h_source.html#l00103">NoWaveforms()</a>, and <a class="el" href="_t_data_parser_8h_source.html#l00050">SetNoWaveForms()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_data_parser_8h_source.html#l00101">NoWaveforms()</a>, and <a class="el" href="_t_data_parser_8h_source.html#l00048">SetNoWaveForms()</a>.</p>
 
 </div>
 </div>
@@ -1954,9 +1952,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>Static pointer to <a class="el" href="class_t_g_r_s_i_options.html">TGRSIOptions</a>, gets set on the first call of GriffinDataToFragment. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00185">185</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00183">183</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_data_parser_8h_source.html#l00117">Options()</a>, and <a class="el" href="_t_data_parser_8h_source.html#l00124">Options()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_data_parser_8h_source.html#l00115">Options()</a>, and <a class="el" href="_t_data_parser_8h_source.html#l00122">Options()</a>.</p>
 
 </div>
 </div>
@@ -1982,9 +1980,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>The flag to turn on diagnostics recording. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00170">170</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00168">168</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_data_parser_8h_source.html#l00104">RecordDiag()</a>, and <a class="el" href="_t_data_parser_8h_source.html#l00051">SetRecordDiag()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_data_parser_8h_source.html#l00102">RecordDiag()</a>, and <a class="el" href="_t_data_parser_8h_source.html#l00049">SetRecordDiag()</a>.</p>
 
 </div>
 </div>
@@ -2008,9 +2006,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00166">166</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_data_parser_8h_source.html#l00164">164</a> of file <a class="el" href="_t_data_parser_8h_source.html">TDataParser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_data_parser_8cxx_source.html#l00032">ClearQueue()</a>, <a class="el" href="_t_data_parser_8h_source.html#l00075">ScalerOutputQueue()</a>, and <a class="el" href="_t_data_parser_8cxx_source.html#l00050">SetFinished()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_data_parser_8cxx_source.html#l00032">ClearQueue()</a>, <a class="el" href="_t_data_parser_8h_source.html#l00073">ScalerOutputQueue()</a>, and <a class="el" href="_t_data_parser_8cxx_source.html#l00050">SetFinished()</a>.</p>
 
 </div>
 </div>
@@ -2021,7 +2019,7 @@ Static Private Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_t_data_parser.html">TDataParser</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Aug 26 2025 14:02:07.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Sep 19 2025 17:05:49.</li>
   </ul>
 </div>
 </body>

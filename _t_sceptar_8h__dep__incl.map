@@ -1,37 +1,33 @@
 <map id="TSceptar.h" name="TSceptar.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="1296,5,1380,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="1121,5,1205,31"/>
 <area shape="rect" id="Node000002" href="$_angular_correlation_selector_8h.html" title=" " alt="" coords="8,79,193,105"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1280,24,834,42,523,59,205,82,194,83,193,77,204,76,522,54,834,37,1280,19"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1105,25,727,45,468,61,205,82,194,83,193,77,204,76,468,56,726,39,1105,19"/>
 <area shape="rect" id="Node000004" href="$_cross_talk_8h.html" title=" " alt="" coords="216,79,307,105"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="1280,23,1116,26,878,35,601,53,319,82,308,83,307,78,319,76,601,48,878,30,1116,21,1280,17"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="1105,24,771,39,547,56,319,82,308,83,307,78,319,76,546,51,770,34,1105,18"/>
 <area shape="rect" id="Node000006" href="$_deadtime_8cxx.html" title=" " alt="" coords="331,79,430,105"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="1280,24,925,39,685,56,441,82,430,83,430,78,440,76,684,51,925,34,1280,18"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="1106,25,819,43,631,59,441,82,430,83,430,78,440,76,631,54,819,38,1105,19"/>
 <area shape="rect" id="Node000007" href="$_example_event_selector_8h.html" title=" " alt="" coords="453,79,614,105"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="1280,26,999,48,626,82,615,83,615,78,625,76,998,42,1280,21"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="1106,28,626,82,615,83,615,78,625,76,1105,23"/>
 <area shape="rect" id="Node000009" href="$_example_tree_helper_8hh.html" title=" " alt="" coords="638,79,789,105"/>
-<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="1280,28,802,82,790,83,790,78,801,76,1280,23"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="1106,31,790,81,789,76,1105,26"/>
 <area shape="rect" id="Node000011" href="$_example_tree_selector_8h.html" title=" " alt="" coords="814,79,968,105"/>
-<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="1280,31,968,81,967,76,1279,26"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="1106,37,938,81,937,76,1105,32"/>
 <area shape="rect" id="Node000013" href="$_fast_timing_hist_selector_8h.html" title=" " alt="" coords="992,79,1160,105"/>
-<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="1282,37,1122,81,1120,76,1280,32"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="1138,43,1093,81,1089,77,1135,39"/>
 <area shape="rect" id="Node000015" href="$_get_tree_entries_8cxx.html" title=" " alt="" coords="1184,79,1315,105"/>
-<area shape="poly" id="edge14_Node000001_Node000015" title=" " alt="" coords="1313,43,1266,81,1263,77,1309,39"/>
-<area shape="rect" id="Node000016" href="$_make_griffin_histograms_8cxx.html" title=" " alt="" coords="1339,79,1515,105"/>
-<area shape="poly" id="edge15_Node000001_Node000016" title=" " alt="" coords="1366,39,1414,77,1410,81,1363,43"/>
-<area shape="rect" id="Node000017" href="$_t_g_r_s_i_mnemonic_8cxx.html" title=" " alt="" coords="1539,79,1683,105"/>
-<area shape="poly" id="edge16_Node000001_Node000017" title=" " alt="" coords="1395,32,1565,76,1564,81,1394,37"/>
-<area shape="rect" id="Node000018" href="$_t_sceptar_8cxx.html" title=" " alt="" coords="1707,79,1803,105"/>
-<area shape="poly" id="edge17_Node000001_Node000018" title=" " alt="" coords="1396,26,1695,76,1707,78,1706,84,1695,82,1395,31"/>
-<area shape="rect" id="Node000019" href="$_t_sceptar_hit_8cxx.html" title=" " alt="" coords="1828,79,1941,105"/>
-<area shape="poly" id="edge18_Node000001_Node000019" title=" " alt="" coords="1395,23,1582,45,1815,76,1828,78,1827,83,1815,82,1582,51,1395,29"/>
-<area shape="rect" id="Node000020" href="$_time_walk_helper_8hh.html" title=" " alt="" coords="1965,79,2100,105"/>
-<area shape="poly" id="edge19_Node000001_Node000020" title=" " alt="" coords="1396,21,1639,43,1954,76,1965,78,1964,83,1953,82,1638,48,1395,27"/>
-<area shape="rect" id="Node000022" href="$_time_walk_selector_8h.html" title=" " alt="" coords="2124,79,2261,105"/>
-<area shape="poly" id="edge21_Node000001_Node000022" title=" " alt="" coords="1395,20,1701,40,1905,56,2111,76,2123,78,2123,83,2111,82,1904,62,1701,45,1395,25"/>
-<area shape="rect" id="Node000024" href="$tac__calibrator_8cxx.html" title=" " alt="" coords="2285,79,2406,105"/>
-<area shape="poly" id="edge23_Node000001_Node000024" title=" " alt="" coords="1395,19,1765,35,2017,52,2274,76,2285,78,2284,83,2273,82,2017,58,1765,41,1395,24"/>
-<area shape="rect" id="Node000025" href="$write__cal_8cxx.html" title=" " alt="" coords="2430,79,2525,105"/>
-<area shape="poly" id="edge24_Node000001_Node000025" title=" " alt="" coords="1395,17,1569,20,1822,29,2118,47,2419,76,2430,78,2429,83,2419,82,2117,52,1822,34,1569,26,1395,23"/>
+<area shape="poly" id="edge14_Node000001_Node000015" title=" " alt="" coords="1191,39,1237,77,1233,81,1188,43"/>
+<area shape="rect" id="Node000016" href="$_t_g_r_s_i_mnemonic_8cxx.html" title=" " alt="" coords="1339,79,1483,105"/>
+<area shape="poly" id="edge15_Node000001_Node000016" title=" " alt="" coords="1220,33,1369,76,1368,81,1219,38"/>
+<area shape="rect" id="Node000017" href="$_t_sceptar_8cxx.html" title=" " alt="" coords="1507,79,1603,105"/>
+<area shape="poly" id="edge16_Node000001_Node000017" title=" " alt="" coords="1221,27,1495,76,1507,79,1506,84,1495,82,1220,32"/>
+<area shape="rect" id="Node000018" href="$_t_sceptar_hit_8cxx.html" title=" " alt="" coords="1628,79,1741,105"/>
+<area shape="poly" id="edge17_Node000001_Node000018" title=" " alt="" coords="1221,24,1615,76,1628,78,1627,84,1615,82,1220,29"/>
+<area shape="rect" id="Node000019" href="$_time_walk_helper_8hh.html" title=" " alt="" coords="1765,79,1900,105"/>
+<area shape="poly" id="edge18_Node000001_Node000019" title=" " alt="" coords="1221,22,1454,43,1754,76,1765,78,1764,83,1753,82,1453,49,1220,27"/>
+<area shape="rect" id="Node000021" href="$_time_walk_selector_8h.html" title=" " alt="" coords="1924,79,2061,105"/>
+<area shape="poly" id="edge20_Node000001_Node000021" title=" " alt="" coords="1221,20,1517,41,1911,76,1923,78,1923,83,1911,82,1517,46,1221,26"/>
+<area shape="rect" id="Node000023" href="$tac__calibrator_8cxx.html" title=" " alt="" coords="2085,79,2206,105"/>
+<area shape="poly" id="edge22_Node000001_Node000023" title=" " alt="" coords="1221,19,1581,36,1826,53,2074,76,2085,78,2084,83,2073,82,1825,58,1581,41,1221,24"/>
 <area shape="rect" id="Node000003" href="$_angular_correlation_selector_8_c.html" title=" " alt="" coords="5,153,193,178"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="102,120,102,152,97,152,97,120"/>
 <area shape="rect" id="Node000005" href="$_cross_talk_8_c.html" title=" " alt="" coords="217,153,309,178"/>
@@ -44,8 +40,8 @@
 <area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="894,120,895,152,889,152,889,120"/>
 <area shape="rect" id="Node000014" href="$_fast_timing_hist_selector_8_c.html" title=" " alt="" coords="995,153,1166,178"/>
 <area shape="poly" id="edge13_Node000013_Node000014" title=" " alt="" coords="1081,120,1082,152,1077,152,1075,120"/>
-<area shape="rect" id="Node000021" href="$_time_walk_helper_8cxx.html" title=" " alt="" coords="1960,153,2099,178"/>
-<area shape="poly" id="edge20_Node000020_Node000021" title=" " alt="" coords="2034,120,2033,152,2027,152,2029,120"/>
-<area shape="rect" id="Node000023" href="$_time_walk_selector_8_c.html" title=" " alt="" coords="2124,153,2263,178"/>
-<area shape="poly" id="edge22_Node000022_Node000023" title=" " alt="" coords="2196,120,2196,152,2191,152,2190,120"/>
+<area shape="rect" id="Node000020" href="$_time_walk_helper_8cxx.html" title=" " alt="" coords="1760,153,1899,178"/>
+<area shape="poly" id="edge19_Node000019_Node000020" title=" " alt="" coords="1834,120,1833,152,1827,152,1829,120"/>
+<area shape="rect" id="Node000022" href="$_time_walk_selector_8_c.html" title=" " alt="" coords="1924,153,2063,178"/>
+<area shape="poly" id="edge21_Node000021_Node000022" title=" " alt="" coords="1996,120,1996,152,1991,152,1990,120"/>
 </map>

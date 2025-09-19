@@ -121,9 +121,8 @@ $(function(){initNavTree('class_t_run_info.html',''); initResizable(true); });
 <div class="line">      <a class="code hl_function" href="#a3cd9ba734843cc6185730aa31db236d3">SubRunNumber</a>:       000</div>
 <div class="line">      <a class="code hl_function" href="#a24a0b890d8f71133bffabba431e9cad8">RunStart</a>:           Fri Dec 22 18:11:29 2023</div>
 <div class="line">      <a class="code hl_function" href="#a1d47de727895cde30c1cc875447f7581">RunStop</a>:            Fri Dec 22 18:42:40 2023</div>
-<div class="line">      <a class="code hl_function" href="#a7eee7560c250e452c5f3ec8a0d005dc3">RunLength</a>:          1871 <a class="code hl_variable" href="_make_griffin_histograms_8cxx.html#ac9f781c0a1f40b02ce4266f1add0feb9">s</a></div>
+<div class="line">      <a class="code hl_function" href="#a7eee7560c250e452c5f3ec8a0d005dc3">RunLength</a>:          1871 s</div>
 <div class="line">GRSI [1]</div>
-<div class="ttc" id="a_make_griffin_histograms_8cxx_html_ac9f781c0a1f40b02ce4266f1add0feb9"><div class="ttname"><a href="_make_griffin_histograms_8cxx.html#ac9f781c0a1f40b02ce4266f1add0feb9">s</a></div><div class="ttdeci">const Double_t s</div><div class="ttdef"><b>Definition</b> <a href="_make_griffin_histograms_8cxx_source.html#l00015">MakeGriffinHistograms.cxx:15</a></div></div>
 <div class="ttc" id="aclass_t_run_info_html_a1d47de727895cde30c1cc875447f7581"><div class="ttname"><a href="#a1d47de727895cde30c1cc875447f7581">TRunInfo::RunStop</a></div><div class="ttdeci">static double RunStop()</div><div class="ttdef"><b>Definition</b> <a href="_t_run_info_8h_source.html#l00242">TRunInfo.h:242</a></div></div>
 <div class="ttc" id="aclass_t_run_info_html_a24a0b890d8f71133bffabba431e9cad8"><div class="ttname"><a href="#a24a0b890d8f71133bffabba431e9cad8">TRunInfo::RunStart</a></div><div class="ttdeci">static double RunStart()</div><div class="ttdef"><b>Definition</b> <a href="_t_run_info_8h_source.html#l00241">TRunInfo.h:241</a></div></div>
 <div class="ttc" id="aclass_t_run_info_html_a3cd9ba734843cc6185730aa31db236d3"><div class="ttname"><a href="#a3cd9ba734843cc6185730aa31db236d3">TRunInfo::SubRunNumber</a></div><div class="ttdeci">static int SubRunNumber()</div><div class="ttdef"><b>Definition</b> <a href="_t_run_info_8h_source.html#l00208">TRunInfo.h:208</a></div></div>
@@ -141,7 +140,7 @@ $(function(){initNavTree('class_t_run_info.html',''); initResizable(true); });
 <div class="line">      SubRunNumbers:      000-028</div>
 <div class="line">      <a class="code hl_function" href="#a24a0b890d8f71133bffabba431e9cad8">RunStart</a>:           Thu Dec 14 13:37:14 2023</div>
 <div class="line">      <a class="code hl_function" href="#a1d47de727895cde30c1cc875447f7581">RunStop</a>:            Thu Dec 14 14:37:14 2023</div>
-<div class="line">      <a class="code hl_function" href="#a7eee7560c250e452c5f3ec8a0d005dc3">RunLength</a>:          3599 <a class="code hl_variable" href="_make_griffin_histograms_8cxx.html#ac9f781c0a1f40b02ce4266f1add0feb9">s</a></div>
+<div class="line">      <a class="code hl_function" href="#a7eee7560c250e452c5f3ec8a0d005dc3">RunLength</a>:          3599 s</div>
 <div class="line">GRSI [1]</div>
 </div><!-- fragment --><p>Internally this is signaled by the subrun number having been set to -1, while the run number is still nonzero, and the run start and run stop are set as well as the numbers of the first and last subrun.</p>
 <p>If the subruns are not in order or a subrun is missing from the range added, the number of the first and last subrun are both set to -1, changing the line </p><div class="fragment"><div class="line">SubRunNumbers:      000-028</div>
@@ -154,13 +153,13 @@ $(function(){initNavTree('class_t_run_info.html',''); initResizable(true); });
 <div class="line">      No missing runs</div>
 <div class="line">      <a class="code hl_function" href="#a24a0b890d8f71133bffabba431e9cad8">RunStart</a>:           Thu Dec 14 13:37:14 2023</div>
 <div class="line">      <a class="code hl_function" href="#a1d47de727895cde30c1cc875447f7581">RunStop</a>:            Fri Dec 15 19:06:11 2023</div>
-<div class="line">      <a class="code hl_function" href="#a7eee7560c250e452c5f3ec8a0d005dc3">RunLength</a>:          101306 <a class="code hl_variable" href="_make_griffin_histograms_8cxx.html#ac9f781c0a1f40b02ce4266f1add0feb9">s</a></div>
+<div class="line">      <a class="code hl_function" href="#a7eee7560c250e452c5f3ec8a0d005dc3">RunLength</a>:          101306 s</div>
 </div><!-- fragment --><p>If however some runs in between are missing, it will say </p><div class="fragment"><div class="line">Singleton 0x55919586a8c0 was read from test50_51_54.root</div>
 <div class="line">Title: 100Zr_beam_with_PACES_lasers_on</div>
 <div class="line">Comment: 100Zr_beam_with_PACES_lasers_on</div>
 <div class="line">      RunNumbers:         21950-21954</div>
 <div class="line">      Missing runs:       21952, 21953</div>
-<div class="line">      Combined <a class="code hl_function" href="#a7eee7560c250e452c5f3ec8a0d005dc3">RunLength</a>: 10794 <a class="code hl_variable" href="_make_griffin_histograms_8cxx.html#ac9f781c0a1f40b02ce4266f1add0feb9">s</a></div>
+<div class="line">      Combined <a class="code hl_function" href="#a7eee7560c250e452c5f3ec8a0d005dc3">RunLength</a>: 10794 s</div>
 </div><!-- fragment --><p>From version 18 on <a class="el" href="class_t_run_info.html">TRunInfo</a> also stores information about the GRSISort version used to sort the data. This can be accessed via </p><div class="fragment"><div class="line"><a class="code hl_function" href="class_t_singleton.html#a58e2a8e03fa6a7c20638044626add93a">TRunInfo::Get</a>()-&gt;<a class="code hl_function" href="#abe83368d782dfd171294ce980fdab449">PrintVersion</a>();</div>
 <div class="ttc" id="aclass_t_run_info_html_abe83368d782dfd171294ce980fdab449"><div class="ttname"><a href="#abe83368d782dfd171294ce980fdab449">TRunInfo::PrintVersion</a></div><div class="ttdeci">void PrintVersion() const</div><div class="ttdef"><b>Definition</b> <a href="_t_run_info_8cxx_source.html#l00571">TRunInfo.cxx:571</a></div></div>
 </div><!-- fragment --><p>Using a newer version of grsiframe on data created with an older version of GRSISort should not overwrite the version reported.</p>
@@ -192,7 +191,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aebd42e1b7529b5b40f855a87e60761bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a49dfec43ee4fca966369fd252f409d92" id="r_a49dfec43ee4fca966369fd252f409d92"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a49dfec43ee4fca966369fd252f409d92">Add</a> (<a class="el" href="class_t_run_info.html">TRunInfo</a> *runinfo, bool verbose=false)</td></tr>
 <tr class="separator:a49dfec43ee4fca966369fd252f409d92"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abbc2defc25d5434d151a7f92f88c1cd6" id="r_abbc2defc25d5434d151a7f92f88c1cd6"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_t_event_building_loop.html#a10dabb2c35e194c8ad7c384b727f0c88">TEventBuildingLoop::EBuildMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abbc2defc25d5434d151a7f92f88c1cd6">BuildMode</a> () const</td></tr>
+<tr class="memitem:abbc2defc25d5434d151a7f92f88c1cd6" id="r_abbc2defc25d5434d151a7f92f88c1cd6"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_t_event_building_loop.html#a79db94b12943add9c17e9c44912733c3">TEventBuildingLoop::EBuildMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abbc2defc25d5434d151a7f92f88c1cd6">BuildMode</a> () const</td></tr>
 <tr class="separator:abbc2defc25d5434d151a7f92f88c1cd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f452ad0e1fcfd012c71bbb6aa068aa6" id="r_a3f452ad0e1fcfd012c71bbb6aa068aa6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3f452ad0e1fcfd012c71bbb6aa068aa6">Clear</a> (Option_t *opt=&quot;&quot;) override</td></tr>
 <tr class="separator:a3f452ad0e1fcfd012c71bbb6aa068aa6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -638,7 +637,7 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_t_event_building_loop.html#a10dabb2c35e194c8ad7c384b727f0c88">TEventBuildingLoop::EBuildMode</a> TRunInfo::BuildMode </td>
+          <td class="memname"><a class="el" href="class_t_event_building_loop.html#a79db94b12943add9c17e9c44912733c3">TEventBuildingLoop::EBuildMode</a> TRunInfo::BuildMode </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -653,7 +652,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_run_info_8cxx_source.html#l00381">381</a> of file <a class="el" href="_t_run_info_8cxx_source.html">TRunInfo.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="class_t_event_building_loop.html#a10dabb2c35e194c8ad7c384b727f0c88a6867faeaa475fda467e48267db2bb8a8">TEventBuildingLoop::kDefault</a>.</p>
+<p class="reference">References <a class="el" href="class_t_event_building_loop.html#a79db94b12943add9c17e9c44912733c3a6867faeaa475fda467e48267db2bb8a8">TEventBuildingLoop::kDefault</a>.</p>
 
 </div>
 </div>
@@ -715,7 +714,7 @@ Friends</h2></td></tr>
 
 <p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00312">fDate</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00090">TGRSIint::ApplyOptions()</a>, and <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00091">TGRSIint::ApplyOptions()</a>, and <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>.</p>
 
 </div>
 </div>
@@ -746,7 +745,7 @@ Friends</h2></td></tr>
 
 <p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00311">fFullVersion</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00090">TGRSIint::ApplyOptions()</a>, and <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00091">TGRSIint::ApplyOptions()</a>, and <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>.</p>
 
 </div>
 </div>
@@ -837,7 +836,7 @@ Friends</h2></td></tr>
 
 <p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00310">fVersion</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00090">TGRSIint::ApplyOptions()</a>, <a class="el" href="_t_lst_file_8cxx_source.html#l00072">TLstFile::Open()</a>, <a class="el" href="_t_rlmd_file_8cxx_source.html#l00070">TRlmdFile::Open()</a>, <a class="el" href="_t_tdr_file_8cxx_source.html#l00050">TTdrFile::Open()</a>, and <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00091">TGRSIint::ApplyOptions()</a>, <a class="el" href="_t_lst_file_8cxx_source.html#l00072">TLstFile::Open()</a>, <a class="el" href="_t_rlmd_file_8cxx_source.html#l00070">TRlmdFile::Open()</a>, <a class="el" href="_t_tdr_file_8cxx_source.html#l00050">TTdrFile::Open()</a>, and <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>.</p>
 
 </div>
 </div>
@@ -1105,7 +1104,7 @@ Friends</h2></td></tr>
 
 <p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00333">fDetectorInformation</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_descant_8cxx_source.html#l00152">TDescant::GetPosition()</a>, and <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00399">TGRSIint::SetupPipeline()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_descant_8cxx_source.html#l00152">TDescant::GetPosition()</a>, and <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00400">TGRSIint::SetupPipeline()</a>.</p>
 
 </div>
 </div>
@@ -1782,7 +1781,7 @@ Friends</h2></td></tr>
 
 <p class="reference">References <a class="el" href="_globals_8h_source.html#l00012">CYAN</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00207">ParseInputData()</a>, <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>, <a class="el" href="_t_run_info_8h_source.html#l00264">SetRunInfoFile()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00263">SetRunInfoFileName()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00399">TGRSIint::SetupPipeline()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00400">TGRSIint::SetupPipeline()</a>.</p>
 
 </div>
 </div>
@@ -1813,7 +1812,7 @@ Friends</h2></td></tr>
 
 <p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00333">fDetectorInformation</a>, <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>, and <a class="el" href="_t_singleton_8h_source.html#l00133">TSingleton&lt; TRunInfo &gt;::Set()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00299">TGRSIint::OpenRootFile()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00300">TGRSIint::OpenRootFile()</a>.</p>
 
 </div>
 </div>
@@ -1904,7 +1903,7 @@ Friends</h2></td></tr>
 
 <p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00308">fRunLength</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_frag_diagnostics_loop_8cxx_source.html#l00147">TFragDiagnosticsLoop::CreateHistograms()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>, and <a class="el" href="_t_frag_diagnostics_loop_8cxx_source.html#l00098">TFragDiagnosticsLoop::Write()</a>.</p>
 
 </div>
 </div>
@@ -1935,7 +1934,7 @@ Friends</h2></td></tr>
 
 <p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00298">fRunNumber</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00107">AtExitHandler()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00582">CreateLabel()</a>, <a class="el" href="_fix_run_info_8cxx_source.html#l00010">main()</a>, <a class="el" href="_make_griffin_histograms_8cxx_source.html#l00053">MakeAnalysisHistograms()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>, <a class="el" href="_t_g_r_s_i_sort_info_8cxx_source.html#l00083">TGRSISortInfo::SetRunInfo()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>, <a class="el" href="_t_run_info_8h_source.html#l00231">SetRunLength()</a>, <a class="el" href="_t_p_p_g_8cxx_source.html#l00460">TPPG::Setup()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00219">TGRSISelector::Terminate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00107">AtExitHandler()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00582">CreateLabel()</a>, <a class="el" href="_fix_run_info_8cxx_source.html#l00010">main()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>, <a class="el" href="_t_g_r_s_i_sort_info_8cxx_source.html#l00085">TGRSISortInfo::SetRunInfo()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>, <a class="el" href="_t_run_info_8h_source.html#l00231">SetRunLength()</a>, <a class="el" href="_t_p_p_g_8cxx_source.html#l00460">TPPG::Setup()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00219">TGRSISelector::Terminate()</a>.</p>
 
 </div>
 </div>
@@ -2173,7 +2172,7 @@ Friends</h2></td></tr>
 
 <p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00167">SetDate()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00090">TGRSIint::ApplyOptions()</a>, <a class="el" href="_t_run_info_8h_source.html#l00167">SetDate()</a>, and <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00091">TGRSIint::ApplyOptions()</a>, <a class="el" href="_t_run_info_8h_source.html#l00167">SetDate()</a>, and <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>.</p>
 
 </div>
 </div>
@@ -2264,7 +2263,7 @@ Friends</h2></td></tr>
 
 <p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00155">SetFullVersion()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00090">TGRSIint::ApplyOptions()</a>, <a class="el" href="_t_run_info_8h_source.html#l00155">SetFullVersion()</a>, and <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00091">TGRSIint::ApplyOptions()</a>, <a class="el" href="_t_run_info_8h_source.html#l00155">SetFullVersion()</a>, and <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>.</p>
 
 </div>
 </div>
@@ -2509,9 +2508,9 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_run_info_8cxx_source.html#l00135">135</a> of file <a class="el" href="_t_run_info_8cxx_source.html">TRunInfo.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00166">ClearDate()</a>, <a class="el" href="_t_run_info_8h_source.html#l00154">ClearFullVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00142">ClearVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00327">fRunInfoFile</a>, <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>, <a class="el" href="_t_channel_8h_source.html#l00068">TChannel::GetNumberOfChannels()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00207">ParseInputData()</a>, <a class="el" href="_t_run_info_8h_source.html#l00207">RunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00167">SetDate()</a>, <a class="el" href="_t_run_info_8h_source.html#l00155">SetFullVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00204">SetRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00205">SetSubRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00143">SetVersion()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00208">SubRunNumber()</a>.</p>
+<p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00166">ClearDate()</a>, <a class="el" href="_t_run_info_8h_source.html#l00154">ClearFullVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00142">ClearVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00327">fRunInfoFile</a>, <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>, <a class="el" href="_t_channel_8h_source.html#l00063">TChannel::GetNumberOfChannels()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00207">ParseInputData()</a>, <a class="el" href="_t_run_info_8h_source.html#l00207">RunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00167">SetDate()</a>, <a class="el" href="_t_run_info_8h_source.html#l00155">SetFullVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00204">SetRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00205">SetSubRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00143">SetVersion()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00208">SubRunNumber()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_lst_file_8cxx_source.html#l00072">TLstFile::Open()</a>, <a class="el" href="_t_midas_file_8cxx_source.html#l00095">TMidasFile::Open()</a>, <a class="el" href="_t_rlmd_file_8cxx_source.html#l00070">TRlmdFile::Open()</a>, <a class="el" href="_t_tdr_file_8cxx_source.html#l00050">TTdrFile::Open()</a>, and <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00399">TGRSIint::SetupPipeline()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_lst_file_8cxx_source.html#l00072">TLstFile::Open()</a>, <a class="el" href="_t_midas_file_8cxx_source.html#l00095">TMidasFile::Open()</a>, <a class="el" href="_t_rlmd_file_8cxx_source.html#l00070">TRlmdFile::Open()</a>, <a class="el" href="_t_tdr_file_8cxx_source.html#l00050">TTdrFile::Open()</a>, and <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00400">TGRSIint::SetupPipeline()</a>.</p>
 
 </div>
 </div>
@@ -2819,7 +2818,7 @@ Friends</h2></td></tr>
 
 <p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00143">SetVersion()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00090">TGRSIint::ApplyOptions()</a>, <a class="el" href="_t_lst_file_8cxx_source.html#l00072">TLstFile::Open()</a>, <a class="el" href="_t_rlmd_file_8cxx_source.html#l00070">TRlmdFile::Open()</a>, <a class="el" href="_t_tdr_file_8cxx_source.html#l00050">TTdrFile::Open()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00143">SetVersion()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_iint_8cxx_source.html#l00091">TGRSIint::ApplyOptions()</a>, <a class="el" href="_t_lst_file_8cxx_source.html#l00072">TLstFile::Open()</a>, <a class="el" href="_t_rlmd_file_8cxx_source.html#l00070">TRlmdFile::Open()</a>, <a class="el" href="_t_tdr_file_8cxx_source.html#l00050">TTdrFile::Open()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00143">SetVersion()</a>.</p>
 
 </div>
 </div>
@@ -2937,7 +2936,7 @@ Friends</h2></td></tr>
 
 <p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00299">fSubRunNumber</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00107">AtExitHandler()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00582">CreateLabel()</a>, <a class="el" href="_lean_compton_matrices_8cxx_source.html#l00074">main()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>, <a class="el" href="_t_g_r_s_i_sort_info_8cxx_source.html#l00083">TGRSISortInfo::SetRunInfo()</a>, <a class="el" href="_t_midas_file_8cxx_source.html#l00700">TMidasFile::SetRunInfo()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>, <a class="el" href="_t_p_p_g_8cxx_source.html#l00460">TPPG::Setup()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00219">TGRSISelector::Terminate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00107">AtExitHandler()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00582">CreateLabel()</a>, <a class="el" href="_lean_compton_matrices_8cxx_source.html#l00074">main()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>, <a class="el" href="_t_g_r_s_i_sort_info_8cxx_source.html#l00085">TGRSISortInfo::SetRunInfo()</a>, <a class="el" href="_t_midas_file_8cxx_source.html#l00700">TMidasFile::SetRunInfo()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>, <a class="el" href="_t_p_p_g_8cxx_source.html#l00460">TPPG::Setup()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00219">TGRSISelector::Terminate()</a>.</p>
 
 </div>
 </div>
@@ -2998,7 +2997,7 @@ Friends</h2></td></tr>
 
 <p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00333">fDetectorInformation</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_analysis_write_loop_8cxx_source.html#l00115">TAnalysisWriteLoop::Write()</a>, and <a class="el" href="_t_frag_write_loop_8cxx_source.html#l00131">TFragWriteLoop::Write()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_analysis_write_loop_8cxx_source.html#l00115">TAnalysisWriteLoop::Write()</a>, <a class="el" href="_t_frag_diagnostics_loop_8cxx_source.html#l00098">TFragDiagnosticsLoop::Write()</a>, and <a class="el" href="_t_frag_write_loop_8cxx_source.html#l00131">TFragWriteLoop::Write()</a>.</p>
 
 </div>
 </div>
@@ -3811,7 +3810,7 @@ Friends</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_t_run_info.html">TRunInfo</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Aug 26 2025 14:02:10.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Sep 19 2025 17:05:52.</li>
   </ul>
 </div>
 </body>
