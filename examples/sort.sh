@@ -38,7 +38,7 @@ for run in `seq $firstRun $lastRun` ; do
       subrun=$(basename $midasFile | cut -d '_' -f2 | cut -d '.' -f1)
 		analysisFile="$ANALYSISDIR/analysis${run}_${subrun}.root"
 		# if the analysis file exists, we don't re-run the analysis
-      if [ -e $analysisFile ] ; then
+      if [ -e $analysisFile ] && [ $analysisFile -nt $midasFile ] ; then
          continue
       fi
 		# touching the file means it exists now and if we run this script in multiple terminal
