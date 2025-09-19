@@ -70,7 +70,7 @@ void CrossTalkHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grifB
          auto* grif2 = grif.GetSuppressedHit(gr2);
          if(pileup_reject && grif2->GetKValue() != defaultKValue) { continue; }   // This pileup number might have to change for other expmnts
          if((detMultiplicity[grif1->GetDetector()] == 2) && Addback(grif1, grif2)) {
-            TGriffinHit* lowCrystalHit = nullptr;
+            TGriffinHit* lowCrystalHit  = nullptr;
             TGriffinHit* highCrystalHit = nullptr;
             if(grif1->GetCrystal() < grif2->GetCrystal()) {
                lowCrystalHit  = grif1;

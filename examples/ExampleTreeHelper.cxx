@@ -63,11 +63,11 @@ void ExampleTreeHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& gri
       fSuppressedAddback[slot][0]  = grif1->GetEnergy();
       fSuppressedAddback2[slot][0] = grif1->GetEnergy();
       for(auto j = i + 1; j < grif.GetSuppressedAddbackMultiplicity(&grifBgo); ++j) {
-         auto* grif2                   = grif.GetSuppressedAddbackHit(j);
+         auto* grif2                  = grif.GetSuppressedAddbackHit(j);
          fSuppressedAddback[slot][1]  = grif2->GetEnergy();
          fSuppressedAddback2[slot][1] = grif2->GetEnergy();
          for(auto k = j + 1; k < grif.GetSuppressedAddbackMultiplicity(&grifBgo); ++k) {
-            auto* grif3                   = grif.GetSuppressedAddbackHit(k);
+            auto* grif3                  = grif.GetSuppressedAddbackHit(k);
             fSuppressedAddback[slot][2]  = grif3->GetEnergy();
             fSuppressedAddback2[slot][2] = grif3->GetEnergy();
             // we now have three suppressed addback hits i, j, and k so now we need a coincident beta-tag
