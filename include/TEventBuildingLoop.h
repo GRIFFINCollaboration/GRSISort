@@ -18,6 +18,7 @@
 #include <memory>
 #include <functional>
 #include <set>
+#include <cstdint>
 #endif
 
 #include "StoppableThread.h"

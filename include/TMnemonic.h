@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include <sstream>
+#include <cstdint>
 
 #include "TObject.h"
 #include "TClass.h"

@@ -6,6 +6,7 @@
 #include <vector>
 #include <map>
 #include <utility>
+#include <cstdint>
 
 #include "TPolyLine.h"
 #include "TArrow.h"

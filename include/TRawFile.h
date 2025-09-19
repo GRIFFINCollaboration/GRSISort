@@ -15,6 +15,7 @@
 /////////////////////////////////////////////////////////////////
 
 #include <string>
+#include <cstdint>
 
 #ifdef __APPLE__
 #include <_types/_uint32_t.h>

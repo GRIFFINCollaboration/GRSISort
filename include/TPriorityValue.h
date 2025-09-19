@@ -4,6 +4,7 @@
 #include <ostream>
 #include <string>
 #include <vector>
+#include <cstdint>
 
 /** \addtogroup Sorting
  *  @{
