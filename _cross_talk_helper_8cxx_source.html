@@ -182,7 +182,7 @@ $(function(){initNavTree('_cross_talk_helper_8cxx_source.html',''); initResizabl
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>         <span class="keyword">auto</span>* grif2 = grif.<a class="code hl_function" href="class_t_griffin.html#aa58f4533af55b42160a1460bf5792b00">GetSuppressedHit</a>(gr2);</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>         <span class="keywordflow">if</span>(<a class="code hl_variable" href="_cross_talk_helper_8cxx.html#a00ae608ab7b839d10f7bc021fba822cf">pileup_reject</a> &amp;&amp; grif2-&gt;GetKValue() != <a class="code hl_variable" href="_cross_talk_helper_8cxx.html#a51e848f6b8cf3601ce723e06ae7460a1">defaultKValue</a>) { <span class="keywordflow">continue</span>; }   <span class="comment">// This pileup number might have to change for other expmnts</span></div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>         <span class="keywordflow">if</span>((detMultiplicity[grif1-&gt;GetDetector()] == 2) &amp;&amp; <a class="code hl_function" href="_cross_talk_helper_8cxx.html#ab2257dd42934aac1292f9537f5cda00e">Addback</a>(grif1, grif2)) {</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>            <a class="code hl_class" href="class_t_griffin_hit.html">TGriffinHit</a>* lowCrystalHit = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>            <a class="code hl_class" href="class_t_griffin_hit.html">TGriffinHit</a>* lowCrystalHit  = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>            <a class="code hl_class" href="class_t_griffin_hit.html">TGriffinHit</a>* highCrystalHit = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>            <span class="keywordflow">if</span>(grif1-&gt;GetCrystal() &lt; grif2-&gt;GetCrystal()) {</div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>               lowCrystalHit  = grif1;</div>
@@ -240,7 +240,7 @@ $(function(){initNavTree('_cross_talk_helper_8cxx_source.html',''); initResizabl
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d28a4824dc47e487b107a5db32ef43c4.html">examples</a></li><li class="navelem"><a class="el" href="_cross_talk_helper_8cxx.html">CrossTalkHelper.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Sep 19 2025 17:05:44.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Mon Sep 22 2025 18:03:17.</li>
   </ul>
 </div>
 </body>

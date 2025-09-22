@@ -187,7 +187,7 @@ $(function(){initNavTree('_time_walk_helper_8cxx_source.html',''); initResizable
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>         <span class="keywordflow">if</span>(i == j) { <span class="keywordflow">continue</span>; }</div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>         <span class="keyword">auto</span>*   grif2         = grif.<a class="code hl_function" href="class_t_griffin.html#ac2ad5c730ed2dcfaacb7a0e0710f259a">GetGriffinHit</a>(j);</div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>         int64_t timediff      = grif2-&gt;<a class="code hl_function" href="class_t_detector_hit.html#a2d0ccf28cbe0792ebdf0987d47c14997">GetTimeStamp</a>() - grif1-&gt;GetTimeStamp();</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>         <span class="keywordtype">double</span> timediff_walk = (grif2-&gt;GetTime() - grif1-&gt;GetTime()) / 10.;</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>         <span class="keywordtype">double</span>  timediff_walk = (grif2-&gt;GetTime() - grif1-&gt;GetTime()) / 10.;</div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>         <a class="code hl_variable" href="class_t_g_r_s_i_helper.html#a27adae6a07b011a2c5beb6a572acaa42">fH2</a>[slot].at(<span class="stringliteral">&quot;time_eng_nogate&quot;</span>)-&gt;Fill(<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(timediff), grif2-&gt;GetEnergy());</div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>         <a class="code hl_variable" href="class_t_g_r_s_i_helper.html#a27adae6a07b011a2c5beb6a572acaa42">fH2</a>[slot].at(<span class="stringliteral">&quot;kValueTDiff_nogate&quot;</span>)-&gt;Fill(<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(timediff), grif2-&gt;GetKValue());</div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>         <span class="keywordflow">if</span>(grif1-&gt;GetEnergy() &gt; 0.) {</div>
@@ -254,7 +254,7 @@ $(function(){initNavTree('_time_walk_helper_8cxx_source.html',''); initResizable
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d28a4824dc47e487b107a5db32ef43c4.html">examples</a></li><li class="navelem"><a class="el" href="_time_walk_helper_8cxx.html">TimeWalkHelper.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Sep 19 2025 17:05:44.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Mon Sep 22 2025 18:03:18.</li>
   </ul>
 </div>
 </body>
