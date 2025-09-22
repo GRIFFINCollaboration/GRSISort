@@ -29,11 +29,11 @@ public:
    ROOT::RDF::RResultPtr<std::map<std::string, TList>> Book(ROOT::RDataFrame* d) override
    {
       // TODO: edit the template specification and branch names to match the detectors you want to use!
-		std::cout << "Using options:" << std::endl;
-		TGRSIOptions::Get()->Print();
-		if(TGRSIOptions::Get()->NumberOfEvents() > 0) {
-			return d->Range(TGRSIOptions::Get()->NumberOfEvents()).Book<TGriffin, TGriffinBgo, TZeroDegree>(std::move(*this), {"TGriffin", "TGriffinBgo", "TZeroDegree"});
-		}
+      std::cout << "Using options:" << std::endl;
+      TGRSIOptions::Get()->Print();
+      if(TGRSIOptions::Get()->NumberOfEvents() > 0) {
+         return d->Range(TGRSIOptions::Get()->NumberOfEvents()).Book<TGriffin, TGriffinBgo, TZeroDegree>(std::move(*this), {"TGriffin", "TGriffinBgo", "TZeroDegree"});
+      }
       return d->Book<TGriffin, TGriffinBgo, TZeroDegree>(std::move(*this), {"TGriffin", "TGriffinBgo", "TZeroDegree"});
    }
    // this function creates and books all histograms

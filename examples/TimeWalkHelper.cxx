@@ -75,7 +75,7 @@ void TimeWalkHelper::Exec(unsigned int slot, TGriffin& grif, TSceptar& scep)
          if(i == j) { continue; }
          auto*   grif2         = grif.GetGriffinHit(j);
          int64_t timediff      = grif2->GetTimeStamp() - grif1->GetTimeStamp();
-         double timediff_walk = (grif2->GetTime() - grif1->GetTime()) / 10.;
+         double  timediff_walk = (grif2->GetTime() - grif1->GetTime()) / 10.;
          fH2[slot].at("time_eng_nogate")->Fill(static_cast<double>(timediff), grif2->GetEnergy());
          fH2[slot].at("kValueTDiff_nogate")->Fill(static_cast<double>(timediff), grif2->GetKValue());
          if(grif1->GetEnergy() > 0.) {

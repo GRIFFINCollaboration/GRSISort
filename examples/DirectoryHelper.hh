@@ -20,7 +20,7 @@ public:
    {
       if(fUserSettings != nullptr) {
          fEnergyBins = fUserSettings->GetInt("LaBr3.Threshold", fEnergyBins);
-         fEnergyLow = fUserSettings->GetDouble("LaBr3.Threshold", fEnergyLow);
+         fEnergyLow  = fUserSettings->GetDouble("LaBr3.Threshold", fEnergyLow);
          fEnergyHigh = fUserSettings->GetDouble("LaBr3.Threshold", fEnergyHigh);
       }
       Prefix("DirectoryHelper");
@@ -43,12 +43,12 @@ private:
    // or any other settings
    std::map<uint16_t, std::vector<int64_t>> fLastTS;
    std::map<uint16_t, std::vector<int64_t>> fLastSuppressedTS;
-   std::map<uint16_t, std::vector<double>> fLastTime;
-   std::map<uint16_t, std::vector<double>> fLastSuppressedTime;
+   std::map<uint16_t, std::vector<double>>  fLastTime;
+   std::map<uint16_t, std::vector<double>>  fLastSuppressedTime;
    std::map<uint16_t, std::vector<int64_t>> fLastTSNoPileup;
    std::map<uint16_t, std::vector<int64_t>> fLastSuppressedTSNoPileup;
-   std::map<uint16_t, std::vector<double>> fLastTimeNoPileup;
-   std::map<uint16_t, std::vector<double>> fLastSuppressedTimeNoPileup;
+   std::map<uint16_t, std::vector<double>>  fLastTimeNoPileup;
+   std::map<uint16_t, std::vector<double>>  fLastSuppressedTimeNoPileup;
 
    // some variables to easily change range and binning for multiple histograms at once
    int    fEnergyBins = 10000;
