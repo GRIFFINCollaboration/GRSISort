@@ -24,6 +24,7 @@ public:
    }
    void CreateHistograms(unsigned int slot) override;
    void Exec(unsigned int sloti, TFragment& frag);
+
 private:
    int fMaxKValue{720};
 };

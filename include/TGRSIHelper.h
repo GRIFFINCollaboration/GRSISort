@@ -17,7 +17,7 @@
 #include "TRunInfo.h"
 #include "TGRSIMap.h"
 #include "TUserSettings.h"
-#include "TMnemonic.h" // IWYU pragma: keep
+#include "TMnemonic.h"   // IWYU pragma: keep
 
 ////////////////////////////////////////////////////////////////////////////////
 ///
