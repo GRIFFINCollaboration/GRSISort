@@ -25,6 +25,7 @@
 #include <map>
 #include <utility>
 #include <iostream>
+#include <cstdint>
 
 #include "TObject.h"
 #include "TCollection.h"

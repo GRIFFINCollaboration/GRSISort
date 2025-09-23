@@ -2,6 +2,8 @@
 #define GROOTCOMMANDS__H
 
 #include <string>
+#include <cstdint>
+
 class TTree;
 class TH1;
 class TH2;

@@ -60,37 +60,38 @@ void CrossTalkHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grifB
    }
 
    for(auto gr1 = 0; gr1 < grif.GetSuppressedMultiplicity(&grifBgo); ++gr1) {
-      auto grif1 = grif.GetSuppressedHit(gr1);
-      if(pileup_reject && (grif1->GetKValue() != defaultKValue)) continue;   // This pileup number might have to change for other expmnts
+      auto* grif1 = grif.GetSuppressedHit(gr1);
+      if(pileup_reject && (grif1->GetKValue() != defaultKValue)) { continue; }   // This pileup number might have to change for other expmnts
       fH1[slot].at(Form("gEdet%d", grif1->GetDetector()))->Fill(grif1->GetEnergy());
       fH2[slot].at("gE_chan")->Fill(grif1->GetArrayNumber(), grif1->GetEnergy());
       fH1[slot].at("gE")->Fill(grif1->GetEnergy());
       fH1[slot].at("gEnoCT")->Fill(grif1->GetNoCTEnergy());
       for(auto gr2 = gr1 + 1; gr2 < grif.GetSuppressedMultiplicity(&grifBgo); ++gr2) {
-         auto grif2 = grif.GetSuppressedHit(gr2);
-         if(pileup_reject && grif2->GetKValue() != defaultKValue) continue;   // This pileup number might have to change for other expmnts
+         auto* grif2 = grif.GetSuppressedHit(gr2);
+         if(pileup_reject && grif2->GetKValue() != defaultKValue) { continue; }   // This pileup number might have to change for other expmnts
          if((detMultiplicity[grif1->GetDetector()] == 2) && Addback(grif1, grif2)) {
-            TGriffinHit *low_crys_hit, *high_crys_hit;
+            TGriffinHit* lowCrystalHit  = nullptr;
+            TGriffinHit* highCrystalHit = nullptr;
             if(grif1->GetCrystal() < grif2->GetCrystal()) {
-               low_crys_hit  = grif1;
-               high_crys_hit = grif2;
+               lowCrystalHit  = grif1;
+               highCrystalHit = grif2;
             } else {
-               low_crys_hit  = grif2;
-               high_crys_hit = grif1;
+               lowCrystalHit  = grif2;
+               highCrystalHit = grif1;
             }
-            if(low_crys_hit->GetCrystal() != high_crys_hit->GetCrystal()) {
-               fH2[slot].at(Form("det_%d_%d_%d", low_crys_hit->GetDetector(), low_crys_hit->GetCrystal(), high_crys_hit->GetCrystal()))->Fill(low_crys_hit->GetNoCTEnergy(), high_crys_hit->GetNoCTEnergy());
+            if(lowCrystalHit->GetCrystal() != highCrystalHit->GetCrystal()) {
+               fH2[slot].at(Form("det_%d_%d_%d", lowCrystalHit->GetDetector(), lowCrystalHit->GetCrystal(), highCrystalHit->GetCrystal()))->Fill(lowCrystalHit->GetNoCTEnergy(), highCrystalHit->GetNoCTEnergy());
             }
          }
       }
    }
 
    for(auto gr1 = 0; gr1 < grif.GetSuppressedAddbackMultiplicity(&grifBgo); ++gr1) {
-      auto grif1 = grif.GetSuppressedAddbackHit(gr1);
-      if(pileup_reject && (grif1->GetKValue() != defaultKValue)) continue;   // This pileup number might have to change for other expmnts
+      auto* grif1 = grif.GetSuppressedAddbackHit(gr1);
+      if(pileup_reject && (grif1->GetKValue() != defaultKValue)) { continue; }   // This pileup number might have to change for other expmnts
       fH1[slot].at("aE")->Fill(grif1->GetEnergy());
       fH1[slot].at(Form("aEdet%d", grif1->GetDetector()))->Fill(grif1->GetEnergy());
       fH1[slot].at("aMult")->Fill(grif.GetNSuppressedAddbackFrags(gr1));
-      if(grif.GetNSuppressedAddbackFrags(gr1) == 2) fH1[slot].at(Form("aE2det%d", grif1->GetDetector()))->Fill(grif1->GetEnergy());
+      if(grif.GetNSuppressedAddbackFrags(gr1) == 2) { fH1[slot].at(Form("aE2det%d", grif1->GetDetector()))->Fill(grif1->GetEnergy()); }
    }
 }

@@ -1,6 +1,8 @@
 #ifndef GH1D_H
 #define GH1D_H
 
+#include <cstdint>
+
 #include "TH1.h"
 #include "TRef.h"
 #include "TPad.h"

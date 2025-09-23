@@ -43,7 +43,7 @@ private:
       return std::binary_search(fExcludedCrystals.begin(), fExcludedCrystals.end(), arraynumber);
    }
 
-   bool GoodCycleTime(double timeInCycle)
+   bool GoodCycleTime(double timeInCycle) const
    {
       // check if the timeInCycle (in microseconds!) falls within the limits
       // this could be done much smarter, but this might be easier to read
@@ -72,10 +72,12 @@ public:
       if(fUserSettings != nullptr) {
          fNofMixedEvents  = fUserSettings->GetInt("NumberOfMixedEvents", 10);
          fGriffinDistance = fUserSettings->GetDouble("GriffinDistance", 145.);
-         fAddback         = fUserSettings->GetBool("Addback", true);
-         fSingleCrystal   = fUserSettings->GetBool("SingleCrystal", true);
-         fFolding         = fUserSettings->GetBool("Folding", false);
-         fGrouping        = fUserSettings->GetBool("Grouping", false);
+         try {
+            fAddback       = fUserSettings->GetBool("Addback", true);
+            fSingleCrystal = fUserSettings->GetBool("SingleCrystal", true);
+            fFolding       = fUserSettings->GetBool("Folding", true);
+            fGrouping      = fUserSettings->GetBool("Grouping", true);
+         } catch(std::exception&) {}
 
          try {
             fExcludedDetectors = fUserSettings->GetIntVector("ExcludedDetector", true);   // be quiet if we don't find this

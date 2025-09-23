@@ -6,6 +6,7 @@
 #include <vector>
 #include <map>
 #include <utility>
+#include <cstdint>
 
 #include "TPolyLine.h"
 #include "TArrow.h"
@@ -276,9 +277,9 @@ private:
 
 class TLevelScheme : public TPaveLabel {
 public:
-   enum class EGammaWidth : std::uint8_t { kNoWidth,
-                                           kBand,
-                                           kGlobal };
+   enum class EGammaWidth : char { kNoWidth,
+                                   kBand,
+                                   kGlobal };
 
    explicit TLevelScheme(const std::string& filename = "", bool debug = false);
    explicit TLevelScheme(const char* filename, bool debug = false) : TLevelScheme(std::string(filename), debug) {}

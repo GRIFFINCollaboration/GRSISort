@@ -59,62 +59,62 @@ void TimeWalkHelper::Exec(unsigned int slot, TGriffin& grif, TSceptar& scep)
 {
    // Loop over all Griffin Hits
    for(auto i = 0; i < grif.GetMultiplicity(); ++i) {
-      auto grif1 = grif.GetGriffinHit(i);
+      auto* grif1 = grif.GetGriffinHit(i);
       fH2[slot].at("kValueChan")->Fill(grif1->GetKValue(), grif1->GetArrayNumber());
       // Loop over all sceptar hits
       for(auto j = 0; j < scep.GetMultiplicity(); ++j) {
-         auto scep1 = scep.GetSceptarHit(j);
-         fH2[slot].at("time_eng_bg")->Fill(grif1->GetTimeStamp() - scep1->GetTimeStamp(), grif1->GetEnergy());
+         auto* scep1 = scep.GetSceptarHit(j);
+         fH2[slot].at("time_eng_bg")->Fill(static_cast<double>(grif1->GetTimeStamp() - scep1->GetTimeStamp()), grif1->GetEnergy());
          fH2[slot].at("time_eng_walk_bg")->Fill((grif1->GetTime() - scep1->GetTime()) / 10., grif1->GetEnergy());
          if(grif1->GetKValue() == 700) {
-            fH2[slot].at("time_eng_bgnoPU")->Fill(grif1->GetTimeStamp() - scep1->GetTimeStamp(), grif1->GetEnergy());
+            fH2[slot].at("time_eng_bgnoPU")->Fill(static_cast<double>(grif1->GetTimeStamp() - scep1->GetTimeStamp()), grif1->GetEnergy());
             fH2[slot].at("time_eng_walk_bgnoPU")->Fill((grif1->GetTime() - scep1->GetTime()) / 10., grif1->GetEnergy());
          }
       }
       for(auto j = 0; j < grif.GetMultiplicity(); ++j) {
-         if(i == j) continue;
-         auto   grif2         = grif.GetGriffinHit(j);
-         long   timediff      = grif2->GetTimeStamp() - grif1->GetTimeStamp();
-         double timediff_walk = (grif2->GetTime() - grif1->GetTime()) / 10.;
-         fH2[slot].at("time_eng_nogate")->Fill(timediff, grif2->GetEnergy());
-         fH2[slot].at("kValueTDiff_nogate")->Fill(timediff, grif2->GetKValue());
+         if(i == j) { continue; }
+         auto*   grif2         = grif.GetGriffinHit(j);
+         int64_t timediff      = grif2->GetTimeStamp() - grif1->GetTimeStamp();
+         double  timediff_walk = (grif2->GetTime() - grif1->GetTime()) / 10.;
+         fH2[slot].at("time_eng_nogate")->Fill(static_cast<double>(timediff), grif2->GetEnergy());
+         fH2[slot].at("kValueTDiff_nogate")->Fill(static_cast<double>(timediff), grif2->GetKValue());
          if(grif1->GetEnergy() > 0.) {
-            fH2[slot].at("time_eng")->Fill(timediff, grif2->GetEnergy());
+            fH2[slot].at("time_eng")->Fill(static_cast<double>(timediff), grif2->GetEnergy());
             fH2[slot].at("time_eng_walk")->Fill(timediff_walk, grif2->GetEnergy());
-            fH3[slot].at("time_eng_chan")->Fill(timediff, grif2->GetEnergy(), grif2->GetArrayNumber());    // was crystal1 + 4*detector2???
-            fH3[slot].at("time_eng_chan2")->Fill(timediff, grif2->GetEnergy(), grif1->GetArrayNumber());   // was crystal2 + 4*detector1???
-            fH3[slot].at("time_eng_det")->Fill(timediff, grif2->GetEnergy(), grif2->GetDetector());
-            fH3[slot].at("time_eng_det2")->Fill(timediff, grif2->GetEnergy(), grif1->GetDetector());
+            fH3[slot].at("time_eng_chan")->Fill(static_cast<double>(timediff), grif2->GetEnergy(), grif2->GetArrayNumber());    // was crystal1 + 4*detector2???
+            fH3[slot].at("time_eng_chan2")->Fill(static_cast<double>(timediff), grif2->GetEnergy(), grif1->GetArrayNumber());   // was crystal2 + 4*detector1???
+            fH3[slot].at("time_eng_det")->Fill(static_cast<double>(timediff), grif2->GetEnergy(), grif2->GetDetector());
+            fH3[slot].at("time_eng_det2")->Fill(static_cast<double>(timediff), grif2->GetEnergy(), grif1->GetDetector());
             fH2[slot].at("time_engcfd")->Fill(timediff_walk * 10., grif2->GetEnergy());
             if(grif1->GetKValue() == 700 && grif2->GetKValue() == 700) {
                fH2[slot].at("time_engcfdnopu")->Fill(timediff_walk * 10., grif2->GetEnergy());
-               fH2[slot].at("time_eng_noPU")->Fill(timediff, grif2->GetEnergy());
+               fH2[slot].at("time_eng_noPU")->Fill(static_cast<double>(timediff), grif2->GetEnergy());
                fH2[slot].at("time_eng_walk_noPU")->Fill(timediff_walk, grif2->GetEnergy());
-               fH2[slot].at("eng_time_noPU")->Fill(grif2->GetEnergy(), timediff);
+               fH2[slot].at("eng_time_noPU")->Fill(grif2->GetEnergy(), static_cast<double>(timediff));
             }
-            fH2[slot].at("kValueTDiff")->Fill(timediff, grif2->GetKValue());
+            fH2[slot].at("kValueTDiff")->Fill(static_cast<double>(timediff), grif2->GetKValue());
             if(grif1->GetAddress() == grif2->GetAddress()) {
-               fH2[slot].at("kValueTDiff")->Fill(timediff, grif2->GetKValue());
+               fH2[slot].at("kValueTDiff")->Fill(static_cast<double>(timediff), grif2->GetKValue());
             }
             if(grif1->GetAddress() != 0 && grif2->GetAddress() != 0) {
-               fH2[slot].at("time_eng_no0")->Fill(timediff, grif2->GetEnergy());
+               fH2[slot].at("time_eng_no0")->Fill(static_cast<double>(timediff), grif2->GetEnergy());
                fH2[slot].at("time_eng_walk_no0")->Fill(timediff_walk, grif2->GetEnergy());
             }
-            fH2[slot].at("time_eng2")->Fill(grif2->GetEnergy(), timediff);
+            fH2[slot].at("time_eng2")->Fill(grif2->GetEnergy(), static_cast<double>(timediff));
             fH2[slot].at("time_eng_walk2")->Fill(grif2->GetEnergy(), timediff_walk);
          }
          if(grif1->GetEnergy() < 500.) {
-            fH2[slot].at("time_eng_high")->Fill(timediff, grif2->GetEnergy());
+            fH2[slot].at("time_eng_high")->Fill(static_cast<double>(timediff), grif2->GetEnergy());
             fH2[slot].at("time_eng_walk_high")->Fill(timediff_walk, grif2->GetEnergy());
          }
       }
    }
    for(auto i = 0; i < scep.GetMultiplicity(); ++i) {
-      auto scep1 = scep.GetSceptarHit(i);
+      auto* scep1 = scep.GetSceptarHit(i);
       for(auto j = 0; j < scep.GetMultiplicity(); ++j) {
-         if(i == j) continue;
-         auto scep2 = scep.GetSceptarHit(j);
-         fH2[slot].at("time_eng_beta")->Fill(scep2->GetTimeStamp() - scep1->GetTimeStamp(), scep2->GetEnergy());
+         if(i == j) { continue; }
+         auto* scep2 = scep.GetSceptarHit(j);
+         fH2[slot].at("time_eng_beta")->Fill(static_cast<double>(scep2->GetTimeStamp() - scep1->GetTimeStamp()), scep2->GetEnergy());
          fH2[slot].at("time_eng_walk_beta")->Fill((scep2->GetTime() - scep1->GetTime()) / 10., scep2->GetEnergy());
       }
    }

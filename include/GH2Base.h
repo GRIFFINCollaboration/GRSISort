@@ -2,10 +2,11 @@
 #define GH2BASE__H
 
 #include <cstdio>
+#include <cstdint>
 
-#include <TNamed.h>
-#include <TH2.h>
-#include <TList.h>
+#include "TNamed.h"
+#include "TH2.h"
+#include "TList.h"
 
 class GH1D;
 

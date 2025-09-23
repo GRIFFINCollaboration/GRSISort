@@ -1,7 +1,5 @@
 #include "GriffinKValueHelper.hh"
 
-int maxKValue = 720;
-
 void GriffinKValueHelper::CreateHistograms(unsigned int slot)
 {
    // 1D spectra of energy
@@ -11,15 +9,15 @@ void GriffinKValueHelper::CreateHistograms(unsigned int slot)
    fH1[slot]["hE_3h"]   = new TH1D("hE_3h", "Energy (pileup of 3 hits);energy [keV];counts/0.5 keV", 4000, 0., 2000.);
    fH1[slot]["hE_2hc"]  = new TH1D("hE_2hc", "Energy (pileup of 2 hits with only 2 integration windows);energy [keV];counts/0.5 keV", 4000, 0., 2000.);
    // 2D spectra of energy vs. k-value
-   fH2[slot]["hKP"]      = new TH2D("hKP", "K-value vs. # of pileups;# of pileups;k-value", 50, -32.5, 17.5, maxKValue, 0., maxKValue);
-   fH2[slot]["hEK_noPU"] = new TH2D("hEK_noPU", "Energy vs. k-value (no pileup);k-value;energy [keV]", maxKValue, 0., maxKValue, 2000, 0., 2000.);
-   fH2[slot]["hEK_1h2"]  = new TH2D("hEK_1h2", "Energy vs. k-value (first of two piled-up hits);k-value;energy [keV]", maxKValue, 0., maxKValue, 2000, 0., 2000.);
-   fH2[slot]["hEK_2h2"]  = new TH2D("hEK_2h2", "Energy vs. k-value (second of two piled-up hits);k-value;energy [keV]", maxKValue, 0., maxKValue, 2000, 0., 2000.);
-   fH2[slot]["hEK_1h3"]  = new TH2D("hEK_1h3", "Energy vs. k-value (first of three piled-up hits);k-value;energy [keV]", maxKValue, 0., maxKValue, 2000, 0., 2000.);
-   fH2[slot]["hEK_2h3"]  = new TH2D("hEK_2h3", "Energy vs. k-value (second of three piled-up hits);k-value;energy [keV]", maxKValue, 0., maxKValue, 2000, 0., 2000.);
-   fH2[slot]["hEK_3h3"]  = new TH2D("hEK_3h3", "Energy vs. k-value (third of three piled-up hits);k-value;energy [keV]", maxKValue, 0., maxKValue, 2000, 0., 2000.);
-   fH2[slot]["hEK_1h2c"] = new TH2D("hEK_1h2c", "Energy vs. k-value (first of two piled-up hits with only 2 integration windows);k-value;energy [keV]", maxKValue, 0., maxKValue, 2000, 0., 2000.);
-   fH2[slot]["hEK_2h2c"] = new TH2D("hEK_2h2c", "Energy vs. k-value (second of two piled-up hits with only 2 integration windows);k-value;energy [keV]", maxKValue, 0., maxKValue, 2000, 0., 2000.);
+   fH2[slot]["hKP"]      = new TH2D("hKP", "K-value vs. # of pileups;# of pileups;k-value", 50, -32.5, 17.5, fMaxKValue, 0., fMaxKValue);
+   fH2[slot]["hEK_noPU"] = new TH2D("hEK_noPU", "Energy vs. k-value (no pileup);k-value;energy [keV]", fMaxKValue, 0., fMaxKValue, 2000, 0., 2000.);
+   fH2[slot]["hEK_1h2"]  = new TH2D("hEK_1h2", "Energy vs. k-value (first of two piled-up hits);k-value;energy [keV]", fMaxKValue, 0., fMaxKValue, 2000, 0., 2000.);
+   fH2[slot]["hEK_2h2"]  = new TH2D("hEK_2h2", "Energy vs. k-value (second of two piled-up hits);k-value;energy [keV]", fMaxKValue, 0., fMaxKValue, 2000, 0., 2000.);
+   fH2[slot]["hEK_1h3"]  = new TH2D("hEK_1h3", "Energy vs. k-value (first of three piled-up hits);k-value;energy [keV]", fMaxKValue, 0., fMaxKValue, 2000, 0., 2000.);
+   fH2[slot]["hEK_2h3"]  = new TH2D("hEK_2h3", "Energy vs. k-value (second of three piled-up hits);k-value;energy [keV]", fMaxKValue, 0., fMaxKValue, 2000, 0., 2000.);
+   fH2[slot]["hEK_3h3"]  = new TH2D("hEK_3h3", "Energy vs. k-value (third of three piled-up hits);k-value;energy [keV]", fMaxKValue, 0., fMaxKValue, 2000, 0., 2000.);
+   fH2[slot]["hEK_1h2c"] = new TH2D("hEK_1h2c", "Energy vs. k-value (first of two piled-up hits with only 2 integration windows);k-value;energy [keV]", fMaxKValue, 0., fMaxKValue, 2000, 0., 2000.);
+   fH2[slot]["hEK_2h2c"] = new TH2D("hEK_2h2c", "Energy vs. k-value (second of two piled-up hits with only 2 integration windows);k-value;energy [keV]", fMaxKValue, 0., fMaxKValue, 2000, 0., 2000.);
 }
 
 void GriffinKValueHelper::Exec(unsigned int slot, TFragment& frag)

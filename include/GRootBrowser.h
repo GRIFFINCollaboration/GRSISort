@@ -5,6 +5,8 @@
  *  @{
  */
 
+#include <cstdint>
+
 #ifndef ROOT_TGFrame
 #include "TGFrame.h"
 #endif

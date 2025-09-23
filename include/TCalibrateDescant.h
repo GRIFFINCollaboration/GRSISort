@@ -1,5 +1,7 @@
 #ifndef TCALIBRATEDESCANT_H
 #define TCALIBRATEDESCANT_H
+#include <cstdint>
+
 #include "TGFrame.h"
 #include "TRootEmbeddedCanvas.h"
 #include "TGStatusBar.h"

@@ -6,6 +6,7 @@
  */
 
 #include <vector>
+#include <cstdint>
 
 #include "TChannel.h"
 #include "TVector3.h"

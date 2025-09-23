@@ -12,6 +12,9 @@ public:
    explicit GriffinKValueHelper(TList* list)
       : TGRSIHelper(list)
    {
+      if(fUserSettings != nullptr) {
+         fMaxKValue = fUserSettings->GetInt("MaximumKValue", fMaxKValue);
+      }
       Prefix("GriffinKValue");
       Setup();
    }
@@ -21,6 +24,9 @@ public:
    }
    void CreateHistograms(unsigned int slot) override;
    void Exec(unsigned int sloti, TFragment& frag);
+
+private:
+   int fMaxKValue{720};
 };
 
 // These are needed functions used by TDataFrameLibrary to create and destroy the instance of this helper

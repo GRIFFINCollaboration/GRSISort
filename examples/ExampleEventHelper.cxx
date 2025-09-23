@@ -8,7 +8,7 @@ void ExampleEventHelper::CreateHistograms(unsigned int slot)
       fCycleLength = Ppg()->OdbCycleLength();
       if(slot == 0) {
          std::stringstream str;
-         str << "Got ODB cycle length " << fCycleLength << " us = " << fCycleLength / 1e6 << " s" << std::endl;
+         str << "Got ODB cycle length " << fCycleLength << " us = " << static_cast<double>(fCycleLength) / 1e6 << " s" << std::endl;
          std::cout << str.str();
       }
    } else if(slot == 0) {
@@ -44,8 +44,8 @@ void ExampleEventHelper::CreateHistograms(unsigned int slot)
 
    // cycle spectra
    if(fCycleLength > 0) {
-      fH2[slot]["griffinCycle"] = new TH2F("griffinCycle", "GRIFFIN suppressed addback energy w/ #beta-tag vs. time in cycle;time in cycle [s];energy [keV]", 100 * fCycleLength / 1e6, 0., fCycleLength / 1e6, energyBins / 5, lowEnergy, highEnergy);
-      fH1[slot]["zdsCycle"]     = new TH1F("zdsCycle", "ZDS hits in cycle;time in cycle [s]", 100 * fCycleLength / 1e6, 0., fCycleLength / 1e6);
+      fH2[slot]["griffinCycle"] = new TH2F("griffinCycle", "GRIFFIN suppressed addback energy w/ #beta-tag vs. time in cycle;time in cycle [s];energy [keV]", 100 * fCycleLength / 1000000, 0., static_cast<double>(fCycleLength) / 1e6, energyBins / 5, lowEnergy, highEnergy);
+      fH1[slot]["zdsCycle"]     = new TH1F("zdsCycle", "ZDS hits in cycle;time in cycle [s]", 100 * fCycleLength / 1000000, 0., static_cast<double>(fCycleLength) / 1e6);
    }
 }
 
@@ -78,44 +78,44 @@ void ExampleEventHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& gr
 
    // loop over unsuppressed griffin hits
    for(int g = 0; g < grif.GetMultiplicity(); ++g) {
-      auto grif1 = grif.GetGriffinHit(g);
+      auto* grif1 = grif.GetGriffinHit(g);
       fH1[slot].at("griffinE")->Fill(grif1->GetEnergy());
    }
 
    // loop over suppressed griffin hits
    for(int g = 0; g < grif.GetSuppressedMultiplicity(&grifBgo); ++g) {
-      auto grif1 = grif.GetSuppressedHit(g);
+      auto* grif1 = grif.GetSuppressedHit(g);
       fH1[slot].at("griffinESupp")->Fill(grif1->GetEnergy());
    }
 
    // loop over unsuppressed griffin addback hits
    for(int g = 0; g < grif.GetAddbackMultiplicity(); ++g) {
-      auto grif1 = grif.GetAddbackHit(g);
+      auto* grif1 = grif.GetAddbackHit(g);
       fH1[slot].at("griffinEAddback")->Fill(grif1->GetEnergy());
    }
 
    // loop over suppressed griffin addback hits
    for(int g = 0; g < grif.GetSuppressedAddbackMultiplicity(&grifBgo); ++g) {
-      auto grif1 = grif.GetSuppressedAddbackHit(g);
+      auto* grif1 = grif.GetSuppressedAddbackHit(g);
       fH1[slot].at("griffinESuppAddback")->Fill(grif1->GetEnergy());
       // we use a flag to check if there is any beta in coincidence with this gamma-ray and only fill afterwards
       // otherwise we could double-count gamma-rays that are in coincidence with more than one beta
       // e.g. because of double triggering of SCEPTAR/ZDS where we get a second trigger from the tail of the real signal
       bool promptBeta = false;
       for(int z = 0; z < zds.GetMultiplicity(); ++z) {
-         auto zds1 = zds.GetZeroDegreeHit(z);
-         fH2[slot].at("griffinZdsTS")->Fill(grif1->GetTimeStampNs() - zds1->GetTimeStampNs(), grif1->GetArrayNumber());
+         auto* zds1 = zds.GetZeroDegreeHit(z);
+         fH2[slot].at("griffinZdsTS")->Fill(static_cast<double>(grif1->GetTimeStampNs() - zds1->GetTimeStampNs()), grif1->GetArrayNumber());
          fH2[slot].at("griffinZdsTime")->Fill(grif1->GetTime() - zds1->GetTime(), grif1->GetArrayNumber());
-         if(PromptCoincidence(grif1, zds1)) promptBeta = true;
+         if(PromptCoincidence(grif1, zds1)) { promptBeta = true; }
       }
       if(promptBeta) {
          fH1[slot].at("griffinESuppAddbackBeta")->Fill(grif1->GetEnergy());
-         if(fCycleLength > 0.) {
+         if(fCycleLength > 0) {
             fH2[slot].at("griffinCycle")->Fill(std::fmod(grif1->GetTime() / 1e3, fCycleLength) / 1e6, grif1->GetEnergy());
          }
          for(int g2 = g + 1; g2 < grif.GetSuppressedAddbackMultiplicity(&grifBgo); ++g2) {
-            auto grif2 = grif.GetSuppressedAddbackHit(g2);
-            fH2[slot].at("griffinGriffinTS")->Fill(grif1->GetTimeStampNs() - grif2->GetTimeStampNs(), grif1->GetArrayNumber());
+            auto* grif2 = grif.GetSuppressedAddbackHit(g2);
+            fH2[slot].at("griffinGriffinTS")->Fill(static_cast<double>(grif1->GetTimeStampNs() - grif2->GetTimeStampNs()), grif1->GetArrayNumber());
             fH2[slot].at("griffinGriffinTime")->Fill(grif1->GetTime() - grif2->GetTime(), grif1->GetArrayNumber());
             if(PromptCoincidence(grif1, grif2)) {
                // fill twice to get a symmetric matrix
@@ -129,9 +129,9 @@ void ExampleEventHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& gr
          }
       }
    }
-   if(fCycleLength > 0.) {
+   if(fCycleLength > 0) {
       for(int z = 0; z < zds.GetMultiplicity(); ++z) {
-         auto zds1 = zds.GetZeroDegreeHit(z);
+         auto* zds1 = zds.GetZeroDegreeHit(z);
          fH1[slot].at("zdsCycle")->Fill(std::fmod(zds1->GetTime() / 1e3, fCycleLength) / 1e6);
       }
    }
@@ -139,20 +139,20 @@ void ExampleEventHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& gr
 
 void ExampleEventHelper::EndOfSort(std::shared_ptr<std::map<std::string, TList>>& list)
 {
-   auto coincident = static_cast<TH2*>(list->at("").FindObject(fH2[0].at("griffinESuppAddbackMatrixBeta")));
+   auto* coincident = static_cast<TH2*>(list->at("").FindObject(fH2[0].at("griffinESuppAddbackMatrixBeta")));
    if(coincident == nullptr) {
       std::cout << "Failed to find griffinESuppAddbackMatrixBeta histogram in list:" << std::endl;
       list->at("").Print();
       return;
    }
-   auto timeRandom = static_cast<TH2*>(list->at("").FindObject(fH2[0].at("griffinESuppAddbackMatrixBetaBg")));
+   auto* timeRandom = static_cast<TH2*>(list->at("").FindObject(fH2[0].at("griffinESuppAddbackMatrixBetaBg")));
    if(timeRandom == nullptr) {
       std::cout << "Failed to find griffinESuppAddbackMatrixBetaBg histogram in list:" << std::endl;
       list->at("").Print();
       return;
    }
 
-   auto corrected = static_cast<TH2*>(coincident->Clone("griffinESuppAddbackMatrixBetaCorr"));
+   auto* corrected = static_cast<TH2*>(coincident->Clone("griffinESuppAddbackMatrixBetaCorr"));
    // coinc = -250 - 250 = 500 wide, bg = -500 - -250 plus 250 - 500 = 500 wide
    corrected->Add(timeRandom, -1.);
    list->at("").Add(corrected);

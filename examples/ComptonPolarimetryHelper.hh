@@ -3,7 +3,6 @@
 
 #include "TGriffin.h"
 #include "TGriffinBgo.h"
-#include "TGriffinAngles.h"
 #include "TGRSIHelper.h"
 
 class ComptonPolarimetryHelper : public TGRSIHelper, public ROOT::Detail::RDF::RActionImpl<ComptonPolarimetryHelper> {
@@ -39,19 +38,17 @@ private:
    double TimeDiff(TGriffinHit* grif1, TGriffinHit* grif2) const
    {
       if(fUseTimestamps) {
-         return TMath::Abs(grif1->GetTimeStampNs() - grif2->GetTimeStampNs());
-      } else {
-         return TMath::Abs(grif1->GetTime() - grif2->GetTime());
+         return TMath::Abs(static_cast<double>(grif1->GetTimeStampNs() - grif2->GetTimeStampNs()));
       }
+      return TMath::Abs(grif1->GetTime() - grif2->GetTime());
    }
 
    bool Coincident(TGriffinHit* grif1, TGriffinHit* grif2) const
    {
       if(fUseTimestamps) {
-         return TMath::Abs(grif1->GetTimeStampNs() - grif2->GetTimeStampNs()) < fPrompt;
-      } else {
-         return TMath::Abs(grif1->GetTime() - grif2->GetTime()) < fPrompt;
+         return TMath::Abs(static_cast<double>(grif1->GetTimeStampNs() - grif2->GetTimeStampNs())) < fPrompt;
       }
+      return TMath::Abs(grif1->GetTime() - grif2->GetTime()) < fPrompt;
    }
 
    int CheckEnergy(double energy, int index = -1) const

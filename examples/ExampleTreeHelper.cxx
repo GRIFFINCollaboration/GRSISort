@@ -49,7 +49,7 @@ void ExampleTreeHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& gri
    // clear the vectors and other variables
    fSuppressedAddback[slot].resize(3, 0.);
    fBetaGammaTiming[slot].resize(3, -1e6);
-   for(int i = 0; i < 3; ++i) fSuppressedAddback2[slot][i] = 0.;
+   for(int i = 0; i < 3; ++i) { fSuppressedAddback2[slot][i] = 0.; }
 
    fH2[slot].at("sceptarMult")->Fill(grif.GetSuppressedAddbackMultiplicity(&grifBgo), scep.GetMultiplicity());
    fH2[slot].at("zdsMult")->Fill(grif.GetSuppressedAddbackMultiplicity(&grifBgo), zds.GetMultiplicity());
@@ -58,22 +58,22 @@ void ExampleTreeHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& gri
    fGriffinMultiplicity[slot] = grif.GetSuppressedAddbackMultiplicity(&grifBgo);
    if(fGriffinMultiplicity[slot] < 3) { return; }
    for(auto i = 0; i < fGriffinMultiplicity[slot]; ++i) {
-      auto grif1 = grif.GetSuppressedAddbackHit(i);
+      auto* grif1 = grif.GetSuppressedAddbackHit(i);
       fH1[slot].at("asE")->Fill(grif1->GetEnergy());
       fSuppressedAddback[slot][0]  = grif1->GetEnergy();
       fSuppressedAddback2[slot][0] = grif1->GetEnergy();
       for(auto j = i + 1; j < grif.GetSuppressedAddbackMultiplicity(&grifBgo); ++j) {
-         auto grif2                   = grif.GetSuppressedAddbackHit(j);
+         auto* grif2                  = grif.GetSuppressedAddbackHit(j);
          fSuppressedAddback[slot][1]  = grif2->GetEnergy();
          fSuppressedAddback2[slot][1] = grif2->GetEnergy();
          for(auto k = j + 1; k < grif.GetSuppressedAddbackMultiplicity(&grifBgo); ++k) {
-            auto grif3                   = grif.GetSuppressedAddbackHit(k);
+            auto* grif3                  = grif.GetSuppressedAddbackHit(k);
             fSuppressedAddback[slot][2]  = grif3->GetEnergy();
             fSuppressedAddback2[slot][2] = grif3->GetEnergy();
             // we now have three suppressed addback hits i, j, and k so now we need a coincident beta-tag
             bool foundBeta = false;
             for(auto b = 0; b < zds.GetMultiplicity(); ++b) {
-               auto beta = zds.GetZeroDegreeHit(b);
+               auto* beta = zds.GetZeroDegreeHit(b);
                if(b == 0) {
                   // use the time of the first beta as reference in case we don't find a coincident beta
                   fBetaGammaTiming[slot][0] = grif1->GetTime() - beta->GetTime();
@@ -90,7 +90,7 @@ void ExampleTreeHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& gri
             }
             // only check sceptar if we haven't found a zds yet
             for(auto b = 0; !foundBeta && b < scep.GetMultiplicity(); ++b) {
-               auto beta = scep.GetSceptarHit(b);
+               auto* beta = scep.GetSceptarHit(b);
                if(b == 0) {
                   // use the time of the first beta as reference in case we don't find a coincident beta
                   fBetaGammaTiming[slot][0] = grif1->GetTime() - beta->GetTime();

@@ -68,19 +68,19 @@ private:
 
    // ==========  functions for timing conditions  ==========
    // Griffin-Griffin
-   bool PromptCoincidence(TGriffinHit* h1, TGriffinHit* h2)
+   bool PromptCoincidence(TGriffinHit* h1, TGriffinHit* h2) const
    {
       return fGgLow < h1->GetTime() - h2->GetTime() && h1->GetTime() - h2->GetTime() < fGgHigh;
    }
 
    // general check for good CFD
-   bool GoodCfd(TDetectorHit* h1)
+   bool GoodCfd(TDetectorHit* h1) const
    {
-      return h1->GetTime() - h1->GetTimeStampNs() < fMaxCfd;
+      return h1->GetTime() - static_cast<double>(h1->GetTimeStampNs()) < fMaxCfd;
    }
 
    // ==========  functions for pileup rejection, and minimum energy  ==========
-   bool Reject(TGriffinHit* hit)
+   bool Reject(TGriffinHit* hit) const
    {
       return ((fPileUpRejection && hit->GetKValue() != fKValueGriffin) || hit->GetEnergy() < fMinimumGriffinEnergy);
    }

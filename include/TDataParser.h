@@ -22,6 +22,7 @@
 #include <vector>
 #include <map>
 #include <limits>
+#include <cstdint>
 
 #ifndef __CINT__
 #include <memory>
