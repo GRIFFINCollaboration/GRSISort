@@ -438,7 +438,12 @@ void TChannel::Clear(Option_t*)
 
    WaveFormShape = WaveFormShapePar();
 
-   fMnemonic = TPriorityValue<TMnemonic*>(static_cast<TMnemonic*>(fMnemonicClass->New()), EPriority::kForce);
+   // only create a new mnemonic if we do not have one yet (this function is called from the constructor)
+   if(fMnemonic.Value() != nullptr) {
+      fMnemonic.Value()->Clear();
+   } else {
+      fMnemonic = TPriorityValue<TMnemonic*>(static_cast<TMnemonic*>(fMnemonicClass->New()), EPriority::kForce);
+   }
    SetName("DefaultTChannel");
 
    fENGCoefficients.Reset(std::vector<std::vector<Float_t>>());

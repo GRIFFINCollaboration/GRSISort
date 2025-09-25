@@ -59,6 +59,14 @@ TAnalysisWriteLoop::~TAnalysisWriteLoop()
    for(auto& elem : fDetMap) {
       delete elem.second;
    }
+   for(auto& elem : fDefaultDets) {
+      delete elem.second;
+   }
+   // for some reason deleting these creates a seg-fault at the end of sorting
+   // leaving them in for now as a reminder to check why
+   //delete fOutOfOrderFrag;
+   //delete fOutOfOrderTree;
+   //delete fEventTree;
 }
 
 void TAnalysisWriteLoop::ClearQueue()

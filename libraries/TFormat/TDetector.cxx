@@ -23,14 +23,16 @@ TDetector::~TDetector()
 
 void TDetector::Copy(TObject& rhs) const
 {
-   // if(!rhs.InheritsFrom("TDetector"))
-   //   return;
    TObject::Copy(rhs);
-   static_cast<TDetector&>(rhs).fHits.resize(fHits.size());
+   auto& hits = static_cast<TDetector&>(rhs).fHits;
+   hits.resize(fHits.size(), nullptr);
    for(size_t i = 0; i < fHits.size(); ++i) {
-      // we need to use IsA()->New() to make a new hit of whatever derived type this actually is
-      static_cast<TDetector&>(rhs).fHits[i] = static_cast<TDetectorHit*>(fHits[i]->IsA()->New());
-      fHits[i]->Copy(*(static_cast<TDetector&>(rhs).fHits[i]), true);
+      // if this is a new hit, allocate it first before copying to it
+      if(hits[i] == nullptr) {
+         // we need to use IsA()->New() to make a new hit of whatever derived type this actually is
+         hits[i] = static_cast<TDetectorHit*>(fHits[i]->IsA()->New());
+      }
+      fHits[i]->Copy(*(hits[i]), true);
    }
 }
 
