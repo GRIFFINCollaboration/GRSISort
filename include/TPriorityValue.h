@@ -150,7 +150,7 @@ public:
    friend std::ostream& operator<<(std::ostream&, const TPriorityValue<U>&);
 
 private:
-   T         fValue;
+   T         fValue{};
    EPriority fPriority;
 };
 

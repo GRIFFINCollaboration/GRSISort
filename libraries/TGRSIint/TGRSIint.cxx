@@ -62,7 +62,7 @@ TGRSIint* TGRSIint::instance(int argc, char** argv, void*, int, bool, const char
 }
 
 TGRSIint::TGRSIint(int argc, char** argv, void*, int, bool noLogo, const char* appClassName)
-   : TRint(appClassName, new int(0), argv, nullptr, 0, noLogo), fKeepAliveTimer(nullptr),
+   : TRint(appClassName, &fFakeArgc, argv, nullptr, 0, noLogo), fKeepAliveTimer(nullptr),
      main_thread_id(std::this_thread::get_id()), fIsTabComplete(false), fAllowedToTerminate(true), fRootFilesOpened(0),
      fRawFilesOpened(0)
 {

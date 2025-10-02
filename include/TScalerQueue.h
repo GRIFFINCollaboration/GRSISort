@@ -27,7 +27,7 @@ public:
    TDeadtimeScalerQueue(TDeadtimeScalerQueue&&) noexcept            = default;
    TDeadtimeScalerQueue& operator=(const TDeadtimeScalerQueue&)     = default;
    TDeadtimeScalerQueue& operator=(TDeadtimeScalerQueue&&) noexcept = default;
-   ~TDeadtimeScalerQueue()                                          = default;
+   ~TDeadtimeScalerQueue();
 
 private:
    TDeadtimeScalerQueue();

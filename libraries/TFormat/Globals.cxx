@@ -2,6 +2,8 @@
 
 #include "TEnv.h"
 
+std::map<std::string, uint64_t> gAddressOffset;
+
 void grsi::SetGRSIEnv()
 {
    /// function to read user defined options first from the .grsirc file in $GRSISYS, then the .grsirc file in $HOME

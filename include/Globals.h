@@ -64,6 +64,9 @@ typedef char int8_t;
 #include <array>
 #include <memory>
 #include <unistd.h>
+#include <map>
+#include <fstream>
+#include <algorithm>
 
 const std::string& ProgramName();
 
@@ -166,9 +169,79 @@ static inline std::string sh(const std::string& cmd)
    return result;
 }
 
+extern std::map<std::string, uint64_t> gAddressOffset;
+
+inline bool FindAddressOffsets(bool update)
+{
+   if(!update && !gAddressOffset.empty()) {
+      std::cerr << "Warning, already have " << gAddressOffset.size() << " address offsets, not checking again!" << std::endl;
+      return false;
+   }
+
+   // need to read /proc/self should be for this process, but doesn't any grsisort libraries?
+   // so read /proc/<PID>/maps instead
+   //std::stringstream mapName;
+   //mapName << "/proc/" << getpid() << "/maps";
+   //std::ifstream procMap(mapName.str());
+   std::ifstream procMap("/proc/self/maps");
+   if(!procMap.is_open()) {
+      std::cerr << "Failed to open \"/proc/self/maps\"" << std::endl;
+      return false;
+   }
+   std::string line;
+   int         counter = 0;
+   while(std::getline(procMap, line)) {
+      // line has format
+      // <start address>-<end address> <four letters for permissions> <offset> <device major>:<device minor> <inode> <so-library>
+      // if <inode> is 0 there is no so-library
+      std::stringstream str(line);
+
+      uint64_t    startAddress = 0;
+      char        dash         = '\0';
+      uint64_t    endAddress   = 0;
+      std::string permissions;
+      uint64_t    offset = 0;
+      std::string device;
+      int         inode = 0;
+      std::string soLibrary;
+
+      str >> std::hex >> startAddress >> dash >> endAddress >> permissions >> std::dec >> offset >> device >> inode;
+      //std::cout << counter << ": \"" << line << "\" => " << hex(startAddress) << "-" << hex(endAddress) << " (" << permissions << ") " << offset << " [" << device << "] " << inode;
+
+      if(inode != 0) {
+         str >> soLibrary;
+         //std::cout << " {" << soLibrary << "}, " << gAddressOffset.size();
+
+         // we only keep the first starting address
+         if(gAddressOffset.find(soLibrary) == gAddressOffset.end()) {
+            gAddressOffset[soLibrary] = startAddress;
+            //std::cout << ", keeping " << gAddressOffset.size();
+         }
+      }
+      //std::cout << std::endl;
+      ++counter;
+   }
+
+   //if(update) {
+   //   std::cout << "Updated to " << gAddressOffset.size() << " entries using " << counter << " lines" << std::endl;
+   //} else {
+   //   std::cout << "Got address offset map with " << gAddressOffset.size()  << " entries using " << counter << " lines:" << std::endl;
+   //   for(auto& iter : gAddressOffset) {
+   //      std::cout << hex(iter.second) << "      " << iter.first << std::endl;
+   //   }
+   //}
+
+   return true;
+}
+
 // print a demangled stack backtrace of the caller function (copied from https://panthema.net/2008/0901-stacktrace-demangled/)
 static inline void PrintStacktrace(std::ostream& out = std::cout, int maxFrames = 63)
 {
+   if(gAddressOffset.empty()) {
+      if(!FindAddressOffsets(false)) {
+         throw;
+      }
+   }
    std::ostringstream output;
    output << "stack trace:" << std::endl;
 
@@ -197,7 +270,6 @@ static inline void PrintStacktrace(std::ostream& out = std::cout, int maxFrames 
    for(int i = 2; i < addrlen; i++) {
       char* begin_name   = nullptr;
       char* begin_offset = nullptr;
-      char* end_offset   = nullptr;
 
       // find parentheses and +address offset surrounding the mangled name:
       // ./module(function+0x15c) [0x8048a6d]
@@ -206,46 +278,48 @@ static inline void PrintStacktrace(std::ostream& out = std::cout, int maxFrames 
             begin_name = p;
          } else if(*p == '+') {
             begin_offset = p;
-         } else if(*p == ')' && begin_offset != nullptr) {
-            end_offset = p;
             break;
          }
       }
 
       // try and decode file and line number (only if we have an absolute path)
-      // std::string line;
-      // if(symbollist[i][0] == '/') {
-      //	std::ostringstream command;
-      //	std::string filename = symbollist[i];
-      //	command<<"addr2line "<<addrlist[i]<<" -e "<<filename.substr(0, filename.find_first_of('('));
-      //	//std::cout<<symbollist[i]<<": executing command "<<command.str()<<std::endl;
-      //	line = sh(command.str());
-      //}
-
-      if(begin_name != nullptr && begin_offset != nullptr && end_offset != nullptr && begin_name < begin_offset) {
-         *begin_name++   = '\0';
-         *begin_offset++ = '\0';
-         *end_offset     = '\0';
-
-         // mangled name is now in [begin_name, begin_offset) and caller
-         // offset in [begin_offset, end_offset). now apply
-         // __cxa_demangle():
-
-         int   status = 0;
-         char* ret    = abi::__cxa_demangle(begin_name, funcname, &funcnamesize, &status);
-         if(status == 0) {
-            funcname = ret;   // use possibly realloc()-ed string
-            output << "  " << symbollist[i] << ": " << funcname << "+" << begin_offset << std::endl;
-         } else {
-            // demangling failed. Output function name as a C function with
-            // no arguments.
-            output << "  " << symbollist[i] << ": " << begin_name << "()+" << begin_offset << std::endl;
+      std::string line;
+      if(symbollist[i][0] == '/') {
+         std::ostringstream command;
+         std::string        filename = symbollist[i];
+         filename                    = filename.substr(0, filename.find_first_of('('));
+         if(gAddressOffset.find(filename) == gAddressOffset.end()) {
+            FindAddressOffsets(true);
          }
-      } else {
-         // couldn't parse the line? print the whole line.
-         output << "  " << symbollist[i] << std::endl;
+         // convert addrlist[i] to integer and subtract offset
+         if(gAddressOffset.find(filename) != gAddressOffset.end()) {
+            command << "addr2line " << hex(reinterpret_cast<uint64_t>(addrlist[i]) - gAddressOffset.at(filename)) << " -e " << filename;
+            line = sh(command.str());
+            line.erase(std::remove(line.begin(), line.end(), '\n'), line.end());
+            //std::cout << symbollist[i] << ": (" << addrlist[i] << "/" << hex(reinterpret_cast<uint64_t>(addrlist[i])) << " - " << hex(gAddressOffset.at(filename)) << ") executed command " << command.str() << " = " << line << std::endl;
+         }
+
+         if(begin_name != nullptr && begin_offset != nullptr && begin_name < begin_offset) {
+            *begin_name++   = '\0';
+            *begin_offset++ = '\0';
+
+            // mangled name is now in [begin_name, begin_offset)
+            // now apply __cxa_demangle():
+
+            int   status = 0;
+            char* ret    = abi::__cxa_demangle(begin_name, funcname, &funcnamesize, &status);
+            if(status == 0) {
+               funcname = ret;   // use possibly realloc()-ed string
+               output << "  " << line << " - " << funcname << std::endl;
+            } else {
+               // demangling failed. Output function name as a C function with no arguments.
+               output << "  " << line << " - " << begin_name << std::endl;
+            }
+         } else {
+            // couldn't parse the line? print the whole line.
+            output << "  " << line << " - " << symbollist[i] << std::endl;
+         }
       }
-      // output << line;
    }
 
    delete[] funcname;

@@ -59,6 +59,14 @@ TAnalysisWriteLoop::~TAnalysisWriteLoop()
    for(auto& elem : fDetMap) {
       delete elem.second;
    }
+   for(auto& elem : fDefaultDets) {
+      delete elem.second;
+   }
+   delete fOutOfOrderFrag;
+   // for some reason deleting these creates a seg-fault at the end of sorting
+   // leaving them in for now as a reminder to check why
+   //delete fOutOfOrderTree;
+   //delete fEventTree;
 }
 
 void TAnalysisWriteLoop::ClearQueue()
@@ -196,20 +204,17 @@ void TAnalysisWriteLoop::WriteEvent(std::shared_ptr<TUnpackedEvent>& event)
       //   which suggests that a new object would be constructed only when setting the address,
       //   not when filling the TTree.
       for(auto& elem : fDetMap) {
-         (*elem.second)->Clear();
+         (*elem.second)->Clear("a");
       }
 
       // Load current events
       for(const auto& det : event->GetDetectors()) {
          TClass* cls = det->IsA();
-         // attempt to copy this detector into the detector map
-         // if that fails (because the detector isn't in the map yet), create the branch and then copy this detector
-         try {
-            **fDetMap.at(cls) = *det;
-         } catch(std::out_of_range& e) {
+         // check if this detector is in the detector map, if not, add it
+         if(fDetMap.find(cls) == fDetMap.end()) {
             AddBranch(cls);
-            **fDetMap.at(cls) = *det;
          }
+         **fDetMap.at(cls) = *det;   // this should call Copy internally
          (*fDetMap.at(cls))->ClearTransients();
       }
 

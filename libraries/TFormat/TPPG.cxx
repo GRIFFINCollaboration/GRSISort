@@ -122,7 +122,9 @@ void TPPG::AddData(TPPGData* pat)
 {
    /// Adds a PPG status word at a given time in the current run. Makes a copy of the pointer to
    /// store in the map.
-   fPPGStatusMap->insert(std::make_pair(pat->GetTimeStamp(), new TPPGData(*pat)));
+   // This actually used to create a copy of the object pointed to by pat, not make a copy of the pointer?
+   // If this leads to issues, we need to instead make sure we delete all objects after they were added (check Clear() function).
+   fPPGStatusMap->insert(std::make_pair(pat->GetTimeStamp(), pat));
    fCycleLength = 0;
    fCycleSet    = false;
    fNumberOfCycleLengths.clear();

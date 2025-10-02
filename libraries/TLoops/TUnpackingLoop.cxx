@@ -34,7 +34,10 @@ TUnpackingLoop::TUnpackingLoop(std::string name)
    fParser = TParserLibrary::Get()->CreateDataParser();
 }
 
-TUnpackingLoop::~TUnpackingLoop() = default;
+TUnpackingLoop::~TUnpackingLoop()
+{
+   delete fParser;
+}
 
 void TUnpackingLoop::ClearQueue()
 {

@@ -23,14 +23,27 @@ TDetector::~TDetector()
 
 void TDetector::Copy(TObject& rhs) const
 {
-   // if(!rhs.InheritsFrom("TDetector"))
-   //   return;
    TObject::Copy(rhs);
-   static_cast<TDetector&>(rhs).fHits.resize(fHits.size());
+   // to copy the hits without creating a memory leak we need to check
+   // if the right-hand side has more hits than this
+   // if so, we need to delete the hits pointed to by the right-hand side
+   auto& rhsHits = static_cast<TDetector&>(rhs).fHits;
+   if(rhsHits.size() > fHits.size()) {
+      for(size_t i = fHits.size(); i < rhsHits.size(); ++i) {
+         delete rhsHits[i];
+      }
+      rhsHits.resize(fHits.size());
+   } else if(rhsHits.size() < fHits.size()) {
+      size_t oldSize = rhsHits.size();
+      rhsHits.resize(fHits.size(), nullptr);
+      for(size_t i = oldSize; i < rhsHits.size(); ++i) {
+         // we need to use IsA()->New() to make a new hit of whatever derived type this actually is
+         rhsHits[i] = static_cast<TDetectorHit*>(fHits[i]->IsA()->New());
+      }
+   }
+   // we have now ensured that the size of the two vectors is the same, so we can copy the contents of the hits
    for(size_t i = 0; i < fHits.size(); ++i) {
-      // we need to use IsA()->New() to make a new hit of whatever derived type this actually is
-      static_cast<TDetector&>(rhs).fHits[i] = static_cast<TDetectorHit*>(fHits[i]->IsA()->New());
-      fHits[i]->Copy(*(static_cast<TDetector&>(rhs).fHits[i]), true);
+      fHits[i]->Copy(*(rhsHits[i]), true);
    }
 }
 

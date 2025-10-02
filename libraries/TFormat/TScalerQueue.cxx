@@ -35,6 +35,14 @@ TDeadtimeScalerQueue::TDeadtimeScalerQueue()
    Clear();
 }
 
+TDeadtimeScalerQueue::~TDeadtimeScalerQueue()
+{
+   if(!fDeadtimeScalerQueue.empty()) {
+      Clear();
+   }
+   delete fStopwatch;
+}
+
 void TDeadtimeScalerQueue::Print(Option_t*) const
 {
    /// Print the status of the Scaler Queue

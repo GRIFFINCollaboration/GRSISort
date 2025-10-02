@@ -45,7 +45,10 @@ TChannel::TChannel()
    Clear();
 }   // default constructor need to write to root file.
 
-TChannel::~TChannel() = default;
+TChannel::~TChannel()
+{
+   delete fMnemonic.Value();
+}
 
 TChannel::TChannel(const char* tempName)
 {
@@ -56,7 +59,7 @@ TChannel::TChannel(const char* tempName)
 
 TChannel::TChannel(const TChannel& chan) : TNamed(chan)
 {
-   /// Makes a copy of a the TChannel.
+   /// Makes a copy of the TChannel.
    Clear();
    *(fMnemonic.Value()) = *(chan.fMnemonic.Value());
    SetAddress(chan.GetAddress());
@@ -438,7 +441,12 @@ void TChannel::Clear(Option_t*)
 
    WaveFormShape = WaveFormShapePar();
 
-   fMnemonic = TPriorityValue<TMnemonic*>(static_cast<TMnemonic*>(fMnemonicClass->New()), EPriority::kForce);
+   // only create a new mnemonic if we do not have one yet (this function is called from the constructor)
+   if(fMnemonic.Value() != nullptr) {
+      fMnemonic.Value()->Clear();
+   } else {
+      fMnemonic = TPriorityValue<TMnemonic*>(static_cast<TMnemonic*>(fMnemonicClass->New()), EPriority::kForce);
+   }
    SetName("DefaultTChannel");
 
    fENGCoefficients.Reset(std::vector<std::vector<Float_t>>());
@@ -1121,6 +1129,8 @@ Int_t TChannel::ReadCalFile(std::ifstream& infile)
    buffer[length] = '\0';
 
    int channelsFound = ParseInputData(buffer, "q", EPriority::kInputFile);
+   delete[] buffer;
+
    SaveToSelf();
 
    fChannelNumberMap->clear();   // This isn't the nicest way to do this but will keep us consistent.

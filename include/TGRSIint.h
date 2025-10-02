@@ -94,6 +94,8 @@ private:
 
    std::vector<TRawFile*> fRawFiles;   ///< List of Raw files opened
 
+   int fFakeArgc{0};   ///< this is used as a fake argc to pass to the TRint constructor
+
    /// \cond CLASSIMP
    ClassDefOverride(TGRSIint, 0)   // NOLINT(readability-else-after-return)
    /// \endcond
