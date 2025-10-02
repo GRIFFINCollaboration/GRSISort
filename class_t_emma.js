@@ -14,7 +14,6 @@ var class_t_emma =
     [ "GetAnodeMultiplicity", "class_t_emma.html#a3a25ecaa34d1682797e9f5f098bc0963", null ],
     [ "GetEmmaHit", "class_t_emma.html#a897b7beced7d7f8de6f009c1d72dce20", null ],
     [ "GetHit", "class_t_emma.html#a9fb5bed513f435084094b92fb6a5b296", null ],
-    [ "GetHitVector", "class_t_emma.html#ac5a25bee6d5fff8d30f929f3aaceb2db", null ],
     [ "GetICHit", "class_t_emma.html#af051c50de24a02cd4585bd7c4ee498c7", null ],
     [ "GetICMultiplicity", "class_t_emma.html#a0cc148afe7e5e3bdc0eb8b87ab0b9ce5", null ],
     [ "GetMultiplicity", "class_t_emma.html#a9d5c07abd73ec148fe0adbee0c7c1eec", null ],

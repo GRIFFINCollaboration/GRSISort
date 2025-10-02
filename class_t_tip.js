@@ -11,7 +11,6 @@ var class_t_tip =
     [ "ClearTransients", "class_t_tip.html#a5157695811c23caccbc71ce62b9cacd0", null ],
     [ "Copy", "class_t_tip.html#a5bb705bebefab8cfb039ecb67ec0f9da", null ],
     [ "GetHit", "class_t_tip.html#a9fb5bed513f435084094b92fb6a5b296", null ],
-    [ "GetHitVector", "class_t_tip.html#ac5a25bee6d5fff8d30f929f3aaceb2db", null ],
     [ "GetMultiplicity", "class_t_tip.html#a9d5c07abd73ec148fe0adbee0c7c1eec", null ],
     [ "GetPosition", "class_t_tip.html#aa093b922ffa3880734f2584b13b81a03", null ],
     [ "GetPosition", "class_t_tip.html#af60927d8e6c62e84a7b3c05032a268a9", null ],

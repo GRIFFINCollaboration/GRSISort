@@ -31,7 +31,6 @@ var class_t_tdr_clover =
     [ "GetAddbackVector", "class_t_tdr_clover.html#a35b001f61f8cbd43f92cad8104fc47fd", null ],
     [ "GetColorFromNumber", "class_t_tdr_clover.html#acb9a5ec9fccc46b01dad1bf80f773236", null ],
     [ "GetHit", "class_t_tdr_clover.html#a9fb5bed513f435084094b92fb6a5b296", null ],
-    [ "GetHitVector", "class_t_tdr_clover.html#ac5a25bee6d5fff8d30f929f3aaceb2db", null ],
     [ "GetMultiplicity", "class_t_tdr_clover.html#a9d5c07abd73ec148fe0adbee0c7c1eec", null ],
     [ "GetNAddbackFrags", "class_t_tdr_clover.html#a082abc78581e3ef9a4b3c0504f7187a2", null ],
     [ "GetNSuppressedAddbackFrags", "class_t_tdr_clover.html#a33d045f6a773728b7fa4ebfb53f186fa", null ],

@@ -11,7 +11,6 @@ var class_t_sceptar =
     [ "ClearTransients", "class_t_sceptar.html#a5157695811c23caccbc71ce62b9cacd0", null ],
     [ "Copy", "class_t_sceptar.html#a5bb705bebefab8cfb039ecb67ec0f9da", null ],
     [ "GetHit", "class_t_sceptar.html#a9fb5bed513f435084094b92fb6a5b296", null ],
-    [ "GetHitVector", "class_t_sceptar.html#ac5a25bee6d5fff8d30f929f3aaceb2db", null ],
     [ "GetMultiplicity", "class_t_sceptar.html#a9d5c07abd73ec148fe0adbee0c7c1eec", null ],
     [ "GetPosition", "class_t_sceptar.html#a5bab863e1ec0d234f9e65359c2af7682", null ],
     [ "GetSceptarHit", "class_t_sceptar.html#a5546e7c93291120770a6335eabd74df9", null ],

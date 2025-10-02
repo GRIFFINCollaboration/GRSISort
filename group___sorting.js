@@ -538,7 +538,7 @@ var group___sorting =
     [ "TDeadtimeScalerQueue", "class_t_deadtime_scaler_queue.html", [
       [ "TDeadtimeScalerQueue", "class_t_deadtime_scaler_queue.html#ab9ec9446d9c62a44e06e1272e6a00fb5", null ],
       [ "TDeadtimeScalerQueue", "class_t_deadtime_scaler_queue.html#a25c97b7b447e54b9fb73c637bae3ff1b", null ],
-      [ "~TDeadtimeScalerQueue", "class_t_deadtime_scaler_queue.html#a89b0de0251496302eef290066a138b27", null ],
+      [ "~TDeadtimeScalerQueue", "class_t_deadtime_scaler_queue.html#a865655d02bd61c6bf55b1cd2caffae8b", null ],
       [ "TDeadtimeScalerQueue", "class_t_deadtime_scaler_queue.html#a2a911ac9400b9f8f33e6477cdac9f46f", null ],
       [ "Add", "class_t_deadtime_scaler_queue.html#a4033905eca3cd260122764464428f859", null ],
       [ "CheckStatus", "class_t_deadtime_scaler_queue.html#acf83f650d5a578a970dc453ef2308de0", null ],
@@ -1076,6 +1076,7 @@ var group___sorting =
       [ "TabCompletionHook", "class_t_g_r_s_iint.html#a2888ecddb98e955d4b77eda5ccc13a20", null ],
       [ "Terminate", "class_t_g_r_s_iint.html#adb050b417a88b9d0646517bccd9e8981", null ],
       [ "fAllowedToTerminate", "class_t_g_r_s_iint.html#ab17d5438b6f3cdbc9d23a0393d586fdc", null ],
+      [ "fFakeArgc", "class_t_g_r_s_iint.html#ad4f1d3d579bd54dd128eeb857776457c", null ],
       [ "fGRSIEnv", "class_t_g_r_s_iint.html#ac7469fc2affa6ba74698a35adfa0f074", null ],
       [ "fIsTabComplete", "class_t_g_r_s_iint.html#abdb2aa1d1959abc8d4b1cab47c00592c", null ],
       [ "fKeepAliveTimer", "class_t_g_r_s_iint.html#a5f01e7935f00e30e9d40d51a8dfc7e59", null ],

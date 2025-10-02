@@ -1,7 +1,7 @@
 var dir_2b08b36851fcb6a7439555c8d93f536c =
 [
     [ "CMakeLinkDef.h", "libraries_2_t_format_2_c_make_link_def_8h.html", null ],
-    [ "Globals.cxx", "_globals_8cxx.html", null ],
+    [ "Globals.cxx", "_globals_8cxx.html", "_globals_8cxx" ],
     [ "GValue.cxx", "_g_value_8cxx.html", null ],
     [ "LinkDef.h", "libraries_2_t_format_2_link_def_8h.html", null ],
     [ "TBadFragment.cxx", "_t_bad_fragment_8cxx.html", null ],

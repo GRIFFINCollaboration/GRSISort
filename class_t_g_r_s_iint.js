@@ -26,6 +26,7 @@ var class_t_g_r_s_iint =
     [ "TabCompletionHook", "class_t_g_r_s_iint.html#a2888ecddb98e955d4b77eda5ccc13a20", null ],
     [ "Terminate", "class_t_g_r_s_iint.html#adb050b417a88b9d0646517bccd9e8981", null ],
     [ "fAllowedToTerminate", "class_t_g_r_s_iint.html#ab17d5438b6f3cdbc9d23a0393d586fdc", null ],
+    [ "fFakeArgc", "class_t_g_r_s_iint.html#ad4f1d3d579bd54dd128eeb857776457c", null ],
     [ "fGRSIEnv", "class_t_g_r_s_iint.html#ac7469fc2affa6ba74698a35adfa0f074", null ],
     [ "fIsTabComplete", "class_t_g_r_s_iint.html#abdb2aa1d1959abc8d4b1cab47c00592c", null ],
     [ "fKeepAliveTimer", "class_t_g_r_s_iint.html#a5f01e7935f00e30e9d40d51a8dfc7e59", null ],

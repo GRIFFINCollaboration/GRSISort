@@ -34,7 +34,6 @@ var class_t_griffin =
     [ "GetDetectorPosition", "class_t_griffin.html#ad186950aee187ecf885ffe9c2828b779", null ],
     [ "GetGriffinHit", "class_t_griffin.html#ac2ad5c730ed2dcfaacb7a0e0710f259a", null ],
     [ "GetHit", "class_t_griffin.html#a9fb5bed513f435084094b92fb6a5b296", null ],
-    [ "GetHitVector", "class_t_griffin.html#ac5a25bee6d5fff8d30f929f3aaceb2db", null ],
     [ "GetMultiplicity", "class_t_griffin.html#a9d5c07abd73ec148fe0adbee0c7c1eec", null ],
     [ "GetNAddbackFrags", "class_t_griffin.html#a6af27f45394893913b94b6a4a238b2d7", null ],
     [ "GetNSuppressedAddbackFrags", "class_t_griffin.html#a5a76687692379a867e2596f84ab28bf7", null ],

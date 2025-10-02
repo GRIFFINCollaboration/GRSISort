@@ -66,7 +66,7 @@ var searchData=
   ['_7etdataframelibrary_63',['~TDataFrameLibrary',['../class_t_data_frame_library.html#a1317dbebb8608e261ef1fc317240ad18',1,'TDataFrameLibrary']]],
   ['_7etdataloop_64',['~TDataLoop',['../class_t_data_loop.html#a1579822dd7ce0e84a88836e524ac666b',1,'TDataLoop']]],
   ['_7etdataparser_65',['~TDataParser',['../class_t_data_parser.html#abf6a12ea0cf5e8e8222e69af5094c90a',1,'TDataParser']]],
-  ['_7etdeadtimescalerqueue_66',['~TDeadtimeScalerQueue',['../class_t_deadtime_scaler_queue.html#a89b0de0251496302eef290066a138b27',1,'TDeadtimeScalerQueue']]],
+  ['_7etdeadtimescalerqueue_66',['~TDeadtimeScalerQueue',['../class_t_deadtime_scaler_queue.html#a865655d02bd61c6bf55b1cd2caffae8b',1,'TDeadtimeScalerQueue']]],
   ['_7etdecay_67',['~TDecay',['../class_t_decay.html#af4062c13a865616004ae5e91f10377ee',1,'TDecay']]],
   ['_7etdecaychain_68',['~TDecayChain',['../class_t_decay_chain.html#af2cd7536e006217b72d3e9e80bc83e1e',1,'TDecayChain']]],
   ['_7etdecayfit_69',['~TDecayFit',['../class_t_decay_fit.html#a6c02edc1b380604e0171e575179d06ae',1,'TDecayFit']]],

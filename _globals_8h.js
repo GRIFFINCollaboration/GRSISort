@@ -37,6 +37,7 @@ var _globals_8h =
     ] ],
     [ "Append", "_globals_8h.html#ab4d555551318d9c3b1c7e4db09cf70a6", null ],
     [ "Append", "_globals_8h.html#a60dc849f507cdfa934fe9fd40a640c3c", null ],
+    [ "FindAddressOffsets", "_globals_8h.html#aa8a2329a84c1ebb9da026e7de59d8a87", null ],
     [ "getexepath", "_globals_8h.html#a00b72893c17bcb4e05586f5e42f9854d", null ],
     [ "hex", "_globals_8h.html#ab37ad6f1cf4c93e161b5caaeae971ef4", null ],
     [ "PrintGdbStacktrace", "_globals_8h.html#a52b20d1a0ce0cf354138dd47ae9a5f46", null ],
@@ -44,5 +45,6 @@ var _globals_8h =
     [ "ProgramName", "_globals_8h.html#adabe8b638495d5c9a0a84c40b66ca111", null ],
     [ "SetGRSIEnv", "_globals_8h.html#abd76f00dd5bd14c9cc2ce0e5df75b52d", null ],
     [ "sh", "_globals_8h.html#a446b981c75bfc4865a6b0b75ae9c65a0", null ],
-    [ "Stringify", "_globals_8h.html#ab3ab6dab442708543d2a71ba522bad21", null ]
+    [ "Stringify", "_globals_8h.html#ab3ab6dab442708543d2a71ba522bad21", null ],
+    [ "gAddressOffset", "_globals_8h.html#aa0602bd948a5be365359fb1842a7a82d", null ]
 ];

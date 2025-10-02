@@ -17,7 +17,6 @@ var class_t_c_s_m =
     [ "Copy", "class_t_c_s_m.html#a5bb705bebefab8cfb039ecb67ec0f9da", null ],
     [ "GetCSMHit", "class_t_c_s_m.html#a3ec54021bb0f1beb9f7e6ae9a167311e", null ],
     [ "GetHit", "class_t_c_s_m.html#a9fb5bed513f435084094b92fb6a5b296", null ],
-    [ "GetHitVector", "class_t_c_s_m.html#ac5a25bee6d5fff8d30f929f3aaceb2db", null ],
     [ "GetMultiplicity", "class_t_c_s_m.html#a9d5c07abd73ec148fe0adbee0c7c1eec", null ],
     [ "GetPosition", "class_t_c_s_m.html#a22040a759804b227944ef9d45b666b10", null ],
     [ "Hits", "class_t_c_s_m.html#acbf359f899b738719e19bb326e45c790", null ],

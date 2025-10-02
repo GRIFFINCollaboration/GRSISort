@@ -11,7 +11,6 @@ var class_t_t_a_c =
     [ "ClearTransients", "class_t_t_a_c.html#a5157695811c23caccbc71ce62b9cacd0", null ],
     [ "Copy", "class_t_t_a_c.html#a5bb705bebefab8cfb039ecb67ec0f9da", null ],
     [ "GetHit", "class_t_t_a_c.html#a9fb5bed513f435084094b92fb6a5b296", null ],
-    [ "GetHitVector", "class_t_t_a_c.html#ac5a25bee6d5fff8d30f929f3aaceb2db", null ],
     [ "GetMultiplicity", "class_t_t_a_c.html#a9d5c07abd73ec148fe0adbee0c7c1eec", null ],
     [ "GetTACHit", "class_t_t_a_c.html#a36f25405d53cb3568e55b4c32060486e", null ],
     [ "Hits", "class_t_t_a_c.html#acbf359f899b738719e19bb326e45c790", null ],

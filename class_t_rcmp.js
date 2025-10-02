@@ -27,7 +27,6 @@ var class_t_rcmp =
     [ "GetFrontFragmentMultiplicity", "class_t_rcmp.html#a1e21d68c524fc0eb3e0ad7ada260135d", null ],
     [ "GetFrontMultiplicity", "class_t_rcmp.html#a26d358fca75a593cc172a6b9391eece0", null ],
     [ "GetHit", "class_t_rcmp.html#a9fb5bed513f435084094b92fb6a5b296", null ],
-    [ "GetHitVector", "class_t_rcmp.html#ac5a25bee6d5fff8d30f929f3aaceb2db", null ],
     [ "GetMultiplicity", "class_t_rcmp.html#a9d5c07abd73ec148fe0adbee0c7c1eec", null ],
     [ "GetPixelMultiplicity", "class_t_rcmp.html#a5bd1bfffa16b9f45b8c3fd63ea4fd98a", null ],
     [ "GetRcmpBackFrag", "class_t_rcmp.html#a9b3894cbac4d54400c9925b2ba548b64", null ],

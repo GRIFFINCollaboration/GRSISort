@@ -12,7 +12,6 @@ var class_t_demand =
     [ "Copy", "class_t_demand.html#a70fa6d534622fc02f2953d41299cd7e5", null ],
     [ "GetDemandHit", "class_t_demand.html#ac1194ebb9a848a6e679c6ca957aea8e7", null ],
     [ "GetHit", "class_t_demand.html#a9fb5bed513f435084094b92fb6a5b296", null ],
-    [ "GetHitVector", "class_t_demand.html#ac5a25bee6d5fff8d30f929f3aaceb2db", null ],
     [ "GetMultiplicity", "class_t_demand.html#a9d5c07abd73ec148fe0adbee0c7c1eec", null ],
     [ "GetPosition", "class_t_demand.html#ab754914e7da0e0ff78747bbe8b7114eb", null ],
     [ "GetPosition", "class_t_demand.html#a583e6c2e33004fa1ff533eb74d31fddf", null ],

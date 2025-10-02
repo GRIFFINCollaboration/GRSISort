@@ -12,7 +12,6 @@ var class_t_descant =
     [ "Copy", "class_t_descant.html#aad87c807d5ddf2015d813e0e0f217b91", null ],
     [ "GetDescantHit", "class_t_descant.html#ad36d1ac1f585ff72ff677cadeb7ba0ed", null ],
     [ "GetHit", "class_t_descant.html#a9fb5bed513f435084094b92fb6a5b296", null ],
-    [ "GetHitVector", "class_t_descant.html#ac5a25bee6d5fff8d30f929f3aaceb2db", null ],
     [ "GetMultiplicity", "class_t_descant.html#a9d5c07abd73ec148fe0adbee0c7c1eec", null ],
     [ "GetPosition", "class_t_descant.html#aa6d39a16d31932b2204cba2b4557e161", null ],
     [ "Hit", "class_t_descant.html#a45bbecd7990c13f882746b58653591a4", null ],

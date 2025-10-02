@@ -14,7 +14,6 @@ var class_t_sharc2 =
     [ "GetDeadLayerThickness", "class_t_sharc2.html#aeef1cc387e82fca06fc713c4077e61d9", null ],
     [ "GetDetectorThickness", "class_t_sharc2.html#ac694ed8b63df488fee3f62d62073f7fa", null ],
     [ "GetHit", "class_t_sharc2.html#a9fb5bed513f435084094b92fb6a5b296", null ],
-    [ "GetHitVector", "class_t_sharc2.html#ac5a25bee6d5fff8d30f929f3aaceb2db", null ],
     [ "GetMultiplicity", "class_t_sharc2.html#a9d5c07abd73ec148fe0adbee0c7c1eec", null ],
     [ "GetOffset", "class_t_sharc2.html#aa687b6f4d024f3111eb7d91dc9b0647c", null ],
     [ "GetPosition", "class_t_sharc2.html#a758b04960138b2756036495b6fd92cdd", null ],

@@ -12,7 +12,6 @@ var class_t_aries =
     [ "Copy", "class_t_aries.html#a5bb705bebefab8cfb039ecb67ec0f9da", null ],
     [ "GetAriesHit", "class_t_aries.html#a748470ed6e8b69f63be000ee26b8d477", null ],
     [ "GetHit", "class_t_aries.html#a9fb5bed513f435084094b92fb6a5b296", null ],
-    [ "GetHitVector", "class_t_aries.html#ac5a25bee6d5fff8d30f929f3aaceb2db", null ],
     [ "GetMultiplicity", "class_t_aries.html#a9d5c07abd73ec148fe0adbee0c7c1eec", null ],
     [ "GetPosition", "class_t_aries.html#a652ef79547a9700229cde13ec0944718", null ],
     [ "Hits", "class_t_aries.html#acbf359f899b738719e19bb326e45c790", null ],

@@ -34,7 +34,6 @@ var class_t_fipps =
     [ "GetColorFromNumber", "class_t_fipps.html#a6f66905e3707231865fbc5630235f905", null ],
     [ "GetFippsHit", "class_t_fipps.html#a4eb1c7d2e9196acfbc7be1ef21a09e2d", null ],
     [ "GetHit", "class_t_fipps.html#a9fb5bed513f435084094b92fb6a5b296", null ],
-    [ "GetHitVector", "class_t_fipps.html#ac5a25bee6d5fff8d30f929f3aaceb2db", null ],
     [ "GetMultiplicity", "class_t_fipps.html#a9d5c07abd73ec148fe0adbee0c7c1eec", null ],
     [ "GetNAddbackFrags", "class_t_fipps.html#a0cf24435a14688fe449a206006d41ece", null ],
     [ "GetPosition", "class_t_fipps.html#a1dc05dee244d273f5421901a0ee28083", null ],

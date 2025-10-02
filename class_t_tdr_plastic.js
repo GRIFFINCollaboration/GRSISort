@@ -10,7 +10,6 @@ var class_t_tdr_plastic =
     [ "ClearTransients", "class_t_tdr_plastic.html#a5157695811c23caccbc71ce62b9cacd0", null ],
     [ "Copy", "class_t_tdr_plastic.html#a5bb705bebefab8cfb039ecb67ec0f9da", null ],
     [ "GetHit", "class_t_tdr_plastic.html#a9fb5bed513f435084094b92fb6a5b296", null ],
-    [ "GetHitVector", "class_t_tdr_plastic.html#ac5a25bee6d5fff8d30f929f3aaceb2db", null ],
     [ "GetMultiplicity", "class_t_tdr_plastic.html#a9d5c07abd73ec148fe0adbee0c7c1eec", null ],
     [ "GetPosition", "class_t_tdr_plastic.html#a6e06e6645e2fc4711d9b0b55fef1a15b", null ],
     [ "GetTdrPlasticHit", "class_t_tdr_plastic.html#af68c6269ff73b72137009cdbaa1b6dc5", null ],

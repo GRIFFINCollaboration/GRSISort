@@ -1,5 +1,8 @@
 var NAVTREEINDEX5 =
 {
+"_t_la_br_8cxx_source.html":[11,0,2,1,0,8,1],
+"_t_la_br_8h.html":[11,0,2,0,21],
+"_t_la_br_8h_source.html":[11,0,2,0,21],
 "_t_la_br_bgo_8cxx.html":[11,0,2,1,0,8,2],
 "_t_la_br_bgo_8cxx_source.html":[11,0,2,1,0,8,2],
 "_t_la_br_bgo_8h.html":[11,0,2,0,22],
@@ -246,8 +249,5 @@ var NAVTREEINDEX5 =
 "_t_tdr_clover_hit_8h.html":[11,0,8,0,2],
 "_t_tdr_clover_hit_8h_source.html":[11,0,8,0,2],
 "_t_tdr_data_parser_8cxx.html":[11,0,8,1,2,0],
-"_t_tdr_data_parser_8cxx_source.html":[11,0,8,1,2,0],
-"_t_tdr_data_parser_8h.html":[11,0,8,0,3],
-"_t_tdr_data_parser_8h_source.html":[11,0,8,0,3],
-"_t_tdr_data_parser_exception_8cxx.html":[11,0,8,1,2,1]
+"_t_tdr_data_parser_8cxx_source.html":[11,0,8,1,2,0]
 };

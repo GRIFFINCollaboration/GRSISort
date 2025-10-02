@@ -2,7 +2,7 @@ var class_t_deadtime_scaler_queue =
 [
     [ "TDeadtimeScalerQueue", "class_t_deadtime_scaler_queue.html#ab9ec9446d9c62a44e06e1272e6a00fb5", null ],
     [ "TDeadtimeScalerQueue", "class_t_deadtime_scaler_queue.html#a25c97b7b447e54b9fb73c637bae3ff1b", null ],
-    [ "~TDeadtimeScalerQueue", "class_t_deadtime_scaler_queue.html#a89b0de0251496302eef290066a138b27", null ],
+    [ "~TDeadtimeScalerQueue", "class_t_deadtime_scaler_queue.html#a865655d02bd61c6bf55b1cd2caffae8b", null ],
     [ "TDeadtimeScalerQueue", "class_t_deadtime_scaler_queue.html#a2a911ac9400b9f8f33e6477cdac9f46f", null ],
     [ "Add", "class_t_deadtime_scaler_queue.html#a4033905eca3cd260122764464428f859", null ],
     [ "CheckStatus", "class_t_deadtime_scaler_queue.html#acf83f650d5a578a970dc453ef2308de0", null ],

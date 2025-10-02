@@ -25,7 +25,6 @@ var class_t_fipps_la_br =
     [ "CreateSuppressed", "class_t_fipps_la_br.html#a68d78a79808314414994e25285fe5cb6", null ],
     [ "CreateSuppressedAddback", "class_t_fipps_la_br.html#abcc6366a598a7641ab93ceada912dfad", null ],
     [ "GetHit", "class_t_fipps_la_br.html#a9fb5bed513f435084094b92fb6a5b296", null ],
-    [ "GetHitVector", "class_t_fipps_la_br.html#ac5a25bee6d5fff8d30f929f3aaceb2db", null ],
     [ "GetLaBrHit", "class_t_fipps_la_br.html#ae4a539504a0b1165974210a4434a4438", null ],
     [ "GetMultiplicity", "class_t_fipps_la_br.html#a9d5c07abd73ec148fe0adbee0c7c1eec", null ],
     [ "GetPosition", "class_t_fipps_la_br.html#a30d56ba528788bbe1dc0d6c1fd22fe5f", null ],
