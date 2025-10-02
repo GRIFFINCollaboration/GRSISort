@@ -69,7 +69,6 @@ public:
 
    virtual Short_t                           GetMultiplicity() const { return static_cast<Short_t>(fHits.size()); }
    virtual TDetectorHit*                     GetHit(const int& index) const;
-   virtual const std::vector<TDetectorHit*>& GetHitVector() const { return fHits; }
    virtual bool                              NoHits() const { return fHits.empty(); }
 
    std::vector<TDetectorHit*>&       Hits() { return fHits; }
