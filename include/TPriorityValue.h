@@ -31,7 +31,7 @@ enum class EPriority : std::uint8_t { kDefault,
 template <class T>
 class TPriorityValue {
 public:
-   TPriorityValue() : fPriority(EPriority::kDefault) { }
+   TPriorityValue() : fPriority(EPriority::kDefault) {}
    explicit TPriorityValue(T value, EPriority priority = EPriority::kDefault) : fValue(value), fPriority(priority) {}
    TPriorityValue(const TPriorityValue& rhs) : fPriority(EPriority::kDefault) { *this = rhs; }
    TPriorityValue(TPriorityValue&& rhs) noexcept : fPriority(EPriority::kDefault) { *this = rhs; }
