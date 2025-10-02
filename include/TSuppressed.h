@@ -73,7 +73,7 @@ protected:
       for(auto hit : hits) {
          bool suppress = false;
          if(bgo != nullptr) {
-            for(auto* b : bgo->GetHitVector()) {
+            for(auto* b : bgo->Hits()) {
                if(SuppressionCriterion(hit, b)) {
                   suppress = true;
                   break;
@@ -102,7 +102,7 @@ protected:
          // check if this hit is suppressed
          bool suppress = false;
          if(bgo != nullptr) {
-            for(auto* b : bgo->GetHitVector()) {
+            for(auto* b : bgo->Hits()) {
                if(SuppressionCriterion(hit, b)) {
                   suppress = true;
                   break;
