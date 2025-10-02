@@ -189,20 +189,20 @@ inline bool FindAddressOffsets(bool update)
       return false;
    }
    std::string line;
-   int counter = 0;
+   int         counter = 0;
    while(std::getline(procMap, line)) {
       // line has format
       // <start address>-<end address> <four letters for permissions> <offset> <device major>:<device minor> <inode> <so-library>
       // if <inode> is 0 there is no so-library
       std::stringstream str(line);
 
-      uint64_t startAddress = 0;
-      char dash = '\0';
-      uint64_t endAddress = 0;
+      uint64_t    startAddress = 0;
+      char        dash         = '\0';
+      uint64_t    endAddress   = 0;
       std::string permissions;
-      uint64_t offset = 0;
+      uint64_t    offset = 0;
       std::string device;
-      int inode = 0;
+      int         inode = 0;
       std::string soLibrary;
 
       str >> std::hex >> startAddress >> dash >> endAddress >> permissions >> std::dec >> offset >> device >> inode;
@@ -286,8 +286,8 @@ static inline void PrintStacktrace(std::ostream& out = std::cout, int maxFrames 
       std::string line;
       if(symbollist[i][0] == '/') {
          std::ostringstream command;
-         std::string filename = symbollist[i];
-         filename = filename.substr(0, filename.find_first_of('('));
+         std::string        filename = symbollist[i];
+         filename                    = filename.substr(0, filename.find_first_of('('));
          if(gAddressOffset.find(filename) == gAddressOffset.end()) {
             FindAddressOffsets(true);
          }
