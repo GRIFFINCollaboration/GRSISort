@@ -253,7 +253,7 @@ void TAnalysisWriteLoop::WriteEvent(std::shared_ptr<TUnpackedEvent>& event)
          if(fDetMap.find(cls) == fDetMap.end()) {
             AddBranch(cls);
          }
-         **fDetMap.at(cls) = *det; // this should call Copy internally
+         **fDetMap.at(cls) = *det;   // this should call Copy internally
          (*fDetMap.at(cls))->ClearTransients();
       }
 

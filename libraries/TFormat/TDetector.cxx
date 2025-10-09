@@ -25,7 +25,7 @@ void TDetector::Copy(TObject& rhs) const
 {
    TObject::Copy(rhs);
    // to copy the hits without creating a memory leak we need to check
-   // if the right-hand side has more hits than this 
+   // if the right-hand side has more hits than this
    // if so, we need to delete the hits pointed to by the right-hand side
    auto& rhsHits = static_cast<TDetector&>(rhs).fHits;
    if(rhsHits.size() > fHits.size()) {

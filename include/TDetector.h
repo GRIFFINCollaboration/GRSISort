@@ -67,9 +67,9 @@ public:
    void         Print(Option_t* opt = "") const override;   //!<!
    virtual void Print(std::ostream& out) const;
 
-   virtual Short_t                           GetMultiplicity() const { return static_cast<Short_t>(fHits.size()); }
-   virtual TDetectorHit*                     GetHit(const int& index) const;
-   virtual bool                              NoHits() const { return fHits.empty(); }
+   virtual Short_t       GetMultiplicity() const { return static_cast<Short_t>(fHits.size()); }
+   virtual TDetectorHit* GetHit(const int& index) const;
+   virtual bool          NoHits() const { return fHits.empty(); }
 
    std::vector<TDetectorHit*>&       Hits() { return fHits; }
    const std::vector<TDetectorHit*>& Hits() const { return fHits; }
