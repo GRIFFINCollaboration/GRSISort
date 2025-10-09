@@ -18,10 +18,12 @@ TParserLibrary::~TParserLibrary()
    }
 }
 
-void TParserLibrary::Load()
+void TParserLibrary::Load(bool quiet)
 {
    if(fHandle != nullptr) {
-      std::cout << "Already loaded handle " << fHandle << std::endl;
+      if(!quiet) {
+         std::cout << "Already loaded handle " << fHandle << std::endl;
+      }
       return;
    }
 
