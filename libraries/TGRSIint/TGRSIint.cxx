@@ -230,7 +230,7 @@ void TGRSIint::Terminate(Int_t status)
    for(auto* file : fRawFiles) {
       TParserLibrary::Get()->DestroyRawFile(file);
    }
-  
+
    TChannel::DeleteAllChannels();
 
    TRint::Terminate(status);
