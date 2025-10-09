@@ -21,6 +21,7 @@
 #include "TFragmentChainLoop.h"
 #include "ArgParser.h"
 #include "TUnpackingLoop.h"
+#include "TParsingDiagnostics.h"
 #include "TSortingDiagnostics.h"
 #include "TParserLibrary.h"
 
@@ -219,7 +220,19 @@ void TGRSIint::Terminate(Int_t status)
       static_cast<GCanvas*>(canvases->At(0))->Close();
    }
 
-   // TChannel::DeleteAllChannels();
+   // clean up singletons
+   TParsingDiagnostics::Delete();
+   TSortingDiagnostics::Delete();
+   TRunInfo::Delete();
+   TPPG::Delete();
+
+   // close/detroy all opened raw files
+   for(auto* file : fRawFiles) {
+      TParserLibrary::Get()->DestroyRawFile(file);
+   }
+  
+   TChannel::DeleteAllChannels();
+
    TRint::Terminate(status);
 }
 
