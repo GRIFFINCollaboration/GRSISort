@@ -7,6 +7,7 @@ var class_t_sorting_diagnostics =
     [ "AddTimeStamp", "class_t_sorting_diagnostics.html#a913598068ef2e5ab7bb9a2f76f316568", null ],
     [ "Clear", "class_t_sorting_diagnostics.html#a62c372e971bb67cc1002d47f1d0549a9", null ],
     [ "Copy", "class_t_sorting_diagnostics.html#a09d2c95b243d5c8162d09fa5299fa9b7", null ],
+    [ "Delete", "class_t_sorting_diagnostics.html#aff8d5fb8a262adb969a91fa029ed9785", null ],
     [ "Draw", "class_t_sorting_diagnostics.html#a42841a3c67e22cb9e2d516b31206ba38", null ],
     [ "FragmentsOutOfOrder", "class_t_sorting_diagnostics.html#ae28265d3f7633bdf82d98a93b0a69423", null ],
     [ "FragmentsOutOfTimeOrder", "class_t_sorting_diagnostics.html#a0930d87192aa80496ec1764f7f75dd2d", null ],

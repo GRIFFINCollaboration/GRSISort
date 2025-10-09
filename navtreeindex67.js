@@ -1,5 +1,12 @@
 var NAVTREEINDEX67 =
 {
+"classpygui_1_1mainwindow_1_1_main_window.html#a06472ab05097985dd3cf376dc759ff05":[10,0,1,2,0,10],
+"classpygui_1_1mainwindow_1_1_main_window.html#a06dd2ae343f940c978233fe3952d350e":[9,0,5,3,0,14],
+"classpygui_1_1mainwindow_1_1_main_window.html#a06dd2ae343f940c978233fe3952d350e":[10,0,1,2,0,14],
+"classpygui_1_1mainwindow_1_1_main_window.html#a0ac5bea601d5ab6d68d2615f5285e96b":[9,0,5,3,0,66],
+"classpygui_1_1mainwindow_1_1_main_window.html#a0ac5bea601d5ab6d68d2615f5285e96b":[10,0,1,2,0,66],
+"classpygui_1_1mainwindow_1_1_main_window.html#a0ba5025dcc696c0a2ded48843d7cc3b2":[9,0,5,3,0,9],
+"classpygui_1_1mainwindow_1_1_main_window.html#a0ba5025dcc696c0a2ded48843d7cc3b2":[10,0,1,2,0,9],
 "classpygui_1_1mainwindow_1_1_main_window.html#a0d75cc8f45ff5d7e7b9a5de54bca8255":[9,0,5,3,0,18],
 "classpygui_1_1mainwindow_1_1_main_window.html#a0d75cc8f45ff5d7e7b9a5de54bca8255":[10,0,1,2,0,18],
 "classpygui_1_1mainwindow_1_1_main_window.html#a11bdedd9194c1a8a3aeec887354b28f4":[9,0,5,3,0,33],
@@ -242,12 +249,5 @@ var NAVTREEINDEX67 =
 "classpygui_1_1variable__tab_1_1_variable_tab.html#a8a0650d03dab4c07007a736861a588a6":[10,0,1,6,0,13],
 "classpygui_1_1variable__tab_1_1_variable_tab.html#a8c48c7c6e959e5ace453643707894a55":[9,0,5,8,0,10],
 "classpygui_1_1variable__tab_1_1_variable_tab.html#a8c48c7c6e959e5ace453643707894a55":[10,0,1,6,0,10],
-"classpygui_1_1variable__tab_1_1_variable_tab.html#a947654b3ca8ae3e1696fbd4a55bf7674":[9,0,5,8,0,1],
-"classpygui_1_1variable__tab_1_1_variable_tab.html#a947654b3ca8ae3e1696fbd4a55bf7674":[10,0,1,6,0,1],
-"classpygui_1_1variable__tab_1_1_variable_tab.html#a94dc6a2ea5f617c8f1c89cb92595dceb":[9,0,5,8,0,11],
-"classpygui_1_1variable__tab_1_1_variable_tab.html#a94dc6a2ea5f617c8f1c89cb92595dceb":[10,0,1,6,0,11],
-"classpygui_1_1variable__tab_1_1_variable_tab.html#aa0c995df14583843534d51d8789fe74c":[9,0,5,8,0,0],
-"classpygui_1_1variable__tab_1_1_variable_tab.html#aa0c995df14583843534d51d8789fe74c":[10,0,1,6,0,0],
-"classpygui_1_1variable__tab_1_1_variable_tab.html#aa314fcc31660fdf7f9cbd4ea23ea67c0":[9,0,5,8,0,8],
-"classpygui_1_1variable__tab_1_1_variable_tab.html#aa314fcc31660fdf7f9cbd4ea23ea67c0":[10,0,1,6,0,8]
+"classpygui_1_1variable__tab_1_1_variable_tab.html#a947654b3ca8ae3e1696fbd4a55bf7674":[9,0,5,8,0,1]
 };

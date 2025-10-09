@@ -5,6 +5,7 @@ var class_t_singleton =
     [ "TSingleton", "class_t_singleton.html#a69290248b9d5961dcb384c4542010c8f", null ],
     [ "~TSingleton", "class_t_singleton.html#a8d0a2d35245cf6186e32bcd902734027", null ],
     [ "AddCurrent", "class_t_singleton.html#a25568e49214ec73aa40a19f7da64870f", null ],
+    [ "Delete", "class_t_singleton.html#aff8d5fb8a262adb969a91fa029ed9785", null ],
     [ "Get", "class_t_singleton.html#a58e2a8e03fa6a7c20638044626add93a", null ],
     [ "GetAll", "class_t_singleton.html#a6a8cba893da4114aa47cf7bdf24c853a", null ],
     [ "operator=", "class_t_singleton.html#a3704865096c97ca923ee01c798b06121", null ],

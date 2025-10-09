@@ -118,6 +118,8 @@ class TSingleton&lt; T &gt;</div><p>This class is intended as a base class for s
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a25568e49214ec73aa40a19f7da64870f" id="r_a25568e49214ec73aa40a19f7da64870f"><td class="memItemLeft" align="right" valign="top">static T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a25568e49214ec73aa40a19f7da64870f">AddCurrent</a> ()</td></tr>
 <tr class="separator:a25568e49214ec73aa40a19f7da64870f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff8d5fb8a262adb969a91fa029ed9785" id="r_aff8d5fb8a262adb969a91fa029ed9785"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aff8d5fb8a262adb969a91fa029ed9785">Delete</a> ()</td></tr>
+<tr class="separator:aff8d5fb8a262adb969a91fa029ed9785"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58e2a8e03fa6a7c20638044626add93a" id="r_a58e2a8e03fa6a7c20638044626add93a"><td class="memItemLeft" align="right" valign="top">static T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a58e2a8e03fa6a7c20638044626add93a">Get</a> (bool verbose=false)</td></tr>
 <tr class="separator:a58e2a8e03fa6a7c20638044626add93a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a8cba893da4114aa47cf7bdf24c853a" id="r_a6a8cba893da4114aa47cf7bdf24c853a"><td class="memItemLeft" align="right" valign="top">static T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6a8cba893da4114aa47cf7bdf24c853a">GetAll</a> ()</td></tr>
@@ -300,7 +302,38 @@ template&lt;class T &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="_t_singleton_8h_source.html#l00141">141</a> of file <a class="el" href="_t_singleton_8h_source.html">TSingleton.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_globals_8h_source.html#l00012">CYAN</a>, <a class="el" href="_t_singleton_8h_source.html#l00186">TSingleton&lt; T &gt;::fDir</a>, <a class="el" href="_t_singleton_8h_source.html#l00185">TSingleton&lt; T &gt;::fSingleton</a>, <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; T &gt;::Get()</a>, and <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>.</p>
+<p class="reference">References <a class="el" href="_globals_8h_source.html#l00012">CYAN</a>, <a class="el" href="_t_singleton_8h_source.html#l00192">TSingleton&lt; T &gt;::fDir</a>, <a class="el" href="_t_singleton_8h_source.html#l00191">TSingleton&lt; T &gt;::fSingleton</a>, <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; T &gt;::Get()</a>, and <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>.</p>
+
+</div>
+</div>
+<a id="aff8d5fb8a262adb969a91fa029ed9785" name="aff8d5fb8a262adb969a91fa029ed9785"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff8d5fb8a262adb969a91fa029ed9785">&#9670;&#160;</a></span>Delete()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void <a class="el" href="class_t_singleton.html">TSingleton</a>&lt; T &gt;::Delete </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_t_singleton_8h_source.html#l00175">175</a> of file <a class="el" href="_t_singleton_8h_source.html">TSingleton.h</a>.</p>
+
+<p class="reference">References <a class="el" href="_t_singleton_8h_source.html#l00191">TSingleton&lt; T &gt;::fSingleton</a>.</p>
 
 </div>
 </div>
@@ -331,7 +364,7 @@ template&lt;class T &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="_t_singleton_8h_source.html#l00033">33</a> of file <a class="el" href="_t_singleton_8h_source.html">TSingleton.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_globals_8h_source.html#l00012">CYAN</a>, <a class="el" href="_t_singleton_8h_source.html#l00186">TSingleton&lt; T &gt;::fDir</a>, <a class="el" href="_t_singleton_8h_source.html#l00185">TSingleton&lt; T &gt;::fSingleton</a>, <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>, and <a class="el" href="_t_singleton_8h_source.html#l00133">TSingleton&lt; T &gt;::Set()</a>.</p>
+<p class="reference">References <a class="el" href="_globals_8h_source.html#l00012">CYAN</a>, <a class="el" href="_t_singleton_8h_source.html#l00192">TSingleton&lt; T &gt;::fDir</a>, <a class="el" href="_t_singleton_8h_source.html#l00191">TSingleton&lt; T &gt;::fSingleton</a>, <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>, and <a class="el" href="_t_singleton_8h_source.html#l00133">TSingleton&lt; T &gt;::Set()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_singleton_8h_source.html#l00141">TSingleton&lt; T &gt;::AddCurrent()</a>, and <a class="el" href="_t_singleton_8h_source.html#l00066">TSingleton&lt; T &gt;::GetAll()</a>.</p>
 
@@ -364,7 +397,7 @@ template&lt;class T &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="_t_singleton_8h_source.html#l00066">66</a> of file <a class="el" href="_t_singleton_8h_source.html">TSingleton.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_singleton_8h_source.html#l00186">TSingleton&lt; T &gt;::fDir</a>, <a class="el" href="_t_singleton_8h_source.html#l00185">TSingleton&lt; T &gt;::fSingleton</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; T &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="_t_singleton_8h_source.html#l00192">TSingleton&lt; T &gt;::fDir</a>, <a class="el" href="_t_singleton_8h_source.html#l00191">TSingleton&lt; T &gt;::fSingleton</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; T &gt;::Get()</a>.</p>
 
 </div>
 </div>
@@ -449,7 +482,7 @@ template&lt;class T &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="_t_singleton_8h_source.html#l00170">170</a> of file <a class="el" href="_t_singleton_8h_source.html">TSingleton.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_singleton_8h_source.html#l00186">TSingleton&lt; T &gt;::fDir</a>, and <a class="el" href="_t_singleton_8h_source.html#l00185">TSingleton&lt; T &gt;::fSingleton</a>.</p>
+<p class="reference">References <a class="el" href="_t_singleton_8h_source.html#l00192">TSingleton&lt; T &gt;::fDir</a>, and <a class="el" href="_t_singleton_8h_source.html#l00191">TSingleton&lt; T &gt;::fSingleton</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00072">TRunInfo::Print()</a>.</p>
 
@@ -482,7 +515,7 @@ template&lt;class T &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="_t_singleton_8h_source.html#l00133">133</a> of file <a class="el" href="_t_singleton_8h_source.html">TSingleton.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_singleton_8h_source.html#l00185">TSingleton&lt; T &gt;::fSingleton</a>.</p>
+<p class="reference">References <a class="el" href="_t_singleton_8h_source.html#l00191">TSingleton&lt; T &gt;::fSingleton</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; T &gt;::Get()</a>.</p>
 
@@ -495,7 +528,7 @@ template&lt;class T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_t_singleton.html">TSingleton</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Oct 2 2025 23:57:42.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Oct 9 2025 20:59:02.</li>
   </ul>
 </div>
 </body>

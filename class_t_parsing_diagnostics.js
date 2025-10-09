@@ -8,6 +8,7 @@ var class_t_parsing_diagnostics =
     [ "BadFragment", "class_t_parsing_diagnostics.html#ac9f929b1087f37a3b0502ce8bb17de8c", null ],
     [ "Clear", "class_t_parsing_diagnostics.html#a636adb04db5dfbac969f4faced10106e", null ],
     [ "Copy", "class_t_parsing_diagnostics.html#a207e56caa101749d99118d7a7334e0b5", null ],
+    [ "Delete", "class_t_parsing_diagnostics.html#aff8d5fb8a262adb969a91fa029ed9785", null ],
     [ "Draw", "class_t_parsing_diagnostics.html#a833c00fdeefda204c609ca319904ba03", null ],
     [ "Get", "class_t_parsing_diagnostics.html#a58e2a8e03fa6a7c20638044626add93a", null ],
     [ "GetAll", "class_t_parsing_diagnostics.html#a6a8cba893da4114aa47cf7bdf24c853a", null ],

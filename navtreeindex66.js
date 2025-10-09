@@ -1,5 +1,12 @@
 var NAVTREEINDEX66 =
 {
+"class_tac_offset_helper.html#a210872f6be03540044b9e1e190fde8f6":[10,0,68,31],
+"class_tac_offset_helper.html#a23db3e61978039fa768fa3a90c1cd982":[10,0,68,9],
+"class_tac_offset_helper.html#a27adae6a07b011a2c5beb6a572acaa42":[10,0,68,22],
+"class_tac_offset_helper.html#a377ef3b8b77d9c6d556f8cff5c52fb0f":[10,0,68,6],
+"class_tac_offset_helper.html#a39e031ee0f0ebedb946541fd145300bd":[10,0,68,15],
+"class_tac_offset_helper.html#a43b96b9c64dcb585762ce691e38814ac":[10,0,68,14],
+"class_tac_offset_helper.html#a49c88825285ac0920b4af055ddbd0fbb":[10,0,68,3],
 "class_tac_offset_helper.html#a50d7d9d2fb783c2d70056cb5203f89b1":[10,0,68,25],
 "class_tac_offset_helper.html#a51586d9a0945086006ce4a072c38c811":[10,0,68,1],
 "class_tac_offset_helper.html#a559c82856eb597c7951c63b61a7802fc":[10,0,68,33],
@@ -242,12 +249,5 @@ var NAVTREEINDEX66 =
 "classpygui_1_1mainwindow_1_1_main_window.html#a031933e7feee9411e86fdd80db9bdff1":[10,0,1,2,0,32],
 "classpygui_1_1mainwindow_1_1_main_window.html#a04e43103be7dfa6990818e36aeba88b4":[9,0,5,3,0,29],
 "classpygui_1_1mainwindow_1_1_main_window.html#a04e43103be7dfa6990818e36aeba88b4":[10,0,1,2,0,29],
-"classpygui_1_1mainwindow_1_1_main_window.html#a06472ab05097985dd3cf376dc759ff05":[9,0,5,3,0,10],
-"classpygui_1_1mainwindow_1_1_main_window.html#a06472ab05097985dd3cf376dc759ff05":[10,0,1,2,0,10],
-"classpygui_1_1mainwindow_1_1_main_window.html#a06dd2ae343f940c978233fe3952d350e":[9,0,5,3,0,14],
-"classpygui_1_1mainwindow_1_1_main_window.html#a06dd2ae343f940c978233fe3952d350e":[10,0,1,2,0,14],
-"classpygui_1_1mainwindow_1_1_main_window.html#a0ac5bea601d5ab6d68d2615f5285e96b":[9,0,5,3,0,66],
-"classpygui_1_1mainwindow_1_1_main_window.html#a0ac5bea601d5ab6d68d2615f5285e96b":[10,0,1,2,0,66],
-"classpygui_1_1mainwindow_1_1_main_window.html#a0ba5025dcc696c0a2ded48843d7cc3b2":[9,0,5,3,0,9],
-"classpygui_1_1mainwindow_1_1_main_window.html#a0ba5025dcc696c0a2ded48843d7cc3b2":[10,0,1,2,0,9]
+"classpygui_1_1mainwindow_1_1_main_window.html#a06472ab05097985dd3cf376dc759ff05":[9,0,5,3,0,10]
 };

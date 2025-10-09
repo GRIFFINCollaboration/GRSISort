@@ -15,6 +15,7 @@ var class_t_run_info =
     [ "ClearLibraryVersion", "class_t_run_info.html#aac8870a6910e0f2ac25273d68d7eb744", null ],
     [ "ClearVersion", "class_t_run_info.html#a02306257da1fb2d836db98a088ac00d0", null ],
     [ "CreateLabel", "class_t_run_info.html#a9f06d6f22dc55728675b4ab716cfdb6d", null ],
+    [ "Delete", "class_t_run_info.html#aff8d5fb8a262adb969a91fa029ed9785", null ],
     [ "FirstRunNumber", "class_t_run_info.html#a7c7b3ce2e166b2424a7408fc8d871a6d", null ],
     [ "FirstSubRunNumber", "class_t_run_info.html#a69af3e626f9d8ab249237b1cb7f879a3", null ],
     [ "Get", "class_t_run_info.html#a58e2a8e03fa6a7c20638044626add93a", null ],

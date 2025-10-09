@@ -12,6 +12,7 @@ var class_t_p_p_g =
     [ "Clear", "class_t_p_p_g.html#a2e1a560d544fd25bc8f867cc97600720", null ],
     [ "Copy", "class_t_p_p_g.html#ad963f841a52222bcc079d46b84d331c7", null ],
     [ "Correct", "class_t_p_p_g.html#aff8fc912df1feb897cab76d8ed8c523d", null ],
+    [ "Delete", "class_t_p_p_g.html#aff8d5fb8a262adb969a91fa029ed9785", null ],
     [ "First", "class_t_p_p_g.html#a262ecd8276d2b686c6d4aba6da670470", null ],
     [ "Get", "class_t_p_p_g.html#a58e2a8e03fa6a7c20638044626add93a", null ],
     [ "GetAll", "class_t_p_p_g.html#a6a8cba893da4114aa47cf7bdf24c853a", null ],

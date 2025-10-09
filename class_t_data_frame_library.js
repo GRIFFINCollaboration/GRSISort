@@ -7,6 +7,7 @@ var class_t_data_frame_library =
     [ "AddCurrent", "class_t_data_frame_library.html#a25568e49214ec73aa40a19f7da64870f", null ],
     [ "Compile", "class_t_data_frame_library.html#a83b6058b0bbe5c7545948ae9161a39fc", null ],
     [ "CreateHelper", "class_t_data_frame_library.html#a4f3326e48404c91de5030dcf628d6ee6", null ],
+    [ "Delete", "class_t_data_frame_library.html#aff8d5fb8a262adb969a91fa029ed9785", null ],
     [ "DestroyHelper", "class_t_data_frame_library.html#a508ebf63957c5595d14dfc469cccf21b", null ],
     [ "Get", "class_t_data_frame_library.html#a58e2a8e03fa6a7c20638044626add93a", null ],
     [ "GetAll", "class_t_data_frame_library.html#a6a8cba893da4114aa47cf7bdf24c853a", null ],

@@ -1,5 +1,6 @@
 var NAVTREEINDEX23 =
 {
+"class_t_data_loop.html":[8,9,3],
 "class_t_data_loop.html#a0558ebea52e3567d4e6e3dfcf7b2dc4e":[8,9,3,4],
 "class_t_data_loop.html#a0a619292271dc1b5121aef9d47346fac":[8,9,3,22],
 "class_t_data_loop.html#a0a959226568b55b9d41838121b980bf3":[8,9,3,18],
@@ -248,6 +249,5 @@ var NAVTREEINDEX23 =
 "class_t_decay_chain.html#ad6bdefeb246983106c79d8f4d65ac462":[8,3,9,20],
 "class_t_decay_chain.html#ae9cf25ab51747c8ea299b5a7206104f7":[8,3,9,12],
 "class_t_decay_chain.html#aef91b0a8760eade09db3342e19cb6917":[8,3,9,7],
-"class_t_decay_chain.html#af2cd7536e006217b72d3e9e80bc83e1e":[8,3,9,4],
-"class_t_decay_fit.html":[8,3,10]
+"class_t_decay_chain.html#af2cd7536e006217b72d3e9e80bc83e1e":[8,3,9,4]
 };

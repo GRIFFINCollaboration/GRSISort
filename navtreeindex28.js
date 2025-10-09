@@ -1,5 +1,6 @@
 var NAVTREEINDEX28 =
 {
+"class_t_energy_cal.html#afcdadcfd2191729d71be0331c44ffa21":[8,1,10,11],
 "class_t_epics_frag.html":[8,11,9],
 "class_t_epics_frag.html#a018257cace13999fbf5118e990bcfb72":[8,11,9,20],
 "class_t_epics_frag.html#a021e14ef1330997e12d97d2867966ee3":[8,11,9,15],
@@ -248,6 +249,5 @@ var NAVTREEINDEX28 =
 "class_t_fipps.html#acbf359f899b738719e19bb326e45c790":[8,2,17,36],
 "class_t_fipps.html#ad308e3f348fe74583751783699391e94":[8,2,17,33],
 "class_t_fipps.html#adb94ac0e2636bbab624626262a0da49d":[8,2,17,8],
-"class_t_fipps.html#ae649e386079ea20a578855b2af1c1ff7":[8,2,17,46],
-"class_t_fipps.html#ae6b1f69302fcc6c737ba8985ff32cc8a":[8,2,17,28]
+"class_t_fipps.html#ae649e386079ea20a578855b2af1c1ff7":[8,2,17,46]
 };
