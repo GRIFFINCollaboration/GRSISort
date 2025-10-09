@@ -77,16 +77,16 @@ void TEventBuildingLoop::ClearQueue()
 bool TEventBuildingLoop::Iteration()
 {
    // Pull something off of the input queue.
-   std::shared_ptr<const TFragment> input_frag = nullptr;
-   InputSize(fInputQueue->Pop(input_frag, 0));
+   std::shared_ptr<const TFragment> inputFragment = nullptr;
+   InputSize(fInputQueue->Pop(inputFragment, 0));
    if(InputSize() < 0) {
       InputSize(0);
    }
 
-   if(input_frag != nullptr) {
+   if(inputFragment != nullptr) {
       IncrementItemsPopped();
       if(!fSkipInputSort) {
-         fOrdered.insert(input_frag);
+         fOrdered.insert(inputFragment);
          if(fOrdered.size() < fSortingDepth) {
             // Got a new event, but we want to have more to sort
             return true;
