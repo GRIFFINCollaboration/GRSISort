@@ -159,30 +159,37 @@ void TFragWriteLoop::Write()
          parsingDiagnostics->Write("ParsingDiagnostics", TObject::kOverwrite);
       }
 
+      // always get the scaler queues so that we can delete them
+      // but only write them if --ignore-scalers isn't used
+      auto* deadtimeQueue = TDeadtimeScalerQueue::Get();
+      auto* rateQueue = TRateScalerQueue::Get();
       if(!options->IgnoreScaler()) {
          std::cout << "Starting to write dead time scalers" << std::endl;
-         auto* deadtimeQueue = TDeadtimeScalerQueue::Get();
          auto* scalerTree    = new TTree("DeadtimeScaler", "DeadtimeScaler");
-         auto* scalerData    = new TScalerData;
+         TScalerData* scalerData    = nullptr;
          scalerTree->Branch("ScalerData", &scalerData);
          while(deadtimeQueue->Size() > 0) {
             scalerData = deadtimeQueue->PopScaler();
             scalerTree->Fill();
+            delete scalerData;
          }
          scalerTree->Write();
+         delete scalerTree;
 
          std::cout << "Starting to write rate scalers" << std::endl;
-         auto* rateQueue = TRateScalerQueue::Get();
          scalerTree      = new TTree("RateScaler", "RateScaler");
-         scalerData      = new TScalerData;
          scalerTree->Branch("ScalerData", &scalerData);
          while(rateQueue->Size() > 0) {
             scalerData = rateQueue->PopScaler();
             scalerTree->Fill();
+            delete scalerData;
          }
          scalerTree->Write();
+         delete scalerTree;
          std::cout << "Done writing scaler trees" << std::endl;
       }
+      delete deadtimeQueue;
+      delete rateQueue;
 
       fOutputFile->Close();
       fOutputFile->Delete();
