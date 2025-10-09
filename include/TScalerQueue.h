@@ -88,7 +88,7 @@ public:
    TRateScalerQueue(TRateScalerQueue&&) noexcept            = default;
    TRateScalerQueue& operator=(const TRateScalerQueue&)     = default;
    TRateScalerQueue& operator=(TRateScalerQueue&&) noexcept = default;
-   ~TRateScalerQueue()                                      = default;
+   ~TRateScalerQueue();
 
 private:
    TRateScalerQueue();

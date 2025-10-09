@@ -172,6 +172,12 @@ public:
       std::cout << "Singleton " << fSingleton << " was read from " << (fDir != nullptr ? fDir->GetName() : "N/A") << std::endl;
    }
 
+   static void Delete()
+   {
+      delete fSingleton;
+      fSingleton = nullptr;
+   }
+
 protected:
    TSingleton()                                 = default;
    TSingleton(const TSingleton&)                = default;
