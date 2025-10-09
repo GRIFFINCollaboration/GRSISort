@@ -24,7 +24,7 @@ public:
    void DestroyRawFile(TRawFile* file)
    {
       /// function to destroy library specific raw data file
-      Load(true); // not sure if Load is even necessary here, as it must have already been loaded to create? At least be quiet about it.
+      Load(true);   // not sure if Load is even necessary here, as it must have already been loaded to create? At least be quiet about it.
       fDestroyRawFile(file);
    }
 
@@ -37,7 +37,7 @@ public:
    void DestroyDataParser(TDataParser* parser)
    {
       /// function to destroy library specific data parser
-      Load(true); // not sure if Load is even necessary here, as it must have already been loaded to create? At least be quiet about it.
+      Load(true);   // not sure if Load is even necessary here, as it must have already been loaded to create? At least be quiet about it.
       fDestroyDataParser(parser);
    }
 

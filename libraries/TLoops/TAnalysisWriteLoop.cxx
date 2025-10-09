@@ -140,7 +140,7 @@ void TAnalysisWriteLoop::Write()
       ppg->Write("PPG");
 
       if(options->WriteDiagnostics()) {
-         auto* diag    = TSortingDiagnostics::Get();
+         auto* diag = TSortingDiagnostics::Get();
          diag->Write("SortingDiagnostics", TObject::kOverwrite);
       }
       // if we do not write a fragment tree we need to write some diagnostics and scalers to the analysis file
@@ -153,7 +153,7 @@ void TAnalysisWriteLoop::Write()
          // always get the scaler queues so that we can delete them
          // but only write them if --ignore-scalers isn't used
          auto* deadtimeQueue = TDeadtimeScalerQueue::Get();
-         auto* rateQueue = TRateScalerQueue::Get();
+         auto* rateQueue     = TRateScalerQueue::Get();
          if(!options->IgnoreScaler()) {
             std::cout << "Starting to write dead time scalers" << std::endl;
             auto* scalerTree = new TTree("DeadtimeScaler", "DeadtimeScaler");
