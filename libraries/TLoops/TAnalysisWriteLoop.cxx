@@ -16,6 +16,7 @@
 #include "TTreeFillMutex.h"
 #include "TSortingDiagnostics.h"
 #include "TParsingDiagnostics.h"
+#include "TScalerQueue.h"
 
 TAnalysisWriteLoop* TAnalysisWriteLoop::Get(std::string name, std::string outputFilename)
 {
@@ -126,7 +127,6 @@ void TAnalysisWriteLoop::Write()
       gROOT->cd();
       auto* options = TGRSIOptions::Get();
       auto* ppg     = TPPG::Get();
-      auto* diag    = TSortingDiagnostics::Get();
 
       fOutputFile->cd();
       if(GValue::Size() != 0) {
@@ -140,11 +140,50 @@ void TAnalysisWriteLoop::Write()
       ppg->Write("PPG");
 
       if(options->WriteDiagnostics()) {
+         auto* diag = TSortingDiagnostics::Get();
          diag->Write("SortingDiagnostics", TObject::kOverwrite);
-         if(!options->WriteFragmentTree()) {
-            auto* parsingDiagnostics = TParsingDiagnostics::Get();
-            parsingDiagnostics->Write("ParsingDiagnostics", TObject::kOverwrite);
+      }
+      // if we do not write a fragment tree we need to write some diagnostics and scalers to the analysis file
+      // that would normally be in the fragment file
+      if(!options->WriteFragmentTree()) {
+         // write the parsing diagnostices
+         auto* parsingDiagnostics = TParsingDiagnostics::Get();
+         parsingDiagnostics->Write("ParsingDiagnostics", TObject::kOverwrite);
+
+         // always get the scaler queues so that we can delete them
+         // but only write them if --ignore-scalers isn't used
+         auto* deadtimeQueue = TDeadtimeScalerQueue::Get();
+         auto* rateQueue     = TRateScalerQueue::Get();
+         if(!options->IgnoreScaler()) {
+            std::cout << "Starting to write dead time scalers" << std::endl;
+            auto* scalerTree = new TTree("DeadtimeScaler", "DeadtimeScaler");
+            auto* scalerData = new TScalerData;
+            scalerTree->Branch("ScalerData", &scalerData);
+            delete scalerData;
+            while(deadtimeQueue->Size() > 0) {
+               scalerData = deadtimeQueue->PopScaler();
+               scalerTree->Fill();
+               delete scalerData;
+            }
+            scalerTree->Write();
+            delete scalerTree;
+
+            std::cout << "Starting to write rate scalers" << std::endl;
+            scalerTree = new TTree("RateScaler", "RateScaler");
+            scalerData = new TScalerData;
+            scalerTree->Branch("ScalerData", &scalerData);
+            delete scalerData;
+            while(rateQueue->Size() > 0) {
+               scalerData = rateQueue->PopScaler();
+               scalerTree->Fill();
+               delete scalerData;
+            }
+            scalerTree->Write();
+            delete scalerTree;
+            std::cout << "Done writing scaler trees" << std::endl;
          }
+         delete deadtimeQueue;
+         delete rateQueue;
       }
 
       fOutputFile->Write();

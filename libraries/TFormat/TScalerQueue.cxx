@@ -64,6 +64,7 @@ void TDeadtimeScalerQueue::Clear(Option_t*)
       std::cout << RED << std::endl
                 << "\tWarning, discarding " << fScalersInQueue << " Scalers!" << RESET_COLOR << std::endl;
       while(!fDeadtimeScalerQueue.empty()) {
+         delete fDeadtimeScalerQueue.front();
          fDeadtimeScalerQueue.pop();
       }
       fScalersInQueue = 0;
@@ -239,6 +240,14 @@ TRateScalerQueue::TRateScalerQueue()
    Clear();
 }
 
+TRateScalerQueue::~TRateScalerQueue()
+{
+   if(!fRateScalerQueue.empty()) {
+      Clear();
+   }
+   delete fStopwatch;
+}
+
 void TRateScalerQueue::Print(Option_t*) const
 {
    /// Print the status of the Scaler Queue
@@ -259,6 +268,7 @@ void TRateScalerQueue::Clear(Option_t*)
    if(fScalersInQueue != 0) {
       std::cout << RED << "\tWarning, discarding " << fScalersInQueue << " Scalers!" << RESET_COLOR << std::endl;
       while(!fRateScalerQueue.empty()) {
+         delete fRateScalerQueue.front();
          fRateScalerQueue.pop();
       }
       fScalersInQueue = 0;

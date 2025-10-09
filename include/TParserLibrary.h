@@ -13,7 +13,7 @@ public:
 
    ~TParserLibrary();
 
-   void Load();   ///< if necessary loads shared object library and sets/initializes all other functions
+   void Load(bool quiet = false);   ///< if necessary loads shared object library and sets/initializes all other functions
 
    TRawFile* CreateRawFile(const std::string& file)
    {
@@ -24,7 +24,7 @@ public:
    void DestroyRawFile(TRawFile* file)
    {
       /// function to destroy library specific raw data file
-      Load();
+      Load(true);   // not sure if Load is even necessary here, as it must have already been loaded to create? At least be quiet about it.
       fDestroyRawFile(file);
    }
 
@@ -37,14 +37,14 @@ public:
    void DestroyDataParser(TDataParser* parser)
    {
       /// function to destroy library specific data parser
-      Load();
+      Load(true);   // not sure if Load is even necessary here, as it must have already been loaded to create? At least be quiet about it.
       fDestroyDataParser(parser);
    }
 
    std::string LibraryVersion()
    {
       /// returns version of shared object library loaded
-      Load();
+      Load(true);
       return fLibraryVersion();
    }
 
