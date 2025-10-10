@@ -1,5 +1,8 @@
 var NAVTREEINDEX68 =
 {
+"classpygui_1_1variable__tab_1_1_variable_tab.html#a8c48c7c6e959e5ace453643707894a55":[9,0,5,8,0,10],
+"classpygui_1_1variable__tab_1_1_variable_tab.html#a8c48c7c6e959e5ace453643707894a55":[10,0,1,6,0,10],
+"classpygui_1_1variable__tab_1_1_variable_tab.html#a947654b3ca8ae3e1696fbd4a55bf7674":[9,0,5,8,0,1],
 "classpygui_1_1variable__tab_1_1_variable_tab.html#a947654b3ca8ae3e1696fbd4a55bf7674":[10,0,1,6,0,1],
 "classpygui_1_1variable__tab_1_1_variable_tab.html#a94dc6a2ea5f617c8f1c89cb92595dceb":[9,0,5,8,0,11],
 "classpygui_1_1variable__tab_1_1_variable_tab.html#a94dc6a2ea5f617c8f1c89cb92595dceb":[10,0,1,6,0,11],
@@ -246,8 +249,5 @@ var NAVTREEINDEX68 =
 "globals_func_o.html":[11,1,1,11],
 "globals_func_p.html":[11,1,1,12],
 "globals_func_q.html":[11,1,1,13],
-"globals_func_r.html":[11,1,1,14],
-"globals_func_s.html":[11,1,1,15],
-"globals_func_t.html":[11,1,1,16],
-"globals_func_v.html":[11,1,1,17]
+"globals_func_r.html":[11,1,1,14]
 };

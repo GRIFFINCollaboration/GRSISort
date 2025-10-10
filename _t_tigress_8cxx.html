@@ -108,7 +108,6 @@ $(function(){initNavTree('_t_tigress_8cxx.html',''); initResizable(true); });
 <div class="textblock"><code>#include &quot;<a class="el" href="_t_tigress_8h_source.html">TTigress.h</a>&quot;</code><br />
 <code>#include &lt;iostream&gt;</code><br />
 <code>#include &quot;TRandom.h&quot;</code><br />
-<code>#include &quot;TMath.h&quot;</code><br />
 <code>#include &quot;TClass.h&quot;</code><br />
 <code>#include &quot;TInterpreter.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="_t_g_r_s_i_options_8h_source.html">TGRSIOptions.h</a>&quot;</code><br />
@@ -130,7 +129,7 @@ Functions</h2></td></tr>
 <tr class="separator:ab08e17b82b6f17f07e0d1b8cdd2c4713"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e8a65ed52935c801c0d68668508936f" id="r_a9e8a65ed52935c801c0d68668508936f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9e8a65ed52935c801c0d68668508936f">DefaultSuppression</a> (<a class="el" href="class_t_detector_hit.html">TDetectorHit</a> *tig, <a class="el" href="class_t_bgo_hit.html">TBgoHit</a> &amp;bgo)</td></tr>
 <tr class="separator:a9e8a65ed52935c801c0d68668508936f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2810eb31093e784df8cc78ca0e3922af" id="r_ga2810eb31093e784df8cc78ca0e3922af"><td class="memItemLeft" align="right" valign="top">std::underlying_type&lt; <a class="el" href="class_t_tigress.html#ae3be457cf358e11016195319355ba79b">TTigress::ETigressGlobalBits</a> &gt;::type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___detectors.html#ga2810eb31093e784df8cc78ca0e3922af">operator|</a> (<a class="el" href="class_t_tigress.html#ae3be457cf358e11016195319355ba79b">TTigress::ETigressGlobalBits</a> lhs, <a class="el" href="class_t_tigress.html#ae3be457cf358e11016195319355ba79b">TTigress::ETigressGlobalBits</a> rhs)</td></tr>
+<tr class="memitem:ga2810eb31093e784df8cc78ca0e3922af" id="r_ga2810eb31093e784df8cc78ca0e3922af"><td class="memItemLeft" align="right" valign="top">std::underlying_type_t&lt; <a class="el" href="class_t_tigress.html#ae3be457cf358e11016195319355ba79b">TTigress::ETigressGlobalBits</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___detectors.html#ga2810eb31093e784df8cc78ca0e3922af">operator|</a> (<a class="el" href="class_t_tigress.html#ae3be457cf358e11016195319355ba79b">TTigress::ETigressGlobalBits</a> lhs, <a class="el" href="class_t_tigress.html#ae3be457cf358e11016195319355ba79b">TTigress::ETigressGlobalBits</a> rhs)</td></tr>
 <tr class="separator:ga2810eb31093e784df8cc78ca0e3922af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
@@ -153,9 +152,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8cxx_source.html#l00020">20</a> of file <a class="el" href="_t_tigress_8cxx_source.html">TTigress.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8cxx_source.html#l00019">19</a> of file <a class="el" href="_t_tigress_8cxx_source.html">TTigress.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_analysis_options_8h_source.html#l00050">TAnalysisOptions::AddbackWindow()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00069">TGRSIOptions::AnalysisOptions()</a>, <a class="el" href="_t_tigress_8h_source.html#l00169">TTigress::GetForceCrystal()</a>, <a class="el" href="_t_tigress_hit_8cxx_source.html#l00060">TTigressHit::GetLastPosition()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00195">TDetectorHit::GetSegment()</a>, and <a class="el" href="_t_detector_hit_8cxx_source.html#l00045">TDetectorHit::GetTime()</a>.</p>
+<p class="reference">References <a class="el" href="_t_analysis_options_8h_source.html#l00050">TAnalysisOptions::AddbackWindow()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00069">TGRSIOptions::AnalysisOptions()</a>, <a class="el" href="_t_tigress_8h_source.html#l00169">TTigress::GetForceCrystal()</a>, <a class="el" href="_t_tigress_hit_8cxx_source.html#l00058">TTigressHit::GetLastPosition()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00195">TDetectorHit::GetSegment()</a>, and <a class="el" href="_t_detector_hit_8cxx_source.html#l00045">TDetectorHit::GetTime()</a>.</p>
 
 </div>
 </div>
@@ -178,7 +177,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_tigress_8cxx_source.html#l00061">61</a> of file <a class="el" href="_t_tigress_8cxx_source.html">TTigress.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_tigress_8cxx_source.html#l00060">60</a> of file <a class="el" href="_t_tigress_8cxx_source.html">TTigress.cxx</a>.</p>
 
 <p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00139">TDetectorHit::GetCfd()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00186">TDetectorHit::GetDetector()</a>, and <a class="el" href="_t_detector_hit_8cxx_source.html#l00073">TDetectorHit::GetEnergy()</a>.</p>
 
@@ -191,7 +190,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_1d7397b112c23d4eb2fe49dc66ace00a.html">GRSIData</a></li><li class="navelem"><a class="el" href="dir_04ded5cb9506aadc0b6d1c08d3b0ca72.html">libraries</a></li><li class="navelem"><a class="el" href="dir_f1ca9974b6d60d8551858194bc4a7b28.html">TGRSIAnalysis</a></li><li class="navelem"><a class="el" href="dir_d7ccf6c4ee2c5d49aa2ecef4d80cc5aa.html">TTigress</a></li><li class="navelem"><a class="el" href="_t_tigress_8cxx.html">TTigress.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Oct 9 2025 20:58:56.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Oct 10 2025 18:34:30.</li>
   </ul>
 </div>
 </body>

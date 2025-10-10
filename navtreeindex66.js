@@ -1,5 +1,8 @@
 var NAVTREEINDEX66 =
 {
+"class_tac_offset_helper.html#a0e505d1c617db78984dd90345c10d50e":[10,0,68,7],
+"class_tac_offset_helper.html#a106305b1b18827f1f5ec4952b63b54f3":[10,0,68,20],
+"class_tac_offset_helper.html#a134602d3db37506ecdcd5665bb339942":[10,0,68,19],
 "class_tac_offset_helper.html#a210872f6be03540044b9e1e190fde8f6":[10,0,68,31],
 "class_tac_offset_helper.html#a23db3e61978039fa768fa3a90c1cd982":[10,0,68,9],
 "class_tac_offset_helper.html#a27adae6a07b011a2c5beb6a572acaa42":[10,0,68,22],
@@ -246,8 +249,5 @@ var NAVTREEINDEX66 =
 "classpygui_1_1mainwindow_1_1_main_window.html":[9,0,5,3,0],
 "classpygui_1_1mainwindow_1_1_main_window.html":[10,0,1,2,0],
 "classpygui_1_1mainwindow_1_1_main_window.html#a031933e7feee9411e86fdd80db9bdff1":[9,0,5,3,0,32],
-"classpygui_1_1mainwindow_1_1_main_window.html#a031933e7feee9411e86fdd80db9bdff1":[10,0,1,2,0,32],
-"classpygui_1_1mainwindow_1_1_main_window.html#a04e43103be7dfa6990818e36aeba88b4":[9,0,5,3,0,29],
-"classpygui_1_1mainwindow_1_1_main_window.html#a04e43103be7dfa6990818e36aeba88b4":[10,0,1,2,0,29],
-"classpygui_1_1mainwindow_1_1_main_window.html#a06472ab05097985dd3cf376dc759ff05":[9,0,5,3,0,10]
+"classpygui_1_1mainwindow_1_1_main_window.html#a031933e7feee9411e86fdd80db9bdff1":[10,0,1,2,0,32]
 };
