@@ -4,6 +4,13 @@
 
 #include "TChannel.h"
 
+////////////////////////////////////////////////////////////////////////////////
+///
+/// Program to read energy non-linearities from a root-file (stored as TGraphs
+/// or TGraphErrors) and write them to a cal-file with only those nonlinearities.
+///
+////////////////////////////////////////////////////////////////////////////////
+
 int main(int argc, char** argv)
 {
    if(argc != 4) {
