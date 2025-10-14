@@ -108,6 +108,7 @@ private:
    TPriorityValue<double>                                 fEFFChi2;               ///< Chi2 of Efficiency calibration
    TPriorityValue<std::vector<double>>                    fCTCoefficients;        ///< Cross talk coefficients
    TPriorityValue<TGraph>                                 fEnergyNonlinearity;    ///< Energy nonlinearity as TGraph, is used as E=E+GetEnergyNonlinearity(E), so y should be E(source)-calibration(peak)
+   TPriorityValue<TGraph>                                 fTimeNonlinearity;
 
    struct WaveFormShapePar {
       bool   InUse;
@@ -125,6 +126,7 @@ private:
    void                                                AppendChannel(TChannel*);
 
    void SetupEnergyNonlinearity();   // sort energy nonlinearity graph and set name/title
+   void SetupTimeNonlinearity(); 
 
    static std::vector<TChannel*> SortedChannels();
 
@@ -192,6 +194,8 @@ public:
    std::vector<double>                    GetCTCoeff() const { return fCTCoefficients.Value(); }
    TGraph                                 GetEnergyNonlinearity() const { return fEnergyNonlinearity.Value(); }
    double                                 GetEnergyNonlinearity(double eng) const;
+   TGraph                                 GetTimeNonlinearity() const { return fTimeNonlinearity.Value(); }
+   double                                 GetTimeNonlinearity(Long64_t mytimestamp) const;
    std::vector<std::pair<double, double>> GetENGRanges() const { return fENGRanges.Value(); }
    std::pair<double, double>              GetENGRange(size_t range) const { return fENGRanges.Value()[range]; }
    std::vector<Float_t>                   GetENGDriftCoefficents() const { return fENGDriftCoefficents.Value(); }
@@ -208,6 +212,7 @@ public:
    void AddEFFCoefficient(double temp) { fEFFCoefficients.Address()->push_back(temp); }
    void AddCTCoefficient(double temp) { fCTCoefficients.Address()->push_back(temp); }
    void AddEnergyNonlinearityPoint(double x, double y) { fEnergyNonlinearity.Address()->SetPoint(fEnergyNonlinearity.Address()->GetN(), x, y); }
+   void AddTimeNonlinearityPoint(double x, double y) { fTimeNonlinearity.Address()->SetPoint(fTimeNonlinearity.Address()->GetN(), x, y); }
 
    void ResizeENG(size_t size)
    {
@@ -235,6 +240,7 @@ public:
    void SetEFFCoefficients(const TPriorityValue<std::vector<double>>& tmp) { fEFFCoefficients = tmp; }
    void SetCTCoefficients(const TPriorityValue<std::vector<double>>& tmp) { fCTCoefficients = tmp; }
    void SetEnergyNonlinearity(const TPriorityValue<TGraph>& tmp) { fEnergyNonlinearity = tmp; }
+   void SetTimeNonlinearity(const TPriorityValue<TGraph>& tmp) { fTimeNonlinearity = tmp; }
 
    void SetAllENGChi2(const TPriorityValue<std::vector<double>>& tmp) { fENGChi2 = tmp; }
    void SetENGChi2(const TPriorityValue<double>& tmp, const size_t& range = 0)
@@ -300,6 +306,7 @@ public:
    void DestroyEFFCal();
    void DestroyCTCal();
    void DestroyEnergyNonlinearity();
+   void DestroyTimeNonlinearity();
 
    static Int_t ReadCalFromCurrentFile(Option_t* opt = "overwrite");
    static Int_t ReadCalFromTree(TTree*, Option_t* opt = "overwrite");
@@ -311,6 +318,7 @@ public:
    static void  WriteCTCorrections(const std::string& outfilename = "");
    static void  WriteCalBuffer(Option_t* opt = "");
    static void  ReadEnergyNonlinearities(TFile*, const char* graphName = "EnergyNonlinearity0x", bool all = false);
+   static void  ReadTimeNonlinearities(TFile*, const char* graphName = "TimeNonlinearity0x", bool all = false);
 
    void Print(Option_t* opt = "") const override;
    void Clear(Option_t* opt = "") override;
