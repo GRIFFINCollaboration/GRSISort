@@ -52,7 +52,9 @@ Double_t TDetectorHit::GetTime(const ETimeFlag&, Option_t*) const
       return SetTime(static_cast<Double_t>(static_cast<double>(GetTimeStamp()) + gRandom->Uniform()));
    }
 
-   return SetTime(tmpChan->GetTime(GetTimeStamp(), GetCfd(), GetEnergy()) * (1. - tmpChan->GetTimeDrift()));
+   //return SetTime(tmpChan->GetTime(GetTimeStamp(), GetCfd(), GetEnergy()) * (1. - tmpChan->GetTimeDrift()));
+   return SetTime(tmpChan->GetTime(GetTimeStamp(), GetCfd(), GetEnergy()) * (1. - tmpChan->GetTimeDrift()) - tmpChan->GetTimeNonlinearity( GetTimeStamp() ) );
+   
 }
 
 Float_t TDetectorHit::GetCharge() const
@@ -101,6 +103,16 @@ Double_t TDetectorHit::GetEnergyNonlinearity(double energy) const
    }
    return -(channel->GetEnergyNonlinearity(energy));
 }
+
+Double_t TDetectorHit::GetTimeNonlinearity(Long64_t mytimestamp) const
+{
+   TChannel* channel = GetChannel();
+   if(channel == nullptr) {
+      return 0.;
+   }
+   return -(channel->GetTimeNonlinearity(mytimestamp));
+}
+
 
 void TDetectorHit::Copy(TObject& rhs) const
 {
