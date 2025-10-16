@@ -1406,16 +1406,14 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
                   channel->AddTimeNonlinearityPoint(x, y);
                }
                channel->SetupTimeNonlinearity();
-            }
-            else if(type == "EFFCOEFF") {
+            } else if(type == "EFFCOEFF") {
                channel->DestroyEFFCal();
                channel->fEFFCoefficients.SetPriority(prio);
                double value = 0.;
                while(!(str >> value).fail()) {
                   channel->AddEFFCoefficient(value);
                }
-            } 
-            else if(type == "FILEINT") {
+            } else if(type == "FILEINT") {
                int tempstream = 0;
                str >> tempstream;
                if(tempstream > 0) {
