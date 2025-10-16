@@ -132,6 +132,7 @@ public:
    virtual TVector3            GetPosition() const { return {0., 0., 0.}; }            //!<!
    virtual double              GetEnergy(Option_t* opt = "") const;
    virtual Double_t            GetEnergyNonlinearity(double energy) const;
+   virtual Double_t            GetTimeNonlinearity(Long64_t mytimestamp) const;
    virtual Long64_t            GetTimeStamp(Option_t* = "") const { return fTimeStamp; }
    virtual Long64_t            GetTimeStampNs(Option_t* opt = "") const;
    virtual Double_t            GetTime(const ETimeFlag& correct_flag = ETimeFlag::kAll,
