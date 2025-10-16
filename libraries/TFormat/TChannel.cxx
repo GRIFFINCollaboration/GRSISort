@@ -1406,16 +1406,14 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
                   channel->AddTimeNonlinearityPoint(x, y);
                }
                channel->SetupTimeNonlinearity();
-            }
-            else if(type == "EFFCOEFF") {
+            } else if(type == "EFFCOEFF") {
                channel->DestroyEFFCal();
                channel->fEFFCoefficients.SetPriority(prio);
                double value = 0.;
                while(!(str >> value).fail()) {
                   channel->AddEFFCoefficient(value);
                }
-            } 
-            else if(type == "FILEINT") {
+            } else if(type == "FILEINT") {
                int tempstream = 0;
                str >> tempstream;
                if(tempstream > 0) {
@@ -1620,7 +1618,7 @@ double TChannel::GetEnergyNonlinearity(double eng) const
 double TChannel::GetTimeNonlinearity(Long64_t mytimestamp) const
 {
    int nPoints = fTimeNonlinearity.Value().GetN();
-   if(nPoints < 1 || static_cast<double>(mytimestamp) < fTimeNonlinearity.Value().GetX()[0] || fTimeNonlinearity.Value().GetX()[nPoints - 1] < static_cast<double>(mytimestamp) ) { return 0.; }
+   if(nPoints < 1 || static_cast<double>(mytimestamp) < fTimeNonlinearity.Value().GetX()[0] || fTimeNonlinearity.Value().GetX()[nPoints - 1] < static_cast<double>(mytimestamp)) { return 0.; }
    return fTimeNonlinearity.Value().Eval(static_cast<double>(mytimestamp));
 }
 
@@ -1695,7 +1693,6 @@ void TChannel::ReadTimeNonlinearities(TFile* file, const char* graphName, bool a
       }
    }
 }
-
 
 void TChannel::SetDigitizerType(const TPriorityValue<std::string>& tmp)
 {

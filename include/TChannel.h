@@ -126,7 +126,7 @@ private:
    void                                                AppendChannel(TChannel*);
 
    void SetupEnergyNonlinearity();   // sort energy nonlinearity graph and set name/title
-   void SetupTimeNonlinearity(); 
+   void SetupTimeNonlinearity();
 
    static std::vector<TChannel*> SortedChannels();
 
