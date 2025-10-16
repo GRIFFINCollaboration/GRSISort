@@ -1388,8 +1388,7 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
                while(!(str >> value).fail()) {
                   channel->AddCTCoefficient(value);
                }
-            } 
-            else if(type == "ENERGYNONLINEARITY") {
+            } else if(type == "ENERGYNONLINEARITY") {
                channel->DestroyEnergyNonlinearity();
                channel->fEnergyNonlinearity.SetPriority(prio);
                double x = 0.;
@@ -1398,8 +1397,7 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
                   channel->AddEnergyNonlinearityPoint(x, y);
                }
                channel->SetupEnergyNonlinearity();
-            } 
-            else if(type == "TIMENONLINEARITY") {
+            } else if(type == "TIMENONLINEARITY") {
                channel->DestroyTimeNonlinearity();
                channel->fTimeNonlinearity.SetPriority(prio);
                double x = 0.;
@@ -1622,8 +1620,8 @@ double TChannel::GetEnergyNonlinearity(double eng) const
 double TChannel::GetTimeNonlinearity(Long64_t mytimestamp) const
 {
    int nPoints = fTimeNonlinearity.Value().GetN();
-   if(nPoints < 1 || (double)mytimestamp < fTimeNonlinearity.Value().GetX()[0] || fTimeNonlinearity.Value().GetX()[nPoints - 1] < (double)mytimestamp) { return 0.; }
-   return fTimeNonlinearity.Value().Eval((double)mytimestamp);
+   if(nPoints < 1 || static_cast<double>(mytimestamp) < fTimeNonlinearity.Value().GetX()[0] || fTimeNonlinearity.Value().GetX()[nPoints - 1] < static_cast<double>(mytimestamp) ) { return 0.; }
+   return fTimeNonlinearity.Value().Eval(static_cast<double>(mytimestamp));
 }
 
 void TChannel::SetupEnergyNonlinearity()
