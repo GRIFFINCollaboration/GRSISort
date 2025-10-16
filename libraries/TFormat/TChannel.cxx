@@ -1618,7 +1618,7 @@ double TChannel::GetEnergyNonlinearity(double eng) const
 double TChannel::GetTimeNonlinearity(Long64_t mytimestamp) const
 {
    int nPoints = fTimeNonlinearity.Value().GetN();
-   if(nPoints < 1 || static_cast<double>(mytimestamp) < fTimeNonlinearity.Value().GetX()[0] || fTimeNonlinearity.Value().GetX()[nPoints - 1] < static_cast<double>(mytimestamp) ) { return 0.; }
+   if(nPoints < 1 || static_cast<double>(mytimestamp) < fTimeNonlinearity.Value().GetX()[0] || fTimeNonlinearity.Value().GetX()[nPoints - 1] < static_cast<double>(mytimestamp)) { return 0.; }
    return fTimeNonlinearity.Value().Eval(static_cast<double>(mytimestamp));
 }
 
@@ -1693,7 +1693,6 @@ void TChannel::ReadTimeNonlinearities(TFile* file, const char* graphName, bool a
       }
    }
 }
-
 
 void TChannel::SetDigitizerType(const TPriorityValue<std::string>& tmp)
 {
