@@ -84,6 +84,7 @@ var class_t_sharc_hit =
     [ "GetTheta", "class_t_sharc_hit.html#af3ca0ddbb83056928fb5110e273d1a5b", null ],
     [ "GetThetaDeg", "class_t_sharc_hit.html#a536a92ade0fc334d4efd1a552ac0b64d", null ],
     [ "GetTime", "class_t_sharc_hit.html#aba5e96b2f172f0e12eb2b6e06af5a735", null ],
+    [ "GetTimeNonlinearity", "class_t_sharc_hit.html#ab5d7ef626e22237526aebcfbc2ccd4af", null ],
     [ "GetTimeSinceTapeMove", "class_t_sharc_hit.html#a1b7038426ef30c3b9668a4d565d4654a", null ],
     [ "GetTimeStamp", "class_t_sharc_hit.html#a2d0ccf28cbe0792ebdf0987d47c14997", null ],
     [ "GetTimeStampNs", "class_t_sharc_hit.html#a292478d4d1ea2b5b1ddeab493e11b79e", null ],

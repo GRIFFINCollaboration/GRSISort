@@ -81,6 +81,7 @@ var class_t_tigress_hit =
     [ "GetSegmentVec", "class_t_tigress_hit.html#aea5b182eb1f2769368ff1dadb9d4e422", null ],
     [ "GetSignalToNoise", "class_t_tigress_hit.html#a978015a371bfb0ec05e01b434432fac1", null ],
     [ "GetTime", "class_t_tigress_hit.html#aba5e96b2f172f0e12eb2b6e06af5a735", null ],
+    [ "GetTimeNonlinearity", "class_t_tigress_hit.html#ab5d7ef626e22237526aebcfbc2ccd4af", null ],
     [ "GetTimeSinceTapeMove", "class_t_tigress_hit.html#a1b7038426ef30c3b9668a4d565d4654a", null ],
     [ "GetTimeStamp", "class_t_tigress_hit.html#a2d0ccf28cbe0792ebdf0987d47c14997", null ],
     [ "GetTimeStampNs", "class_t_tigress_hit.html#a292478d4d1ea2b5b1ddeab493e11b79e", null ],

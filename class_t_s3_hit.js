@@ -77,6 +77,7 @@ var class_t_s3_hit =
     [ "GetSignalToNoise", "class_t_s3_hit.html#a8b7d08ac9e1d98d7992516bd0158da54", null ],
     [ "GetTheta", "class_t_s3_hit.html#a67633082d2fba380928f0cad2f8f97b9", null ],
     [ "GetTime", "class_t_s3_hit.html#aba5e96b2f172f0e12eb2b6e06af5a735", null ],
+    [ "GetTimeNonlinearity", "class_t_s3_hit.html#ab5d7ef626e22237526aebcfbc2ccd4af", null ],
     [ "GetTimeSinceTapeMove", "class_t_s3_hit.html#a1b7038426ef30c3b9668a4d565d4654a", null ],
     [ "GetTimeStamp", "class_t_s3_hit.html#a2d0ccf28cbe0792ebdf0987d47c14997", null ],
     [ "GetTimeStampNs", "class_t_s3_hit.html#a292478d4d1ea2b5b1ddeab493e11b79e", null ],

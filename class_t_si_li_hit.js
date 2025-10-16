@@ -90,6 +90,7 @@ var class_t_si_li_hit =
     [ "GetTimeFit", "class_t_si_li_hit.html#add2618f3dec52e2db65149cc75192ae4", null ],
     [ "GetTimeFitCfd", "class_t_si_li_hit.html#a4eda60144ce13c030d5e6d767ec307cf", null ],
     [ "GetTimeFitns", "class_t_si_li_hit.html#a28f6d10212e65b125d7d109f5023d91a", null ],
+    [ "GetTimeNonlinearity", "class_t_si_li_hit.html#ab5d7ef626e22237526aebcfbc2ccd4af", null ],
     [ "GetTimeSinceTapeMove", "class_t_si_li_hit.html#a1b7038426ef30c3b9668a4d565d4654a", null ],
     [ "GetTimeStamp", "class_t_si_li_hit.html#a2d0ccf28cbe0792ebdf0987d47c14997", null ],
     [ "GetTimeStampLow", "class_t_si_li_hit.html#a08e325e8b3250e360821b1b33366c3ad", null ],

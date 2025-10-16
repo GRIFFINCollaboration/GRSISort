@@ -233,6 +233,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:abf5412a0052d1ec10cb86d209e22ad37"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba5e96b2f172f0e12eb2b6e06af5a735" id="r_aba5e96b2f172f0e12eb2b6e06af5a735"><td class="memItemLeft" align="right" valign="top">virtual Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_detector_hit.html#aba5e96b2f172f0e12eb2b6e06af5a735">GetTime</a> (const <a class="el" href="class_t_detector_hit.html#a9677bfb19ee70b9ce819ea8d1fceb00e">ETimeFlag</a> &amp;correct_flag=<a class="el" href="class_t_detector_hit.html#a9677bfb19ee70b9ce819ea8d1fceb00ea34bdbffdb1c0e1b603f58fc0d49548b6">ETimeFlag::kAll</a>, Option_t *opt=&quot;&quot;) const</td></tr>
 <tr class="separator:aba5e96b2f172f0e12eb2b6e06af5a735"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5d7ef626e22237526aebcfbc2ccd4af" id="r_ab5d7ef626e22237526aebcfbc2ccd4af"><td class="memItemLeft" align="right" valign="top">virtual Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_detector_hit.html#ab5d7ef626e22237526aebcfbc2ccd4af">GetTimeNonlinearity</a> (Long64_t mytimestamp) const</td></tr>
+<tr class="separator:ab5d7ef626e22237526aebcfbc2ccd4af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b7038426ef30c3b9668a4d565d4654a" id="r_a1b7038426ef30c3b9668a4d565d4654a"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_detector_hit.html#a1b7038426ef30c3b9668a4d565d4654a">GetTimeSinceTapeMove</a> () const</td></tr>
 <tr class="separator:a1b7038426ef30c3b9668a4d565d4654a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d0ccf28cbe0792ebdf0987d47c14997" id="r_a2d0ccf28cbe0792ebdf0987d47c14997"><td class="memItemLeft" align="right" valign="top">virtual Long64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_detector_hit.html#a2d0ccf28cbe0792ebdf0987d47c14997">GetTimeStamp</a> (Option_t *=&quot;&quot;) const</td></tr>
@@ -540,7 +542,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_rcmp_hit_8cxx_source.html#l00015">15</a> of file <a class="el" href="_t_rcmp_hit_8cxx_source.html">TRcmpHit.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8cxx_source.html#l00105">TDetectorHit::Copy()</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8cxx_source.html#l00117">TDetectorHit::Copy()</a>.</p>
 
 </div>
 </div>
@@ -568,7 +570,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_rcmp_hit_8cxx_source.html#l00022">22</a> of file <a class="el" href="_t_rcmp_hit_8cxx_source.html">TRcmpHit.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8cxx_source.html#l00105">TDetectorHit::Copy()</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8cxx_source.html#l00117">TDetectorHit::Copy()</a>.</p>
 
 </div>
 </div>
@@ -627,7 +629,7 @@ Static Private Attributes</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="class_t_fipps_hit.html#ad946c02bf2bd137e44f63022afdddcc0">TFippsHit</a>, <a class="el" href="class_t_griffin_hit.html#aaf1cd4b9f0244f79446e47b1481dfcee">TGriffinHit</a>, <a class="el" href="class_t_ifin_hit.html#af7a862ffe169a426c05f96807cc3737d">TIfinHit</a>, <a class="el" href="class_t_tdr_clover_hit.html#ad61f9983c374bc952d629905aa875cdc">TTdrCloverHit</a>, and <a class="el" href="class_t_tdr_tigress_hit.html#a65ef399ae698485b92699feb2cc336bb">TTdrTigressHit</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00181">181</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00182">182</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
 </div>
 </div>
@@ -658,7 +660,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00114">114</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00198">TDetectorHit::fWaveform</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00199">TDetectorHit::fWaveform</a>.</p>
 
 </div>
 </div>
@@ -689,7 +691,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00116">116</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00197">TDetectorHit::fTimeStamp</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00198">TDetectorHit::fTimeStamp</a>.</p>
 
 </div>
 </div>
@@ -718,11 +720,11 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00142">142</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00143">143</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00194">TDetectorHit::fCharge</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00195">TDetectorHit::fCharge</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_detector_hit_8cxx_source.html#l00058">TDetectorHit::GetCharge()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00073">TDetectorHit::GetEnergy()</a>, <a class="el" href="_t_fipps_hit_8cxx_source.html#l00101">TFippsHit::GetNoCTEnergy()</a>, <a class="el" href="_t_griffin_hit_8cxx_source.html#l00161">TGriffinHit::GetNoCTEnergy()</a>, <a class="el" href="_t_ifin_hit_8cxx_source.html#l00102">TIfinHit::GetNoCTEnergy()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00147">TDetectorHit::Print()</a>, <a class="el" href="_t_fipps_t_a_c_hit_8cxx_source.html#l00052">TFippsTACHit::TempCorrectedCharge()</a>, and <a class="el" href="_t_t_a_c_hit_8cxx_source.html#l00044">TTACHit::TempCorrectedCharge()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_detector_hit_8cxx_source.html#l00060">TDetectorHit::GetCharge()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00075">TDetectorHit::GetEnergy()</a>, <a class="el" href="_t_fipps_hit_8cxx_source.html#l00101">TFippsHit::GetNoCTEnergy()</a>, <a class="el" href="_t_griffin_hit_8cxx_source.html#l00161">TGriffinHit::GetNoCTEnergy()</a>, <a class="el" href="_t_ifin_hit_8cxx_source.html#l00102">TIfinHit::GetNoCTEnergy()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00159">TDetectorHit::Print()</a>, <a class="el" href="_t_fipps_t_a_c_hit_8cxx_source.html#l00052">TFippsTACHit::TempCorrectedCharge()</a>, and <a class="el" href="_t_t_a_c_hit_8cxx_source.html#l00044">TTACHit::TempCorrectedCharge()</a>.</p>
 
 </div>
 </div>
@@ -753,7 +755,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_rcmp_hit_8cxx_source.html#l00048">48</a> of file <a class="el" href="_t_rcmp_hit_8cxx_source.html">TRcmpHit.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8cxx_source.html#l00169">TDetectorHit::Clear()</a>, <a class="el" href="_t_rcmp_hit_8h_source.html#l00050">fBackStrip</a>, <a class="el" href="_t_rcmp_hit_8h_source.html#l00049">fFrontStrip</a>, and <a class="el" href="_t_rcmp_hit_8h_source.html#l00051">fStrip</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8cxx_source.html#l00181">TDetectorHit::Clear()</a>, <a class="el" href="_t_rcmp_hit_8h_source.html#l00050">fBackStrip</a>, <a class="el" href="_t_rcmp_hit_8h_source.html#l00049">fFrontStrip</a>, and <a class="el" href="_t_rcmp_hit_8h_source.html#l00051">fStrip</a>.</p>
 
 </div>
 </div>
@@ -780,9 +782,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00173">173</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00174">174</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00205">TDetectorHit::fChannel</a>, <a class="el" href="class_t_detector_hit.html#a187897c681b829247a98022bbb81fffea2eb1e43d1f624b58f25b306dacc7456e">TDetectorHit::kIsChannelSet</a>, and <a class="el" href="_t_detector_hit_8cxx_source.html#l00284">TDetectorHit::SetHitBit()</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00206">TDetectorHit::fChannel</a>, <a class="el" href="class_t_detector_hit.html#a187897c681b829247a98022bbb81fffea2eb1e43d1f624b58f25b306dacc7456e">TDetectorHit::kIsChannelSet</a>, and <a class="el" href="_t_detector_hit_8cxx_source.html#l00296">TDetectorHit::SetHitBit()</a>.</p>
 
 </div>
 </div>
@@ -809,9 +811,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00168">168</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00169">169</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00201">TDetectorHit::fEnergy</a>, <a class="el" href="class_t_detector_hit.html#a187897c681b829247a98022bbb81fffea7433dc57f9db1fc472789e8796527f19">TDetectorHit::kIsEnergySet</a>, and <a class="el" href="_t_detector_hit_8cxx_source.html#l00284">TDetectorHit::SetHitBit()</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00202">TDetectorHit::fEnergy</a>, <a class="el" href="class_t_detector_hit.html#a187897c681b829247a98022bbb81fffea7433dc57f9db1fc472789e8796527f19">TDetectorHit::kIsEnergySet</a>, and <a class="el" href="_t_detector_hit_8cxx_source.html#l00296">TDetectorHit::SetHitBit()</a>.</p>
 
 </div>
 </div>
@@ -840,7 +842,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00091">91</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00208">TDetectorHit::fBitFlags</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00209">TDetectorHit::fBitFlags</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_bgo_hit_8cxx_source.html#l00028">TBgoHit::TBgoHit()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00019">TDetectorHit::TDetectorHit()</a>, <a class="el" href="_t_si_li_hit_8cxx_source.html#l00038">TSiLiHit::Clear()</a>, <a class="el" href="_t_analysis_write_loop_8cxx_source.html#l00094">TAnalysisWriteLoop::Iteration()</a>, and <a class="el" href="_t_frag_write_loop_8cxx_source.html#l00200">TFragWriteLoop::WriteEvent()</a>.</p>
 
@@ -873,9 +875,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8cxx_source.html#l00213">213</a> of file <a class="el" href="_t_detector_hit_8cxx_source.html">TDetectorHit.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8cxx_source.html#l00225">225</a> of file <a class="el" href="_t_detector_hit_8cxx_source.html">TDetectorHit.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8cxx_source.html#l00073">TDetectorHit::GetEnergy()</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8cxx_source.html#l00075">TDetectorHit::GetEnergy()</a>.</p>
 
 </div>
 </div>
@@ -907,7 +909,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_rcmp_hit_8cxx_source.html#l00029">29</a> of file <a class="el" href="_t_rcmp_hit_8cxx_source.html">TRcmpHit.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8cxx_source.html#l00105">TDetectorHit::Copy()</a>, <a class="el" href="_t_rcmp_hit_8h_source.html#l00050">fBackStrip</a>, <a class="el" href="_t_rcmp_hit_8h_source.html#l00049">fFrontStrip</a>, and <a class="el" href="_t_rcmp_hit_8h_source.html#l00051">fStrip</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8cxx_source.html#l00117">TDetectorHit::Copy()</a>, <a class="el" href="_t_rcmp_hit_8h_source.html#l00050">fBackStrip</a>, <a class="el" href="_t_rcmp_hit_8h_source.html#l00049">fFrontStrip</a>, and <a class="el" href="_t_rcmp_hit_8h_source.html#l00051">fStrip</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_rcmp_hit_8cxx_source.html#l00009">TRcmpHit()</a>, and <a class="el" href="_t_rcmp_hit_8cxx_source.html#l00040">Copy()</a>.</p>
 
@@ -946,7 +948,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_rcmp_hit_8cxx_source.html#l00040">40</a> of file <a class="el" href="_t_rcmp_hit_8cxx_source.html">TRcmpHit.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_rcmp_hit_8cxx_source.html#l00029">Copy()</a>, and <a class="el" href="_t_detector_hit_8cxx_source.html#l00123">TDetectorHit::CopyWave()</a>.</p>
+<p class="reference">References <a class="el" href="_t_rcmp_hit_8cxx_source.html#l00029">Copy()</a>, and <a class="el" href="_t_detector_hit_8cxx_source.html#l00135">TDetectorHit::CopyWave()</a>.</p>
 
 </div>
 </div>
@@ -975,11 +977,11 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8cxx_source.html#l00123">123</a> of file <a class="el" href="_t_detector_hit_8cxx_source.html">TDetectorHit.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8cxx_source.html#l00135">135</a> of file <a class="el" href="_t_detector_hit_8cxx_source.html">TDetectorHit.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00198">TDetectorHit::fWaveform</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00199">TDetectorHit::fWaveform</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_aries_hit_8cxx_source.html#l00021">TAriesHit::TAriesHit()</a>, <a class="el" href="_t_bgo_hit_8cxx_source.html#l00028">TBgoHit::TBgoHit()</a>, <a class="el" href="_t_demand_hit_8cxx_source.html#l00016">TDemandHit::TDemandHit()</a>, <a class="el" href="_t_descant_hit_8cxx_source.html#l00021">TDescantHit::TDescantHit()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00019">TDetectorHit::TDetectorHit()</a>, <a class="el" href="_t_sceptar_hit_8cxx_source.html#l00022">TSceptarHit::TSceptarHit()</a>, <a class="el" href="_t_tdr_plastic_hit_8cxx_source.html#l00032">TTdrPlasticHit::TTdrPlasticHit()</a>, <a class="el" href="_t_zero_degree_hit_8cxx_source.html#l00015">TZeroDegreeHit::TZeroDegreeHit()</a>, <a class="el" href="_t_aries_hit_8cxx_source.html#l00038">TAriesHit::Copy()</a>, <a class="el" href="_t_demand_hit_8cxx_source.html#l00036">TDemandHit::Copy()</a>, <a class="el" href="_t_demand_hit_8cxx_source.html#l00045">TDemandHit::Copy()</a>, <a class="el" href="_t_descant_hit_8cxx_source.html#l00040">TDescantHit::Copy()</a>, <a class="el" href="_t_descant_hit_8cxx_source.html#l00055">TDescantHit::Copy()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00128">TDetectorHit::Copy()</a>, <a class="el" href="_t_eagle_hit_8cxx_source.html#l00047">TEagleHit::Copy()</a>, <a class="el" href="_t_emma_hit_8cxx_source.html#l00034">TEmmaHit::Copy()</a>, <a class="el" href="_t_griffin_hit_8cxx_source.html#l00034">TGriffinHit::Copy()</a>, <a class="el" href="_t_la_br_hit_8cxx_source.html#l00028">TLaBrHit::Copy()</a>, <a class="el" href="_t_paces_hit_8cxx_source.html#l00021">TPacesHit::Copy()</a>, <a class="el" href="_t_pin_diode_hit_8cxx_source.html#l00046">TPinDiodeHit::Copy()</a>, <a class="el" href="_t_rcmp_hit_8cxx_source.html#l00040">Copy()</a>, <a class="el" href="_t_s3_hit_8cxx_source.html#l00043">TS3Hit::Copy()</a>, <a class="el" href="_t_sceptar_hit_8cxx_source.html#l00043">TSceptarHit::Copy()</a>, <a class="el" href="_t_sharc2_hit_8cxx_source.html#l00023">TSharc2Hit::Copy()</a>, <a class="el" href="_t_sharc_hit_8cxx_source.html#l00023">TSharcHit::Copy()</a>, <a class="el" href="_t_t_a_c_hit_8cxx_source.html#l00026">TTACHit::Copy()</a>, <a class="el" href="_t_tdr_clover_hit_8cxx_source.html#l00040">TTdrCloverHit::Copy()</a>, <a class="el" href="_t_tdr_plastic_hit_8cxx_source.html#l00078">TTdrPlasticHit::Copy()</a>, <a class="el" href="_t_tdr_tigress_hit_8cxx_source.html#l00042">TTdrTigressHit::Copy()</a>, <a class="el" href="_t_tigress_hit_8cxx_source.html#l00045">TTigressHit::Copy()</a>, <a class="el" href="_t_tip_hit_8cxx_source.html#l00036">TTipHit::Copy()</a>, <a class="el" href="_t_tip_hit_8cxx_source.html#l00049">TTipHit::Copy()</a>, <a class="el" href="_t_trific_hit_8cxx_source.html#l00021">TTrificHit::Copy()</a>, <a class="el" href="_t_zero_degree_hit_8cxx_source.html#l00037">TZeroDegreeHit::Copy()</a>, and <a class="el" href="_t_zero_degree_hit_8cxx_source.html#l00049">TZeroDegreeHit::Copy()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_aries_hit_8cxx_source.html#l00021">TAriesHit::TAriesHit()</a>, <a class="el" href="_t_bgo_hit_8cxx_source.html#l00028">TBgoHit::TBgoHit()</a>, <a class="el" href="_t_demand_hit_8cxx_source.html#l00016">TDemandHit::TDemandHit()</a>, <a class="el" href="_t_descant_hit_8cxx_source.html#l00021">TDescantHit::TDescantHit()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00019">TDetectorHit::TDetectorHit()</a>, <a class="el" href="_t_sceptar_hit_8cxx_source.html#l00022">TSceptarHit::TSceptarHit()</a>, <a class="el" href="_t_tdr_plastic_hit_8cxx_source.html#l00032">TTdrPlasticHit::TTdrPlasticHit()</a>, <a class="el" href="_t_zero_degree_hit_8cxx_source.html#l00015">TZeroDegreeHit::TZeroDegreeHit()</a>, <a class="el" href="_t_aries_hit_8cxx_source.html#l00038">TAriesHit::Copy()</a>, <a class="el" href="_t_demand_hit_8cxx_source.html#l00036">TDemandHit::Copy()</a>, <a class="el" href="_t_demand_hit_8cxx_source.html#l00045">TDemandHit::Copy()</a>, <a class="el" href="_t_descant_hit_8cxx_source.html#l00040">TDescantHit::Copy()</a>, <a class="el" href="_t_descant_hit_8cxx_source.html#l00055">TDescantHit::Copy()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00140">TDetectorHit::Copy()</a>, <a class="el" href="_t_eagle_hit_8cxx_source.html#l00047">TEagleHit::Copy()</a>, <a class="el" href="_t_emma_hit_8cxx_source.html#l00034">TEmmaHit::Copy()</a>, <a class="el" href="_t_griffin_hit_8cxx_source.html#l00034">TGriffinHit::Copy()</a>, <a class="el" href="_t_la_br_hit_8cxx_source.html#l00028">TLaBrHit::Copy()</a>, <a class="el" href="_t_paces_hit_8cxx_source.html#l00021">TPacesHit::Copy()</a>, <a class="el" href="_t_pin_diode_hit_8cxx_source.html#l00046">TPinDiodeHit::Copy()</a>, <a class="el" href="_t_rcmp_hit_8cxx_source.html#l00040">Copy()</a>, <a class="el" href="_t_s3_hit_8cxx_source.html#l00043">TS3Hit::Copy()</a>, <a class="el" href="_t_sceptar_hit_8cxx_source.html#l00043">TSceptarHit::Copy()</a>, <a class="el" href="_t_sharc2_hit_8cxx_source.html#l00023">TSharc2Hit::Copy()</a>, <a class="el" href="_t_sharc_hit_8cxx_source.html#l00023">TSharcHit::Copy()</a>, <a class="el" href="_t_t_a_c_hit_8cxx_source.html#l00026">TTACHit::Copy()</a>, <a class="el" href="_t_tdr_clover_hit_8cxx_source.html#l00040">TTdrCloverHit::Copy()</a>, <a class="el" href="_t_tdr_plastic_hit_8cxx_source.html#l00078">TTdrPlasticHit::Copy()</a>, <a class="el" href="_t_tdr_tigress_hit_8cxx_source.html#l00042">TTdrTigressHit::Copy()</a>, <a class="el" href="_t_tigress_hit_8cxx_source.html#l00045">TTigressHit::Copy()</a>, <a class="el" href="_t_tip_hit_8cxx_source.html#l00036">TTipHit::Copy()</a>, <a class="el" href="_t_tip_hit_8cxx_source.html#l00049">TTipHit::Copy()</a>, <a class="el" href="_t_trific_hit_8cxx_source.html#l00021">TTrificHit::Copy()</a>, <a class="el" href="_t_zero_degree_hit_8cxx_source.html#l00037">TZeroDegreeHit::Copy()</a>, and <a class="el" href="_t_zero_degree_hit_8cxx_source.html#l00049">TZeroDegreeHit::Copy()</a>.</p>
 
 </div>
 </div>
@@ -1008,9 +1010,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00140">140</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00141">141</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00193">TDetectorHit::fAddress</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00194">TDetectorHit::fAddress</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_fipps_hit_8cxx_source.html#l00078">TFippsHit::Add()</a>, <a class="el" href="_t_ifin_hit_8cxx_source.html#l00079">TIfinHit::Add()</a>, <a class="el" href="_t_tdr_clover_hit_8cxx_source.html#l00096">TTdrCloverHit::Add()</a>, <a class="el" href="_t_tdr_tigress_hit_8cxx_source.html#l00099">TTdrTigressHit::Add()</a>, <a class="el" href="_t_sharc2_hit_8h_source.html#l00077">TSharc2Hit::GetBackAddress()</a>, <a class="el" href="_t_sharc_hit_8h_source.html#l00081">TSharcHit::GetBackAddress()</a>, <a class="el" href="_t_sharc2_hit_8h_source.html#l00076">TSharc2Hit::GetFrontAddress()</a>, <a class="el" href="_t_sharc_hit_8h_source.html#l00080">TSharcHit::GetFrontAddress()</a>, <a class="el" href="_t_fipps_hit_8cxx_source.html#l00101">TFippsHit::GetNoCTEnergy()</a>, <a class="el" href="_t_griffin_hit_8cxx_source.html#l00161">TGriffinHit::GetNoCTEnergy()</a>, <a class="el" href="_t_ifin_hit_8cxx_source.html#l00102">TIfinHit::GetNoCTEnergy()</a>, <a class="el" href="_t_sharc2_hit_8h_source.html#l00078">TSharc2Hit::GetPadAddress()</a>, <a class="el" href="_t_sharc_hit_8h_source.html#l00082">TSharcHit::GetPadAddress()</a>, <a class="el" href="_t_fragment_8cxx_source.html#l00180">TFragment::GetSharcMesyBoard()</a>, <a class="el" href="_t_eagle_hit_8cxx_source.html#l00080">TEagleHit::Print()</a>, <a class="el" href="_t_fragment_8cxx_source.html#l00104">TFragment::Print()</a>, <a class="el" href="_t_pin_diode_hit_8cxx_source.html#l00079">TPinDiodeHit::Print()</a>, <a class="el" href="_t_tip_hit_8h_source.html#l00071">TTipHit::SetUpNumbering()</a>, and <a class="el" href="_t_tigress_hit_8cxx_source.html#l00113">TTigressHit::SumHit()</a>.</p>
 
@@ -1045,7 +1047,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_rcmp_hit_8h_source.html#l00043">43</a> of file <a class="el" href="_t_rcmp_hit_8h_source.html">TRcmpHit.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8cxx_source.html#l00186">TDetectorHit::GetDetector()</a>, and <a class="el" href="_t_detector_hit_8cxx_source.html#l00195">TDetectorHit::GetSegment()</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8cxx_source.html#l00198">TDetectorHit::GetDetector()</a>, and <a class="el" href="_t_detector_hit_8cxx_source.html#l00207">TDetectorHit::GetSegment()</a>.</p>
 
 </div>
 </div>
@@ -1103,9 +1105,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00179">179</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00180">180</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00210">TDetectorHit::fBeamDirection</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00211">TDetectorHit::fBeamDirection</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_si_li_hit_8h_source.html#l00093">TSiLiHit::GetDoppler()</a>, and <a class="el" href="_t_tigress_hit_8h_source.html#l00071">TTigressHit::GetDoppler()</a>.</p>
 
@@ -1138,9 +1140,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="class_t_descant_hit.html#af1897709485011312bedb5f9d8727bc4">TDescantHit</a>, and <a class="el" href="class_t_zero_degree_hit.html#a7dc55e6dca2b3e3ec96787042b0162f3">TZeroDegreeHit</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00139">139</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00140">140</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00196">TDetectorHit::fCfd</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00197">TDetectorHit::fCfd</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_fipps_hit_8cxx_source.html#l00078">TFippsHit::Add()</a>, <a class="el" href="_t_ifin_hit_8cxx_source.html#l00079">TIfinHit::Add()</a>, <a class="el" href="_t_tdr_clover_hit_8cxx_source.html#l00096">TTdrCloverHit::Add()</a>, <a class="el" href="_t_tdr_tigress_hit_8cxx_source.html#l00099">TTdrTigressHit::Add()</a>, <a class="el" href="_t_descant_hit_8cxx_source.html#l00177">TDescantHit::CalculateCfdAndMonitor()</a>, <a class="el" href="_t_zero_degree_hit_8cxx_source.html#l00150">TZeroDegreeHit::CalculateCfdAndMonitor()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00060">DefaultSuppression()</a>, <a class="el" href="_t_fragment_8cxx_source.html#l00062">TFragment::Get4GCfd()</a>, <a class="el" href="_t_descant_hit_8cxx_source.html#l00081">TDescantHit::GetCfd()</a>, <a class="el" href="_t_zero_degree_hit_8cxx_source.html#l00064">TZeroDegreeHit::GetCfd()</a>, <a class="el" href="_t_descant_hit_8cxx_source.html#l00088">TDescantHit::GetRemainder()</a>, <a class="el" href="_t_zero_degree_hit_8cxx_source.html#l00071">TZeroDegreeHit::GetRemainder()</a>, <a class="el" href="_t_sharc2_hit_8h_source.html#l00063">TSharc2Hit::GetSomeTime()</a>, <a class="el" href="_t_sharc_hit_8h_source.html#l00067">TSharcHit::GetSomeTime()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00045">TDetectorHit::GetTime()</a>, <a class="el" href="_t_tigress_hit_8h_source.html#l00087">TTigressHit::GetTimeToTrigger()</a>, <a class="el" href="_t_eagle_hit_8cxx_source.html#l00080">TEagleHit::Print()</a>, <a class="el" href="_t_fragment_8cxx_source.html#l00104">TFragment::Print()</a>, and <a class="el" href="_t_tigress_hit_8cxx_source.html#l00113">TTigressHit::SumHit()</a>.</p>
 
@@ -1171,11 +1173,11 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00145">145</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00146">146</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00193">TDetectorHit::fAddress</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00205">TDetectorHit::fChannel</a>, <a class="el" href="_t_channel_8cxx_source.html#l00468">TChannel::GetChannel()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00188">TDetectorHit::IsChannelSet()</a>, <a class="el" href="class_t_detector_hit.html#a187897c681b829247a98022bbb81fffea2eb1e43d1f624b58f25b306dacc7456e">TDetectorHit::kIsChannelSet</a>, and <a class="el" href="_t_detector_hit_8cxx_source.html#l00284">TDetectorHit::SetHitBit()</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00194">TDetectorHit::fAddress</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00206">TDetectorHit::fChannel</a>, <a class="el" href="_t_channel_8cxx_source.html#l00476">TChannel::GetChannel()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00189">TDetectorHit::IsChannelSet()</a>, <a class="el" href="class_t_detector_hit.html#a187897c681b829247a98022bbb81fffea2eb1e43d1f624b58f25b306dacc7456e">TDetectorHit::kIsChannelSet</a>, and <a class="el" href="_t_detector_hit_8cxx_source.html#l00296">TDetectorHit::SetHitBit()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_s3_hit_8cxx_source.html#l00015">TS3Hit::TS3Hit()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00237">TTigress::AddFragment()</a>, <a class="el" href="_t_fipps_8cxx_source.html#l00513">TFipps::CTCorrectedEnergy()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00405">TGriffin::CTCorrectedEnergy()</a>, <a class="el" href="_t_ifin_8cxx_source.html#l00525">TIfin::CTCorrectedEnergy()</a>, <a class="el" href="_t_s3_hit_8h_source.html#l00026">TS3Hit::GetArrayPosition()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00058">TDetectorHit::GetCharge()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00204">TDetectorHit::GetCrystal()</a>, <a class="el" href="_t_s3_hit_8cxx_source.html#l00118">TS3Hit::GetDefaultDistance()</a>, <a class="el" href="_t_s3_hit_8cxx_source.html#l00106">TS3Hit::GetDefaultPhiOffset()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00186">TDetectorHit::GetDetector()</a>, <a class="el" href="_t_s3_hit_8h_source.html#l00033">TS3Hit::GetDistanceStr()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00073">TDetectorHit::GetEnergy()</a>, <a class="el" href="_t_si_li_hit_8cxx_source.html#l00203">TSiLiHit::GetEnergy()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00096">TDetectorHit::GetEnergyNonlinearity()</a>, <a class="el" href="_t_si_li_hit_8cxx_source.html#l00191">TSiLiHit::GetFitEnergy()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00160">TDetectorHit::GetName()</a>, <a class="el" href="_t_fipps_hit_8cxx_source.html#l00101">TFippsHit::GetNoCTEnergy()</a>, <a class="el" href="_t_griffin_hit_8cxx_source.html#l00161">TGriffinHit::GetNoCTEnergy()</a>, <a class="el" href="_t_ifin_hit_8cxx_source.html#l00102">TIfinHit::GetNoCTEnergy()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00195">TDetectorHit::GetSegment()</a>, <a class="el" href="_t_fipps_t_a_c_hit_8cxx_source.html#l00062">TFippsTACHit::GetTempCorrectedEnergy()</a>, <a class="el" href="_t_t_a_c_hit_8cxx_source.html#l00054">TTACHit::GetTempCorrectedEnergy()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00045">TDetectorHit::GetTime()</a>, <a class="el" href="_t_si_li_hit_8h_source.html#l00040">TSiLiHit::GetTimeFit()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00227">TDetectorHit::GetTimeStampNs()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00236">TDetectorHit::GetTimeStampUnit()</a>, <a class="el" href="_t_fragment_8cxx_source.html#l00053">TFragment::GetTZero()</a>, <a class="el" href="_t_fragment_8cxx_source.html#l00104">TFragment::Print()</a>, <a class="el" href="_t_s3_hit_8cxx_source.html#l00068">TS3Hit::SectorsDownstream()</a>, <a class="el" href="_t_tip_hit_8h_source.html#l00071">TTipHit::SetUpNumbering()</a>, and <a class="el" href="_t_si_li_hit_8cxx_source.html#l00054">TSiLiHit::SetWavefit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_s3_hit_8cxx_source.html#l00015">TS3Hit::TS3Hit()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00237">TTigress::AddFragment()</a>, <a class="el" href="_t_fipps_8cxx_source.html#l00513">TFipps::CTCorrectedEnergy()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00405">TGriffin::CTCorrectedEnergy()</a>, <a class="el" href="_t_ifin_8cxx_source.html#l00525">TIfin::CTCorrectedEnergy()</a>, <a class="el" href="_t_s3_hit_8h_source.html#l00026">TS3Hit::GetArrayPosition()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00060">TDetectorHit::GetCharge()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00216">TDetectorHit::GetCrystal()</a>, <a class="el" href="_t_s3_hit_8cxx_source.html#l00118">TS3Hit::GetDefaultDistance()</a>, <a class="el" href="_t_s3_hit_8cxx_source.html#l00106">TS3Hit::GetDefaultPhiOffset()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00198">TDetectorHit::GetDetector()</a>, <a class="el" href="_t_s3_hit_8h_source.html#l00033">TS3Hit::GetDistanceStr()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00075">TDetectorHit::GetEnergy()</a>, <a class="el" href="_t_si_li_hit_8cxx_source.html#l00203">TSiLiHit::GetEnergy()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00098">TDetectorHit::GetEnergyNonlinearity()</a>, <a class="el" href="_t_si_li_hit_8cxx_source.html#l00191">TSiLiHit::GetFitEnergy()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00172">TDetectorHit::GetName()</a>, <a class="el" href="_t_fipps_hit_8cxx_source.html#l00101">TFippsHit::GetNoCTEnergy()</a>, <a class="el" href="_t_griffin_hit_8cxx_source.html#l00161">TGriffinHit::GetNoCTEnergy()</a>, <a class="el" href="_t_ifin_hit_8cxx_source.html#l00102">TIfinHit::GetNoCTEnergy()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00207">TDetectorHit::GetSegment()</a>, <a class="el" href="_t_fipps_t_a_c_hit_8cxx_source.html#l00062">TFippsTACHit::GetTempCorrectedEnergy()</a>, <a class="el" href="_t_t_a_c_hit_8cxx_source.html#l00054">TTACHit::GetTempCorrectedEnergy()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00045">TDetectorHit::GetTime()</a>, <a class="el" href="_t_si_li_hit_8h_source.html#l00040">TSiLiHit::GetTimeFit()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00107">TDetectorHit::GetTimeNonlinearity()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00239">TDetectorHit::GetTimeStampNs()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00248">TDetectorHit::GetTimeStampUnit()</a>, <a class="el" href="_t_fragment_8cxx_source.html#l00053">TFragment::GetTZero()</a>, <a class="el" href="_t_fragment_8cxx_source.html#l00104">TFragment::Print()</a>, <a class="el" href="_t_s3_hit_8cxx_source.html#l00068">TS3Hit::SectorsDownstream()</a>, <a class="el" href="_t_tip_hit_8h_source.html#l00071">TTipHit::SetUpNumbering()</a>, and <a class="el" href="_t_si_li_hit_8cxx_source.html#l00054">TSiLiHit::SetWavefit()</a>.</p>
 
 </div>
 </div>
@@ -1204,9 +1206,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8cxx_source.html#l00218">218</a> of file <a class="el" href="_t_detector_hit_8cxx_source.html">TDetectorHit.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8cxx_source.html#l00230">230</a> of file <a class="el" href="_t_detector_hit_8cxx_source.html">TDetectorHit.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00193">TDetectorHit::fAddress</a>, <a class="el" href="_t_channel_8cxx_source.html#l00468">TChannel::GetChannel()</a>, and <a class="el" href="_t_channel_8h_source.html#l00164">TChannel::GetNumber()</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00194">TDetectorHit::fAddress</a>, <a class="el" href="_t_channel_8cxx_source.html#l00476">TChannel::GetChannel()</a>, and <a class="el" href="_t_channel_8h_source.html#l00166">TChannel::GetNumber()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_example_fragment_helper_8cxx_source.html#l00009">ExampleFragmentHelper::Exec()</a>, <a class="el" href="_example_fragment_selector_8_c_source.html#l00021">ExampleFragmentSelector::FillHistograms()</a>, <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00180">MakeGRIFFINChargeHsts()</a>, and <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00527">MakeGRIFFINEnergyHsts()</a>.</p>
 
@@ -1237,9 +1239,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8cxx_source.html#l00058">58</a> of file <a class="el" href="_t_detector_hit_8cxx_source.html">TDetectorHit.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8cxx_source.html#l00060">60</a> of file <a class="el" href="_t_detector_hit_8cxx_source.html">TDetectorHit.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00142">TDetectorHit::Charge()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00195">TDetectorHit::fKValue</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00145">TDetectorHit::GetChannel()</a>, <a class="el" href="_t_channel_8h_source.html#l00166">TChannel::GetIntegration()</a>, and <a class="el" href="_t_channel_8h_source.html#l00184">TChannel::UseCalFileIntegration()</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00143">TDetectorHit::Charge()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00196">TDetectorHit::fKValue</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00146">TDetectorHit::GetChannel()</a>, <a class="el" href="_t_channel_8h_source.html#l00168">TChannel::GetIntegration()</a>, and <a class="el" href="_t_channel_8h_source.html#l00186">TChannel::UseCalFileIntegration()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_example_fragment_helper_8cxx_source.html#l00009">ExampleFragmentHelper::Exec()</a>, <a class="el" href="_example_fragment_selector_8_c_source.html#l00021">ExampleFragmentSelector::FillHistograms()</a>, <a class="el" href="_t_sharc2_hit_8h_source.html#l00087">TSharc2Hit::GetBackCharge()</a>, <a class="el" href="_t_sharc_hit_8h_source.html#l00093">TSharcHit::GetBackCharge()</a>, <a class="el" href="_t_sharc2_hit_8h_source.html#l00083">TSharc2Hit::GetFrontCharge()</a>, <a class="el" href="_t_sharc_hit_8h_source.html#l00089">TSharcHit::GetFrontCharge()</a>, <a class="el" href="_t_sharc2_hit_8h_source.html#l00088">TSharc2Hit::GetPadCharge()</a>, <a class="el" href="_t_sharc_hit_8h_source.html#l00094">TSharcHit::GetPadCharge()</a>, <a class="el" href="_t_fipps_t_a_c_hit_8cxx_source.html#l00042">TFippsTACHit::GetTempCorrectedCharge()</a>, <a class="el" href="_t_t_a_c_hit_8cxx_source.html#l00034">TTACHit::GetTempCorrectedCharge()</a>, <a class="el" href="tac__calibrator_8cxx_source.html#l00033">main()</a>, <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00180">MakeGRIFFINChargeHsts()</a>, <a class="el" href="_t_fragment_8cxx_source.html#l00104">TFragment::Print()</a>, and <a class="el" href="_t_tigress_hit_8cxx_source.html#l00075">TTigressHit::Print()</a>.</p>
 
@@ -1270,9 +1272,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8cxx_source.html#l00204">204</a> of file <a class="el" href="_t_detector_hit_8cxx_source.html">TDetectorHit.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8cxx_source.html#l00216">216</a> of file <a class="el" href="_t_detector_hit_8cxx_source.html">TDetectorHit.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00145">TDetectorHit::GetChannel()</a>, and <a class="el" href="_t_channel_8cxx_source.html#l01569">TChannel::GetCrystalNumber()</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00146">TDetectorHit::GetChannel()</a>, and <a class="el" href="_t_channel_8cxx_source.html#l01602">TChannel::GetCrystalNumber()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00237">TTigress::AddFragment()</a>, <a class="el" href="_t_tigress_hit_8cxx_source.html#l00100">TTigressHit::Compare()</a>, <a class="el" href="_lean_compton_matrices_8cxx_source.html#l00142">ComptonHists()</a>, <a class="el" href="_t_fipps_8cxx_source.html#l00513">TFipps::CTCorrectedEnergy()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00405">TGriffin::CTCorrectedEnergy()</a>, <a class="el" href="_t_ifin_8cxx_source.html#l00525">TIfin::CTCorrectedEnergy()</a>, <a class="el" href="_cross_talk_helper_8cxx_source.html#l00053">CrossTalkHelper::Exec()</a>, <a class="el" href="_cross_talk_8_c_source.html#l00068">CrossTalk::FillHistograms()</a>, <a class="el" href="_t_bgo_hit_8h_source.html#l00028">TBgoHit::GetArrayNumber()</a>, <a class="el" href="_t_fipps_bgo_hit_8h_source.html#l00032">TFippsBgoHit::GetArrayNumber()</a>, <a class="el" href="_t_fipps_hit_8h_source.html#l00032">TFippsHit::GetArrayNumber()</a>, <a class="el" href="_t_griffin_bgo_hit_8h_source.html#l00035">TGriffinBgoHit::GetArrayNumber()</a>, <a class="el" href="_t_griffin_hit_8h_source.html#l00063">TGriffinHit::GetArrayNumber()</a>, <a class="el" href="_t_ifin_bgo_hit_8h_source.html#l00032">TIfinBgoHit::GetArrayNumber()</a>, <a class="el" href="_t_ifin_hit_8h_source.html#l00032">TIfinHit::GetArrayNumber()</a>, <a class="el" href="_t_la_br_bgo_hit_8h_source.html#l00035">TLaBrBgoHit::GetArrayNumber()</a>, <a class="el" href="_t_tdr_clover_hit_8h_source.html#l00060">TTdrCloverHit::GetArrayNumber()</a>, <a class="el" href="_t_tdr_tigress_hit_8h_source.html#l00062">TTdrTigressHit::GetArrayNumber()</a>, <a class="el" href="_t_tigress_hit_8h_source.html#l00069">TTigressHit::GetArrayNumber()</a>, <a class="el" href="_t_tigress_hit_8cxx_source.html#l00058">TTigressHit::GetLastPosition()</a>, <a class="el" href="_t_fipps_hit_8cxx_source.html#l00063">TFippsHit::GetPosition()</a>, <a class="el" href="_t_griffin_hit_8cxx_source.html#l00075">TGriffinHit::GetPosition()</a>, <a class="el" href="_t_ifin_hit_8cxx_source.html#l00064">TIfinHit::GetPosition()</a>, <a class="el" href="_t_tdr_clover_hit_8cxx_source.html#l00081">TTdrCloverHit::GetPosition()</a>, <a class="el" href="_t_tdr_tigress_hit_8cxx_source.html#l00084">TTdrTigressHit::GetPosition()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00335">TTigress::GetPosition()</a>, <a class="el" href="_t_fipps_hit_8cxx_source.html#l00052">TFippsHit::Print()</a>, <a class="el" href="_t_griffin_hit_8cxx_source.html#l00064">TGriffinHit::Print()</a>, <a class="el" href="_t_ifin_hit_8cxx_source.html#l00052">TIfinHit::Print()</a>, <a class="el" href="_t_tdr_clover_hit_8cxx_source.html#l00070">TTdrCloverHit::Print()</a>, and <a class="el" href="_t_tdr_tigress_hit_8cxx_source.html#l00073">TTdrTigressHit::Print()</a>.</p>
 
@@ -1301,9 +1303,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8cxx_source.html#l00261">261</a> of file <a class="el" href="_t_detector_hit_8cxx_source.html">TDetectorHit.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8cxx_source.html#l00273">273</a> of file <a class="el" href="_t_detector_hit_8cxx_source.html">TDetectorHit.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00204">TDetectorHit::fCycleTimeStamp</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00202">TDetectorHit::fPPGStatus</a>, <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TPPG &gt;::Get()</a>, <a class="el" href="_t_p_p_g_8cxx_source.html#l00133">TPPG::GetLastStatusTime()</a>, <a class="el" href="_t_p_p_g_8cxx_source.html#l00189">TPPG::GetStatus()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00227">TDetectorHit::GetTimeStampNs()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00190">TDetectorHit::IsPPGSet()</a>, <a class="el" href="class_t_detector_hit.html#a187897c681b829247a98022bbb81fffeada12718f81ebb26c5299da96b70a03bf">TDetectorHit::kIsPPGSet</a>, and <a class="el" href="_t_detector_hit_8cxx_source.html#l00284">TDetectorHit::SetHitBit()</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00205">TDetectorHit::fCycleTimeStamp</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00203">TDetectorHit::fPPGStatus</a>, <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TPPG &gt;::Get()</a>, <a class="el" href="_t_p_p_g_8cxx_source.html#l00133">TPPG::GetLastStatusTime()</a>, <a class="el" href="_t_p_p_g_8cxx_source.html#l00189">TPPG::GetStatus()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00239">TDetectorHit::GetTimeStampNs()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00191">TDetectorHit::IsPPGSet()</a>, <a class="el" href="class_t_detector_hit.html#a187897c681b829247a98022bbb81fffeada12718f81ebb26c5299da96b70a03bf">TDetectorHit::kIsPPGSet</a>, and <a class="el" href="_t_detector_hit_8cxx_source.html#l00296">TDetectorHit::SetHitBit()</a>.</p>
 
 </div>
 </div>
@@ -1359,11 +1361,11 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8cxx_source.html#l00186">186</a> of file <a class="el" href="_t_detector_hit_8cxx_source.html">TDetectorHit.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8cxx_source.html#l00198">198</a> of file <a class="el" href="_t_detector_hit_8cxx_source.html">TDetectorHit.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00145">TDetectorHit::GetChannel()</a>, and <a class="el" href="_t_channel_8cxx_source.html#l01535">TChannel::GetDetectorNumber()</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00146">TDetectorHit::GetChannel()</a>, and <a class="el" href="_t_channel_8cxx_source.html#l01568">TChannel::GetDetectorNumber()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_cross_talk_8_c_source.html#l00019">Addback()</a>, <a class="el" href="_cross_talk_helper_8cxx_source.html#l00015">Addback()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00237">TTigress::AddFragment()</a>, <a class="el" href="_t_tigress_hit_8cxx_source.html#l00100">TTigressHit::Compare()</a>, <a class="el" href="_lean_compton_matrices_8cxx_source.html#l00142">ComptonHists()</a>, <a class="el" href="_t_fipps_8cxx_source.html#l00513">TFipps::CTCorrectedEnergy()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00405">TGriffin::CTCorrectedEnergy()</a>, <a class="el" href="_t_ifin_8cxx_source.html#l00525">TIfin::CTCorrectedEnergy()</a>, <a class="el" href="_t_tdr_clover_8cxx_source.html#l00024">DefaultAddback()</a>, <a class="el" href="_t_tdr_tigress_8cxx_source.html#l00024">DefaultAddback()</a>, <a class="el" href="_t_fipps_8cxx_source.html#l00014">DefaultFippsAddback()</a>, <a class="el" href="_t_fipps_8cxx_source.html#l00022">DefaultFippsSuppression()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00023">DefaultGriffinAddback()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00031">DefaultGriffinSuppression()</a>, <a class="el" href="_t_ifin_8cxx_source.html#l00014">DefaultIfinAddback()</a>, <a class="el" href="_t_ifin_8cxx_source.html#l00022">DefaultIfinSuppression()</a>, <a class="el" href="_t_la_br_8cxx_source.html#l00008">DefaultLaBrSuppression()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00060">DefaultSuppression()</a>, <a class="el" href="_t_tdr_clover_8cxx_source.html#l00032">DefaultSuppression()</a>, <a class="el" href="_t_tdr_tigress_8cxx_source.html#l00032">DefaultSuppression()</a>, <a class="el" href="_cross_talk_helper_8cxx_source.html#l00053">CrossTalkHelper::Exec()</a>, <a class="el" href="_cross_talk_8_c_source.html#l00068">CrossTalk::FillHistograms()</a>, <a class="el" href="_t_bgo_hit_8h_source.html#l00028">TBgoHit::GetArrayNumber()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00160">TDetectorHit::GetArrayNumber()</a>, <a class="el" href="_t_fipps_bgo_hit_8h_source.html#l00032">TFippsBgoHit::GetArrayNumber()</a>, <a class="el" href="_t_fipps_hit_8h_source.html#l00032">TFippsHit::GetArrayNumber()</a>, <a class="el" href="_t_fipps_la_br_bgo_hit_8h_source.html#l00032">TFippsLaBrBgoHit::GetArrayNumber()</a>, <a class="el" href="_t_griffin_bgo_hit_8h_source.html#l00035">TGriffinBgoHit::GetArrayNumber()</a>, <a class="el" href="_t_griffin_hit_8h_source.html#l00063">TGriffinHit::GetArrayNumber()</a>, <a class="el" href="_t_ifin_bgo_hit_8h_source.html#l00032">TIfinBgoHit::GetArrayNumber()</a>, <a class="el" href="_t_ifin_hit_8h_source.html#l00032">TIfinHit::GetArrayNumber()</a>, <a class="el" href="_t_la_br_bgo_hit_8h_source.html#l00035">TLaBrBgoHit::GetArrayNumber()</a>, <a class="el" href="_t_rcmp_hit_8h_source.html#l00043">GetArrayNumber()</a>, <a class="el" href="_t_tdr_clover_hit_8h_source.html#l00060">TTdrCloverHit::GetArrayNumber()</a>, <a class="el" href="_t_tdr_tigress_hit_8h_source.html#l00062">TTdrTigressHit::GetArrayNumber()</a>, <a class="el" href="_t_tigress_hit_8h_source.html#l00069">TTigressHit::GetArrayNumber()</a>, <a class="el" href="_t_sharc2_8cxx_source.html#l00224">TSharc2::GetDeadLayerThickness()</a>, <a class="el" href="_t_sharc_8cxx_source.html#l00251">TSharc::GetDeadLayerThickness()</a>, <a class="el" href="_t_sharc2_8cxx_source.html#l00205">TSharc2::GetDetectorThickness()</a>, <a class="el" href="_t_sharc_8cxx_source.html#l00231">TSharc::GetDetectorThickness()</a>, <a class="el" href="_t_tigress_hit_8cxx_source.html#l00058">TTigressHit::GetLastPosition()</a>, <a class="el" href="_t_sharc_8cxx_source.html#l00265">TSharc::GetPadDeadLayerThickness()</a>, <a class="el" href="_t_sharc_8cxx_source.html#l00258">TSharc::GetPadThickness()</a>, <a class="el" href="_t_aries_hit_8cxx_source.html#l00046">TAriesHit::GetPosition()</a>, <a class="el" href="_t_demand_8cxx_source.html#l00059">TDemand::GetPosition()</a>, <a class="el" href="_t_descant_hit_8cxx_source.html#l00069">TDescantHit::GetPosition()</a>, <a class="el" href="_t_descant_hit_8cxx_source.html#l00063">TDescantHit::GetPosition()</a>, <a class="el" href="_t_eagle_hit_8cxx_source.html#l00055">TEagleHit::GetPosition()</a>, <a class="el" href="_t_fipps_hit_8cxx_source.html#l00063">TFippsHit::GetPosition()</a>, <a class="el" href="_t_fipps_la_br_hit_8cxx_source.html#l00042">TFippsLaBrHit::GetPosition()</a>, <a class="el" href="_t_griffin_hit_8cxx_source.html#l00075">TGriffinHit::GetPosition()</a>, <a class="el" href="_t_ifin_hit_8cxx_source.html#l00064">TIfinHit::GetPosition()</a>, <a class="el" href="_t_la_br_hit_8cxx_source.html#l00036">TLaBrHit::GetPosition()</a>, <a class="el" href="_t_paces_hit_8cxx_source.html#l00056">TPacesHit::GetPosition()</a>, <a class="el" href="_t_pin_diode_hit_8cxx_source.html#l00054">TPinDiodeHit::GetPosition()</a>, <a class="el" href="_t_sceptar_hit_8cxx_source.html#l00051">TSceptarHit::GetPosition()</a>, <a class="el" href="_t_sharc2_hit_8cxx_source.html#l00050">TSharc2Hit::GetPosition()</a>, <a class="el" href="_t_sharc_hit_8cxx_source.html#l00050">TSharcHit::GetPosition()</a>, <a class="el" href="_t_tdr_clover_hit_8cxx_source.html#l00081">TTdrCloverHit::GetPosition()</a>, <a class="el" href="_t_tdr_plastic_hit_8cxx_source.html#l00086">TTdrPlasticHit::GetPosition()</a>, <a class="el" href="_t_tdr_si_li_hit_8cxx_source.html#l00058">TTdrSiLiHit::GetPosition()</a>, <a class="el" href="_t_tdr_tigress_hit_8cxx_source.html#l00084">TTdrTigressHit::GetPosition()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00335">TTigress::GetPosition()</a>, <a class="el" href="_t_trific_hit_8cxx_source.html#l00049">TTrificHit::GetPosition()</a>, <a class="el" href="_t_trific_8cxx_source.html#l00113">TTrific::GetXYGrid()</a>, <a class="el" href="tac__calibrator_8cxx_source.html#l00033">main()</a>, <a class="el" href="_t_aries_hit_8cxx_source.html#l00074">TAriesHit::Print()</a>, <a class="el" href="_t_demand_hit_8cxx_source.html#l00073">TDemandHit::Print()</a>, <a class="el" href="_t_descant_hit_8cxx_source.html#l00111">TDescantHit::Print()</a>, <a class="el" href="_t_eagle_hit_8cxx_source.html#l00080">TEagleHit::Print()</a>, <a class="el" href="_t_fipps_hit_8cxx_source.html#l00052">TFippsHit::Print()</a>, <a class="el" href="_t_fipps_la_br_hit_8cxx_source.html#l00069">TFippsLaBrHit::Print()</a>, <a class="el" href="_t_fipps_t_a_c_hit_8cxx_source.html#l00096">TFippsTACHit::Print()</a>, <a class="el" href="_t_griffin_hit_8cxx_source.html#l00064">TGriffinHit::Print()</a>, <a class="el" href="_t_ifin_hit_8cxx_source.html#l00052">TIfinHit::Print()</a>, <a class="el" href="_t_la_br_hit_8cxx_source.html#l00072">TLaBrHit::Print()</a>, <a class="el" href="_t_paces_hit_8cxx_source.html#l00047">TPacesHit::Print()</a>, <a class="el" href="_t_pin_diode_hit_8cxx_source.html#l00079">TPinDiodeHit::Print()</a>, <a class="el" href="_t_rcmp_hit_8cxx_source.html#l00063">Print()</a>, <a class="el" href="_t_sceptar_hit_8cxx_source.html#l00086">TSceptarHit::Print()</a>, <a class="el" href="_t_sharc2_hit_8cxx_source.html#l00043">TSharc2Hit::Print()</a>, <a class="el" href="_t_sharc_hit_8cxx_source.html#l00043">TSharcHit::Print()</a>, <a class="el" href="_t_t_a_c_hit_8cxx_source.html#l00098">TTACHit::Print()</a>, <a class="el" href="_t_tdr_clover_hit_8cxx_source.html#l00070">TTdrCloverHit::Print()</a>, <a class="el" href="_t_tdr_plastic_hit_8cxx_source.html#l00121">TTdrPlasticHit::Print()</a>, <a class="el" href="_t_tdr_si_li_hit_8cxx_source.html#l00049">TTdrSiLiHit::Print()</a>, <a class="el" href="_t_tdr_tigress_hit_8cxx_source.html#l00073">TTdrTigressHit::Print()</a>, <a class="el" href="_t_tip_hit_8cxx_source.html#l00082">TTipHit::Print()</a>, <a class="el" href="_t_trific_hit_8cxx_source.html#l00039">TTrificHit::Print()</a>, and <a class="el" href="_t_zero_degree_hit_8cxx_source.html#l00095">TZeroDegreeHit::Print()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_cross_talk_8_c_source.html#l00019">Addback()</a>, <a class="el" href="_cross_talk_helper_8cxx_source.html#l00015">Addback()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00237">TTigress::AddFragment()</a>, <a class="el" href="_t_tigress_hit_8cxx_source.html#l00100">TTigressHit::Compare()</a>, <a class="el" href="_lean_compton_matrices_8cxx_source.html#l00142">ComptonHists()</a>, <a class="el" href="_t_fipps_8cxx_source.html#l00513">TFipps::CTCorrectedEnergy()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00405">TGriffin::CTCorrectedEnergy()</a>, <a class="el" href="_t_ifin_8cxx_source.html#l00525">TIfin::CTCorrectedEnergy()</a>, <a class="el" href="_t_tdr_clover_8cxx_source.html#l00024">DefaultAddback()</a>, <a class="el" href="_t_tdr_tigress_8cxx_source.html#l00024">DefaultAddback()</a>, <a class="el" href="_t_fipps_8cxx_source.html#l00014">DefaultFippsAddback()</a>, <a class="el" href="_t_fipps_8cxx_source.html#l00022">DefaultFippsSuppression()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00023">DefaultGriffinAddback()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00031">DefaultGriffinSuppression()</a>, <a class="el" href="_t_ifin_8cxx_source.html#l00014">DefaultIfinAddback()</a>, <a class="el" href="_t_ifin_8cxx_source.html#l00022">DefaultIfinSuppression()</a>, <a class="el" href="_t_la_br_8cxx_source.html#l00008">DefaultLaBrSuppression()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00060">DefaultSuppression()</a>, <a class="el" href="_t_tdr_clover_8cxx_source.html#l00032">DefaultSuppression()</a>, <a class="el" href="_t_tdr_tigress_8cxx_source.html#l00032">DefaultSuppression()</a>, <a class="el" href="_cross_talk_helper_8cxx_source.html#l00053">CrossTalkHelper::Exec()</a>, <a class="el" href="_cross_talk_8_c_source.html#l00068">CrossTalk::FillHistograms()</a>, <a class="el" href="_t_bgo_hit_8h_source.html#l00028">TBgoHit::GetArrayNumber()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00161">TDetectorHit::GetArrayNumber()</a>, <a class="el" href="_t_fipps_bgo_hit_8h_source.html#l00032">TFippsBgoHit::GetArrayNumber()</a>, <a class="el" href="_t_fipps_hit_8h_source.html#l00032">TFippsHit::GetArrayNumber()</a>, <a class="el" href="_t_fipps_la_br_bgo_hit_8h_source.html#l00032">TFippsLaBrBgoHit::GetArrayNumber()</a>, <a class="el" href="_t_griffin_bgo_hit_8h_source.html#l00035">TGriffinBgoHit::GetArrayNumber()</a>, <a class="el" href="_t_griffin_hit_8h_source.html#l00063">TGriffinHit::GetArrayNumber()</a>, <a class="el" href="_t_ifin_bgo_hit_8h_source.html#l00032">TIfinBgoHit::GetArrayNumber()</a>, <a class="el" href="_t_ifin_hit_8h_source.html#l00032">TIfinHit::GetArrayNumber()</a>, <a class="el" href="_t_la_br_bgo_hit_8h_source.html#l00035">TLaBrBgoHit::GetArrayNumber()</a>, <a class="el" href="_t_rcmp_hit_8h_source.html#l00043">GetArrayNumber()</a>, <a class="el" href="_t_tdr_clover_hit_8h_source.html#l00060">TTdrCloverHit::GetArrayNumber()</a>, <a class="el" href="_t_tdr_tigress_hit_8h_source.html#l00062">TTdrTigressHit::GetArrayNumber()</a>, <a class="el" href="_t_tigress_hit_8h_source.html#l00069">TTigressHit::GetArrayNumber()</a>, <a class="el" href="_t_sharc2_8cxx_source.html#l00224">TSharc2::GetDeadLayerThickness()</a>, <a class="el" href="_t_sharc_8cxx_source.html#l00251">TSharc::GetDeadLayerThickness()</a>, <a class="el" href="_t_sharc2_8cxx_source.html#l00205">TSharc2::GetDetectorThickness()</a>, <a class="el" href="_t_sharc_8cxx_source.html#l00231">TSharc::GetDetectorThickness()</a>, <a class="el" href="_t_tigress_hit_8cxx_source.html#l00058">TTigressHit::GetLastPosition()</a>, <a class="el" href="_t_sharc_8cxx_source.html#l00265">TSharc::GetPadDeadLayerThickness()</a>, <a class="el" href="_t_sharc_8cxx_source.html#l00258">TSharc::GetPadThickness()</a>, <a class="el" href="_t_aries_hit_8cxx_source.html#l00046">TAriesHit::GetPosition()</a>, <a class="el" href="_t_demand_8cxx_source.html#l00059">TDemand::GetPosition()</a>, <a class="el" href="_t_descant_hit_8cxx_source.html#l00069">TDescantHit::GetPosition()</a>, <a class="el" href="_t_descant_hit_8cxx_source.html#l00063">TDescantHit::GetPosition()</a>, <a class="el" href="_t_eagle_hit_8cxx_source.html#l00055">TEagleHit::GetPosition()</a>, <a class="el" href="_t_fipps_hit_8cxx_source.html#l00063">TFippsHit::GetPosition()</a>, <a class="el" href="_t_fipps_la_br_hit_8cxx_source.html#l00042">TFippsLaBrHit::GetPosition()</a>, <a class="el" href="_t_griffin_hit_8cxx_source.html#l00075">TGriffinHit::GetPosition()</a>, <a class="el" href="_t_ifin_hit_8cxx_source.html#l00064">TIfinHit::GetPosition()</a>, <a class="el" href="_t_la_br_hit_8cxx_source.html#l00036">TLaBrHit::GetPosition()</a>, <a class="el" href="_t_paces_hit_8cxx_source.html#l00056">TPacesHit::GetPosition()</a>, <a class="el" href="_t_pin_diode_hit_8cxx_source.html#l00054">TPinDiodeHit::GetPosition()</a>, <a class="el" href="_t_sceptar_hit_8cxx_source.html#l00051">TSceptarHit::GetPosition()</a>, <a class="el" href="_t_sharc2_hit_8cxx_source.html#l00050">TSharc2Hit::GetPosition()</a>, <a class="el" href="_t_sharc_hit_8cxx_source.html#l00050">TSharcHit::GetPosition()</a>, <a class="el" href="_t_tdr_clover_hit_8cxx_source.html#l00081">TTdrCloverHit::GetPosition()</a>, <a class="el" href="_t_tdr_plastic_hit_8cxx_source.html#l00086">TTdrPlasticHit::GetPosition()</a>, <a class="el" href="_t_tdr_si_li_hit_8cxx_source.html#l00058">TTdrSiLiHit::GetPosition()</a>, <a class="el" href="_t_tdr_tigress_hit_8cxx_source.html#l00084">TTdrTigressHit::GetPosition()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00335">TTigress::GetPosition()</a>, <a class="el" href="_t_trific_hit_8cxx_source.html#l00049">TTrificHit::GetPosition()</a>, <a class="el" href="_t_trific_8cxx_source.html#l00113">TTrific::GetXYGrid()</a>, <a class="el" href="tac__calibrator_8cxx_source.html#l00033">main()</a>, <a class="el" href="_t_aries_hit_8cxx_source.html#l00074">TAriesHit::Print()</a>, <a class="el" href="_t_demand_hit_8cxx_source.html#l00073">TDemandHit::Print()</a>, <a class="el" href="_t_descant_hit_8cxx_source.html#l00111">TDescantHit::Print()</a>, <a class="el" href="_t_eagle_hit_8cxx_source.html#l00080">TEagleHit::Print()</a>, <a class="el" href="_t_fipps_hit_8cxx_source.html#l00052">TFippsHit::Print()</a>, <a class="el" href="_t_fipps_la_br_hit_8cxx_source.html#l00069">TFippsLaBrHit::Print()</a>, <a class="el" href="_t_fipps_t_a_c_hit_8cxx_source.html#l00096">TFippsTACHit::Print()</a>, <a class="el" href="_t_griffin_hit_8cxx_source.html#l00064">TGriffinHit::Print()</a>, <a class="el" href="_t_ifin_hit_8cxx_source.html#l00052">TIfinHit::Print()</a>, <a class="el" href="_t_la_br_hit_8cxx_source.html#l00072">TLaBrHit::Print()</a>, <a class="el" href="_t_paces_hit_8cxx_source.html#l00047">TPacesHit::Print()</a>, <a class="el" href="_t_pin_diode_hit_8cxx_source.html#l00079">TPinDiodeHit::Print()</a>, <a class="el" href="_t_rcmp_hit_8cxx_source.html#l00063">Print()</a>, <a class="el" href="_t_sceptar_hit_8cxx_source.html#l00086">TSceptarHit::Print()</a>, <a class="el" href="_t_sharc2_hit_8cxx_source.html#l00043">TSharc2Hit::Print()</a>, <a class="el" href="_t_sharc_hit_8cxx_source.html#l00043">TSharcHit::Print()</a>, <a class="el" href="_t_t_a_c_hit_8cxx_source.html#l00098">TTACHit::Print()</a>, <a class="el" href="_t_tdr_clover_hit_8cxx_source.html#l00070">TTdrCloverHit::Print()</a>, <a class="el" href="_t_tdr_plastic_hit_8cxx_source.html#l00121">TTdrPlasticHit::Print()</a>, <a class="el" href="_t_tdr_si_li_hit_8cxx_source.html#l00049">TTdrSiLiHit::Print()</a>, <a class="el" href="_t_tdr_tigress_hit_8cxx_source.html#l00073">TTdrTigressHit::Print()</a>, <a class="el" href="_t_tip_hit_8cxx_source.html#l00082">TTipHit::Print()</a>, <a class="el" href="_t_trific_hit_8cxx_source.html#l00039">TTrificHit::Print()</a>, and <a class="el" href="_t_zero_degree_hit_8cxx_source.html#l00095">TZeroDegreeHit::Print()</a>.</p>
 
 </div>
 </div>
@@ -1392,11 +1394,11 @@ Static Private Attributes</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="class_t_c_s_m_hit.html#a3f78c22bbed6607b8431ec4a43177fdb">TCSMHit</a>, <a class="el" href="class_t_sharc2_hit.html#a6d211e7ecb322557d1591006e224acd9">TSharc2Hit</a>, <a class="el" href="class_t_sharc_hit.html#aaff9e035dcd748dcde5c909dbc8b3d95">TSharcHit</a>, and <a class="el" href="class_t_si_li_hit.html#a25b8e7d746c7c5c274a5be64533df810">TSiLiHit</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8cxx_source.html#l00073">73</a> of file <a class="el" href="_t_detector_hit_8cxx_source.html">TDetectorHit.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8cxx_source.html#l00075">75</a> of file <a class="el" href="_t_detector_hit_8cxx_source.html">TDetectorHit.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_channel_8cxx_source.html#l00655">TChannel::CalibrateENG()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00142">TDetectorHit::Charge()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00201">TDetectorHit::fEnergy</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00195">TDetectorHit::fKValue</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00145">TDetectorHit::GetChannel()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00096">TDetectorHit::GetEnergyNonlinearity()</a>, <a class="el" href="class_t_detector_hit.html#a187897c681b829247a98022bbb81fffea7433dc57f9db1fc472789e8796527f19">TDetectorHit::kIsEnergySet</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00118">TDetectorHit::SetEnergy()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00184">TDetectorHit::TestHitBit()</a>, and <a class="el" href="_t_channel_8h_source.html#l00184">TChannel::UseCalFileIntegration()</a>.</p>
+<p class="reference">References <a class="el" href="_t_channel_8cxx_source.html#l00668">TChannel::CalibrateENG()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00143">TDetectorHit::Charge()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00202">TDetectorHit::fEnergy</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00196">TDetectorHit::fKValue</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00146">TDetectorHit::GetChannel()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00098">TDetectorHit::GetEnergyNonlinearity()</a>, <a class="el" href="class_t_detector_hit.html#a187897c681b829247a98022bbb81fffea7433dc57f9db1fc472789e8796527f19">TDetectorHit::kIsEnergySet</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00118">TDetectorHit::SetEnergy()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00185">TDetectorHit::TestHitBit()</a>, and <a class="el" href="_t_channel_8h_source.html#l00186">TChannel::UseCalFileIntegration()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_fipps_hit_8cxx_source.html#l00078">TFippsHit::Add()</a>, <a class="el" href="_t_griffin_hit_8cxx_source.html#l00090">TGriffinHit::Add()</a>, <a class="el" href="_t_ifin_hit_8cxx_source.html#l00079">TIfinHit::Add()</a>, <a class="el" href="_t_tdr_clover_hit_8cxx_source.html#l00096">TTdrCloverHit::Add()</a>, <a class="el" href="_t_tdr_tigress_hit_8cxx_source.html#l00099">TTdrTigressHit::Add()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00213">TDetectorHit::CompareEnergy()</a>, <a class="el" href="_t_fipps_hit_8cxx_source.html#l00073">TFippsHit::CompareEnergy()</a>, <a class="el" href="_t_griffin_hit_8cxx_source.html#l00085">TGriffinHit::CompareEnergy()</a>, <a class="el" href="_t_ifin_hit_8cxx_source.html#l00074">TIfinHit::CompareEnergy()</a>, <a class="el" href="_t_tdr_clover_hit_8cxx_source.html#l00091">TTdrCloverHit::CompareEnergy()</a>, <a class="el" href="_t_tdr_tigress_hit_8cxx_source.html#l00094">TTdrTigressHit::CompareEnergy()</a>, <a class="el" href="_t_tigress_hit_8cxx_source.html#l00108">TTigressHit::CompareEnergy()</a>, <a class="el" href="_lean_compton_matrices_8cxx_source.html#l00142">ComptonHists()</a>, <a class="el" href="_t_fipps_8cxx_source.html#l00513">TFipps::CTCorrectedEnergy()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00405">TGriffin::CTCorrectedEnergy()</a>, <a class="el" href="_t_ifin_8cxx_source.html#l00525">TIfin::CTCorrectedEnergy()</a>, <a class="el" href="_t_fipps_8cxx_source.html#l00022">DefaultFippsSuppression()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00031">DefaultGriffinSuppression()</a>, <a class="el" href="_t_ifin_8cxx_source.html#l00022">DefaultIfinSuppression()</a>, <a class="el" href="_t_la_br_8cxx_source.html#l00008">DefaultLaBrSuppression()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00060">DefaultSuppression()</a>, <a class="el" href="_t_tdr_clover_8cxx_source.html#l00032">DefaultSuppression()</a>, <a class="el" href="_t_tdr_tigress_8cxx_source.html#l00032">DefaultSuppression()</a>, <a class="el" href="_example_fragment_helper_8cxx_source.html#l00009">ExampleFragmentHelper::Exec()</a>, <a class="el" href="_griffin_k_value_helper_8cxx_source.html#l00023">GriffinKValueHelper::Exec()</a>, <a class="el" href="_cross_talk_8_c_source.html#l00068">CrossTalk::FillHistograms()</a>, <a class="el" href="_example_fragment_selector_8_c_source.html#l00021">ExampleFragmentSelector::FillHistograms()</a>, <a class="el" href="_griffin_k_value_selector_8_c_source.html#l00037">GriffinKValueSelector::FillHistograms()</a>, <a class="el" href="_t_sharc2_hit_8h_source.html#l00073">TSharc2Hit::GetDeltaBackE()</a>, <a class="el" href="_t_sharc_hit_8h_source.html#l00077">TSharcHit::GetDeltaBackE()</a>, <a class="el" href="_t_sharc2_hit_8h_source.html#l00068">TSharc2Hit::GetDeltaE()</a>, <a class="el" href="_t_sharc_hit_8h_source.html#l00072">TSharcHit::GetDeltaE()</a>, <a class="el" href="_t_sharc2_hit_8h_source.html#l00071">TSharc2Hit::GetDeltaFrontE()</a>, <a class="el" href="_t_sharc_hit_8h_source.html#l00075">TSharcHit::GetDeltaFrontE()</a>, <a class="el" href="_t_tigress_hit_8h_source.html#l00071">TTigressHit::GetDoppler()</a>, <a class="el" href="_t_sharc2_hit_8h_source.html#l00090">TSharc2Hit::GetEnergy()</a>, <a class="el" href="_t_sharc_hit_8h_source.html#l00096">TSharcHit::GetEnergy()</a>, <a class="el" href="_t_si_li_hit_8cxx_source.html#l00203">TSiLiHit::GetEnergy()</a>, <a class="el" href="_t_si_li_hit_8cxx_source.html#l00191">TSiLiHit::GetFitEnergy()</a>, <a class="el" href="_t_sharc2_hit_8h_source.html#l00080">TSharc2Hit::GetPadE()</a>, <a class="el" href="_t_sharc_hit_8h_source.html#l00084">TSharcHit::GetPadE()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00045">TDetectorHit::GetTime()</a>, <a class="el" href="_t_fragment_8cxx_source.html#l00053">TFragment::GetTZero()</a>, <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00527">MakeGRIFFINEnergyHsts()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00085">TDetectorHit::operator&lt;()</a>, <a class="el" href="_t_aries_hit_8cxx_source.html#l00074">TAriesHit::Print()</a>, <a class="el" href="_t_demand_hit_8cxx_source.html#l00073">TDemandHit::Print()</a>, <a class="el" href="_t_descant_hit_8cxx_source.html#l00111">TDescantHit::Print()</a>, <a class="el" href="_t_eagle_hit_8cxx_source.html#l00080">TEagleHit::Print()</a>, <a class="el" href="_t_fipps_hit_8cxx_source.html#l00052">TFippsHit::Print()</a>, <a class="el" href="_t_fipps_la_br_hit_8cxx_source.html#l00069">TFippsLaBrHit::Print()</a>, <a class="el" href="_t_fipps_t_a_c_hit_8cxx_source.html#l00096">TFippsTACHit::Print()</a>, <a class="el" href="_t_griffin_hit_8cxx_source.html#l00064">TGriffinHit::Print()</a>, <a class="el" href="_t_ifin_hit_8cxx_source.html#l00052">TIfinHit::Print()</a>, <a class="el" href="_t_la_br_hit_8cxx_source.html#l00072">TLaBrHit::Print()</a>, <a class="el" href="_t_paces_hit_8cxx_source.html#l00047">TPacesHit::Print()</a>, <a class="el" href="_t_pin_diode_hit_8cxx_source.html#l00079">TPinDiodeHit::Print()</a>, <a class="el" href="_t_rcmp_hit_8cxx_source.html#l00063">Print()</a>, <a class="el" href="_t_sceptar_hit_8cxx_source.html#l00086">TSceptarHit::Print()</a>, <a class="el" href="_t_t_a_c_hit_8cxx_source.html#l00098">TTACHit::Print()</a>, <a class="el" href="_t_tdr_clover_hit_8cxx_source.html#l00070">TTdrCloverHit::Print()</a>, <a class="el" href="_t_tdr_plastic_hit_8cxx_source.html#l00121">TTdrPlasticHit::Print()</a>, <a class="el" href="_t_tdr_si_li_hit_8cxx_source.html#l00049">TTdrSiLiHit::Print()</a>, <a class="el" href="_t_tdr_tigress_hit_8cxx_source.html#l00073">TTdrTigressHit::Print()</a>, <a class="el" href="_t_tigress_hit_8cxx_source.html#l00075">TTigressHit::Print()</a>, <a class="el" href="_t_tip_hit_8cxx_source.html#l00082">TTipHit::Print()</a>, <a class="el" href="_t_trific_hit_8cxx_source.html#l00039">TTrificHit::Print()</a>, <a class="el" href="_t_zero_degree_hit_8cxx_source.html#l00095">TZeroDegreeHit::Print()</a>, <a class="el" href="_efficiency_helper_8hh_source.html#l00083">EfficiencyHelper::Reject()</a>, and <a class="el" href="_t_tigress_hit_8cxx_source.html#l00113">TTigressHit::SumHit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_fipps_hit_8cxx_source.html#l00078">TFippsHit::Add()</a>, <a class="el" href="_t_griffin_hit_8cxx_source.html#l00090">TGriffinHit::Add()</a>, <a class="el" href="_t_ifin_hit_8cxx_source.html#l00079">TIfinHit::Add()</a>, <a class="el" href="_t_tdr_clover_hit_8cxx_source.html#l00096">TTdrCloverHit::Add()</a>, <a class="el" href="_t_tdr_tigress_hit_8cxx_source.html#l00099">TTdrTigressHit::Add()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00225">TDetectorHit::CompareEnergy()</a>, <a class="el" href="_t_fipps_hit_8cxx_source.html#l00073">TFippsHit::CompareEnergy()</a>, <a class="el" href="_t_griffin_hit_8cxx_source.html#l00085">TGriffinHit::CompareEnergy()</a>, <a class="el" href="_t_ifin_hit_8cxx_source.html#l00074">TIfinHit::CompareEnergy()</a>, <a class="el" href="_t_tdr_clover_hit_8cxx_source.html#l00091">TTdrCloverHit::CompareEnergy()</a>, <a class="el" href="_t_tdr_tigress_hit_8cxx_source.html#l00094">TTdrTigressHit::CompareEnergy()</a>, <a class="el" href="_t_tigress_hit_8cxx_source.html#l00108">TTigressHit::CompareEnergy()</a>, <a class="el" href="_lean_compton_matrices_8cxx_source.html#l00142">ComptonHists()</a>, <a class="el" href="_t_fipps_8cxx_source.html#l00513">TFipps::CTCorrectedEnergy()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00405">TGriffin::CTCorrectedEnergy()</a>, <a class="el" href="_t_ifin_8cxx_source.html#l00525">TIfin::CTCorrectedEnergy()</a>, <a class="el" href="_t_fipps_8cxx_source.html#l00022">DefaultFippsSuppression()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00031">DefaultGriffinSuppression()</a>, <a class="el" href="_t_ifin_8cxx_source.html#l00022">DefaultIfinSuppression()</a>, <a class="el" href="_t_la_br_8cxx_source.html#l00008">DefaultLaBrSuppression()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00060">DefaultSuppression()</a>, <a class="el" href="_t_tdr_clover_8cxx_source.html#l00032">DefaultSuppression()</a>, <a class="el" href="_t_tdr_tigress_8cxx_source.html#l00032">DefaultSuppression()</a>, <a class="el" href="_example_fragment_helper_8cxx_source.html#l00009">ExampleFragmentHelper::Exec()</a>, <a class="el" href="_griffin_k_value_helper_8cxx_source.html#l00023">GriffinKValueHelper::Exec()</a>, <a class="el" href="_cross_talk_8_c_source.html#l00068">CrossTalk::FillHistograms()</a>, <a class="el" href="_example_fragment_selector_8_c_source.html#l00021">ExampleFragmentSelector::FillHistograms()</a>, <a class="el" href="_griffin_k_value_selector_8_c_source.html#l00037">GriffinKValueSelector::FillHistograms()</a>, <a class="el" href="_t_sharc2_hit_8h_source.html#l00073">TSharc2Hit::GetDeltaBackE()</a>, <a class="el" href="_t_sharc_hit_8h_source.html#l00077">TSharcHit::GetDeltaBackE()</a>, <a class="el" href="_t_sharc2_hit_8h_source.html#l00068">TSharc2Hit::GetDeltaE()</a>, <a class="el" href="_t_sharc_hit_8h_source.html#l00072">TSharcHit::GetDeltaE()</a>, <a class="el" href="_t_sharc2_hit_8h_source.html#l00071">TSharc2Hit::GetDeltaFrontE()</a>, <a class="el" href="_t_sharc_hit_8h_source.html#l00075">TSharcHit::GetDeltaFrontE()</a>, <a class="el" href="_t_tigress_hit_8h_source.html#l00071">TTigressHit::GetDoppler()</a>, <a class="el" href="_t_sharc2_hit_8h_source.html#l00090">TSharc2Hit::GetEnergy()</a>, <a class="el" href="_t_sharc_hit_8h_source.html#l00096">TSharcHit::GetEnergy()</a>, <a class="el" href="_t_si_li_hit_8cxx_source.html#l00203">TSiLiHit::GetEnergy()</a>, <a class="el" href="_t_si_li_hit_8cxx_source.html#l00191">TSiLiHit::GetFitEnergy()</a>, <a class="el" href="_t_sharc2_hit_8h_source.html#l00080">TSharc2Hit::GetPadE()</a>, <a class="el" href="_t_sharc_hit_8h_source.html#l00084">TSharcHit::GetPadE()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00045">TDetectorHit::GetTime()</a>, <a class="el" href="_t_fragment_8cxx_source.html#l00053">TFragment::GetTZero()</a>, <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00527">MakeGRIFFINEnergyHsts()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00085">TDetectorHit::operator&lt;()</a>, <a class="el" href="_t_aries_hit_8cxx_source.html#l00074">TAriesHit::Print()</a>, <a class="el" href="_t_demand_hit_8cxx_source.html#l00073">TDemandHit::Print()</a>, <a class="el" href="_t_descant_hit_8cxx_source.html#l00111">TDescantHit::Print()</a>, <a class="el" href="_t_eagle_hit_8cxx_source.html#l00080">TEagleHit::Print()</a>, <a class="el" href="_t_fipps_hit_8cxx_source.html#l00052">TFippsHit::Print()</a>, <a class="el" href="_t_fipps_la_br_hit_8cxx_source.html#l00069">TFippsLaBrHit::Print()</a>, <a class="el" href="_t_fipps_t_a_c_hit_8cxx_source.html#l00096">TFippsTACHit::Print()</a>, <a class="el" href="_t_griffin_hit_8cxx_source.html#l00064">TGriffinHit::Print()</a>, <a class="el" href="_t_ifin_hit_8cxx_source.html#l00052">TIfinHit::Print()</a>, <a class="el" href="_t_la_br_hit_8cxx_source.html#l00072">TLaBrHit::Print()</a>, <a class="el" href="_t_paces_hit_8cxx_source.html#l00047">TPacesHit::Print()</a>, <a class="el" href="_t_pin_diode_hit_8cxx_source.html#l00079">TPinDiodeHit::Print()</a>, <a class="el" href="_t_rcmp_hit_8cxx_source.html#l00063">Print()</a>, <a class="el" href="_t_sceptar_hit_8cxx_source.html#l00086">TSceptarHit::Print()</a>, <a class="el" href="_t_t_a_c_hit_8cxx_source.html#l00098">TTACHit::Print()</a>, <a class="el" href="_t_tdr_clover_hit_8cxx_source.html#l00070">TTdrCloverHit::Print()</a>, <a class="el" href="_t_tdr_plastic_hit_8cxx_source.html#l00121">TTdrPlasticHit::Print()</a>, <a class="el" href="_t_tdr_si_li_hit_8cxx_source.html#l00049">TTdrSiLiHit::Print()</a>, <a class="el" href="_t_tdr_tigress_hit_8cxx_source.html#l00073">TTdrTigressHit::Print()</a>, <a class="el" href="_t_tigress_hit_8cxx_source.html#l00075">TTigressHit::Print()</a>, <a class="el" href="_t_tip_hit_8cxx_source.html#l00082">TTipHit::Print()</a>, <a class="el" href="_t_trific_hit_8cxx_source.html#l00039">TTrificHit::Print()</a>, <a class="el" href="_t_zero_degree_hit_8cxx_source.html#l00095">TZeroDegreeHit::Print()</a>, <a class="el" href="_efficiency_helper_8hh_source.html#l00083">EfficiencyHelper::Reject()</a>, and <a class="el" href="_t_tigress_hit_8cxx_source.html#l00113">TTigressHit::SumHit()</a>.</p>
 
 </div>
 </div>
@@ -1423,11 +1425,11 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8cxx_source.html#l00096">96</a> of file <a class="el" href="_t_detector_hit_8cxx_source.html">TDetectorHit.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8cxx_source.html#l00098">98</a> of file <a class="el" href="_t_detector_hit_8cxx_source.html">TDetectorHit.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00145">TDetectorHit::GetChannel()</a>, and <a class="el" href="_t_channel_8h_source.html#l00193">TChannel::GetEnergyNonlinearity()</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00146">TDetectorHit::GetChannel()</a>, and <a class="el" href="_t_channel_8h_source.html#l00195">TChannel::GetEnergyNonlinearity()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_detector_hit_8cxx_source.html#l00073">TDetectorHit::GetEnergy()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_detector_hit_8cxx_source.html#l00075">TDetectorHit::GetEnergy()</a>.</p>
 
 </div>
 </div>
@@ -1487,9 +1489,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00143">143</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00144">144</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00195">TDetectorHit::fKValue</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00196">TDetectorHit::fKValue</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_fipps_hit_8cxx_source.html#l00078">TFippsHit::Add()</a>, <a class="el" href="_t_griffin_hit_8cxx_source.html#l00090">TGriffinHit::Add()</a>, <a class="el" href="_t_ifin_hit_8cxx_source.html#l00079">TIfinHit::Add()</a>, <a class="el" href="_t_tdr_clover_hit_8cxx_source.html#l00096">TTdrCloverHit::Add()</a>, <a class="el" href="_t_tdr_tigress_hit_8cxx_source.html#l00099">TTdrTigressHit::Add()</a>, <a class="el" href="_griffin_k_value_helper_8cxx_source.html#l00023">GriffinKValueHelper::Exec()</a>, <a class="el" href="_cross_talk_8_c_source.html#l00068">CrossTalk::FillHistograms()</a>, <a class="el" href="_griffin_k_value_selector_8_c_source.html#l00037">GriffinKValueSelector::FillHistograms()</a>, <a class="el" href="_t_fipps_hit_8cxx_source.html#l00101">TFippsHit::GetNoCTEnergy()</a>, <a class="el" href="_t_griffin_hit_8cxx_source.html#l00161">TGriffinHit::GetNoCTEnergy()</a>, <a class="el" href="_t_ifin_hit_8cxx_source.html#l00102">TIfinHit::GetNoCTEnergy()</a>, <a class="el" href="_t_fipps_t_a_c_hit_8cxx_source.html#l00062">TFippsTACHit::GetTempCorrectedEnergy()</a>, <a class="el" href="_t_t_a_c_hit_8cxx_source.html#l00054">TTACHit::GetTempCorrectedEnergy()</a>, <a class="el" href="_gain_match_g_r_i_f_f_i_n_8cxx_source.html#l00180">MakeGRIFFINChargeHsts()</a>, and <a class="el" href="_efficiency_helper_8hh_source.html#l00083">EfficiencyHelper::Reject()</a>.</p>
 
@@ -1520,11 +1522,11 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8cxx_source.html#l00160">160</a> of file <a class="el" href="_t_detector_hit_8cxx_source.html">TDetectorHit.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8cxx_source.html#l00172">172</a> of file <a class="el" href="_t_detector_hit_8cxx_source.html">TDetectorHit.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00145">TDetectorHit::GetChannel()</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00146">TDetectorHit::GetChannel()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_fragment_8cxx_source.html#l00131">TFragment::IsDetector()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00147">TDetectorHit::Print()</a>, <a class="el" href="_t_tigress_hit_8cxx_source.html#l00075">TTigressHit::Print()</a>, and <a class="el" href="_t_tigress_hit_8cxx_source.html#l00154">TTigressHit::SetWavefit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_fragment_8cxx_source.html#l00131">TFragment::IsDetector()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00159">TDetectorHit::Print()</a>, <a class="el" href="_t_tigress_hit_8cxx_source.html#l00075">TTigressHit::Print()</a>, and <a class="el" href="_t_tigress_hit_8cxx_source.html#l00154">TTigressHit::SetWavefit()</a>.</p>
 
 </div>
 </div>
@@ -1619,9 +1621,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8cxx_source.html#l00245">245</a> of file <a class="el" href="_t_detector_hit_8cxx_source.html">TDetectorHit.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8cxx_source.html#l00257">257</a> of file <a class="el" href="_t_detector_hit_8cxx_source.html">TDetectorHit.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00204">TDetectorHit::fCycleTimeStamp</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00202">TDetectorHit::fPPGStatus</a>, <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TPPG &gt;::Get()</a>, <a class="el" href="_t_p_p_g_8cxx_source.html#l00133">TPPG::GetLastStatusTime()</a>, <a class="el" href="_t_p_p_g_8cxx_source.html#l00189">TPPG::GetStatus()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00227">TDetectorHit::GetTimeStampNs()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00190">TDetectorHit::IsPPGSet()</a>, <a class="el" href="class_t_detector_hit.html#a187897c681b829247a98022bbb81fffeada12718f81ebb26c5299da96b70a03bf">TDetectorHit::kIsPPGSet</a>, <a class="el" href="group___sorting.html#ggab0daad83ab0c2b7ad41c69944b3dd915aa4ee53181d6c56eee8eb881a240608de">kJunk</a>, and <a class="el" href="_t_detector_hit_8cxx_source.html#l00284">TDetectorHit::SetHitBit()</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00205">TDetectorHit::fCycleTimeStamp</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00203">TDetectorHit::fPPGStatus</a>, <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TPPG &gt;::Get()</a>, <a class="el" href="_t_p_p_g_8cxx_source.html#l00133">TPPG::GetLastStatusTime()</a>, <a class="el" href="_t_p_p_g_8cxx_source.html#l00189">TPPG::GetStatus()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00239">TDetectorHit::GetTimeStampNs()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00191">TDetectorHit::IsPPGSet()</a>, <a class="el" href="class_t_detector_hit.html#a187897c681b829247a98022bbb81fffeada12718f81ebb26c5299da96b70a03bf">TDetectorHit::kIsPPGSet</a>, <a class="el" href="group___sorting.html#ggab0daad83ab0c2b7ad41c69944b3dd915aa4ee53181d6c56eee8eb881a240608de">kJunk</a>, and <a class="el" href="_t_detector_hit_8cxx_source.html#l00296">TDetectorHit::SetHitBit()</a>.</p>
 
 </div>
 </div>
@@ -1650,9 +1652,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8cxx_source.html#l00195">195</a> of file <a class="el" href="_t_detector_hit_8cxx_source.html">TDetectorHit.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8cxx_source.html#l00207">207</a> of file <a class="el" href="_t_detector_hit_8cxx_source.html">TDetectorHit.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00145">TDetectorHit::GetChannel()</a>, and <a class="el" href="_t_channel_8cxx_source.html#l01545">TChannel::GetSegmentNumber()</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00146">TDetectorHit::GetChannel()</a>, and <a class="el" href="_t_channel_8cxx_source.html#l01578">TChannel::GetSegmentNumber()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_tigress_8cxx_source.html#l00019">DefaultAddback()</a>, <a class="el" href="_t_bgo_hit_8h_source.html#l00028">TBgoHit::GetArrayNumber()</a>, <a class="el" href="_t_fipps_bgo_hit_8h_source.html#l00032">TFippsBgoHit::GetArrayNumber()</a>, <a class="el" href="_t_fipps_la_br_bgo_hit_8h_source.html#l00032">TFippsLaBrBgoHit::GetArrayNumber()</a>, <a class="el" href="_t_griffin_bgo_hit_8h_source.html#l00035">TGriffinBgoHit::GetArrayNumber()</a>, <a class="el" href="_t_ifin_bgo_hit_8h_source.html#l00032">TIfinBgoHit::GetArrayNumber()</a>, <a class="el" href="_t_rcmp_hit_8h_source.html#l00043">GetArrayNumber()</a>, <a class="el" href="_t_sharc2_hit_8h_source.html#l00057">TSharc2Hit::GetBackStrip()</a>, <a class="el" href="_t_sharc_hit_8h_source.html#l00061">TSharcHit::GetBackStrip()</a>, <a class="el" href="_t_sharc2_hit_8h_source.html#l00056">TSharc2Hit::GetFrontStrip()</a>, <a class="el" href="_t_sharc_hit_8h_source.html#l00060">TSharcHit::GetFrontStrip()</a>, <a class="el" href="_t_tigress_hit_8cxx_source.html#l00058">TTigressHit::GetLastPosition()</a>, <a class="el" href="_t_si_li_hit_8cxx_source.html#l00182">TSiLiHit::GetPin()</a>, <a class="el" href="_t_sharc2_hit_8cxx_source.html#l00050">TSharc2Hit::GetPosition()</a>, <a class="el" href="_t_sharc_hit_8cxx_source.html#l00050">TSharcHit::GetPosition()</a>, <a class="el" href="_t_si_li_hit_8cxx_source.html#l00178">TSiLiHit::GetPreamp()</a>, <a class="el" href="_t_si_li_hit_8cxx_source.html#l00170">TSiLiHit::GetRing()</a>, <a class="el" href="_t_si_li_hit_8cxx_source.html#l00174">TSiLiHit::GetSector()</a>, <a class="el" href="_t_si_li_hit_8cxx_source.html#l00186">TSiLiHit::MagnetShadow()</a>, <a class="el" href="_t_trific_hit_8cxx_source.html#l00039">TTrificHit::Print()</a>, <a class="el" href="_t_s3_hit_8h_source.html#l00056">TS3Hit::SetRingNumber()</a>, <a class="el" href="_t_s3_hit_8h_source.html#l00054">TS3Hit::SetRingNumber()</a>, <a class="el" href="_t_s3_hit_8h_source.html#l00057">TS3Hit::SetSectorNumber()</a>, <a class="el" href="_t_s3_hit_8h_source.html#l00055">TS3Hit::SetSectorNumber()</a>, and <a class="el" href="_t_si_li_hit_8cxx_source.html#l00151">TSiLiHit::SumHit()</a>.</p>
 
@@ -1722,9 +1724,38 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_detector_hit_8cxx_source.html#l00045">45</a> of file <a class="el" href="_t_detector_hit_8cxx_source.html">TDetectorHit.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00199">TDetectorHit::fTime</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00139">TDetectorHit::GetCfd()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00145">TDetectorHit::GetChannel()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00073">TDetectorHit::GetEnergy()</a>, <a class="el" href="_t_channel_8cxx_source.html#l01633">TChannel::GetTime()</a>, <a class="el" href="_t_channel_8h_source.html#l00172">TChannel::GetTimeDrift()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00135">TDetectorHit::GetTimeStamp()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00189">TDetectorHit::IsTimeSet()</a>, and <a class="el" href="_t_detector_hit_8h_source.html#l00124">TDetectorHit::SetTime()</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00200">TDetectorHit::fTime</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00140">TDetectorHit::GetCfd()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00146">TDetectorHit::GetChannel()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00075">TDetectorHit::GetEnergy()</a>, <a class="el" href="_t_channel_8cxx_source.html#l01710">TChannel::GetTime()</a>, <a class="el" href="_t_channel_8h_source.html#l00174">TChannel::GetTimeDrift()</a>, <a class="el" href="_t_channel_8h_source.html#l00197">TChannel::GetTimeNonlinearity()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00136">TDetectorHit::GetTimeStamp()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00190">TDetectorHit::IsTimeSet()</a>, and <a class="el" href="_t_detector_hit_8h_source.html#l00124">TDetectorHit::SetTime()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_fipps_hit_8cxx_source.html#l00078">TFippsHit::Add()</a>, <a class="el" href="_t_griffin_hit_8cxx_source.html#l00090">TGriffinHit::Add()</a>, <a class="el" href="_t_ifin_hit_8cxx_source.html#l00079">TIfinHit::Add()</a>, <a class="el" href="_t_tdr_clover_hit_8cxx_source.html#l00096">TTdrCloverHit::Add()</a>, <a class="el" href="_t_tdr_tigress_hit_8cxx_source.html#l00099">TTdrTigressHit::Add()</a>, <a class="el" href="_cross_talk_8_c_source.html#l00019">Addback()</a>, <a class="el" href="_cross_talk_helper_8cxx_source.html#l00015">Addback()</a>, <a class="el" href="_compton_polarimetry_helper_8hh_source.html#l00046">ComptonPolarimetryHelper::Coincident()</a>, <a class="el" href="_t_fipps_8cxx_source.html#l00513">TFipps::CTCorrectedEnergy()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00405">TGriffin::CTCorrectedEnergy()</a>, <a class="el" href="_t_ifin_8cxx_source.html#l00525">TIfin::CTCorrectedEnergy()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00019">DefaultAddback()</a>, <a class="el" href="_t_tdr_clover_8cxx_source.html#l00024">DefaultAddback()</a>, <a class="el" href="_t_tdr_tigress_8cxx_source.html#l00024">DefaultAddback()</a>, <a class="el" href="_t_fipps_8cxx_source.html#l00014">DefaultFippsAddback()</a>, <a class="el" href="_t_fipps_8cxx_source.html#l00022">DefaultFippsSuppression()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00023">DefaultGriffinAddback()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00031">DefaultGriffinSuppression()</a>, <a class="el" href="_t_ifin_8cxx_source.html#l00014">DefaultIfinAddback()</a>, <a class="el" href="_t_ifin_8cxx_source.html#l00022">DefaultIfinSuppression()</a>, <a class="el" href="_t_la_br_8cxx_source.html#l00008">DefaultLaBrSuppression()</a>, <a class="el" href="_t_tdr_clover_8cxx_source.html#l00032">DefaultSuppression()</a>, <a class="el" href="_t_tdr_tigress_8cxx_source.html#l00032">DefaultSuppression()</a>, <a class="el" href="_t_si_li_8cxx_source.html#l00256">TSiLi::fCoincidenceTime()</a>, <a class="el" href="_t_sharc2_hit_8h_source.html#l00074">TSharc2Hit::GetDeltaBackT()</a>, <a class="el" href="_t_sharc_hit_8h_source.html#l00078">TSharcHit::GetDeltaBackT()</a>, <a class="el" href="_t_sharc2_hit_8h_source.html#l00072">TSharc2Hit::GetDeltaFrontT()</a>, <a class="el" href="_t_sharc_hit_8h_source.html#l00076">TSharcHit::GetDeltaFrontT()</a>, <a class="el" href="_t_sharc2_hit_8h_source.html#l00069">TSharc2Hit::GetDeltaT()</a>, <a class="el" href="_t_sharc_hit_8h_source.html#l00073">TSharcHit::GetDeltaT()</a>, <a class="el" href="_t_sharc2_hit_8h_source.html#l00081">TSharc2Hit::GetPadT()</a>, <a class="el" href="_t_sharc_hit_8h_source.html#l00085">TSharcHit::GetPadT()</a>, <a class="el" href="_t_fipps_t_a_c_hit_8cxx_source.html#l00042">TFippsTACHit::GetTempCorrectedCharge()</a>, <a class="el" href="_t_t_a_c_hit_8cxx_source.html#l00034">TTACHit::GetTempCorrectedCharge()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00277">TDetectorHit::GetTimeSinceTapeMove()</a>, <a class="el" href="_efficiency_helper_8hh_source.html#l00077">EfficiencyHelper::GoodCfd()</a>, <a class="el" href="_t_aries_hit_8cxx_source.html#l00074">TAriesHit::Print()</a>, <a class="el" href="_t_demand_hit_8cxx_source.html#l00073">TDemandHit::Print()</a>, <a class="el" href="_t_descant_hit_8cxx_source.html#l00111">TDescantHit::Print()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00147">TDetectorHit::Print()</a>, <a class="el" href="_t_fipps_hit_8cxx_source.html#l00052">TFippsHit::Print()</a>, <a class="el" href="_t_fipps_la_br_hit_8cxx_source.html#l00069">TFippsLaBrHit::Print()</a>, <a class="el" href="_t_fipps_t_a_c_hit_8cxx_source.html#l00096">TFippsTACHit::Print()</a>, <a class="el" href="_t_griffin_hit_8cxx_source.html#l00064">TGriffinHit::Print()</a>, <a class="el" href="_t_ifin_hit_8cxx_source.html#l00052">TIfinHit::Print()</a>, <a class="el" href="_t_la_br_hit_8cxx_source.html#l00072">TLaBrHit::Print()</a>, <a class="el" href="_t_paces_hit_8cxx_source.html#l00047">TPacesHit::Print()</a>, <a class="el" href="_t_pin_diode_hit_8cxx_source.html#l00079">TPinDiodeHit::Print()</a>, <a class="el" href="_t_rcmp_hit_8cxx_source.html#l00063">Print()</a>, <a class="el" href="_t_sceptar_hit_8cxx_source.html#l00086">TSceptarHit::Print()</a>, <a class="el" href="_t_t_a_c_hit_8cxx_source.html#l00098">TTACHit::Print()</a>, <a class="el" href="_t_tdr_clover_hit_8cxx_source.html#l00070">TTdrCloverHit::Print()</a>, <a class="el" href="_t_tdr_plastic_hit_8cxx_source.html#l00121">TTdrPlasticHit::Print()</a>, <a class="el" href="_t_tdr_si_li_hit_8cxx_source.html#l00049">TTdrSiLiHit::Print()</a>, <a class="el" href="_t_tdr_tigress_hit_8cxx_source.html#l00073">TTdrTigressHit::Print()</a>, <a class="el" href="_t_tigress_hit_8cxx_source.html#l00075">TTigressHit::Print()</a>, <a class="el" href="_t_tip_hit_8cxx_source.html#l00082">TTipHit::Print()</a>, <a class="el" href="_t_trific_hit_8cxx_source.html#l00039">TTrificHit::Print()</a>, <a class="el" href="_t_zero_degree_hit_8cxx_source.html#l00095">TZeroDegreeHit::Print()</a>, <a class="el" href="_efficiency_helper_8hh_source.html#l00071">EfficiencyHelper::PromptCoincidence()</a>, <a class="el" href="_example_tree_helper_8cxx_source.html#l00031">PromptCoincidence()</a>, <a class="el" href="_example_tree_helper_8cxx_source.html#l00025">PromptCoincidence()</a>, <a class="el" href="_example_tree_helper_8cxx_source.html#l00037">PromptCoincidence()</a>, <a class="el" href="_directory_helper_8cxx_source.html#l00036">PromptCoincidence()</a>, <a class="el" href="_example_event_helper_8cxx_source.html#l00061">PromptCoincidence()</a>, <a class="el" href="_cross_talk_helper_8cxx_source.html#l00020">PromptCoincidence()</a>, <a class="el" href="_t_tigress_hit_8cxx_source.html#l00113">TTigressHit::SumHit()</a>, <a class="el" href="_t_fipps_t_a_c_hit_8cxx_source.html#l00052">TFippsTACHit::TempCorrectedCharge()</a>, <a class="el" href="_t_t_a_c_hit_8cxx_source.html#l00044">TTACHit::TempCorrectedCharge()</a>, <a class="el" href="_compton_polarimetry_helper_8hh_source.html#l00038">ComptonPolarimetryHelper::TimeDiff()</a>, <a class="el" href="_directory_helper_8cxx_source.html#l00040">TimeRandom()</a>, and <a class="el" href="_example_event_helper_8cxx_source.html#l00065">TimeRandom()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_fipps_hit_8cxx_source.html#l00078">TFippsHit::Add()</a>, <a class="el" href="_t_griffin_hit_8cxx_source.html#l00090">TGriffinHit::Add()</a>, <a class="el" href="_t_ifin_hit_8cxx_source.html#l00079">TIfinHit::Add()</a>, <a class="el" href="_t_tdr_clover_hit_8cxx_source.html#l00096">TTdrCloverHit::Add()</a>, <a class="el" href="_t_tdr_tigress_hit_8cxx_source.html#l00099">TTdrTigressHit::Add()</a>, <a class="el" href="_cross_talk_8_c_source.html#l00019">Addback()</a>, <a class="el" href="_cross_talk_helper_8cxx_source.html#l00015">Addback()</a>, <a class="el" href="_compton_polarimetry_helper_8hh_source.html#l00046">ComptonPolarimetryHelper::Coincident()</a>, <a class="el" href="_t_fipps_8cxx_source.html#l00513">TFipps::CTCorrectedEnergy()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00405">TGriffin::CTCorrectedEnergy()</a>, <a class="el" href="_t_ifin_8cxx_source.html#l00525">TIfin::CTCorrectedEnergy()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00019">DefaultAddback()</a>, <a class="el" href="_t_tdr_clover_8cxx_source.html#l00024">DefaultAddback()</a>, <a class="el" href="_t_tdr_tigress_8cxx_source.html#l00024">DefaultAddback()</a>, <a class="el" href="_t_fipps_8cxx_source.html#l00014">DefaultFippsAddback()</a>, <a class="el" href="_t_fipps_8cxx_source.html#l00022">DefaultFippsSuppression()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00023">DefaultGriffinAddback()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00031">DefaultGriffinSuppression()</a>, <a class="el" href="_t_ifin_8cxx_source.html#l00014">DefaultIfinAddback()</a>, <a class="el" href="_t_ifin_8cxx_source.html#l00022">DefaultIfinSuppression()</a>, <a class="el" href="_t_la_br_8cxx_source.html#l00008">DefaultLaBrSuppression()</a>, <a class="el" href="_t_tdr_clover_8cxx_source.html#l00032">DefaultSuppression()</a>, <a class="el" href="_t_tdr_tigress_8cxx_source.html#l00032">DefaultSuppression()</a>, <a class="el" href="_t_si_li_8cxx_source.html#l00256">TSiLi::fCoincidenceTime()</a>, <a class="el" href="_t_sharc2_hit_8h_source.html#l00074">TSharc2Hit::GetDeltaBackT()</a>, <a class="el" href="_t_sharc_hit_8h_source.html#l00078">TSharcHit::GetDeltaBackT()</a>, <a class="el" href="_t_sharc2_hit_8h_source.html#l00072">TSharc2Hit::GetDeltaFrontT()</a>, <a class="el" href="_t_sharc_hit_8h_source.html#l00076">TSharcHit::GetDeltaFrontT()</a>, <a class="el" href="_t_sharc2_hit_8h_source.html#l00069">TSharc2Hit::GetDeltaT()</a>, <a class="el" href="_t_sharc_hit_8h_source.html#l00073">TSharcHit::GetDeltaT()</a>, <a class="el" href="_t_sharc2_hit_8h_source.html#l00081">TSharc2Hit::GetPadT()</a>, <a class="el" href="_t_sharc_hit_8h_source.html#l00085">TSharcHit::GetPadT()</a>, <a class="el" href="_t_fipps_t_a_c_hit_8cxx_source.html#l00042">TFippsTACHit::GetTempCorrectedCharge()</a>, <a class="el" href="_t_t_a_c_hit_8cxx_source.html#l00034">TTACHit::GetTempCorrectedCharge()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00289">TDetectorHit::GetTimeSinceTapeMove()</a>, <a class="el" href="_efficiency_helper_8hh_source.html#l00077">EfficiencyHelper::GoodCfd()</a>, <a class="el" href="_t_aries_hit_8cxx_source.html#l00074">TAriesHit::Print()</a>, <a class="el" href="_t_demand_hit_8cxx_source.html#l00073">TDemandHit::Print()</a>, <a class="el" href="_t_descant_hit_8cxx_source.html#l00111">TDescantHit::Print()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00159">TDetectorHit::Print()</a>, <a class="el" href="_t_fipps_hit_8cxx_source.html#l00052">TFippsHit::Print()</a>, <a class="el" href="_t_fipps_la_br_hit_8cxx_source.html#l00069">TFippsLaBrHit::Print()</a>, <a class="el" href="_t_fipps_t_a_c_hit_8cxx_source.html#l00096">TFippsTACHit::Print()</a>, <a class="el" href="_t_griffin_hit_8cxx_source.html#l00064">TGriffinHit::Print()</a>, <a class="el" href="_t_ifin_hit_8cxx_source.html#l00052">TIfinHit::Print()</a>, <a class="el" href="_t_la_br_hit_8cxx_source.html#l00072">TLaBrHit::Print()</a>, <a class="el" href="_t_paces_hit_8cxx_source.html#l00047">TPacesHit::Print()</a>, <a class="el" href="_t_pin_diode_hit_8cxx_source.html#l00079">TPinDiodeHit::Print()</a>, <a class="el" href="_t_rcmp_hit_8cxx_source.html#l00063">Print()</a>, <a class="el" href="_t_sceptar_hit_8cxx_source.html#l00086">TSceptarHit::Print()</a>, <a class="el" href="_t_t_a_c_hit_8cxx_source.html#l00098">TTACHit::Print()</a>, <a class="el" href="_t_tdr_clover_hit_8cxx_source.html#l00070">TTdrCloverHit::Print()</a>, <a class="el" href="_t_tdr_plastic_hit_8cxx_source.html#l00121">TTdrPlasticHit::Print()</a>, <a class="el" href="_t_tdr_si_li_hit_8cxx_source.html#l00049">TTdrSiLiHit::Print()</a>, <a class="el" href="_t_tdr_tigress_hit_8cxx_source.html#l00073">TTdrTigressHit::Print()</a>, <a class="el" href="_t_tigress_hit_8cxx_source.html#l00075">TTigressHit::Print()</a>, <a class="el" href="_t_tip_hit_8cxx_source.html#l00082">TTipHit::Print()</a>, <a class="el" href="_t_trific_hit_8cxx_source.html#l00039">TTrificHit::Print()</a>, <a class="el" href="_t_zero_degree_hit_8cxx_source.html#l00095">TZeroDegreeHit::Print()</a>, <a class="el" href="_efficiency_helper_8hh_source.html#l00071">EfficiencyHelper::PromptCoincidence()</a>, <a class="el" href="_example_tree_helper_8cxx_source.html#l00031">PromptCoincidence()</a>, <a class="el" href="_example_tree_helper_8cxx_source.html#l00025">PromptCoincidence()</a>, <a class="el" href="_example_tree_helper_8cxx_source.html#l00037">PromptCoincidence()</a>, <a class="el" href="_directory_helper_8cxx_source.html#l00036">PromptCoincidence()</a>, <a class="el" href="_example_event_helper_8cxx_source.html#l00061">PromptCoincidence()</a>, <a class="el" href="_cross_talk_helper_8cxx_source.html#l00020">PromptCoincidence()</a>, <a class="el" href="_t_tigress_hit_8cxx_source.html#l00113">TTigressHit::SumHit()</a>, <a class="el" href="_t_fipps_t_a_c_hit_8cxx_source.html#l00052">TFippsTACHit::TempCorrectedCharge()</a>, <a class="el" href="_t_t_a_c_hit_8cxx_source.html#l00044">TTACHit::TempCorrectedCharge()</a>, <a class="el" href="_compton_polarimetry_helper_8hh_source.html#l00038">ComptonPolarimetryHelper::TimeDiff()</a>, <a class="el" href="_directory_helper_8cxx_source.html#l00040">TimeRandom()</a>, and <a class="el" href="_example_event_helper_8cxx_source.html#l00065">TimeRandom()</a>.</p>
+
+</div>
+</div>
+<a id="ab5d7ef626e22237526aebcfbc2ccd4af" name="ab5d7ef626e22237526aebcfbc2ccd4af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab5d7ef626e22237526aebcfbc2ccd4af">&#9670;&#160;</a></span>GetTimeNonlinearity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Double_t TDetectorHit::GetTimeNonlinearity </td>
+          <td>(</td>
+          <td class="paramtype">Long64_t</td>          <td class="paramname"><span class="paramname"><em>mytimestamp</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8cxx_source.html#l00107">107</a> of file <a class="el" href="_t_detector_hit_8cxx_source.html">TDetectorHit.cxx</a>.</p>
+
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00146">TDetectorHit::GetChannel()</a>, and <a class="el" href="_t_channel_8h_source.html#l00197">TChannel::GetTimeNonlinearity()</a>.</p>
 
 </div>
 </div>
@@ -1752,9 +1783,9 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>returns time in ns, minus the time of the last tape move</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8cxx_source.html#l00277">277</a> of file <a class="el" href="_t_detector_hit_8cxx_source.html">TDetectorHit.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8cxx_source.html#l00289">289</a> of file <a class="el" href="_t_detector_hit_8cxx_source.html">TDetectorHit.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TPPG &gt;::Get()</a>, <a class="el" href="_t_p_p_g_8cxx_source.html#l00133">TPPG::GetLastStatusTime()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00045">TDetectorHit::GetTime()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00227">TDetectorHit::GetTimeStampNs()</a>, and <a class="el" href="group___sorting.html#ggab0daad83ab0c2b7ad41c69944b3dd915af6e2831b9dfb13b09331f6047d259e3b">kTapeMove</a>.</p>
+<p class="reference">References <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TPPG &gt;::Get()</a>, <a class="el" href="_t_p_p_g_8cxx_source.html#l00133">TPPG::GetLastStatusTime()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00045">TDetectorHit::GetTime()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00239">TDetectorHit::GetTimeStampNs()</a>, and <a class="el" href="group___sorting.html#ggab0daad83ab0c2b7ad41c69944b3dd915af6e2831b9dfb13b09331f6047d259e3b">kTapeMove</a>.</p>
 
 </div>
 </div>
@@ -1781,11 +1812,11 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00135">135</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00136">136</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00197">TDetectorHit::fTimeStamp</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00198">TDetectorHit::fTimeStamp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_lean_compton_matrices_8cxx_source.html#l00142">ComptonHists()</a>, <a class="el" href="_time_walk_helper_8cxx_source.html#l00058">TimeWalkHelper::Exec()</a>, <a class="el" href="_time_walk_selector_8_c_source.html#l00074">TimeWalkSelector::FillHistograms()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00045">TDetectorHit::GetTime()</a>, <a class="el" href="_t_si_li_hit_8h_source.html#l00055">TSiLiHit::GetTimeFitCfd()</a>, <a class="el" href="_t_si_li_hit_8h_source.html#l00051">TSiLiHit::GetTimeFitns()</a>, <a class="el" href="_t_si_li_hit_8h_source.html#l00050">TSiLiHit::GetTimeStampLow()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00227">TDetectorHit::GetTimeStampNs()</a>, <a class="el" href="_t_tigress_hit_8h_source.html#l00087">TTigressHit::GetTimeToTrigger()</a>, <a class="el" href="_t_fragment_8h_source.html#l00107">TFragment::operator&lt;()</a>, <a class="el" href="_t_fragment_8h_source.html#l00108">TFragment::operator&gt;()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00147">TDetectorHit::Print()</a>, <a class="el" href="_t_eagle_hit_8cxx_source.html#l00080">TEagleHit::Print()</a>, <a class="el" href="_t_fragment_8cxx_source.html#l00104">TFragment::Print()</a>, <a class="el" href="_t_griffin_hit_8cxx_source.html#l00064">TGriffinHit::Print()</a>, and <a class="el" href="_t_tigress_hit_8cxx_source.html#l00075">TTigressHit::Print()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_lean_compton_matrices_8cxx_source.html#l00142">ComptonHists()</a>, <a class="el" href="_time_walk_helper_8cxx_source.html#l00058">TimeWalkHelper::Exec()</a>, <a class="el" href="_time_walk_selector_8_c_source.html#l00074">TimeWalkSelector::FillHistograms()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00045">TDetectorHit::GetTime()</a>, <a class="el" href="_t_si_li_hit_8h_source.html#l00055">TSiLiHit::GetTimeFitCfd()</a>, <a class="el" href="_t_si_li_hit_8h_source.html#l00051">TSiLiHit::GetTimeFitns()</a>, <a class="el" href="_t_si_li_hit_8h_source.html#l00050">TSiLiHit::GetTimeStampLow()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00239">TDetectorHit::GetTimeStampNs()</a>, <a class="el" href="_t_tigress_hit_8h_source.html#l00087">TTigressHit::GetTimeToTrigger()</a>, <a class="el" href="_t_fragment_8h_source.html#l00107">TFragment::operator&lt;()</a>, <a class="el" href="_t_fragment_8h_source.html#l00108">TFragment::operator&gt;()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00159">TDetectorHit::Print()</a>, <a class="el" href="_t_eagle_hit_8cxx_source.html#l00080">TEagleHit::Print()</a>, <a class="el" href="_t_fragment_8cxx_source.html#l00104">TFragment::Print()</a>, <a class="el" href="_t_griffin_hit_8cxx_source.html#l00064">TGriffinHit::Print()</a>, and <a class="el" href="_t_tigress_hit_8cxx_source.html#l00075">TTigressHit::Print()</a>.</p>
 
 </div>
 </div>
@@ -1812,11 +1843,11 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8cxx_source.html#l00227">227</a> of file <a class="el" href="_t_detector_hit_8cxx_source.html">TDetectorHit.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8cxx_source.html#l00239">239</a> of file <a class="el" href="_t_detector_hit_8cxx_source.html">TDetectorHit.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00145">TDetectorHit::GetChannel()</a>, <a class="el" href="_t_channel_8h_source.html#l00171">TChannel::GetTimeOffset()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00135">TDetectorHit::GetTimeStamp()</a>, and <a class="el" href="_t_detector_hit_8cxx_source.html#l00236">TDetectorHit::GetTimeStampUnit()</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00146">TDetectorHit::GetChannel()</a>, <a class="el" href="_t_channel_8h_source.html#l00173">TChannel::GetTimeOffset()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00136">TDetectorHit::GetTimeStamp()</a>, and <a class="el" href="_t_detector_hit_8cxx_source.html#l00248">TDetectorHit::GetTimeStampUnit()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_compton_polarimetry_helper_8hh_source.html#l00046">ComptonPolarimetryHelper::Coincident()</a>, <a class="el" href="_t_fragment_8cxx_source.html#l00079">TFragment::GetCycleNumber()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00261">TDetectorHit::GetCycleTimeStamp()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00245">TDetectorHit::GetPPGStatus()</a>, <a class="el" href="_t_fragment_8cxx_source.html#l00067">TFragment::GetTimeInCycle()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00277">TDetectorHit::GetTimeSinceTapeMove()</a>, <a class="el" href="_efficiency_helper_8hh_source.html#l00077">EfficiencyHelper::GoodCfd()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00147">TDetectorHit::Print()</a>, <a class="el" href="_t_griffin_hit_8cxx_source.html#l00064">TGriffinHit::Print()</a>, and <a class="el" href="_compton_polarimetry_helper_8hh_source.html#l00038">ComptonPolarimetryHelper::TimeDiff()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_compton_polarimetry_helper_8hh_source.html#l00046">ComptonPolarimetryHelper::Coincident()</a>, <a class="el" href="_t_fragment_8cxx_source.html#l00079">TFragment::GetCycleNumber()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00273">TDetectorHit::GetCycleTimeStamp()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00257">TDetectorHit::GetPPGStatus()</a>, <a class="el" href="_t_fragment_8cxx_source.html#l00067">TFragment::GetTimeInCycle()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00289">TDetectorHit::GetTimeSinceTapeMove()</a>, <a class="el" href="_efficiency_helper_8hh_source.html#l00077">EfficiencyHelper::GoodCfd()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00159">TDetectorHit::Print()</a>, <a class="el" href="_t_griffin_hit_8cxx_source.html#l00064">TGriffinHit::Print()</a>, and <a class="el" href="_compton_polarimetry_helper_8hh_source.html#l00038">ComptonPolarimetryHelper::TimeDiff()</a>.</p>
 
 </div>
 </div>
@@ -1845,11 +1876,11 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8cxx_source.html#l00236">236</a> of file <a class="el" href="_t_detector_hit_8cxx_source.html">TDetectorHit.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8cxx_source.html#l00248">248</a> of file <a class="el" href="_t_detector_hit_8cxx_source.html">TDetectorHit.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00145">TDetectorHit::GetChannel()</a>, and <a class="el" href="_t_channel_8h_source.html#l00170">TChannel::GetTimeStampUnit()</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00146">TDetectorHit::GetChannel()</a>, and <a class="el" href="_t_channel_8h_source.html#l00172">TChannel::GetTimeStampUnit()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_detector_hit_8cxx_source.html#l00227">TDetectorHit::GetTimeStampNs()</a>, and <a class="el" href="_t_detector_hit_8cxx_source.html#l00147">TDetectorHit::Print()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_detector_hit_8cxx_source.html#l00239">TDetectorHit::GetTimeStampNs()</a>, and <a class="el" href="_t_detector_hit_8cxx_source.html#l00159">TDetectorHit::Print()</a>.</p>
 
 </div>
 </div>
@@ -1878,9 +1909,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00144">144</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00145">145</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00198">TDetectorHit::fWaveform</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00199">TDetectorHit::fWaveform</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_aries_hit_8cxx_source.html#l00021">TAriesHit::TAriesHit()</a>, <a class="el" href="_t_descant_hit_8cxx_source.html#l00021">TDescantHit::TDescantHit()</a>, <a class="el" href="_t_sceptar_hit_8cxx_source.html#l00022">TSceptarHit::TSceptarHit()</a>, <a class="el" href="_t_tdr_plastic_hit_8cxx_source.html#l00032">TTdrPlasticHit::TTdrPlasticHit()</a>, <a class="el" href="_t_zero_degree_hit_8cxx_source.html#l00015">TZeroDegreeHit::TZeroDegreeHit()</a>, <a class="el" href="_t_descant_hit_8cxx_source.html#l00120">TDescantHit::AnalyzeWaveform()</a>, <a class="el" href="_t_sceptar_hit_8cxx_source.html#l00095">TSceptarHit::AnalyzeWaveform()</a>, <a class="el" href="_t_zero_degree_hit_8cxx_source.html#l00104">TZeroDegreeHit::AnalyzeWaveform()</a>, <a class="el" href="_t_descant_hit_8cxx_source.html#l00177">TDescantHit::CalculateCfdAndMonitor()</a>, <a class="el" href="_t_sceptar_hit_8cxx_source.html#l00141">TSceptarHit::CalculateCfdAndMonitor()</a>, <a class="el" href="_t_zero_degree_hit_8cxx_source.html#l00150">TZeroDegreeHit::CalculateCfdAndMonitor()</a>, <a class="el" href="_t_descant_hit_8cxx_source.html#l00258">TDescantHit::CalculateCfdMonitor()</a>, <a class="el" href="_t_sceptar_hit_8cxx_source.html#l00219">TSceptarHit::CalculateCfdMonitor()</a>, <a class="el" href="_t_zero_degree_hit_8cxx_source.html#l00236">TZeroDegreeHit::CalculateCfdMonitor()</a>, <a class="el" href="_t_descant_hit_8cxx_source.html#l00281">TDescantHit::CalculatePartialSum()</a>, <a class="el" href="_t_zero_degree_hit_8cxx_source.html#l00261">TZeroDegreeHit::CalculatePartialSum()</a>, <a class="el" href="_t_descant_hit_8cxx_source.html#l00308">TDescantHit::CalculatePsdAndPartialSums()</a>, <a class="el" href="_t_descant_hit_8cxx_source.html#l00239">TDescantHit::CalculateSmoothedWaveform()</a>, <a class="el" href="_t_sceptar_hit_8cxx_source.html#l00199">TSceptarHit::CalculateSmoothedWaveform()</a>, <a class="el" href="_t_zero_degree_hit_8cxx_source.html#l00216">TZeroDegreeHit::CalculateSmoothedWaveform()</a>, <a class="el" href="_t_pulse_analyzer_8cxx_source.html#l00048">TPulseAnalyzer::SetData()</a>, and <a class="el" href="_t_tigress_hit_8cxx_source.html#l00154">TTigressHit::SetWavefit()</a>.</p>
 
@@ -1913,7 +1944,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00099">99</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00198">TDetectorHit::fWaveform</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00199">TDetectorHit::fWaveform</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_descant_hit_8cxx_source.html#l00120">TDescantHit::AnalyzeWaveform()</a>, <a class="el" href="_t_sceptar_hit_8cxx_source.html#l00095">TSceptarHit::AnalyzeWaveform()</a>, <a class="el" href="_t_zero_degree_hit_8cxx_source.html#l00104">TZeroDegreeHit::AnalyzeWaveform()</a>, <a class="el" href="_t_descant_hit_8cxx_source.html#l00177">TDescantHit::CalculateCfdAndMonitor()</a>, <a class="el" href="_t_sceptar_hit_8cxx_source.html#l00141">TSceptarHit::CalculateCfdAndMonitor()</a>, <a class="el" href="_t_zero_degree_hit_8cxx_source.html#l00150">TZeroDegreeHit::CalculateCfdAndMonitor()</a>, <a class="el" href="_t_descant_hit_8cxx_source.html#l00258">TDescantHit::CalculateCfdMonitor()</a>, <a class="el" href="_t_sceptar_hit_8cxx_source.html#l00219">TSceptarHit::CalculateCfdMonitor()</a>, <a class="el" href="_t_zero_degree_hit_8cxx_source.html#l00236">TZeroDegreeHit::CalculateCfdMonitor()</a>, <a class="el" href="_t_descant_hit_8cxx_source.html#l00281">TDescantHit::CalculatePartialSum()</a>, <a class="el" href="_t_zero_degree_hit_8cxx_source.html#l00261">TZeroDegreeHit::CalculatePartialSum()</a>, <a class="el" href="_t_descant_hit_8cxx_source.html#l00239">TDescantHit::CalculateSmoothedWaveform()</a>, <a class="el" href="_t_sceptar_hit_8cxx_source.html#l00199">TSceptarHit::CalculateSmoothedWaveform()</a>, <a class="el" href="_t_zero_degree_hit_8cxx_source.html#l00216">TZeroDegreeHit::CalculateSmoothedWaveform()</a>, <a class="el" href="_t_fragment_8cxx_source.html#l00104">TFragment::Print()</a>, and <a class="el" href="_t_pulse_analyzer_8cxx_source.html#l00048">TPulseAnalyzer::SetData()</a>.</p>
 
@@ -1942,11 +1973,11 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00188">188</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00189">189</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00208">TDetectorHit::fBitFlags</a>, <a class="el" href="class_t_detector_hit.html#a187897c681b829247a98022bbb81fffea2eb1e43d1f624b58f25b306dacc7456e">TDetectorHit::kIsChannelSet</a>, and <a class="el" href="_t_transient_bits_8h_source.html#l00036">TTransientBits&lt; T &gt;::TestBit()</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00209">TDetectorHit::fBitFlags</a>, <a class="el" href="class_t_detector_hit.html#a187897c681b829247a98022bbb81fffea2eb1e43d1f624b58f25b306dacc7456e">TDetectorHit::kIsChannelSet</a>, and <a class="el" href="_t_transient_bits_8h_source.html#l00036">TTransientBits&lt; T &gt;::TestBit()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_detector_hit_8h_source.html#l00145">TDetectorHit::GetChannel()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_detector_hit_8h_source.html#l00146">TDetectorHit::GetChannel()</a>.</p>
 
 </div>
 </div>
@@ -1973,9 +2004,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00187">187</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00188">188</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00208">TDetectorHit::fBitFlags</a>, <a class="el" href="class_t_detector_hit.html#a187897c681b829247a98022bbb81fffea7433dc57f9db1fc472789e8796527f19">TDetectorHit::kIsEnergySet</a>, and <a class="el" href="_t_transient_bits_8h_source.html#l00036">TTransientBits&lt; T &gt;::TestBit()</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00209">TDetectorHit::fBitFlags</a>, <a class="el" href="class_t_detector_hit.html#a187897c681b829247a98022bbb81fffea7433dc57f9db1fc472789e8796527f19">TDetectorHit::kIsEnergySet</a>, and <a class="el" href="_t_transient_bits_8h_source.html#l00036">TTransientBits&lt; T &gt;::TestBit()</a>.</p>
 
 </div>
 </div>
@@ -2002,11 +2033,11 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00190">190</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00191">191</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00208">TDetectorHit::fBitFlags</a>, <a class="el" href="class_t_detector_hit.html#a187897c681b829247a98022bbb81fffeada12718f81ebb26c5299da96b70a03bf">TDetectorHit::kIsPPGSet</a>, and <a class="el" href="_t_transient_bits_8h_source.html#l00036">TTransientBits&lt; T &gt;::TestBit()</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00209">TDetectorHit::fBitFlags</a>, <a class="el" href="class_t_detector_hit.html#a187897c681b829247a98022bbb81fffeada12718f81ebb26c5299da96b70a03bf">TDetectorHit::kIsPPGSet</a>, and <a class="el" href="_t_transient_bits_8h_source.html#l00036">TTransientBits&lt; T &gt;::TestBit()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_detector_hit_8cxx_source.html#l00261">TDetectorHit::GetCycleTimeStamp()</a>, and <a class="el" href="_t_detector_hit_8cxx_source.html#l00245">TDetectorHit::GetPPGStatus()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_detector_hit_8cxx_source.html#l00273">TDetectorHit::GetCycleTimeStamp()</a>, and <a class="el" href="_t_detector_hit_8cxx_source.html#l00257">TDetectorHit::GetPPGStatus()</a>.</p>
 
 </div>
 </div>
@@ -2033,9 +2064,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00189">189</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00190">190</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00208">TDetectorHit::fBitFlags</a>, <a class="el" href="class_t_detector_hit.html#a187897c681b829247a98022bbb81fffea377ea2e41439f212e05aeb08fc352cb2">TDetectorHit::kIsTimeSet</a>, and <a class="el" href="_t_transient_bits_8h_source.html#l00036">TTransientBits&lt; T &gt;::TestBit()</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00209">TDetectorHit::fBitFlags</a>, <a class="el" href="class_t_detector_hit.html#a187897c681b829247a98022bbb81fffea377ea2e41439f212e05aeb08fc352cb2">TDetectorHit::kIsTimeSet</a>, and <a class="el" href="_t_transient_bits_8h_source.html#l00036">TTransientBits&lt; T &gt;::TestBit()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_detector_hit_8cxx_source.html#l00045">TDetectorHit::GetTime()</a>.</p>
 
@@ -2066,7 +2097,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00085">85</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8cxx_source.html#l00073">TDetectorHit::GetEnergy()</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8cxx_source.html#l00075">TDetectorHit::GetEnergy()</a>.</p>
 
 </div>
 </div>
@@ -2182,7 +2213,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_rcmp_hit_8cxx_source.html#l00063">63</a> of file <a class="el" href="_t_rcmp_hit_8cxx_source.html">TRcmpHit.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_rcmp_hit_8h_source.html#l00050">fBackStrip</a>, <a class="el" href="_t_rcmp_hit_8h_source.html#l00049">fFrontStrip</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00186">TDetectorHit::GetDetector()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00073">TDetectorHit::GetEnergy()</a>, and <a class="el" href="_t_detector_hit_8cxx_source.html#l00045">TDetectorHit::GetTime()</a>.</p>
+<p class="reference">References <a class="el" href="_t_rcmp_hit_8h_source.html#l00050">fBackStrip</a>, <a class="el" href="_t_rcmp_hit_8h_source.html#l00049">fFrontStrip</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00198">TDetectorHit::GetDetector()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00075">TDetectorHit::GetEnergy()</a>, and <a class="el" href="_t_detector_hit_8cxx_source.html#l00045">TDetectorHit::GetTime()</a>.</p>
 
 </div>
 </div>
@@ -2213,7 +2244,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00106">106</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00193">TDetectorHit::fAddress</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00194">TDetectorHit::fAddress</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_eagle_hit_8cxx_source.html#l00032">TEagleHit::TEagleHit()</a>, <a class="el" href="_t_pin_diode_hit_8cxx_source.html#l00032">TPinDiodeHit::TPinDiodeHit()</a>, <a class="el" href="_t_fipps_hit_8cxx_source.html#l00078">TFippsHit::Add()</a>, <a class="el" href="_t_griffin_hit_8cxx_source.html#l00090">TGriffinHit::Add()</a>, <a class="el" href="_t_ifin_hit_8cxx_source.html#l00079">TIfinHit::Add()</a>, <a class="el" href="_t_tdr_clover_hit_8cxx_source.html#l00096">TTdrCloverHit::Add()</a>, <a class="el" href="_t_tdr_tigress_hit_8cxx_source.html#l00099">TTdrTigressHit::Add()</a>, <a class="el" href="_t_tigress_8cxx_source.html#l00237">TTigress::AddFragment()</a>, and <a class="el" href="_t_tigress_hit_8cxx_source.html#l00113">TTigressHit::SumHit()</a>.</p>
 
@@ -2246,7 +2277,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00110">110</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00196">TDetectorHit::fCfd</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00197">TDetectorHit::fCfd</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_eagle_hit_8cxx_source.html#l00032">TEagleHit::TEagleHit()</a>, <a class="el" href="_t_fipps_hit_8cxx_source.html#l00078">TFippsHit::Add()</a>, <a class="el" href="_t_griffin_hit_8cxx_source.html#l00090">TGriffinHit::Add()</a>, <a class="el" href="_t_ifin_hit_8cxx_source.html#l00079">TIfinHit::Add()</a>, <a class="el" href="_t_tdr_clover_hit_8cxx_source.html#l00096">TTdrCloverHit::Add()</a>, <a class="el" href="_t_tdr_tigress_hit_8cxx_source.html#l00099">TTdrTigressHit::Add()</a>, <a class="el" href="_t_descant_hit_8cxx_source.html#l00120">TDescantHit::AnalyzeWaveform()</a>, <a class="el" href="_t_sceptar_hit_8cxx_source.html#l00095">TSceptarHit::AnalyzeWaveform()</a>, <a class="el" href="_t_zero_degree_hit_8cxx_source.html#l00104">TZeroDegreeHit::AnalyzeWaveform()</a>, and <a class="el" href="_t_tigress_hit_8cxx_source.html#l00113">TTigressHit::SumHit()</a>.</p>
 
@@ -2279,7 +2310,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00112">112</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00196">TDetectorHit::fCfd</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00197">TDetectorHit::fCfd</a>.</p>
 
 </div>
 </div>
@@ -2310,7 +2341,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00111">111</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00196">TDetectorHit::fCfd</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00197">TDetectorHit::fCfd</a>.</p>
 
 </div>
 </div>
@@ -2341,7 +2372,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00108">108</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00194">TDetectorHit::fCharge</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00195">TDetectorHit::fCharge</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_eagle_hit_8cxx_source.html#l00032">TEagleHit::TEagleHit()</a>, <a class="el" href="_t_pin_diode_hit_8cxx_source.html#l00032">TPinDiodeHit::TPinDiodeHit()</a>, <a class="el" href="_t_fipps_hit_8cxx_source.html#l00078">TFippsHit::Add()</a>, <a class="el" href="_t_griffin_hit_8cxx_source.html#l00090">TGriffinHit::Add()</a>, <a class="el" href="_t_ifin_hit_8cxx_source.html#l00079">TIfinHit::Add()</a>, <a class="el" href="_t_tdr_clover_hit_8cxx_source.html#l00096">TTdrCloverHit::Add()</a>, <a class="el" href="_t_tdr_tigress_hit_8cxx_source.html#l00099">TTdrTigressHit::Add()</a>, <a class="el" href="_t_descant_hit_8cxx_source.html#l00120">TDescantHit::AnalyzeWaveform()</a>, and <a class="el" href="_t_zero_degree_hit_8cxx_source.html#l00104">TZeroDegreeHit::AnalyzeWaveform()</a>.</p>
 
@@ -2374,7 +2405,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00109">109</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00194">TDetectorHit::fCharge</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00195">TDetectorHit::fCharge</a>.</p>
 
 </div>
 </div>
@@ -2403,9 +2434,9 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00118">118</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00201">TDetectorHit::fEnergy</a>, <a class="el" href="class_t_detector_hit.html#a187897c681b829247a98022bbb81fffea7433dc57f9db1fc472789e8796527f19">TDetectorHit::kIsEnergySet</a>, and <a class="el" href="_t_detector_hit_8cxx_source.html#l00284">TDetectorHit::SetHitBit()</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00202">TDetectorHit::fEnergy</a>, <a class="el" href="class_t_detector_hit.html#a187897c681b829247a98022bbb81fffea7433dc57f9db1fc472789e8796527f19">TDetectorHit::kIsEnergySet</a>, and <a class="el" href="_t_detector_hit_8cxx_source.html#l00296">TDetectorHit::SetHitBit()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_fipps_hit_8cxx_source.html#l00078">TFippsHit::Add()</a>, <a class="el" href="_t_griffin_hit_8cxx_source.html#l00090">TGriffinHit::Add()</a>, <a class="el" href="_t_ifin_hit_8cxx_source.html#l00079">TIfinHit::Add()</a>, <a class="el" href="_t_tdr_clover_hit_8cxx_source.html#l00096">TTdrCloverHit::Add()</a>, <a class="el" href="_t_tdr_tigress_hit_8cxx_source.html#l00099">TTdrTigressHit::Add()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00073">TDetectorHit::GetEnergy()</a>, <a class="el" href="_t_si_li_hit_8cxx_source.html#l00203">TSiLiHit::GetEnergy()</a>, <a class="el" href="_t_si_li_hit_8cxx_source.html#l00151">TSiLiHit::SumHit()</a>, and <a class="el" href="_t_tigress_hit_8cxx_source.html#l00113">TTigressHit::SumHit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_fipps_hit_8cxx_source.html#l00078">TFippsHit::Add()</a>, <a class="el" href="_t_griffin_hit_8cxx_source.html#l00090">TGriffinHit::Add()</a>, <a class="el" href="_t_ifin_hit_8cxx_source.html#l00079">TIfinHit::Add()</a>, <a class="el" href="_t_tdr_clover_hit_8cxx_source.html#l00096">TTdrCloverHit::Add()</a>, <a class="el" href="_t_tdr_tigress_hit_8cxx_source.html#l00099">TTdrTigressHit::Add()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00075">TDetectorHit::GetEnergy()</a>, <a class="el" href="_t_si_li_hit_8cxx_source.html#l00203">TSiLiHit::GetEnergy()</a>, <a class="el" href="_t_si_li_hit_8cxx_source.html#l00151">TSiLiHit::SumHit()</a>, and <a class="el" href="_t_tigress_hit_8cxx_source.html#l00113">TTigressHit::SumHit()</a>.</p>
 
 </div>
 </div>
@@ -2436,11 +2467,11 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8cxx_source.html#l00284">284</a> of file <a class="el" href="_t_detector_hit_8cxx_source.html">TDetectorHit.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8cxx_source.html#l00296">296</a> of file <a class="el" href="_t_detector_hit_8cxx_source.html">TDetectorHit.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00208">TDetectorHit::fBitFlags</a>, and <a class="el" href="_t_transient_bits_8h_source.html#l00033">TTransientBits&lt; T &gt;::SetBit()</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00209">TDetectorHit::fBitFlags</a>, and <a class="el" href="_t_transient_bits_8h_source.html#l00033">TTransientBits&lt; T &gt;::SetBit()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_detector_hit_8h_source.html#l00173">TDetectorHit::ClearChannel()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00168">TDetectorHit::ClearEnergy()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00145">TDetectorHit::GetChannel()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00261">TDetectorHit::GetCycleTimeStamp()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00245">TDetectorHit::GetPPGStatus()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00118">TDetectorHit::SetEnergy()</a>, <a class="el" href="_t_tdr_clover_hit_8cxx_source.html#l00133">TTdrCloverHit::SetTdrCloverFlag()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00124">TDetectorHit::SetTime()</a>, <a class="el" href="_t_si_li_hit_8cxx_source.html#l00151">TSiLiHit::SumHit()</a>, and <a class="el" href="_t_si_li_hit_8h_source.html#l00081">TSiLiHit::UseFitCharge()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_detector_hit_8h_source.html#l00174">TDetectorHit::ClearChannel()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00169">TDetectorHit::ClearEnergy()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00146">TDetectorHit::GetChannel()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00273">TDetectorHit::GetCycleTimeStamp()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00257">TDetectorHit::GetPPGStatus()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00118">TDetectorHit::SetEnergy()</a>, <a class="el" href="_t_tdr_clover_hit_8cxx_source.html#l00133">TTdrCloverHit::SetTdrCloverFlag()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00124">TDetectorHit::SetTime()</a>, <a class="el" href="_t_si_li_hit_8cxx_source.html#l00151">TSiLiHit::SumHit()</a>, and <a class="el" href="_t_si_li_hit_8h_source.html#l00081">TSiLiHit::UseFitCharge()</a>.</p>
 
 </div>
 </div>
@@ -2471,7 +2502,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00107">107</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00195">TDetectorHit::fKValue</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00196">TDetectorHit::fKValue</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_eagle_hit_8cxx_source.html#l00032">TEagleHit::TEagleHit()</a>, <a class="el" href="_t_pin_diode_hit_8cxx_source.html#l00032">TPinDiodeHit::TPinDiodeHit()</a>, <a class="el" href="_t_fipps_hit_8cxx_source.html#l00078">TFippsHit::Add()</a>, <a class="el" href="_t_griffin_hit_8cxx_source.html#l00090">TGriffinHit::Add()</a>, <a class="el" href="_t_ifin_hit_8cxx_source.html#l00079">TIfinHit::Add()</a>, <a class="el" href="_t_tdr_clover_hit_8cxx_source.html#l00096">TTdrCloverHit::Add()</a>, and <a class="el" href="_t_tdr_tigress_hit_8cxx_source.html#l00099">TTdrTigressHit::Add()</a>.</p>
 
@@ -2502,7 +2533,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00124">124</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00199">TDetectorHit::fTime</a>, <a class="el" href="class_t_detector_hit.html#a187897c681b829247a98022bbb81fffea377ea2e41439f212e05aeb08fc352cb2">TDetectorHit::kIsTimeSet</a>, and <a class="el" href="_t_detector_hit_8cxx_source.html#l00284">TDetectorHit::SetHitBit()</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00200">TDetectorHit::fTime</a>, <a class="el" href="class_t_detector_hit.html#a187897c681b829247a98022bbb81fffea377ea2e41439f212e05aeb08fc352cb2">TDetectorHit::kIsTimeSet</a>, and <a class="el" href="_t_detector_hit_8cxx_source.html#l00296">TDetectorHit::SetHitBit()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_fipps_hit_8cxx_source.html#l00078">TFippsHit::Add()</a>, <a class="el" href="_t_griffin_hit_8cxx_source.html#l00090">TGriffinHit::Add()</a>, <a class="el" href="_t_ifin_hit_8cxx_source.html#l00079">TIfinHit::Add()</a>, <a class="el" href="_t_tdr_clover_hit_8cxx_source.html#l00096">TTdrCloverHit::Add()</a>, <a class="el" href="_t_tdr_tigress_hit_8cxx_source.html#l00099">TTdrTigressHit::Add()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00045">TDetectorHit::GetTime()</a>, and <a class="el" href="_t_tigress_hit_8cxx_source.html#l00113">TTigressHit::SumHit()</a>.</p>
 
@@ -2535,7 +2566,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00115">115</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00197">TDetectorHit::fTimeStamp</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00198">TDetectorHit::fTimeStamp</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_eagle_hit_8cxx_source.html#l00032">TEagleHit::TEagleHit()</a>, and <a class="el" href="_t_pin_diode_hit_8cxx_source.html#l00032">TPinDiodeHit::TPinDiodeHit()</a>.</p>
 
@@ -2568,7 +2599,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00113">113</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00198">TDetectorHit::fWaveform</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00199">TDetectorHit::fWaveform</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_tdr_plastic_hit_8cxx_source.html#l00032">TTdrPlasticHit::TTdrPlasticHit()</a>, <a class="el" href="_t_descant_hit_8cxx_source.html#l00120">TDescantHit::AnalyzeWaveform()</a>, <a class="el" href="_t_sceptar_hit_8cxx_source.html#l00095">TSceptarHit::AnalyzeWaveform()</a>, and <a class="el" href="_t_zero_degree_hit_8cxx_source.html#l00104">TZeroDegreeHit::AnalyzeWaveform()</a>.</p>
 
@@ -2597,11 +2628,11 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00184">184</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00185">185</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00208">TDetectorHit::fBitFlags</a>, and <a class="el" href="_t_transient_bits_8h_source.html#l00036">TTransientBits&lt; T &gt;::TestBit()</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00209">TDetectorHit::fBitFlags</a>, and <a class="el" href="_t_transient_bits_8h_source.html#l00036">TTransientBits&lt; T &gt;::TestBit()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_detector_hit_8cxx_source.html#l00073">TDetectorHit::GetEnergy()</a>, <a class="el" href="_t_si_li_hit_8cxx_source.html#l00203">TSiLiHit::GetEnergy()</a>, <a class="el" href="_t_tdr_clover_hit_8cxx_source.html#l00138">TTdrCloverHit::NPileUps()</a>, and <a class="el" href="_t_tdr_clover_hit_8cxx_source.html#l00145">TTdrCloverHit::PUHit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_detector_hit_8cxx_source.html#l00075">TDetectorHit::GetEnergy()</a>, <a class="el" href="_t_si_li_hit_8cxx_source.html#l00203">TSiLiHit::GetEnergy()</a>, <a class="el" href="_t_tdr_clover_hit_8cxx_source.html#l00138">TTdrCloverHit::NPileUps()</a>, and <a class="el" href="_t_tdr_clover_hit_8cxx_source.html#l00145">TTdrCloverHit::PUHit()</a>.</p>
 
 </div>
 </div>
@@ -2632,7 +2663,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00100">100</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00198">TDetectorHit::fWaveform</a>.</p>
+<p class="reference">References <a class="el" href="_t_detector_hit_8h_source.html#l00199">TDetectorHit::fWaveform</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_descant_hit_8cxx_source.html#l00120">TDescantHit::AnalyzeWaveform()</a>, <a class="el" href="_t_sceptar_hit_8cxx_source.html#l00095">TSceptarHit::AnalyzeWaveform()</a>, <a class="el" href="_t_zero_degree_hit_8cxx_source.html#l00104">TZeroDegreeHit::AnalyzeWaveform()</a>, <a class="el" href="_t_descant_hit_8cxx_source.html#l00177">TDescantHit::CalculateCfdAndMonitor()</a>, <a class="el" href="_t_sceptar_hit_8cxx_source.html#l00141">TSceptarHit::CalculateCfdAndMonitor()</a>, <a class="el" href="_t_zero_degree_hit_8cxx_source.html#l00150">TZeroDegreeHit::CalculateCfdAndMonitor()</a>, <a class="el" href="_t_descant_hit_8cxx_source.html#l00258">TDescantHit::CalculateCfdMonitor()</a>, <a class="el" href="_t_descant_hit_8cxx_source.html#l00281">TDescantHit::CalculatePartialSum()</a>, <a class="el" href="_t_zero_degree_hit_8cxx_source.html#l00261">TZeroDegreeHit::CalculatePartialSum()</a>, <a class="el" href="_t_descant_hit_8cxx_source.html#l00239">TDescantHit::CalculateSmoothedWaveform()</a>, <a class="el" href="_t_sceptar_hit_8cxx_source.html#l00199">TSceptarHit::CalculateSmoothedWaveform()</a>, and <a class="el" href="_t_zero_degree_hit_8cxx_source.html#l00216">TZeroDegreeHit::CalculateSmoothedWaveform()</a>.</p>
 
@@ -2661,9 +2692,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>address of the the channel in the DAQ. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00193">193</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00194">194</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_detector_hit_8cxx_source.html#l00010">TDetectorHit::TDetectorHit()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00169">TDetectorHit::Clear()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00105">TDetectorHit::Copy()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00140">TDetectorHit::GetAddress()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00145">TDetectorHit::GetChannel()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00218">TDetectorHit::GetChannelNumber()</a>, and <a class="el" href="_t_detector_hit_8h_source.html#l00106">TDetectorHit::SetAddress()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_detector_hit_8cxx_source.html#l00010">TDetectorHit::TDetectorHit()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00181">TDetectorHit::Clear()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00117">TDetectorHit::Copy()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00141">TDetectorHit::GetAddress()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00146">TDetectorHit::GetChannel()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00230">TDetectorHit::GetChannelNumber()</a>, and <a class="el" href="_t_detector_hit_8h_source.html#l00106">TDetectorHit::SetAddress()</a>.</p>
 
 </div>
 </div>
@@ -2715,9 +2746,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00210">210</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00211">211</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_detector_hit_8h_source.html#l00179">TDetectorHit::GetBeamDirection()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_detector_hit_8h_source.html#l00180">TDetectorHit::GetBeamDirection()</a>.</p>
 
 </div>
 </div>
@@ -2741,9 +2772,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00208">208</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00209">209</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_detector_hit_8cxx_source.html#l00169">TDetectorHit::Clear()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00091">TDetectorHit::ClearTransients()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00105">TDetectorHit::Copy()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00188">TDetectorHit::IsChannelSet()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00187">TDetectorHit::IsEnergySet()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00190">TDetectorHit::IsPPGSet()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00189">TDetectorHit::IsTimeSet()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00284">TDetectorHit::SetHitBit()</a>, and <a class="el" href="_t_detector_hit_8h_source.html#l00184">TDetectorHit::TestHitBit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_detector_hit_8cxx_source.html#l00181">TDetectorHit::Clear()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00091">TDetectorHit::ClearTransients()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00117">TDetectorHit::Copy()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00189">TDetectorHit::IsChannelSet()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00188">TDetectorHit::IsEnergySet()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00191">TDetectorHit::IsPPGSet()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00190">TDetectorHit::IsTimeSet()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00296">TDetectorHit::SetHitBit()</a>, and <a class="el" href="_t_detector_hit_8h_source.html#l00185">TDetectorHit::TestHitBit()</a>.</p>
 
 </div>
 </div>
@@ -2769,9 +2800,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>CFD time of the Hit. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00196">196</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00197">197</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_detector_hit_8cxx_source.html#l00169">TDetectorHit::Clear()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00105">TDetectorHit::Copy()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00139">TDetectorHit::GetCfd()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00110">TDetectorHit::SetCfd()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00112">TDetectorHit::SetCfd()</a>, and <a class="el" href="_t_detector_hit_8h_source.html#l00111">TDetectorHit::SetCfd()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_detector_hit_8cxx_source.html#l00181">TDetectorHit::Clear()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00117">TDetectorHit::Copy()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00140">TDetectorHit::GetCfd()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00110">TDetectorHit::SetCfd()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00112">TDetectorHit::SetCfd()</a>, and <a class="el" href="_t_detector_hit_8h_source.html#l00111">TDetectorHit::SetCfd()</a>.</p>
 
 </div>
 </div>
@@ -2797,9 +2828,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00205">205</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00206">206</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_detector_hit_8cxx_source.html#l00169">TDetectorHit::Clear()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00173">TDetectorHit::ClearChannel()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00105">TDetectorHit::Copy()</a>, and <a class="el" href="_t_detector_hit_8h_source.html#l00145">TDetectorHit::GetChannel()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_detector_hit_8cxx_source.html#l00181">TDetectorHit::Clear()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00174">TDetectorHit::ClearChannel()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00117">TDetectorHit::Copy()</a>, and <a class="el" href="_t_detector_hit_8h_source.html#l00146">TDetectorHit::GetChannel()</a>.</p>
 
 </div>
 </div>
@@ -2825,9 +2856,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>charge collected from the hit </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00194">194</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00195">195</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_detector_hit_8h_source.html#l00142">TDetectorHit::Charge()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00169">TDetectorHit::Clear()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00105">TDetectorHit::Copy()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00108">TDetectorHit::SetCharge()</a>, and <a class="el" href="_t_detector_hit_8h_source.html#l00109">TDetectorHit::SetCharge()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_detector_hit_8h_source.html#l00143">TDetectorHit::Charge()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00181">TDetectorHit::Clear()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00117">TDetectorHit::Copy()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00108">TDetectorHit::SetCharge()</a>, and <a class="el" href="_t_detector_hit_8h_source.html#l00109">TDetectorHit::SetCharge()</a>.</p>
 
 </div>
 </div>
@@ -2853,9 +2884,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00204">204</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00205">205</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_detector_hit_8cxx_source.html#l00169">TDetectorHit::Clear()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00105">TDetectorHit::Copy()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00261">TDetectorHit::GetCycleTimeStamp()</a>, and <a class="el" href="_t_detector_hit_8cxx_source.html#l00245">TDetectorHit::GetPPGStatus()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_detector_hit_8cxx_source.html#l00181">TDetectorHit::Clear()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00117">TDetectorHit::Copy()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00273">TDetectorHit::GetCycleTimeStamp()</a>, and <a class="el" href="_t_detector_hit_8cxx_source.html#l00257">TDetectorHit::GetPPGStatus()</a>.</p>
 
 </div>
 </div>
@@ -2881,9 +2912,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>! Energy of the Hit. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00201">201</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00202">202</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_detector_hit_8cxx_source.html#l00169">TDetectorHit::Clear()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00168">TDetectorHit::ClearEnergy()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00105">TDetectorHit::Copy()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00073">TDetectorHit::GetEnergy()</a>, and <a class="el" href="_t_detector_hit_8h_source.html#l00118">TDetectorHit::SetEnergy()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_detector_hit_8cxx_source.html#l00181">TDetectorHit::Clear()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00169">TDetectorHit::ClearEnergy()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00117">TDetectorHit::Copy()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00075">TDetectorHit::GetEnergy()</a>, and <a class="el" href="_t_detector_hit_8h_source.html#l00118">TDetectorHit::SetEnergy()</a>.</p>
 
 </div>
 </div>
@@ -2937,9 +2968,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>integration value. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00195">195</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00196">196</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_detector_hit_8cxx_source.html#l00169">TDetectorHit::Clear()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00105">TDetectorHit::Copy()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00058">TDetectorHit::GetCharge()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00073">TDetectorHit::GetEnergy()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00143">TDetectorHit::GetKValue()</a>, and <a class="el" href="_t_detector_hit_8h_source.html#l00107">TDetectorHit::SetKValue()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_detector_hit_8cxx_source.html#l00181">TDetectorHit::Clear()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00117">TDetectorHit::Copy()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00060">TDetectorHit::GetCharge()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00075">TDetectorHit::GetEnergy()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00144">TDetectorHit::GetKValue()</a>, and <a class="el" href="_t_detector_hit_8h_source.html#l00107">TDetectorHit::SetKValue()</a>.</p>
 
 </div>
 </div>
@@ -2965,9 +2996,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00202">202</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00203">203</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_detector_hit_8cxx_source.html#l00169">TDetectorHit::Clear()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00105">TDetectorHit::Copy()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00261">TDetectorHit::GetCycleTimeStamp()</a>, and <a class="el" href="_t_detector_hit_8cxx_source.html#l00245">TDetectorHit::GetPPGStatus()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_detector_hit_8cxx_source.html#l00181">TDetectorHit::Clear()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00117">TDetectorHit::Copy()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00273">TDetectorHit::GetCycleTimeStamp()</a>, and <a class="el" href="_t_detector_hit_8cxx_source.html#l00257">TDetectorHit::GetPPGStatus()</a>.</p>
 
 </div>
 </div>
@@ -3021,9 +3052,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>! Calibrated Time of the hit </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00199">199</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00200">200</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_detector_hit_8cxx_source.html#l00169">TDetectorHit::Clear()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00105">TDetectorHit::Copy()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00045">TDetectorHit::GetTime()</a>, and <a class="el" href="_t_detector_hit_8h_source.html#l00124">TDetectorHit::SetTime()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_detector_hit_8cxx_source.html#l00181">TDetectorHit::Clear()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00117">TDetectorHit::Copy()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00045">TDetectorHit::GetTime()</a>, and <a class="el" href="_t_detector_hit_8h_source.html#l00124">TDetectorHit::SetTime()</a>.</p>
 
 </div>
 </div>
@@ -3049,9 +3080,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>Timestamp given to hit in ns. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00197">197</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00198">198</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_detector_hit_8h_source.html#l00116">TDetectorHit::AppendTimeStamp()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00169">TDetectorHit::Clear()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00105">TDetectorHit::Copy()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00135">TDetectorHit::GetTimeStamp()</a>, and <a class="el" href="_t_detector_hit_8h_source.html#l00115">TDetectorHit::SetTimeStamp()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_detector_hit_8h_source.html#l00116">TDetectorHit::AppendTimeStamp()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00181">TDetectorHit::Clear()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00117">TDetectorHit::Copy()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00136">TDetectorHit::GetTimeStamp()</a>, and <a class="el" href="_t_detector_hit_8h_source.html#l00115">TDetectorHit::SetTimeStamp()</a>.</p>
 
 </div>
 </div>
@@ -3075,9 +3106,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00198">198</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_detector_hit_8h_source.html#l00199">199</a> of file <a class="el" href="_t_detector_hit_8h_source.html">TDetectorHit.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_detector_hit_8h_source.html#l00114">TDetectorHit::AddWaveformSample()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00169">TDetectorHit::Clear()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00123">TDetectorHit::CopyWave()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00144">TDetectorHit::GetWaveform()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00099">TDetectorHit::HasWave()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00113">TDetectorHit::SetWaveform()</a>, and <a class="el" href="_t_detector_hit_8h_source.html#l00100">TDetectorHit::WaveSize()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_detector_hit_8h_source.html#l00114">TDetectorHit::AddWaveformSample()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00181">TDetectorHit::Clear()</a>, <a class="el" href="_t_detector_hit_8cxx_source.html#l00135">TDetectorHit::CopyWave()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00145">TDetectorHit::GetWaveform()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00099">TDetectorHit::HasWave()</a>, <a class="el" href="_t_detector_hit_8h_source.html#l00113">TDetectorHit::SetWaveform()</a>, and <a class="el" href="_t_detector_hit_8h_source.html#l00100">TDetectorHit::WaveSize()</a>.</p>
 
 </div>
 </div>
@@ -3088,7 +3119,7 @@ Static Private Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_t_rcmp_hit.html">TRcmpHit</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Mon Oct 13 2025 20:37:05.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Oct 16 2025 14:26:57.</li>
   </ul>
 </div>
 </body>

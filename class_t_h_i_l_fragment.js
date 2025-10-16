@@ -96,6 +96,7 @@ var class_t_h_i_l_fragment =
     [ "GetSharcMesyBoard", "class_t_h_i_l_fragment.html#ab38998fc8b191e20f64d0ac999c175c2", null ],
     [ "GetTime", "class_t_h_i_l_fragment.html#aba5e96b2f172f0e12eb2b6e06af5a735", null ],
     [ "GetTimeInCycle", "class_t_h_i_l_fragment.html#a32e4ee8a525c8d9ce4adcb0619eefa7a", null ],
+    [ "GetTimeNonlinearity", "class_t_h_i_l_fragment.html#ab5d7ef626e22237526aebcfbc2ccd4af", null ],
     [ "GetTimeSinceTapeMove", "class_t_h_i_l_fragment.html#a1b7038426ef30c3b9668a4d565d4654a", null ],
     [ "GetTimeStamp", "class_t_h_i_l_fragment.html#a2d0ccf28cbe0792ebdf0987d47c14997", null ],
     [ "GetTimeStampNs", "class_t_h_i_l_fragment.html#a292478d4d1ea2b5b1ddeab493e11b79e", null ],
