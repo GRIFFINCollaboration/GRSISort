@@ -136,11 +136,11 @@ void EfficiencyHelper::Exec(unsigned int slot, TGriffin& grif, TGriffinBgo& grif
             }
          }
       }
-      for(int g2 = 0; g2 < grif.GetMultiplicity(); ++g2) {
+      for(int g2 = 0; g2 < grif.GetAddbackMultiplicity(); ++g2) {
          if(g == g2) { continue; }
-         auto* grif2 = grif.GetGriffinHit(g2);
+         auto* grif2 = grif.GetAddbackHit(g2);
          if(Reject(grif2) || !GoodCfd(grif2)) { continue; }
-         if(grif1->GetPosition().Angle(grif2->GetPosition()) / TMath::Pi() * 180. > 179.) {
+         if(grif1->GetPosition().Angle(grif2->GetPosition()) / TMath::Pi() * 180. > 157.) {
             if(PromptCoincidence(grif1, grif2)) {
                fH2[slot].at("griffinGriffinEMixedSingleCrystal")->Fill(grif1->GetEnergy(), grif2->GetEnergy());
             }
