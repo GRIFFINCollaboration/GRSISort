@@ -138,7 +138,7 @@ enum ERootCanvasCommands : std::uint8_t {
 
 };
 
-constexpr int kButton1Ctrl       = 9;
+constexpr int kButton1Ctrl = 9;
 //constexpr int kButton1CtrlMotion = 10;
 
 static std::array<const char*, 6> gOpenTypes = {"ROOT files", "*.root", "All files", "*", nullptr, nullptr};
