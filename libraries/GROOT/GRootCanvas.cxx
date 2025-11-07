@@ -27,7 +27,6 @@
 #include "TInterpreter.h"
 #include "TEnv.h"
 #include "TMath.h"
-#include "Riostream.h"
 #include "TGDockableFrame.h"
 
 #include "TG3DLine.h"
@@ -35,7 +34,6 @@
 #include "TGToolTip.h"
 #include "TVirtualPadEditor.h"
 #include "TRootControlBar.h"
-#include "TGLabel.h"
 #include "TGuiBuilder.h"
 #include "TImage.h"
 #include "TError.h"
@@ -57,7 +55,7 @@
 #include "GCanvas.h"
 
 // Canvas menu command ids
-enum ERootCanvasCommands {
+enum ERootCanvasCommands : std::uint8_t {
    kFileNewCanvas,
    kFileOpen,
    kFileSaveAs,
@@ -141,7 +139,7 @@ enum ERootCanvasCommands {
 };
 
 constexpr int kButton1Ctrl       = 9;
-constexpr int kButton1CtrlMotion = 10;
+//constexpr int kButton1CtrlMotion = 10;
 
 static std::array<const char*, 6> gOpenTypes = {"ROOT files", "*.root", "All files", "*", nullptr, nullptr};
 
