@@ -189,7 +189,6 @@ inline bool FindAddressOffsets(bool update)
       return false;
    }
    std::string line;
-   int         counter = 0;
    while(std::getline(procMap, line)) {
       // line has format
       // <start address>-<end address> <four letters for permissions> <offset> <device major>:<device minor> <inode> <so-library>
@@ -206,30 +205,16 @@ inline bool FindAddressOffsets(bool update)
       std::string soLibrary;
 
       str >> std::hex >> startAddress >> dash >> endAddress >> permissions >> std::dec >> offset >> device >> inode;
-      //std::cout << counter << ": \"" << line << "\" => " << hex(startAddress) << "-" << hex(endAddress) << " (" << permissions << ") " << offset << " [" << device << "] " << inode;
 
       if(inode != 0) {
          str >> soLibrary;
-         //std::cout << " {" << soLibrary << "}, " << gAddressOffset.size();
 
          // we only keep the first starting address
          if(gAddressOffset.find(soLibrary) == gAddressOffset.end()) {
             gAddressOffset[soLibrary] = startAddress;
-            //std::cout << ", keeping " << gAddressOffset.size();
          }
       }
-      //std::cout << std::endl;
-      ++counter;
    }
-
-   //if(update) {
-   //   std::cout << "Updated to " << gAddressOffset.size() << " entries using " << counter << " lines" << std::endl;
-   //} else {
-   //   std::cout << "Got address offset map with " << gAddressOffset.size()  << " entries using " << counter << " lines:" << std::endl;
-   //   for(auto& iter : gAddressOffset) {
-   //      std::cout << hex(iter.second) << "      " << iter.first << std::endl;
-   //   }
-   //}
 
    return true;
 }
