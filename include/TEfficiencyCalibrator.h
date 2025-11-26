@@ -206,11 +206,13 @@ class TEfficiencyCalibrator : public TGMainFrame {
    ///
    /// This is a class that determines the efficiency from source
    /// data.
-   /// It expects a list of files with a 1D singles histogram and time random
-   /// corrected 2D histograms of energy vs. (suppressed) energy and
+   /// It expects a list of files with a 1D singles histogram and 
+   /// 2D histograms of energy vs. (suppressed) energy and
    /// energy vs. sum of energies. In case of suppressed data only the
    /// x-axis of the former 2D histogram should use suppressed data,
    /// the y-axis needs to be unsuppressed data!
+   /// These kinds of files are created by the SummingCorrectionsHelper.cxx
+   /// in the examples folder.
    /// If the file name contains a source isotope at the beginning of
    /// the name, the source selection will be automatic, otherwise
    /// a window will pop up with the option to select the isotope for
