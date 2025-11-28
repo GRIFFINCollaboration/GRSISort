@@ -177,7 +177,7 @@ void TGRSIFrame::Run(TRedirect*& redirect)
                   std::cout << "Error, failed to find or create path " << list.first << ", writing into " << gDirectory->GetPath() << std::endl;
                }
             }
-            // switch back to topmost directory
+            // switch back to topmost directory (could we replace this by outputFile.cd()?)
             while(gDirectory->GetDirectory("..")) { gDirectory->cd(".."); }
          }
 #if ROOT_VERSION_CODE < ROOT_VERSION(6, 30, 0)

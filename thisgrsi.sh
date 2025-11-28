@@ -30,7 +30,7 @@ if [ -n "${GRSISYS}" ] ; then
    old_grsisys=${GRSISYS}
 fi
 
-if [ "${BASH_ARGV[0]}" = "" ]; then
+if [ -z ${BASH_ARGV[0]} ] && [ -z "$ZSH_VERSION" ]; then
     if [ ! -f thisgrsi.sh ]; then
         echo ERROR: must "cd where/grsi/is" before calling ". thisgrsi.sh" for this version of bash!
         GRSISYS=; export GRSISYS
@@ -39,8 +39,12 @@ if [ "${BASH_ARGV[0]}" = "" ]; then
     GRSISYS="$PWD"; export GRSISYS
 else
     # get param to "."
-    thisgrsi=$(dirname "${BASH_ARGV[0]}")
-    GRSISYS=$(cd "${thisgrsi}" || exit;pwd); export GRSISYS
+    if [ -z "$ZSH_VERSION" ]; then
+       thisdir=$(dirname "${BASH_ARGV[0]}")
+    else
+       thisdir=$(dirname "$0")
+    fi
+    GRSISYS=$(cd "${thisdir}" || exit;pwd); export GRSISYS
 fi
 
 if [ -e "$GRSISYS/GRSIData" ] ; then

@@ -292,6 +292,16 @@ public:
    static void          ListLevelSchemes();
    static TLevelScheme* GetLevelScheme(const char* name);
 
+   // static settings
+   static void DrawLevelEnergy(bool val) { fDrawLevelEnergy = val; }
+   static void DrawLevelLabel(bool val) { fDrawLevelLabel = val; }
+   static void DrawName(bool val) { fDrawName = val; }
+   static void DrawBandLabel(bool val) { fDrawBandLabel = val; }
+   static bool DrawLevelEnergy() { return fDrawLevelEnergy; }
+   static bool DrawLevelLabel() { return fDrawLevelLabel; }
+   static bool DrawName() { return fDrawName; }
+   static bool DrawBandLabel() { return fDrawBandLabel; }
+
    TLevel* AddLevel(double energy, const std::string& bandName, const std::string& label);
    TLevel* AddLevel(const double energy, const char* bandName, const char* label) { return AddLevel(energy, std::string(bandName), std::string(label)); }   // *MENU*
    TLevel* GetLevel(double energy);
@@ -389,6 +399,12 @@ private:
    double      fTopMargin{-1.};
    double      fMinWidth{1.};
    double      fMaxWidth{10.};
+
+   // static settings
+   static bool fDrawLevelEnergy;
+   static bool fDrawLevelLabel;
+   static bool fDrawName;
+   static bool fDrawBandLabel;
 
    // original canvas range
    double fX1{0.};

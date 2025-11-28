@@ -40,9 +40,6 @@
 
 #include <pwd.h>
 
-extern void PopupLogo(bool);
-extern void WaitLogo();
-
 TGRSIint* TGRSIint::fTGRSIint = nullptr;
 
 TEnv* TGRSIint::fGRSIEnv = nullptr;
@@ -302,9 +299,6 @@ void TGRSIint::PrintLogo(bool print)
       printf("\t*%*s%*s*\n", width / 2 + 14, "A lean, mean sorting machine", width / 2 - 14, "");
       printf("\t*%*s%*s*\n", width / 2 + 9, "version " GRSI_RELEASE, width / 2 - 9, "");
       printf("\t*%s*\n", std::string(width, '*').c_str());
-
-      std::thread drawlogo(&TGRSIint::DrawLogo);   //, this);
-      drawlogo.detach();
    } else {
       std::cout << "\tgrsisort version " << GRSI_RELEASE << std::endl;
    }
@@ -720,13 +714,6 @@ void TGRSIint::RunMacroFile(const std::string& filename)
          std::cerr << R"(File ")" << filename << R"(" does not exist)" << std::endl;
       }
    }
-}
-
-void TGRSIint::DrawLogo()
-{
-   /// Draws the logo. Can be suppressed with -l
-   PopupLogo(false);
-   WaitLogo();
 }
 
 void TGRSIint::LoadGROOTGraphics()

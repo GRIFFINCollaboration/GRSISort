@@ -75,7 +75,6 @@ private:
    void        SetupPipeline();
    void        LoopUntilDone();
    void        ApplyOptions();
-   static void DrawLogo();
    static void LoadGROOTGraphics();
    void        LoadExtraClasses();
 
