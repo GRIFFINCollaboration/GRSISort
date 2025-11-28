@@ -313,175 +313,160 @@ $(function(){initNavTree('_globals_8h_source.html',''); initResizable(true); });
 <div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>   }</div>
 <div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>   std::string line;</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>   <span class="keywordtype">int</span>         counter = 0;</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>   <span class="keywordflow">while</span>(std::getline(procMap, line)) {</div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>      <span class="comment">// line has format</span></div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>      <span class="comment">// &lt;start address&gt;-&lt;end address&gt; &lt;four letters for permissions&gt; &lt;offset&gt; &lt;device major&gt;:&lt;device minor&gt; &lt;inode&gt; &lt;so-library&gt;</span></div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>      <span class="comment">// if &lt;inode&gt; is 0 there is no so-library</span></div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>      std::stringstream str(line);</div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span> </div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>      uint64_t    startAddress = 0;</div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>      <span class="keywordtype">char</span>        dash         = <span class="charliteral">&#39;\0&#39;</span>;</div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>      uint64_t    endAddress   = 0;</div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>      std::string permissions;</div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>      uint64_t    offset = 0;</div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>      std::string device;</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>      <span class="keywordtype">int</span>         inode = 0;</div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>      std::string soLibrary;</div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span> </div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>      str &gt;&gt; std::hex &gt;&gt; startAddress &gt;&gt; dash &gt;&gt; endAddress &gt;&gt; permissions &gt;&gt; std::dec &gt;&gt; offset &gt;&gt; device &gt;&gt; inode;</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>      <span class="comment">//std::cout &lt;&lt; counter &lt;&lt; &quot;: \&quot;&quot; &lt;&lt; line &lt;&lt; &quot;\&quot; =&gt; &quot; &lt;&lt; hex(startAddress) &lt;&lt; &quot;-&quot; &lt;&lt; hex(endAddress) &lt;&lt; &quot; (&quot; &lt;&lt; permissions &lt;&lt; &quot;) &quot; &lt;&lt; offset &lt;&lt; &quot; [&quot; &lt;&lt; device &lt;&lt; &quot;] &quot; &lt;&lt; inode;</span></div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span> </div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>      <span class="keywordflow">if</span>(inode != 0) {</div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>         str &gt;&gt; soLibrary;</div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>         <span class="comment">//std::cout &lt;&lt; &quot; {&quot; &lt;&lt; soLibrary &lt;&lt; &quot;}, &quot; &lt;&lt; gAddressOffset.size();</span></div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span> </div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>         <span class="comment">// we only keep the first starting address</span></div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>         <span class="keywordflow">if</span>(<a class="code hl_variable" href="_globals_8h.html#aa0602bd948a5be365359fb1842a7a82d">gAddressOffset</a>.find(soLibrary) == <a class="code hl_variable" href="_globals_8h.html#aa0602bd948a5be365359fb1842a7a82d">gAddressOffset</a>.end()) {</div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>            <a class="code hl_variable" href="_globals_8h.html#aa0602bd948a5be365359fb1842a7a82d">gAddressOffset</a>[soLibrary] = startAddress;</div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>            <span class="comment">//std::cout &lt;&lt; &quot;, keeping &quot; &lt;&lt; gAddressOffset.size();</span></div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>         }</div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>      }</div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>      <span class="comment">//std::cout &lt;&lt; std::endl;</span></div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>      ++counter;</div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>   }</div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span> </div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>   <span class="comment">//if(update) {</span></div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>   <span class="comment">//   std::cout &lt;&lt; &quot;Updated to &quot; &lt;&lt; gAddressOffset.size() &lt;&lt; &quot; entries using &quot; &lt;&lt; counter &lt;&lt; &quot; lines&quot; &lt;&lt; std::endl;</span></div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>   <span class="comment">//} else {</span></div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>   <span class="comment">//   std::cout &lt;&lt; &quot;Got address offset map with &quot; &lt;&lt; gAddressOffset.size()  &lt;&lt; &quot; entries using &quot; &lt;&lt; counter &lt;&lt; &quot; lines:&quot; &lt;&lt; std::endl;</span></div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>   <span class="comment">//   for(auto&amp; iter : gAddressOffset) {</span></div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>   <span class="comment">//      std::cout &lt;&lt; hex(iter.second) &lt;&lt; &quot;      &quot; &lt;&lt; iter.first &lt;&lt; std::endl;</span></div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>   <span class="comment">//   }</span></div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>   <span class="comment">//}</span></div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span> </div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>   <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>}</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>   <span class="keywordflow">while</span>(std::getline(procMap, line)) {</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>      <span class="comment">// line has format</span></div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>      <span class="comment">// &lt;start address&gt;-&lt;end address&gt; &lt;four letters for permissions&gt; &lt;offset&gt; &lt;device major&gt;:&lt;device minor&gt; &lt;inode&gt; &lt;so-library&gt;</span></div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>      <span class="comment">// if &lt;inode&gt; is 0 there is no so-library</span></div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>      std::stringstream str(line);</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span> </div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>      uint64_t    startAddress = 0;</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>      <span class="keywordtype">char</span>        dash         = <span class="charliteral">&#39;\0&#39;</span>;</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>      uint64_t    endAddress   = 0;</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>      std::string permissions;</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>      uint64_t    offset = 0;</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>      std::string device;</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>      <span class="keywordtype">int</span>         inode = 0;</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>      std::string soLibrary;</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span> </div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>      str &gt;&gt; std::hex &gt;&gt; startAddress &gt;&gt; dash &gt;&gt; endAddress &gt;&gt; permissions &gt;&gt; std::dec &gt;&gt; offset &gt;&gt; device &gt;&gt; inode;</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span> </div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>      <span class="keywordflow">if</span>(inode != 0) {</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>         str &gt;&gt; soLibrary;</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span> </div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>         <span class="comment">// we only keep the first starting address</span></div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>         <span class="keywordflow">if</span>(<a class="code hl_variable" href="_globals_8h.html#aa0602bd948a5be365359fb1842a7a82d">gAddressOffset</a>.find(soLibrary) == <a class="code hl_variable" href="_globals_8h.html#aa0602bd948a5be365359fb1842a7a82d">gAddressOffset</a>.end()) {</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>            <a class="code hl_variable" href="_globals_8h.html#aa0602bd948a5be365359fb1842a7a82d">gAddressOffset</a>[soLibrary] = startAddress;</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>         }</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>      }</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>   }</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span> </div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>   <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>}</div>
 </div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span> </div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span><span class="comment">// print a demangled stack backtrace of the caller function (copied from https://panthema.net/2008/0901-stacktrace-demangled/)</span></div>
-<div class="foldopen" id="foldopen00238" data-start="{" data-end="}">
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno"><a class="line" href="_globals_8h.html#a892ab854c2a3b8622797099d79eef4f5">  238</a></span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="_globals_8h.html#a892ab854c2a3b8622797099d79eef4f5">PrintStacktrace</a>(std::ostream&amp; out = std::cout, <span class="keywordtype">int</span> maxFrames = 63)</div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>{</div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>   <span class="keywordflow">if</span>(<a class="code hl_variable" href="_globals_8h.html#aa0602bd948a5be365359fb1842a7a82d">gAddressOffset</a>.empty()) {</div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>      <span class="keywordflow">if</span>(!<a class="code hl_function" href="_globals_8h.html#aa8a2329a84c1ebb9da026e7de59d8a87">FindAddressOffsets</a>(<span class="keyword">false</span>)) {</div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>         <span class="keywordflow">throw</span>;</div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>      }</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>   }</div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>   std::ostringstream output;</div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>   output &lt;&lt; <span class="stringliteral">&quot;stack trace:&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span> </div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>   <span class="comment">// storage array for stack trace address data</span></div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>   <span class="keywordtype">void</span>** addrlist = <span class="keyword">new</span> <span class="keywordtype">void</span>*[maxFrames + 1];</div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span> </div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>   <span class="comment">// retrieve current stack addresses</span></div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>   <span class="keywordtype">int</span> addrlen = backtrace(addrlist, maxFrames + 1);</div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span> </div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>   <span class="keywordflow">if</span>(addrlen == 0) {</div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>      output &lt;&lt; <span class="stringliteral">&quot;  &lt;empty, possibly corrupt&gt;&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>      out &lt;&lt; output.str();</div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>   }</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span> </div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>   <span class="comment">// resolve addresses into strings containing &quot;filename(function+address)&quot;,</span></div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>   <span class="comment">// this array must be free()-ed</span></div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>   <span class="keywordtype">char</span>** symbollist = backtrace_symbols(addrlist, addrlen);</div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span> </div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>   <span class="comment">// allocate string which will be filled with the demangled function name</span></div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>   <span class="keywordtype">size_t</span> funcnamesize = 256;</div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>   <span class="keyword">auto</span>*  funcname     = <span class="keyword">new</span> <span class="keywordtype">char</span>[funcnamesize];</div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span> </div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>   <span class="comment">// iterate over the returned symbol lines. skip the first, it is the</span></div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>   <span class="comment">// address of this function.</span></div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>   <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 2; i &lt; addrlen; i++) {</div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>      <span class="keywordtype">char</span>* begin_name   = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>      <span class="keywordtype">char</span>* begin_offset = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span> </div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>      <span class="comment">// find parentheses and +address offset surrounding the mangled name:</span></div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>      <span class="comment">// ./module(function+0x15c) [0x8048a6d]</span></div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>      <span class="keywordflow">for</span>(<span class="keywordtype">char</span>* p = symbollist[i]; *p != 0; ++p) {</div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>         <span class="keywordflow">if</span>(*p == <span class="charliteral">&#39;(&#39;</span>) {</div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>            begin_name = p;</div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>         } <span class="keywordflow">else</span> <span class="keywordflow">if</span>(*p == <span class="charliteral">&#39;+&#39;</span>) {</div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>            begin_offset = p;</div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>         }</div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>      }</div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span> </div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>      <span class="comment">// try and decode file and line number (only if we have an absolute path)</span></div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>      std::string line;</div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>      <span class="keywordflow">if</span>(symbollist[i][0] == <span class="charliteral">&#39;/&#39;</span>) {</div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>         std::ostringstream command;</div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>         std::string        filename = symbollist[i];</div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>         filename                    = filename.substr(0, filename.find_first_of(<span class="charliteral">&#39;(&#39;</span>));</div>
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>         <span class="keywordflow">if</span>(<a class="code hl_variable" href="_globals_8h.html#aa0602bd948a5be365359fb1842a7a82d">gAddressOffset</a>.find(filename) == <a class="code hl_variable" href="_globals_8h.html#aa0602bd948a5be365359fb1842a7a82d">gAddressOffset</a>.end()) {</div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>            <a class="code hl_function" href="_globals_8h.html#aa8a2329a84c1ebb9da026e7de59d8a87">FindAddressOffsets</a>(<span class="keyword">true</span>);</div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>         }</div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>         <span class="comment">// convert addrlist[i] to integer and subtract offset</span></div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>         <span class="keywordflow">if</span>(<a class="code hl_variable" href="_globals_8h.html#aa0602bd948a5be365359fb1842a7a82d">gAddressOffset</a>.find(filename) != <a class="code hl_variable" href="_globals_8h.html#aa0602bd948a5be365359fb1842a7a82d">gAddressOffset</a>.end()) {</div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>            command &lt;&lt; <span class="stringliteral">&quot;addr2line &quot;</span> &lt;&lt; <a class="code hl_function" href="_globals_8h.html#ab37ad6f1cf4c93e161b5caaeae971ef4">hex</a>(<span class="keyword">reinterpret_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(addrlist[i]) - <a class="code hl_variable" href="_globals_8h.html#aa0602bd948a5be365359fb1842a7a82d">gAddressOffset</a>.at(filename)) &lt;&lt; <span class="stringliteral">&quot; -e &quot;</span> &lt;&lt; filename;</div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>            line = <a class="code hl_function" href="_globals_8h.html#a446b981c75bfc4865a6b0b75ae9c65a0">sh</a>(command.str());</div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>            line.erase(std::remove(line.begin(), line.end(), <span class="charliteral">&#39;\n&#39;</span>), line.end());</div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>            <span class="comment">//std::cout &lt;&lt; symbollist[i] &lt;&lt; &quot;: (&quot; &lt;&lt; addrlist[i] &lt;&lt; &quot;/&quot; &lt;&lt; hex(reinterpret_cast&lt;uint64_t&gt;(addrlist[i])) &lt;&lt; &quot; - &quot; &lt;&lt; hex(gAddressOffset.at(filename)) &lt;&lt; &quot;) executed command &quot; &lt;&lt; command.str() &lt;&lt; &quot; = &quot; &lt;&lt; line &lt;&lt; std::endl;</span></div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>         }</div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span> </div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>         <span class="keywordflow">if</span>(begin_name != <span class="keyword">nullptr</span> &amp;&amp; begin_offset != <span class="keyword">nullptr</span> &amp;&amp; begin_name &lt; begin_offset) {</div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>            *begin_name++   = <span class="charliteral">&#39;\0&#39;</span>;</div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>            *begin_offset++ = <span class="charliteral">&#39;\0&#39;</span>;</div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span> </div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>            <span class="comment">// mangled name is now in [begin_name, begin_offset)</span></div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>            <span class="comment">// now apply __cxa_demangle():</span></div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span> </div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>            <span class="keywordtype">int</span>   status = 0;</div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>            <span class="keywordtype">char</span>* ret    = abi::__cxa_demangle(begin_name, funcname, &amp;funcnamesize, &amp;status);</div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>            <span class="keywordflow">if</span>(status == 0) {</div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>               funcname = ret;   <span class="comment">// use possibly realloc()-ed string</span></div>
-<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>               output &lt;&lt; <span class="stringliteral">&quot;  &quot;</span> &lt;&lt; line &lt;&lt; <span class="stringliteral">&quot; - &quot;</span> &lt;&lt; funcname &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>            } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>               <span class="comment">// demangling failed. Output function name as a C function with no arguments.</span></div>
-<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>               output &lt;&lt; <span class="stringliteral">&quot;  &quot;</span> &lt;&lt; line &lt;&lt; <span class="stringliteral">&quot; - &quot;</span> &lt;&lt; begin_name &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>            }</div>
-<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>         } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>            <span class="comment">// couldn&#39;t parse the line? print the whole line.</span></div>
-<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>            output &lt;&lt; <span class="stringliteral">&quot;  &quot;</span> &lt;&lt; line &lt;&lt; <span class="stringliteral">&quot; - &quot;</span> &lt;&lt; symbollist[i] &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>         }</div>
-<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>      }</div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>   }</div>
-<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span> </div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>   <span class="keyword">delete</span>[] funcname;</div>
-<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>   <span class="keyword">delete</span> symbollist;</div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>   out &lt;&lt; output.str();</div>
-<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>}</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span> </div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span><span class="comment">// print a demangled stack backtrace of the caller function (copied from https://panthema.net/2008/0901-stacktrace-demangled/)</span></div>
+<div class="foldopen" id="foldopen00223" data-start="{" data-end="}">
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno"><a class="line" href="_globals_8h.html#a892ab854c2a3b8622797099d79eef4f5">  223</a></span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="_globals_8h.html#a892ab854c2a3b8622797099d79eef4f5">PrintStacktrace</a>(std::ostream&amp; out = std::cout, <span class="keywordtype">int</span> maxFrames = 63)</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>{</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>   <span class="keywordflow">if</span>(<a class="code hl_variable" href="_globals_8h.html#aa0602bd948a5be365359fb1842a7a82d">gAddressOffset</a>.empty()) {</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>      <span class="keywordflow">if</span>(!<a class="code hl_function" href="_globals_8h.html#aa8a2329a84c1ebb9da026e7de59d8a87">FindAddressOffsets</a>(<span class="keyword">false</span>)) {</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>         <span class="keywordflow">throw</span>;</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>      }</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>   }</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>   std::ostringstream output;</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>   output &lt;&lt; <span class="stringliteral">&quot;stack trace:&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span> </div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>   <span class="comment">// storage array for stack trace address data</span></div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>   <span class="keywordtype">void</span>** addrlist = <span class="keyword">new</span> <span class="keywordtype">void</span>*[maxFrames + 1];</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span> </div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>   <span class="comment">// retrieve current stack addresses</span></div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>   <span class="keywordtype">int</span> addrlen = backtrace(addrlist, maxFrames + 1);</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span> </div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>   <span class="keywordflow">if</span>(addrlen == 0) {</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>      output &lt;&lt; <span class="stringliteral">&quot;  &lt;empty, possibly corrupt&gt;&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>      out &lt;&lt; output.str();</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>   }</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span> </div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>   <span class="comment">// resolve addresses into strings containing &quot;filename(function+address)&quot;,</span></div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>   <span class="comment">// this array must be free()-ed</span></div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>   <span class="keywordtype">char</span>** symbollist = backtrace_symbols(addrlist, addrlen);</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span> </div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>   <span class="comment">// allocate string which will be filled with the demangled function name</span></div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>   <span class="keywordtype">size_t</span> funcnamesize = 256;</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>   <span class="keyword">auto</span>*  funcname     = <span class="keyword">new</span> <span class="keywordtype">char</span>[funcnamesize];</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span> </div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>   <span class="comment">// iterate over the returned symbol lines. skip the first, it is the</span></div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>   <span class="comment">// address of this function.</span></div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>   <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 2; i &lt; addrlen; i++) {</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>      <span class="keywordtype">char</span>* begin_name   = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>      <span class="keywordtype">char</span>* begin_offset = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span> </div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>      <span class="comment">// find parentheses and +address offset surrounding the mangled name:</span></div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>      <span class="comment">// ./module(function+0x15c) [0x8048a6d]</span></div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>      <span class="keywordflow">for</span>(<span class="keywordtype">char</span>* p = symbollist[i]; *p != 0; ++p) {</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>         <span class="keywordflow">if</span>(*p == <span class="charliteral">&#39;(&#39;</span>) {</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>            begin_name = p;</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>         } <span class="keywordflow">else</span> <span class="keywordflow">if</span>(*p == <span class="charliteral">&#39;+&#39;</span>) {</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>            begin_offset = p;</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>         }</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>      }</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span> </div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>      <span class="comment">// try and decode file and line number (only if we have an absolute path)</span></div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>      std::string line;</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>      <span class="keywordflow">if</span>(symbollist[i][0] == <span class="charliteral">&#39;/&#39;</span>) {</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>         std::ostringstream command;</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>         std::string        filename = symbollist[i];</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>         filename                    = filename.substr(0, filename.find_first_of(<span class="charliteral">&#39;(&#39;</span>));</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>         <span class="keywordflow">if</span>(<a class="code hl_variable" href="_globals_8h.html#aa0602bd948a5be365359fb1842a7a82d">gAddressOffset</a>.find(filename) == <a class="code hl_variable" href="_globals_8h.html#aa0602bd948a5be365359fb1842a7a82d">gAddressOffset</a>.end()) {</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>            <a class="code hl_function" href="_globals_8h.html#aa8a2329a84c1ebb9da026e7de59d8a87">FindAddressOffsets</a>(<span class="keyword">true</span>);</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>         }</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>         <span class="comment">// convert addrlist[i] to integer and subtract offset</span></div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>         <span class="keywordflow">if</span>(<a class="code hl_variable" href="_globals_8h.html#aa0602bd948a5be365359fb1842a7a82d">gAddressOffset</a>.find(filename) != <a class="code hl_variable" href="_globals_8h.html#aa0602bd948a5be365359fb1842a7a82d">gAddressOffset</a>.end()) {</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>            command &lt;&lt; <span class="stringliteral">&quot;addr2line &quot;</span> &lt;&lt; <a class="code hl_function" href="_globals_8h.html#ab37ad6f1cf4c93e161b5caaeae971ef4">hex</a>(<span class="keyword">reinterpret_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(addrlist[i]) - <a class="code hl_variable" href="_globals_8h.html#aa0602bd948a5be365359fb1842a7a82d">gAddressOffset</a>.at(filename)) &lt;&lt; <span class="stringliteral">&quot; -e &quot;</span> &lt;&lt; filename;</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>            line = <a class="code hl_function" href="_globals_8h.html#a446b981c75bfc4865a6b0b75ae9c65a0">sh</a>(command.str());</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>            line.erase(std::remove(line.begin(), line.end(), <span class="charliteral">&#39;\n&#39;</span>), line.end());</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>            <span class="comment">//std::cout &lt;&lt; symbollist[i] &lt;&lt; &quot;: (&quot; &lt;&lt; addrlist[i] &lt;&lt; &quot;/&quot; &lt;&lt; hex(reinterpret_cast&lt;uint64_t&gt;(addrlist[i])) &lt;&lt; &quot; - &quot; &lt;&lt; hex(gAddressOffset.at(filename)) &lt;&lt; &quot;) executed command &quot; &lt;&lt; command.str() &lt;&lt; &quot; = &quot; &lt;&lt; line &lt;&lt; std::endl;</span></div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>         }</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span> </div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>         <span class="keywordflow">if</span>(begin_name != <span class="keyword">nullptr</span> &amp;&amp; begin_offset != <span class="keyword">nullptr</span> &amp;&amp; begin_name &lt; begin_offset) {</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>            *begin_name++   = <span class="charliteral">&#39;\0&#39;</span>;</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>            *begin_offset++ = <span class="charliteral">&#39;\0&#39;</span>;</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span> </div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>            <span class="comment">// mangled name is now in [begin_name, begin_offset)</span></div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>            <span class="comment">// now apply __cxa_demangle():</span></div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span> </div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>            <span class="keywordtype">int</span>   status = 0;</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>            <span class="keywordtype">char</span>* ret    = abi::__cxa_demangle(begin_name, funcname, &amp;funcnamesize, &amp;status);</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>            <span class="keywordflow">if</span>(status == 0) {</div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>               funcname = ret;   <span class="comment">// use possibly realloc()-ed string</span></div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>               output &lt;&lt; <span class="stringliteral">&quot;  &quot;</span> &lt;&lt; line &lt;&lt; <span class="stringliteral">&quot; - &quot;</span> &lt;&lt; funcname &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>            } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>               <span class="comment">// demangling failed. Output function name as a C function with no arguments.</span></div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>               output &lt;&lt; <span class="stringliteral">&quot;  &quot;</span> &lt;&lt; line &lt;&lt; <span class="stringliteral">&quot; - &quot;</span> &lt;&lt; begin_name &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>            }</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>         } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>            <span class="comment">// couldn&#39;t parse the line? print the whole line.</span></div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>            output &lt;&lt; <span class="stringliteral">&quot;  &quot;</span> &lt;&lt; line &lt;&lt; <span class="stringliteral">&quot; - &quot;</span> &lt;&lt; symbollist[i] &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>         }</div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>      }</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>   }</div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span> </div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>   <span class="keyword">delete</span>[] funcname;</div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>   <span class="keyword">delete</span> symbollist;</div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>   out &lt;&lt; output.str();</div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>}</div>
 </div>
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span> </div>
-<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span><span class="preprocessor">#if !__APPLE__</span></div>
-<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span><span class="preprocessor">#include &lt;sys/wait.h&gt;</span></div>
-<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span><span class="preprocessor">#include &lt;sys/prctl.h&gt;</span></div>
-<div class="foldopen" id="foldopen00333" data-start="{" data-end="}">
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno"><a class="line" href="_globals_8h.html#a52b20d1a0ce0cf354138dd47ae9a5f46">  333</a></span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="_globals_8h.html#a52b20d1a0ce0cf354138dd47ae9a5f46">PrintGdbStacktrace</a>()</div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>{</div>
-<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>   std::array&lt;char, 30&gt; pid_buf{};</div>
-<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>   sprintf(pid_buf.data(), <span class="stringliteral">&quot;%d&quot;</span>, getpid());</div>
-<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>   std::array&lt;char, 512&gt; name_buf{};</div>
-<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>   name_buf[readlink(<span class="stringliteral">&quot;/proc/self/exe&quot;</span>, name_buf.data(), 511)] = 0;</div>
-<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>   prctl(PR_SET_PTRACER, PR_SET_PTRACER_ANY, 0, 0, 0);</div>
-<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>   <span class="keywordtype">int</span> child_pid = fork();</div>
-<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>   <span class="keywordflow">if</span>(child_pid == 0) {</div>
-<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>      dup2(2, 1);   <span class="comment">// redirect output to stderr - edit: unnecessary?</span></div>
-<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>      execl(<span class="stringliteral">&quot;/usr/bin/gdb&quot;</span>, <span class="stringliteral">&quot;gdb&quot;</span>, <span class="stringliteral">&quot;--batch&quot;</span>, <span class="stringliteral">&quot;-n&quot;</span>, <span class="stringliteral">&quot;-ex&quot;</span>, <span class="stringliteral">&quot;thread&quot;</span>, <span class="stringliteral">&quot;-ex&quot;</span>, <span class="stringliteral">&quot;bt&quot;</span>, name_buf.data(), pid_buf.data(), <span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>      abort(); <span class="comment">/* If gdb failed to start */</span></div>
-<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>   } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>      waitpid(child_pid, <span class="keyword">nullptr</span>, 0);</div>
-<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>   }</div>
-<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>}</div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span> </div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span><span class="preprocessor">#if !__APPLE__</span></div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span><span class="preprocessor">#include &lt;sys/wait.h&gt;</span></div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span><span class="preprocessor">#include &lt;sys/prctl.h&gt;</span></div>
+<div class="foldopen" id="foldopen00318" data-start="{" data-end="}">
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno"><a class="line" href="_globals_8h.html#a52b20d1a0ce0cf354138dd47ae9a5f46">  318</a></span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="_globals_8h.html#a52b20d1a0ce0cf354138dd47ae9a5f46">PrintGdbStacktrace</a>()</div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>{</div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>   std::array&lt;char, 30&gt; pid_buf{};</div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>   sprintf(pid_buf.data(), <span class="stringliteral">&quot;%d&quot;</span>, getpid());</div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>   std::array&lt;char, 512&gt; name_buf{};</div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>   name_buf[readlink(<span class="stringliteral">&quot;/proc/self/exe&quot;</span>, name_buf.data(), 511)] = 0;</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>   prctl(PR_SET_PTRACER, PR_SET_PTRACER_ANY, 0, 0, 0);</div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>   <span class="keywordtype">int</span> child_pid = fork();</div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>   <span class="keywordflow">if</span>(child_pid == 0) {</div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>      dup2(2, 1);   <span class="comment">// redirect output to stderr - edit: unnecessary?</span></div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>      execl(<span class="stringliteral">&quot;/usr/bin/gdb&quot;</span>, <span class="stringliteral">&quot;gdb&quot;</span>, <span class="stringliteral">&quot;--batch&quot;</span>, <span class="stringliteral">&quot;-n&quot;</span>, <span class="stringliteral">&quot;-ex&quot;</span>, <span class="stringliteral">&quot;thread&quot;</span>, <span class="stringliteral">&quot;-ex&quot;</span>, <span class="stringliteral">&quot;bt&quot;</span>, name_buf.data(), pid_buf.data(), <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>      abort(); <span class="comment">/* If gdb failed to start */</span></div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>   } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>      waitpid(child_pid, <span class="keyword">nullptr</span>, 0);</div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>   }</div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>}</div>
 </div>
-<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span> </div>
-<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span> </div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="a_globals_8h_html_a00b72893c17bcb4e05586f5e42f9854d"><div class="ttname"><a href="_globals_8h.html#a00b72893c17bcb4e05586f5e42f9854d">getexepath</a></div><div class="ttdeci">static std::string getexepath()</div><div class="ttdef"><b>Definition</b> <a href="#l00151">Globals.h:151</a></div></div>
 <div class="ttc" id="a_globals_8h_html_a446b981c75bfc4865a6b0b75ae9c65a0"><div class="ttname"><a href="_globals_8h.html#a446b981c75bfc4865a6b0b75ae9c65a0">sh</a></div><div class="ttdeci">static std::string sh(const std::string &amp;cmd)</div><div class="ttdef"><b>Definition</b> <a href="#l00158">Globals.h:158</a></div></div>
-<div class="ttc" id="a_globals_8h_html_a52b20d1a0ce0cf354138dd47ae9a5f46"><div class="ttname"><a href="_globals_8h.html#a52b20d1a0ce0cf354138dd47ae9a5f46">PrintGdbStacktrace</a></div><div class="ttdeci">static void PrintGdbStacktrace()</div><div class="ttdef"><b>Definition</b> <a href="#l00333">Globals.h:333</a></div></div>
-<div class="ttc" id="a_globals_8h_html_a892ab854c2a3b8622797099d79eef4f5"><div class="ttname"><a href="_globals_8h.html#a892ab854c2a3b8622797099d79eef4f5">PrintStacktrace</a></div><div class="ttdeci">static void PrintStacktrace(std::ostream &amp;out=std::cout, int maxFrames=63)</div><div class="ttdef"><b>Definition</b> <a href="#l00238">Globals.h:238</a></div></div>
+<div class="ttc" id="a_globals_8h_html_a52b20d1a0ce0cf354138dd47ae9a5f46"><div class="ttname"><a href="_globals_8h.html#a52b20d1a0ce0cf354138dd47ae9a5f46">PrintGdbStacktrace</a></div><div class="ttdeci">static void PrintGdbStacktrace()</div><div class="ttdef"><b>Definition</b> <a href="#l00318">Globals.h:318</a></div></div>
+<div class="ttc" id="a_globals_8h_html_a892ab854c2a3b8622797099d79eef4f5"><div class="ttname"><a href="_globals_8h.html#a892ab854c2a3b8622797099d79eef4f5">PrintStacktrace</a></div><div class="ttdeci">static void PrintStacktrace(std::ostream &amp;out=std::cout, int maxFrames=63)</div><div class="ttdef"><b>Definition</b> <a href="#l00223">Globals.h:223</a></div></div>
 <div class="ttc" id="a_globals_8h_html_aa0602bd948a5be365359fb1842a7a82d"><div class="ttname"><a href="_globals_8h.html#aa0602bd948a5be365359fb1842a7a82d">gAddressOffset</a></div><div class="ttdeci">std::map&lt; std::string, uint64_t &gt; gAddressOffset</div><div class="ttdef"><b>Definition</b> <a href="_globals_8cxx_source.html#l00005">Globals.cxx:5</a></div></div>
 <div class="ttc" id="a_globals_8h_html_aa8a2329a84c1ebb9da026e7de59d8a87"><div class="ttname"><a href="_globals_8h.html#aa8a2329a84c1ebb9da026e7de59d8a87">FindAddressOffsets</a></div><div class="ttdeci">bool FindAddressOffsets(bool update)</div><div class="ttdef"><b>Definition</b> <a href="#l00174">Globals.h:174</a></div></div>
 <div class="ttc" id="a_globals_8h_html_ab37ad6f1cf4c93e161b5caaeae971ef4"><div class="ttname"><a href="_globals_8h.html#ab37ad6f1cf4c93e161b5caaeae971ef4">hex</a></div><div class="ttdeci">std::string hex(T val, int width=-1)</div><div class="ttdef"><b>Definition</b> <a href="#l00129">Globals.h:129</a></div></div>
@@ -507,7 +492,7 @@ $(function(){initNavTree('_globals_8h_source.html',''); initResizable(true); });
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="_globals_8h.html">Globals.h</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Nov 25 2025 11:15:50.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Nov 28 2025 13:12:37.</li>
   </ul>
 </div>
 </body>

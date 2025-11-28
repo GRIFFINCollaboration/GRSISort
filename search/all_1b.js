@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['waitlogo_0',['WaitLogo',['../grsixx_8cxx.html#a3246d1a05a1da11e9321f97802f98617',1,'WaitLogo():&#160;grsixx.cxx'],['../_t_g_r_s_iint_8cxx.html#a3246d1a05a1da11e9321f97802f98617',1,'WaitLogo():&#160;grsixx.cxx']]],
+  ['waitlogo_0',['WaitLogo',['../grsixx_8cxx.html#a3246d1a05a1da11e9321f97802f98617',1,'grsixx.cxx']]],
   ['warning_1',['2. Warning',['../md__2github_2workspace_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html#autotoc_md8',1,'']]],
   ['waveformpar_2',['WaveFormPar',['../struct_t_pulse_analyzer_1_1_wave_form_par.html',1,'TPulseAnalyzer']]],
   ['waveformshape_3',['WaveFormShape',['../class_t_channel.html#a73ad581f230f851fc0c16782ed371180',1,'TChannel']]],

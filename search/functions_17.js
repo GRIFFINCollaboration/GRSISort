@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['waitlogo_0',['WaitLogo',['../grsixx_8cxx.html#a3246d1a05a1da11e9321f97802f98617',1,'WaitLogo():&#160;grsixx.cxx'],['../_t_g_r_s_iint_8cxx.html#a3246d1a05a1da11e9321f97802f98617',1,'WaitLogo():&#160;grsixx.cxx']]],
+  ['waitlogo_0',['WaitLogo',['../grsixx_8cxx.html#a3246d1a05a1da11e9321f97802f98617',1,'grsixx.cxx']]],
   ['wavesize_1',['WaveSize',['../class_t_detector_hit.html#ac62835a3dd9025e0908385fd95bff958',1,'TDetectorHit']]],
   ['what_2',['what',['../class_t_g_r_s_i_data_parser_exception.html#a1c6bb1c4e53fe1b99f4ec0f4b5b255fa',1,'TGRSIDataParserException::what()'],['../class_t_h_i_l_data_parser_exception.html#aee029c0a33fbfab5f2300b8896812cf3',1,'THILDataParserException::what()'],['../class_t_i_l_l_data_parser_exception.html#a2f99691eeca0e9fa181e9e9a859f76df',1,'TILLDataParserException::what()'],['../class_t_g_r_s_i_map_exception.html#adc14a5150ac813ed077d1f5afe36aaff',1,'TGRSIMapException::what()'],['../class_t_tdr_data_parser_exception.html#a0281cb55796db3837ee2aa608cf43172',1,'TTdrDataParserException::what()']]],
   ['width_3',['Width',['../class_t_a_b3_peak.html#a419a3f4e4e193d8a789ec6e95ad02d29',1,'TAB3Peak::Width()'],['../class_t_a_b_peak.html#ad53625e4b89ae84cae634ba67346b5c6',1,'TABPeak::Width()'],['../class_t_gauss.html#a1aa5835baf4dce84e630389a42d0b021',1,'TGauss::Width()'],['../class_t_r_w_peak.html#aab794b6ce97ddfa5797af0e26f5333ca',1,'TRWPeak::Width()'],['../class_t_single_peak.html#ad6998c89cdd18ec1a8f42357ec144866',1,'TSinglePeak::Width()']]],

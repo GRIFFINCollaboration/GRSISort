@@ -53,7 +53,7 @@ var searchData=
   ['refreshhistograms_50',['RefreshHistograms',['../classpygui_1_1mainwindow_1_1_main_window.html#a468940fe4ed28e45acdf747ade5b6d63',1,'pygui::mainwindow::MainWindow']]],
   ['refreshrate_51',['refreshrate',['../classpygui_1_1mainwindow_1_1_main_window.html#ab91cecfda6ea54b5a18c15b1f95dd96b',1,'pygui::mainwindow::MainWindow']]],
   ['register_5ftag_52',['register_tag',['../classpygui_1_1_ansi_color_text_1_1_ansi_color_text.html#a35882aac13240871913081888441a857',1,'pygui::AnsiColorText::AnsiColorText']]],
-  ['reject_53',['Reject',['../class_efficiency_helper.html#ab8fbad7b8c60209efa4a29617c7c08f0',1,'EfficiencyHelper']]],
+  ['reject_53',['Reject',['../class_summing_corrections_helper.html#abce6b095a71f70bf09669bdeea0279a6',1,'SummingCorrectionsHelper']]],
   ['rejectcrosstalk_54',['RejectCrosstalk',['../class_t_si_li.html#aba924ea958789e72d22e57b66349d458',1,'TSiLi']]],
   ['release_55',['Release',['../class_t_single_decay.html#ae0a8350d86dffaab46f6180572d1615d',1,'TSingleDecay']]],
   ['releasebackground_56',['ReleaseBackground',['../class_t_decay.html#abed3fa27a3b021a24c434c31d5902f92',1,'TDecay']]],

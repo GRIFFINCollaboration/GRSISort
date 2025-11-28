@@ -1,8 +1,6 @@
 var _t_g_r_s_iint_8cxx =
 [
-    [ "PopupLogo", "_t_g_r_s_iint_8cxx.html#a27ff880aa5068a43248f416c13a577f6", null ],
     [ "ReadTheNews", "_t_g_r_s_iint_8cxx.html#a77906471ef62493afe75a4e25155ee47", null ],
-    [ "WaitLogo", "_t_g_r_s_iint_8cxx.html#a3246d1a05a1da11e9321f97802f98617", null ],
     [ "g__CommandFinished", "_t_g_r_s_iint_8cxx.html#a54819c6d320be71e82e0c09f5d603fc1", null ],
     [ "g__CommandListMutex", "_t_g_r_s_iint_8cxx.html#a2e3efcd08a242b26581cf459bbf092b6", null ],
     [ "g__CommandResult", "_t_g_r_s_iint_8cxx.html#a64cd1f01c15fd008403d1bac0f1fc65d", null ],

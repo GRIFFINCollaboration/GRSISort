@@ -1,5 +1,16 @@
 var NAVTREEINDEX43 =
 {
+"class_t_kinematics.html#a669dca75d42a9a7b140f57a73b99faa9":[8,3,14,42],
+"class_t_kinematics.html#a7111d3eedd2ff2bfd962a7a5920ce16c":[8,3,14,11],
+"class_t_kinematics.html#a78f054e2a1afa051b00a489ac9c27c5b":[8,3,14,15],
+"class_t_kinematics.html#a80266e8acb487e0c559b55e69845843e":[8,3,14,10],
+"class_t_kinematics.html#a87cd7ba5fe0298e29c90d3c6e6ac24a4":[8,3,14,0],
+"class_t_kinematics.html#a8962d0c549eefb8848ec2f52ffc0043f":[8,3,14,73],
+"class_t_kinematics.html#a8cbb6e0500ab9832c5ff0f0e141f3e3e":[8,3,14,50],
+"class_t_kinematics.html#a8ce142b6a8ed3a3fb8c043177624196a":[8,3,14,45],
+"class_t_kinematics.html#a8d201e356be5dcdf2d2c2c4d0593801b":[8,3,14,22],
+"class_t_kinematics.html#a8d548e225139223035a4592ca81f2e2e":[8,3,14,59],
+"class_t_kinematics.html#a8f69ee67fe5d18e296010f0632aac654":[8,3,14,44],
 "class_t_kinematics.html#a902ab830b9e19c064ba8b0a4a8519a77":[8,3,14,9],
 "class_t_kinematics.html#a933596a3c3a10f6da7b4bfa8ca1d416e":[8,3,14,62],
 "class_t_kinematics.html#a997c40f4e3fc0bef6db6af8785fdf84b":[8,3,14,58],
@@ -238,16 +249,5 @@ var NAVTREEINDEX43 =
 "class_t_la_br_bgo_hit.html#ad7fc819e54332ab04928b3fc9aff599e":[8,2,39,27],
 "class_t_la_br_bgo_hit.html#add3b51accdd8928805388e43d5c99602":[8,2,39,6],
 "class_t_la_br_bgo_hit.html#ae035598462afc7faf4035ada0bd183dd":[8,2,39,71],
-"class_t_la_br_bgo_hit.html#ae8e8f7fdd137db1b8b5df4deca0f8c99":[8,2,39,63],
-"class_t_la_br_bgo_hit.html#aeaa7459f30606c0b4b5cefc5cbf32ca6":[8,2,39,7],
-"class_t_la_br_bgo_hit.html#aeab285a914a74f67155972bb51841ecd":[8,2,39,9],
-"class_t_la_br_bgo_hit.html#aeea3aeb84822c4f565bf36659474db15":[8,2,39,12],
-"class_t_la_br_bgo_hit.html#af58eacf1f4d733600e1bbb4979cd0a50":[8,2,39,49],
-"class_t_la_br_bgo_hit.html#af8d5245a46498534f224f84619ff2f56":[8,2,39,64],
-"class_t_la_br_bgo_hit.html#afaf905f6ea1055e3982e2d814fe71bf1":[8,2,39,18],
-"class_t_la_br_hit.html":[8,2,40],
-"class_t_la_br_hit.html#a02b70f42273d716fc29b8fa873a31a9a":[8,2,40,66],
-"class_t_la_br_hit.html#a08307170f54564ff833ef8ab4240d1df":[8,2,40,16],
-"class_t_la_br_hit.html#a0e3ad92b0bfaca380c610918e7b8b42a":[8,2,40,25],
-"class_t_la_br_hit.html#a11c24388428c49033d914f9cebf75e98":[8,2,40,63]
+"class_t_la_br_bgo_hit.html#ae8e8f7fdd137db1b8b5df4deca0f8c99":[8,2,39,63]
 };

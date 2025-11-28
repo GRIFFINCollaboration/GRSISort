@@ -27,7 +27,7 @@ var searchData=
   ['epriority_24',['EPriority',['../class_g_value.html#a4ba9ffc284339ec1307b73086c071fbe',1,'GValue::EPriority'],['../group___sorting.html#ga1986d2f445dfbc16c31afd49df8b23a2',1,'EPriority:&#160;TPriorityValue.h']]],
   ['ercmpbits_25',['ERcmpBits',['../class_t_rcmp.html#a60665aea258d399c991b1d989078c26a',1,'TRcmp']]],
   ['eregiontype_26',['ERegionType',['../_g_h1_d_8h.html#ae819606bdea10ec6bbc4dd2471bbc3ae',1,'GH1D.h']]],
-  ['erootcanvascommands_27',['ERootCanvasCommands',['../_g_root_canvas_8cxx.html#a05b56d948b7fcb369490fafff19e529d',1,'GRootCanvas.cxx']]],
+  ['erootcanvascommands_27',['ERootCanvasCommands',['../_g_root_canvas_8cxx.html#a0591db0ae116ee19a2358e9ac972d01c',1,'GRootCanvas.cxx']]],
   ['es3bits_28',['ES3Bits',['../class_t_s3.html#af5a27902ce27e2c8c5666b648edca460',1,'TS3']]],
   ['es3globalbits_29',['ES3GlobalBits',['../class_t_s3.html#a88a7183aa5cedb5eec25bb27c8b3633a',1,'TS3']]],
   ['esilibits_30',['ESiLiBits',['../class_t_si_li.html#a74fdfa2c0afbee674defcb55c4e1b672',1,'TSiLi']]],

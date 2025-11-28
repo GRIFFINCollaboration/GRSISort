@@ -1,5 +1,16 @@
 var NAVTREEINDEX66 =
 {
+"class_t_zero_degree_hit.html#a7dc55e6dca2b3e3ec96787042b0162f3":[8,2,78,28],
+"class_t_zero_degree_hit.html#a7e3a6acc044fad3b3e9477078aa3e767":[8,2,78,69],
+"class_t_zero_degree_hit.html#a7e9a8c84424c66455f9c21b99f06216e":[8,2,78,78],
+"class_t_zero_degree_hit.html#a824455203dbaaf4cc06504e9824b927c":[8,2,78,72],
+"class_t_zero_degree_hit.html#a892a4320fe35c1ee04fe3191e38d1b46":[8,2,78,58],
+"class_t_zero_degree_hit.html#a8947a17721cefef11cfc4f855a239af8":[8,2,78,43],
+"class_t_zero_degree_hit.html#a8a3fe8cd5960c3ba0cb7cae2cf851c95":[8,2,78,23],
+"class_t_zero_degree_hit.html#a8e84f6a505d936502a0096a749522094":[8,2,78,80],
+"class_t_zero_degree_hit.html#a9677bfb19ee70b9ce819ea8d1fceb00e":[8,2,78,1],
+"class_t_zero_degree_hit.html#a9677bfb19ee70b9ce819ea8d1fceb00ea30c7a6c70a2592413069d0a46e2309d4":[8,2,78,1,2],
+"class_t_zero_degree_hit.html#a9677bfb19ee70b9ce819ea8d1fceb00ea34bdbffdb1c0e1b603f58fc0d49548b6":[8,2,78,1,4],
 "class_t_zero_degree_hit.html#a9677bfb19ee70b9ce819ea8d1fceb00ea383fd110f350f2b35dbc1b245a216d19":[8,2,78,1,3],
 "class_t_zero_degree_hit.html#a9677bfb19ee70b9ce819ea8d1fceb00eac46818fff0cdb9892bdca69fca363333":[8,2,78,1,0],
 "class_t_zero_degree_hit.html#a9677bfb19ee70b9ce819ea8d1fceb00eac8f4925a383e3bfc8c12746da1370f00":[8,2,78,1,1],
@@ -238,16 +249,5 @@ var NAVTREEINDEX66 =
 "classpygui_1_1_ansi_color_text_1_1_ansi_color_text.html#aee4bb4ebc11e85b2c7d9b0d94aa4359e":[9,0,5,0,0,12],
 "classpygui_1_1_ansi_color_text_1_1_ansi_color_text.html#aee4bb4ebc11e85b2c7d9b0d94aa4359e":[10,0,1,0,0,12],
 "classpygui_1_1_ansi_color_text_1_1_ansi_color_text.html#af4afa0187ef945b84d24fdd3ca37956f":[9,0,5,0,0,8],
-"classpygui_1_1_ansi_color_text_1_1_ansi_color_text.html#af4afa0187ef945b84d24fdd3ca37956f":[10,0,1,0,0,8],
-"classpygui_1_1_ansi_color_text_1_1_ansi_color_text.html#af7aa30c9e1edefa93e98061c6723ea18":[9,0,5,0,0,6],
-"classpygui_1_1_ansi_color_text_1_1_ansi_color_text.html#af7aa30c9e1edefa93e98061c6723ea18":[10,0,1,0,0,6],
-"classpygui_1_1_ansi_color_text_1_1_ansi_color_text.html#af96b3f4e1e63ad6ac071209ce2c5448d":[9,0,5,0,0,13],
-"classpygui_1_1_ansi_color_text_1_1_ansi_color_text.html#af96b3f4e1e63ad6ac071209ce2c5448d":[10,0,1,0,0,13],
-"classpygui_1_1hist__tab_1_1_hist_tab.html":[9,0,5,2,0],
-"classpygui_1_1hist__tab_1_1_hist_tab.html":[10,0,1,1,0],
-"classpygui_1_1hist__tab_1_1_hist_tab.html#a1118e44965180f3b4894668fbd0bf35f":[9,0,5,2,0,12],
-"classpygui_1_1hist__tab_1_1_hist_tab.html#a1118e44965180f3b4894668fbd0bf35f":[10,0,1,1,0,12],
-"classpygui_1_1hist__tab_1_1_hist_tab.html#a162d99bab15e6f853afe077542081553":[9,0,5,2,0,21],
-"classpygui_1_1hist__tab_1_1_hist_tab.html#a162d99bab15e6f853afe077542081553":[10,0,1,1,0,21],
-"classpygui_1_1hist__tab_1_1_hist_tab.html#a366a910e282d8f9592f8a943ba308a5f":[9,0,5,2,0,0]
+"classpygui_1_1_ansi_color_text_1_1_ansi_color_text.html#af4afa0187ef945b84d24fdd3ca37956f":[10,0,1,0,0,8]
 };

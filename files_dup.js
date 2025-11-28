@@ -13,5 +13,6 @@ var files_dup =
     [ "pygui", "dir_2ba7dce006b187aa79eaf08dcf0fa99d.html", "dir_2ba7dce006b187aa79eaf08dcf0fa99d" ],
     [ "scripts", "dir_53e6fa9553ac22a5646d2a2b2d7b97a1.html", "dir_53e6fa9553ac22a5646d2a2b2d7b97a1" ],
     [ "src", "dir_68267d1309a1af8e8297ef4c3efbcdba.html", "dir_68267d1309a1af8e8297ef4c3efbcdba" ],
-    [ "users", "dir_9669779df7bfcf1c7bf651204e08d102.html", "dir_9669779df7bfcf1c7bf651204e08d102" ]
+    [ "users", "dir_9669779df7bfcf1c7bf651204e08d102.html", "dir_9669779df7bfcf1c7bf651204e08d102" ],
+    [ "grsi_logon.C", "grsi__logon_8_c.html", "grsi__logon_8_c" ]
 ];

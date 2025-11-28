@@ -1,5 +1,17 @@
 var NAVTREEINDEX22 =
 {
+"class_t_channel.html#a340a7dbbfc62e136b060e8000ba4fdcf":[8,11,5,71],
+"class_t_channel.html#a345f6a04c7f7c5b4fe272d3001779328":[8,11,5,191],
+"class_t_channel.html#a346c52f64e1cf1e1c97aef9f2f624e78":[8,11,5,190],
+"class_t_channel.html#a3569805d6f8596e30e82a6affff81832":[8,11,5,60],
+"class_t_channel.html#a35f8f9f9c746135b487fee3e75fdfba8":[8,11,5,156],
+"class_t_channel.html#a365517f5106e8db3090eb77c2d76c178":[8,11,5,166],
+"class_t_channel.html#a37c41230abb24ab59ea9d00edcf9a93a":[8,11,5,182],
+"class_t_channel.html#a3897e9ec0d3867144119f226956ed019":[8,11,5,183],
+"class_t_channel.html#a3a45006911e76d46e9171763b55975b8":[8,11,5,10],
+"class_t_channel.html#a3a7ca22fdc74af2a23210a97839c01fc":[8,11,5,117],
+"class_t_channel.html#a3ce15c91fa0ea6ab04b9111985ace049":[8,11,5,62],
+"class_t_channel.html#a4054d77ec7e9a9933abdc9b567e79481":[8,11,5,140],
 "class_t_channel.html#a40ee30192b605f46131018a08dc6550e":[8,11,5,163],
 "class_t_channel.html#a4132e77693a8d6ed2da1c63277941443":[8,11,5,30],
 "class_t_channel.html#a44eb83fe3284a8734c1e9163aac2676c":[8,11,5,113],
@@ -237,17 +249,5 @@ var NAVTREEINDEX22 =
 "class_t_compiled_histograms.html#ae6f0aacf385ea4b9810fbc94e8d19769":[10,0,92,10],
 "class_t_compiled_histograms.html#ae846be7c07fd69f729acfb49798c4834":[10,0,92,0],
 "class_t_compiled_histograms.html#aec36d4af9cf02d1944e1f7ce7a862ad0":[10,0,92,4],
-"class_t_compiled_histograms.html#af018853c9aa4767e7e0689957eda626c":[10,0,92,1],
-"class_t_compiled_histograms.html#af143d2221ec218d8de70a3a5bde89f1a":[10,0,92,12],
-"class_t_data_frame_library.html":[10,0,95],
-"class_t_data_frame_library.html#a1317dbebb8608e261ef1fc317240ad18":[10,0,95,0],
-"class_t_data_frame_library.html#a25568e49214ec73aa40a19f7da64870f":[10,0,95,4],
-"class_t_data_frame_library.html#a2f3382a25957ab5bad96a9f083d6e176":[10,0,95,14],
-"class_t_data_frame_library.html#a3fa53dbc6b11ebd2a1e3a0d8bd3372d9":[10,0,95,2],
-"class_t_data_frame_library.html#a4b9fa86c3b19cc3c96d4699b461be061":[10,0,95,13],
-"class_t_data_frame_library.html#a4f3326e48404c91de5030dcf628d6ee6":[10,0,95,6],
-"class_t_data_frame_library.html#a508ebf63957c5595d14dfc469cccf21b":[10,0,95,8],
-"class_t_data_frame_library.html#a58e2a8e03fa6a7c20638044626add93a":[10,0,95,9],
-"class_t_data_frame_library.html#a6a8cba893da4114aa47cf7bdf24c853a":[10,0,95,10],
-"class_t_data_frame_library.html#a83b6058b0bbe5c7545948ae9161a39fc":[10,0,95,5]
+"class_t_compiled_histograms.html#af018853c9aa4767e7e0689957eda626c":[10,0,92,1]
 };

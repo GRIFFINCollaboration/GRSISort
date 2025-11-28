@@ -1,5 +1,17 @@
 var NAVTREEINDEX18 =
 {
+"class_t_b_g_subtraction.html#a92cb852ecd9ab576fe9ae3e9d8c3017a":[8,7,0,59],
+"class_t_b_g_subtraction.html#a9360fe11228347ddb38c57ae3618c1a8":[8,7,0,84],
+"class_t_b_g_subtraction.html#a943e615e6d1e790279a580f20980f1ee":[8,7,0,82],
+"class_t_b_g_subtraction.html#a9512c23d3ae84484e181abb995de17a1":[8,7,0,14],
+"class_t_b_g_subtraction.html#a989849a9883d99e5eb9eb4caabc88fef":[8,7,0,50],
+"class_t_b_g_subtraction.html#aa038a2966d1ffeda3fba160ba504d049":[8,7,0,72],
+"class_t_b_g_subtraction.html#aa0aeeef0e47b0bb06d513bcf2d40d6bb":[8,7,0,75],
+"class_t_b_g_subtraction.html#aa579561fdec1409a6c1854620b9a71b1":[8,7,0,88],
+"class_t_b_g_subtraction.html#aa6ee0d1c4bb622b16d07bc5beb2b1c02":[8,7,0,89],
+"class_t_b_g_subtraction.html#aa7a4e069de7d40d3b0e165bc4d452d6c":[8,7,0,30],
+"class_t_b_g_subtraction.html#aa7c267f05a5c31fbe982d56eb8dac599":[8,7,0,15],
+"class_t_b_g_subtraction.html#aa94e7a15eeb31b56b1c5933bf7d36e11":[8,7,0,61],
 "class_t_b_g_subtraction.html#aa99f2c56ee27f8bd8969745ba276ad13":[8,7,0,74],
 "class_t_b_g_subtraction.html#aaae35e3947718ac2172ecc943017610b":[8,7,0,22],
 "class_t_b_g_subtraction.html#aaeddfea111f567fc8672067a881bbee8":[8,7,0,93],
@@ -237,17 +249,5 @@ var NAVTREEINDEX18 =
 "class_t_beta_decay.html#a3d954116703d4445f6b121f688e14e8c":[8,3,7,11],
 "class_t_beta_decay.html#a6c529b4fefa4577424c451999a905b3f":[8,3,7,7],
 "class_t_beta_decay.html#a7ddf1e85e8bd4bab5ce6eae5655eaeac":[8,3,7,1],
-"class_t_beta_decay.html#a93441da4340714ce5d120525bd405c1e":[8,3,7,10],
-"class_t_beta_decay.html#a9969019379bf1b7155f0b2603175a227":[8,3,7,5],
-"class_t_beta_decay.html#aa874802070aaca286682879aef04b959":[8,3,7,8],
-"class_t_beta_decay.html#ab2fb135310b6cd29e5a3d889b9328459":[8,3,7,2],
-"class_t_beta_decay.html#acbe67b3354a6875d24dc4c0b0d6ba691":[8,3,7,6],
-"class_t_beta_decay.html#acce2fb6ee4b139d129585e26ada6611b":[8,3,7,3],
-"class_t_bgo.html":[8,2,2],
-"class_t_bgo.html#a02285d85182fa3c0cd527ad9573bec49":[8,2,2,0],
-"class_t_bgo.html#a13ea06ba385aabcf09c1ea5a70d8145b":[8,2,2,21],
-"class_t_bgo.html#a202127adcc280ddb063ff7429822ce30":[8,2,2,13],
-"class_t_bgo.html#a3912c491450ed1564dead68529bc34b1":[8,2,2,17],
-"class_t_bgo.html#a48e900fea124e60c71f790f925a53f8e":[8,2,2,9],
-"class_t_bgo.html#a4b1206539f129d44f16a9ede9fab2fec":[8,2,2,1]
+"class_t_beta_decay.html#a93441da4340714ce5d120525bd405c1e":[8,3,7,10]
 };

@@ -1,5 +1,16 @@
 var NAVTREEINDEX42 =
 {
+"class_t_ifin_bgo.html#a9fb5bed513f435084094b92fb6a5b296":[8,2,34,10],
+"class_t_ifin_bgo.html#ab166053f5852e7dde433fc7170d99977":[8,2,34,3],
+"class_t_ifin_bgo.html#ab19c45845f55e9823563c8b42645a583":[8,2,34,1],
+"class_t_ifin_bgo.html#ab32066ea7a21801c77a8693b1d77d7cf":[8,2,34,2],
+"class_t_ifin_bgo.html#ab907981ce861ab147879469064748ae2":[8,2,34,14],
+"class_t_ifin_bgo.html#acbf359f899b738719e19bb326e45c790":[8,2,34,13],
+"class_t_ifin_bgo.html#ade5b72aaac14b8bd464cec1dfcc72db9":[8,2,34,9],
+"class_t_ifin_bgo.html#ae1cca8f81805c84b1025cede9f0c1e1c":[8,2,34,5],
+"class_t_ifin_bgo.html#af5918349419ed07c832590d122e73a2e":[8,2,34,17],
+"class_t_ifin_bgo.html#af83ad943618a30f7d1639675e18fc5b8":[8,2,34,4],
+"class_t_ifin_bgo_hit.html":[8,2,35],
 "class_t_ifin_bgo_hit.html#a02b70f42273d716fc29b8fa873a31a9a":[8,2,35,59],
 "class_t_ifin_bgo_hit.html#a0e3ad92b0bfaca380c610918e7b8b42a":[8,2,35,24],
 "class_t_ifin_bgo_hit.html#a11c24388428c49033d914f9cebf75e98":[8,2,35,57],
@@ -238,16 +249,5 @@ var NAVTREEINDEX42 =
 "class_t_kinematics.html#a60fd43c37211510ff738678ebb22b2c6":[8,3,14,25],
 "class_t_kinematics.html#a61aa7e7347aa237d6f8092c30804474b":[8,3,14,79],
 "class_t_kinematics.html#a624c1b549f593991c5cdd82bad610eeb":[8,3,14,48],
-"class_t_kinematics.html#a6583863178ddcc6b99f5362a8aff520f":[8,3,14,7],
-"class_t_kinematics.html#a669dca75d42a9a7b140f57a73b99faa9":[8,3,14,42],
-"class_t_kinematics.html#a7111d3eedd2ff2bfd962a7a5920ce16c":[8,3,14,11],
-"class_t_kinematics.html#a78f054e2a1afa051b00a489ac9c27c5b":[8,3,14,15],
-"class_t_kinematics.html#a80266e8acb487e0c559b55e69845843e":[8,3,14,10],
-"class_t_kinematics.html#a87cd7ba5fe0298e29c90d3c6e6ac24a4":[8,3,14,0],
-"class_t_kinematics.html#a8962d0c549eefb8848ec2f52ffc0043f":[8,3,14,73],
-"class_t_kinematics.html#a8cbb6e0500ab9832c5ff0f0e141f3e3e":[8,3,14,50],
-"class_t_kinematics.html#a8ce142b6a8ed3a3fb8c043177624196a":[8,3,14,45],
-"class_t_kinematics.html#a8d201e356be5dcdf2d2c2c4d0593801b":[8,3,14,22],
-"class_t_kinematics.html#a8d548e225139223035a4592ca81f2e2e":[8,3,14,59],
-"class_t_kinematics.html#a8f69ee67fe5d18e296010f0632aac654":[8,3,14,44]
+"class_t_kinematics.html#a6583863178ddcc6b99f5362a8aff520f":[8,3,14,7]
 };

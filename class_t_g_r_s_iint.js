@@ -7,7 +7,6 @@ var class_t_g_r_s_iint =
     [ "ApplyOptions", "class_t_g_r_s_iint.html#af4bb153acb3cf3a869f74fd4eb4b8412", null ],
     [ "DelayedProcessLine", "class_t_g_r_s_iint.html#a45f3da527a664d379a404d7306806334", null ],
     [ "DelayedProcessLine_Action", "class_t_g_r_s_iint.html#a88e9f19df251c60358643788f5cb880c", null ],
-    [ "DrawLogo", "class_t_g_r_s_iint.html#a7ed8f84413fefecfefb07946a1731495", null ],
     [ "GetEnv", "class_t_g_r_s_iint.html#a36bfe4a9af2688ff9531a5c0977e2874", null ],
     [ "HandleTermInput", "class_t_g_r_s_iint.html#afe4df4609125bc3aad0e039d1af148f4", null ],
     [ "instance", "class_t_g_r_s_iint.html#ab38d6e378ca62a7c56babb3f7b3610bd", null ],

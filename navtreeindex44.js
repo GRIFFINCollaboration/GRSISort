@@ -1,5 +1,16 @@
 var NAVTREEINDEX44 =
 {
+"class_t_la_br_bgo_hit.html#aeaa7459f30606c0b4b5cefc5cbf32ca6":[8,2,39,7],
+"class_t_la_br_bgo_hit.html#aeab285a914a74f67155972bb51841ecd":[8,2,39,9],
+"class_t_la_br_bgo_hit.html#aeea3aeb84822c4f565bf36659474db15":[8,2,39,12],
+"class_t_la_br_bgo_hit.html#af58eacf1f4d733600e1bbb4979cd0a50":[8,2,39,49],
+"class_t_la_br_bgo_hit.html#af8d5245a46498534f224f84619ff2f56":[8,2,39,64],
+"class_t_la_br_bgo_hit.html#afaf905f6ea1055e3982e2d814fe71bf1":[8,2,39,18],
+"class_t_la_br_hit.html":[8,2,40],
+"class_t_la_br_hit.html#a02b70f42273d716fc29b8fa873a31a9a":[8,2,40,66],
+"class_t_la_br_hit.html#a08307170f54564ff833ef8ab4240d1df":[8,2,40,16],
+"class_t_la_br_hit.html#a0e3ad92b0bfaca380c610918e7b8b42a":[8,2,40,25],
+"class_t_la_br_hit.html#a11c24388428c49033d914f9cebf75e98":[8,2,40,63],
 "class_t_la_br_hit.html#a16e558f6442311fd59dc988df7012f49":[8,2,40,5],
 "class_t_la_br_hit.html#a187897c681b829247a98022bbb81fffe":[8,2,40,0],
 "class_t_la_br_hit.html#a187897c681b829247a98022bbb81fffea2eb1e43d1f624b58f25b306dacc7456e":[8,2,40,0,1],
@@ -238,16 +249,5 @@ var NAVTREEINDEX44 =
 "class_t_midas_file.html#a6143a53f9084f558225bcec4f7971b8e":[8,11,41,34],
 "class_t_midas_file.html#a6535b8fa8870ce398198aad6d784d808":[8,11,41,49],
 "class_t_midas_file.html#a763e3e596b45ef81e1762894adb99dd0":[8,11,41,45],
-"class_t_midas_file.html#a7c72dcfdae9cd0c09e42c529c0942b0d":[8,11,41,41],
-"class_t_midas_file.html#a7e9bc2e6c2cec7c8a756fc83bfafab7c":[8,11,41,6],
-"class_t_midas_file.html#a7fe15fb5bf96b7e333e5a0ba54c496e2":[8,11,41,0],
-"class_t_midas_file.html#a7fe15fb5bf96b7e333e5a0ba54c496e2a8604cf55a79d6bfdcb30f77d1622839b":[8,11,41,0,0],
-"class_t_midas_file.html#a7fe15fb5bf96b7e333e5a0ba54c496e2ad3ac0ba447a9859ad2db8e498056429f":[8,11,41,0,1],
-"class_t_midas_file.html#a8245065b94460c8862c2f22bace60de7":[8,11,41,35],
-"class_t_midas_file.html#a82fda96fb77e3d796531fc91efe07a74":[8,11,41,11],
-"class_t_midas_file.html#a8ae18740b150788f618ef47d5817bd4b":[8,11,41,44],
-"class_t_midas_file.html#a8ae6c0e5b3f20eff5031bb0a017eed9c":[8,11,41,62],
-"class_t_midas_file.html#a921857fdd6ebae70cbe7c6658b7940ed":[8,11,41,48],
-"class_t_midas_file.html#a92f7f63635aa48319bd2d055116e82e8":[8,11,41,14],
-"class_t_midas_file.html#a9cd51e62fa20993dab0ba712c1c25229":[8,11,41,27]
+"class_t_midas_file.html#a7c72dcfdae9cd0c09e42c529c0942b0d":[8,11,41,41]
 };

@@ -311,128 +311,130 @@ $(function(){initNavTree('_t_efficiency_calibrator_8h_source.html',''); initResi
 <div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span><span class="comment">   ///</span></div>
 <div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span><span class="comment">   /// This is a class that determines the efficiency from source</span></div>
 <div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span><span class="comment">   /// data.</span></div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span><span class="comment">   /// It expects a list of files with a 1D singles histogram and time random</span></div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span><span class="comment">   /// corrected 2D histograms of energy vs. (suppressed) energy and</span></div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span><span class="comment">   /// It expects a list of files with a 1D singles histogram and </span></div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span><span class="comment">   /// 2D histograms of energy vs. (suppressed) energy and</span></div>
 <div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span><span class="comment">   /// energy vs. sum of energies. In case of suppressed data only the</span></div>
 <div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span><span class="comment">   /// x-axis of the former 2D histogram should use suppressed data,</span></div>
 <div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span><span class="comment">   /// the y-axis needs to be unsuppressed data!</span></div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span><span class="comment">   /// If the file name contains a source isotope at the beginning of</span></div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span><span class="comment">   /// the name, the source selection will be automatic, otherwise</span></div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span><span class="comment">   /// a window will pop up with the option to select the isotope for</span></div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span><span class="comment">   /// each file.</span></div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span><span class="comment">   ///</span></div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span><span class="comment">   /// The efficiency curves can be:</span></div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span><span class="comment">   /// e(E) = ln E + (ln E)/E + (ln E)^2/E + (ln E)^3/E + (ln E)^4/E,</span></div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span><span class="comment">   /// or the radware form</span></div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span><span class="comment">   /// ln(e(E)) = ((a1 + a2 x + a3 x^2)^-a7 + (a4 + a5 y + a6 y^2)^-a7)^-1/a7</span></div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span><span class="comment">   /// with x = ln(E/100), y = ln(E/1000)</span></div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span><span class="comment">   /// or a polynomial ln(e(E)) = sum i 0-&gt;8 a_i (ln(E))^i (Ryan&#39;s &amp; Andrew&#39;s PhD theses)</span></div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span><span class="comment">   ///</span></div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span><span class="comment">   /////////////////////////////////////////////////////////////////</span></div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span><span class="comment"></span> </div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>   <span class="keyword">enum</span> ESources : std::uint8_t { k22Na,</div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>                                  k56Co,</div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>                                  k60Co,</div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>                                  k133Ba,</div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>                                  k152Eu,</div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>                                  k241Am };</div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>   <span class="keyword">enum</span> EEntry : std::uint16_t { kStartButton    = 0,</div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>                                 kSourceBox      = 100,</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>                                 kSigmaEntry     = 200,</div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>                                 kThresholdEntry = 300 };</div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span> </div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>   <span class="keyword">explicit</span> TEfficiencyCalibrator(<span class="keywordtype">int</span> n...);</div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>   TEfficiencyCalibrator(<span class="keyword">const</span> TEfficiencyCalibrator&amp;)                = <span class="keyword">delete</span>;</div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>   TEfficiencyCalibrator(TEfficiencyCalibrator&amp;&amp;) noexcept            = delete;</div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>   TEfficiencyCalibrator&amp; operator=(const TEfficiencyCalibrator&amp;)     = delete;</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>   TEfficiencyCalibrator&amp; operator=(TEfficiencyCalibrator&amp;&amp;) noexcept = delete;</div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>   ~TEfficiencyCalibrator();</div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span> </div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>   <span class="keywordtype">void</span> SetSource(Int_t windowId, Int_t entryId);</div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>   <span class="keywordtype">void</span> Start();</div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span> </div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>   <span class="keywordtype">void</span> LineHeight(const <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>&amp; val)</div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>   {</div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>      fLineHeight = val;</div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>      Resize(GetSize());</div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>   }</div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span> </div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>   <span class="keyword">using </span>TGWindow::HandleTimer;</div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>   <span class="keywordtype">void</span> HandleTimer();</div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>   <span class="keywordtype">void</span> SecondWindow();</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span> </div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>   <span class="keyword">static</span> <span class="keywordtype">void</span> Range(<span class="keyword">const</span> <span class="keywordtype">double</span>&amp; val) { fRange = val; }</div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>   <span class="keyword">static</span> <span class="keywordtype">void</span> Threshold(<span class="keyword">const</span> <span class="keywordtype">double</span>&amp; val) { fThreshold = val; }</div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>   <span class="keyword">static</span> <span class="keywordtype">void</span> BgParam(<span class="keyword">const</span> <span class="keywordtype">int</span>&amp; val) { fBgParam = val; }</div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>   <span class="keyword">static</span> <span class="keywordtype">void</span> PeakType(<span class="keyword">const</span> TEfficiencyTab::EPeakType&amp; val) { fPeakType = val; }</div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>   <span class="keyword">static</span> <span class="keywordtype">void</span> Degree(<span class="keyword">const</span> <span class="keywordtype">int</span>&amp; val) { fDegree = val; }</div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>   <span class="keyword">static</span> <span class="keywordtype">void</span> CalibrationUncertainty(<span class="keyword">const</span> <span class="keywordtype">double</span>&amp; val) { fCalibrationUncertainty = val; }</div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>   <span class="keyword">static</span> <span class="keywordtype">void</span> ShowRemovedFits(<span class="keyword">const</span> <span class="keywordtype">bool</span>&amp; val) { fShowRemovedFits = val; }</div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span> </div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>   <span class="keyword">static</span> <span class="keywordtype">double</span>                    Range() { <span class="keywordflow">return</span> fRange; }</div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>   <span class="keyword">static</span> <span class="keywordtype">double</span>                    Threshold() { <span class="keywordflow">return</span> fThreshold; }</div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>   <span class="keyword">static</span> <span class="keywordtype">int</span>                       BgParam() { <span class="keywordflow">return</span> fBgParam; }</div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>   <span class="keyword">static</span> TEfficiencyTab::EPeakType PeakType() { <span class="keywordflow">return</span> fPeakType; }</div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>   <span class="keyword">static</span> <span class="keywordtype">int</span>                       Degree() { <span class="keywordflow">return</span> fDegree; }</div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>   <span class="keyword">static</span> <span class="keywordtype">double</span>                    CalibrationUncertainty() { <span class="keywordflow">return</span> fCalibrationUncertainty; }</div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>   <span class="keyword">static</span> <span class="keywordtype">bool</span>                      ShowRemovedFits() { <span class="keywordflow">return</span> fShowRemovedFits; }</div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span> </div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>   <span class="keyword">static</span> <span class="keywordtype">int</span> LineHeight() { <span class="keywordflow">return</span> fLineHeight; }</div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>   <span class="keyword">static</span> <span class="keywordtype">int</span> WindowWidth() { <span class="keywordflow">return</span> fWindowWidth; }</div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span> </div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>   <span class="keyword">static</span> <a class="code hl_enumeration" href="_globals_8h.html#abb4e78a946cba701b4127ed5191b3b1e">EVerbosity</a> VerboseLevel() { <span class="keywordflow">return</span> fVerboseLevel; }</div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>   <span class="keyword">static</span> <span class="keywordtype">void</span>       VerboseLevel(<a class="code hl_enumeration" href="_globals_8h.html#abb4e78a946cba701b4127ed5191b3b1e">EVerbosity</a> val) { fVerboseLevel = val; }</div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span> </div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>   std::vector&lt;TCalibrationGraphSet*&gt; EfficiencyGraphs() { <span class="keywordflow">return</span> fEfficiencyGraph; }</div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>   <span class="keywordtype">size_t</span>                             NumberOfEfficiencyGraphs() { <span class="keywordflow">return</span> fEfficiencyGraph.size(); }</div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>   <a class="code hl_class" href="class_t_calibration_graph_set.html">TCalibrationGraphSet</a>*              EfficiencyGraph(<span class="keywordtype">size_t</span> i) { <span class="keywordflow">return</span> fEfficiencyGraph.at(i); }</div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span> </div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>   <span class="keywordtype">void</span> DeleteElement(TGFrame* element);</div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>   <span class="keywordtype">void</span> BuildFirstInterface();</div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>   <span class="keywordtype">void</span> MakeFirstConnections();</div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>   <span class="keywordtype">void</span> DisconnectFirst();</div>
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>   <span class="keywordtype">void</span> DeleteFirst();</div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>   <span class="keywordtype">void</span> BuildSecondInterface();</div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>   <span class="keywordtype">void</span> MakeSecondConnections();</div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>   <span class="keywordtype">void</span> DisconnectSecond();</div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span> </div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>   <span class="keyword">static</span> <a class="code hl_enumeration" href="_globals_8h.html#abb4e78a946cba701b4127ed5191b3b1e">EVerbosity</a>                                      fVerboseLevel;   <span class="comment">///&lt; Changes verbosity from 0 (quiet) to 4 (very verbose)</span></div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>   <span class="keyword">static</span> <span class="keywordtype">double</span>                                          fRange;</div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>   <span class="keyword">static</span> <span class="keywordtype">double</span>                                          fThreshold;</div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>   <span class="keyword">static</span> <span class="keywordtype">int</span>                                             fBgParam;                  <span class="comment">///&lt; the bg parameter used to determine the background in the gamma spectra</span></div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>   <span class="keyword">static</span> TEfficiencyTab::EPeakType                       fPeakType;                 <span class="comment">///&lt; peak type used for fitting</span></div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>   <span class="keyword">static</span> <span class="keywordtype">int</span>                                             fDegree;                   <span class="comment">///&lt; degree of fit function (0 = debertin form, 1 = radware form, everything else polynomial ln(e(E)) = sum i 0-&gt;8 a_i (ln(E))^i (Ryan&#39;s &amp; Andrew&#39;s PhD theses)</span></div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>   <span class="keyword">static</span> <span class="keywordtype">double</span>                                          fCalibrationUncertainty;   <span class="comment">///&lt; calibration uncertainty (peaks are rejected if the centroid and energy difference is larger than centroid and energy uncertainties plus this)</span></div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>   <span class="keyword">static</span> <span class="keywordtype">bool</span>                                            fShowRemovedFits;          <span class="comment">///&lt; flag to toggle whether removed fits are shown on the plot or not</span></div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>   std::vector&lt;TFile*&gt;                                    fFiles;</div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>   std::vector&lt;TNucleus*&gt;                                 fSources;</div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>   std::vector&lt;std::string&gt;                               fDataType;     <span class="comment">///&lt; type of each data set</span></div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>   std::vector&lt;std::vector&lt;std::tuple&lt;TH1*, TH2*, TH2*&gt;&gt;&gt; fHistograms;   <span class="comment">///&lt; for each type of data (suppressed, addback) in the file a vector with three histograms for each source</span></div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>   std::vector&lt;TEfficiencyDatatypeTab*&gt;                   fEfficiencyDatatypeTab;</div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>   std::vector&lt;TCalibrationGraphSet*&gt;                     fEfficiencyGraph;</div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>   TFile*                                                 fOutput{<span class="keyword">nullptr</span>};</div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span> </div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>   TGTextButton* fEmitter{<span class="keyword">nullptr</span>};</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span><span class="comment">   /// These kinds of files are created by the SummingCorrectionsHelper.cxx</span></div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span><span class="comment">   /// in the examples folder.</span></div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span><span class="comment">   /// If the file name contains a source isotope at the beginning of</span></div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span><span class="comment">   /// the name, the source selection will be automatic, otherwise</span></div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span><span class="comment">   /// a window will pop up with the option to select the isotope for</span></div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span><span class="comment">   /// each file.</span></div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span><span class="comment">   ///</span></div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span><span class="comment">   /// The efficiency curves can be:</span></div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span><span class="comment">   /// e(E) = ln E + (ln E)/E + (ln E)^2/E + (ln E)^3/E + (ln E)^4/E,</span></div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span><span class="comment">   /// or the radware form</span></div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span><span class="comment">   /// ln(e(E)) = ((a1 + a2 x + a3 x^2)^-a7 + (a4 + a5 y + a6 y^2)^-a7)^-1/a7</span></div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span><span class="comment">   /// with x = ln(E/100), y = ln(E/1000)</span></div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span><span class="comment">   /// or a polynomial ln(e(E)) = sum i 0-&gt;8 a_i (ln(E))^i (Ryan&#39;s &amp; Andrew&#39;s PhD theses)</span></div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span><span class="comment">   ///</span></div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span><span class="comment">   /////////////////////////////////////////////////////////////////</span></div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span><span class="comment"></span> </div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>   <span class="keyword">enum</span> ESources : std::uint8_t { k22Na,</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>                                  k56Co,</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>                                  k60Co,</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>                                  k133Ba,</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>                                  k152Eu,</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>                                  k241Am };</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>   <span class="keyword">enum</span> EEntry : std::uint16_t { kStartButton    = 0,</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>                                 kSourceBox      = 100,</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>                                 kSigmaEntry     = 200,</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>                                 kThresholdEntry = 300 };</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span> </div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>   <span class="keyword">explicit</span> TEfficiencyCalibrator(<span class="keywordtype">int</span> n...);</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>   TEfficiencyCalibrator(<span class="keyword">const</span> TEfficiencyCalibrator&amp;)                = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>   TEfficiencyCalibrator(TEfficiencyCalibrator&amp;&amp;) noexcept            = delete;</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>   TEfficiencyCalibrator&amp; operator=(const TEfficiencyCalibrator&amp;)     = delete;</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>   TEfficiencyCalibrator&amp; operator=(TEfficiencyCalibrator&amp;&amp;) noexcept = delete;</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>   ~TEfficiencyCalibrator();</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span> </div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>   <span class="keywordtype">void</span> SetSource(Int_t windowId, Int_t entryId);</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>   <span class="keywordtype">void</span> Start();</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span> </div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>   <span class="keywordtype">void</span> LineHeight(const <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>&amp; val)</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>   {</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>      fLineHeight = val;</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>      Resize(GetSize());</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>   }</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span> </div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>   <span class="keyword">using </span>TGWindow::HandleTimer;</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>   <span class="keywordtype">void</span> HandleTimer();</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>   <span class="keywordtype">void</span> SecondWindow();</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span> </div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>   <span class="keyword">static</span> <span class="keywordtype">void</span> Range(<span class="keyword">const</span> <span class="keywordtype">double</span>&amp; val) { fRange = val; }</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>   <span class="keyword">static</span> <span class="keywordtype">void</span> Threshold(<span class="keyword">const</span> <span class="keywordtype">double</span>&amp; val) { fThreshold = val; }</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>   <span class="keyword">static</span> <span class="keywordtype">void</span> BgParam(<span class="keyword">const</span> <span class="keywordtype">int</span>&amp; val) { fBgParam = val; }</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>   <span class="keyword">static</span> <span class="keywordtype">void</span> PeakType(<span class="keyword">const</span> TEfficiencyTab::EPeakType&amp; val) { fPeakType = val; }</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>   <span class="keyword">static</span> <span class="keywordtype">void</span> Degree(<span class="keyword">const</span> <span class="keywordtype">int</span>&amp; val) { fDegree = val; }</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>   <span class="keyword">static</span> <span class="keywordtype">void</span> CalibrationUncertainty(<span class="keyword">const</span> <span class="keywordtype">double</span>&amp; val) { fCalibrationUncertainty = val; }</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>   <span class="keyword">static</span> <span class="keywordtype">void</span> ShowRemovedFits(<span class="keyword">const</span> <span class="keywordtype">bool</span>&amp; val) { fShowRemovedFits = val; }</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span> </div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>   <span class="keyword">static</span> <span class="keywordtype">double</span>                    Range() { <span class="keywordflow">return</span> fRange; }</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>   <span class="keyword">static</span> <span class="keywordtype">double</span>                    Threshold() { <span class="keywordflow">return</span> fThreshold; }</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>   <span class="keyword">static</span> <span class="keywordtype">int</span>                       BgParam() { <span class="keywordflow">return</span> fBgParam; }</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>   <span class="keyword">static</span> TEfficiencyTab::EPeakType PeakType() { <span class="keywordflow">return</span> fPeakType; }</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>   <span class="keyword">static</span> <span class="keywordtype">int</span>                       Degree() { <span class="keywordflow">return</span> fDegree; }</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>   <span class="keyword">static</span> <span class="keywordtype">double</span>                    CalibrationUncertainty() { <span class="keywordflow">return</span> fCalibrationUncertainty; }</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>   <span class="keyword">static</span> <span class="keywordtype">bool</span>                      ShowRemovedFits() { <span class="keywordflow">return</span> fShowRemovedFits; }</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span> </div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>   <span class="keyword">static</span> <span class="keywordtype">int</span> LineHeight() { <span class="keywordflow">return</span> fLineHeight; }</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>   <span class="keyword">static</span> <span class="keywordtype">int</span> WindowWidth() { <span class="keywordflow">return</span> fWindowWidth; }</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span> </div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>   <span class="keyword">static</span> <a class="code hl_enumeration" href="_globals_8h.html#abb4e78a946cba701b4127ed5191b3b1e">EVerbosity</a> VerboseLevel() { <span class="keywordflow">return</span> fVerboseLevel; }</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>   <span class="keyword">static</span> <span class="keywordtype">void</span>       VerboseLevel(<a class="code hl_enumeration" href="_globals_8h.html#abb4e78a946cba701b4127ed5191b3b1e">EVerbosity</a> val) { fVerboseLevel = val; }</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span> </div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>   std::vector&lt;TCalibrationGraphSet*&gt; EfficiencyGraphs() { <span class="keywordflow">return</span> fEfficiencyGraph; }</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>   <span class="keywordtype">size_t</span>                             NumberOfEfficiencyGraphs() { <span class="keywordflow">return</span> fEfficiencyGraph.size(); }</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>   <a class="code hl_class" href="class_t_calibration_graph_set.html">TCalibrationGraphSet</a>*              EfficiencyGraph(<span class="keywordtype">size_t</span> i) { <span class="keywordflow">return</span> fEfficiencyGraph.at(i); }</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span> </div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>   <span class="keywordtype">void</span> DeleteElement(TGFrame* element);</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>   <span class="keywordtype">void</span> BuildFirstInterface();</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>   <span class="keywordtype">void</span> MakeFirstConnections();</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>   <span class="keywordtype">void</span> DisconnectFirst();</div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>   <span class="keywordtype">void</span> DeleteFirst();</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>   <span class="keywordtype">void</span> BuildSecondInterface();</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>   <span class="keywordtype">void</span> MakeSecondConnections();</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>   <span class="keywordtype">void</span> DisconnectSecond();</div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span> </div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>   <span class="keyword">static</span> <a class="code hl_enumeration" href="_globals_8h.html#abb4e78a946cba701b4127ed5191b3b1e">EVerbosity</a>                                      fVerboseLevel;   <span class="comment">///&lt; Changes verbosity from 0 (quiet) to 4 (very verbose)</span></div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>   <span class="keyword">static</span> <span class="keywordtype">double</span>                                          fRange;</div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>   <span class="keyword">static</span> <span class="keywordtype">double</span>                                          fThreshold;</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>   <span class="keyword">static</span> <span class="keywordtype">int</span>                                             fBgParam;                  <span class="comment">///&lt; the bg parameter used to determine the background in the gamma spectra</span></div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>   <span class="keyword">static</span> TEfficiencyTab::EPeakType                       fPeakType;                 <span class="comment">///&lt; peak type used for fitting</span></div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>   <span class="keyword">static</span> <span class="keywordtype">int</span>                                             fDegree;                   <span class="comment">///&lt; degree of fit function (0 = debertin form, 1 = radware form, everything else polynomial ln(e(E)) = sum i 0-&gt;8 a_i (ln(E))^i (Ryan&#39;s &amp; Andrew&#39;s PhD theses)</span></div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>   <span class="keyword">static</span> <span class="keywordtype">double</span>                                          fCalibrationUncertainty;   <span class="comment">///&lt; calibration uncertainty (peaks are rejected if the centroid and energy difference is larger than centroid and energy uncertainties plus this)</span></div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>   <span class="keyword">static</span> <span class="keywordtype">bool</span>                                            fShowRemovedFits;          <span class="comment">///&lt; flag to toggle whether removed fits are shown on the plot or not</span></div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>   std::vector&lt;TFile*&gt;                                    fFiles;</div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>   std::vector&lt;TNucleus*&gt;                                 fSources;</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>   std::vector&lt;std::string&gt;                               fDataType;     <span class="comment">///&lt; type of each data set</span></div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>   std::vector&lt;std::vector&lt;std::tuple&lt;TH1*, TH2*, TH2*&gt;&gt;&gt; fHistograms;   <span class="comment">///&lt; for each type of data (suppressed, addback) in the file a vector with three histograms for each source</span></div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>   std::vector&lt;TEfficiencyDatatypeTab*&gt;                   fEfficiencyDatatypeTab;</div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>   std::vector&lt;TCalibrationGraphSet*&gt;                     fEfficiencyGraph;</div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>   TFile*                                                 fOutput{<span class="keyword">nullptr</span>};</div>
 <div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span> </div>
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>   <span class="keyword">static</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> fLineHeight;    <span class="comment">///&lt; Height of text boxes and progress bar</span></div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>   <span class="keyword">static</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> fWindowWidth;   <span class="comment">///&lt; Width of window</span></div>
-<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span> </div>
-<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>   <span class="comment">// graphic elements</span></div>
-<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>   std::vector&lt;TGLabel*&gt;    fSourceLabel;</div>
-<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>   std::vector&lt;TGComboBox*&gt; fSourceBox;</div>
-<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>   TGTab*                   fDatatypeTab{<span class="keyword">nullptr</span>};</div>
-<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>   TGHProgressBar*          fProgressBar{<span class="keyword">nullptr</span>};</div>
-<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>   TGTextButton*            fStartButton{<span class="keyword">nullptr</span>};</div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span><span class="comment"></span> </div>
-<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span><span class="comment">   /// \cond CLASSIMP</span></div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span><span class="comment"></span>   ClassDefOverride(TEfficiencyCalibrator, 1)   <span class="comment">// NOLINT(readability-else-after-return)</span><span class="comment"></span></div>
-<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span><span class="comment">   /// \endcond</span></div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span><span class="comment"></span>};<span class="comment"></span></div>
-<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span><span class="comment">/*! @} */</span></div>
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>   TGTextButton* fEmitter{<span class="keyword">nullptr</span>};</div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span> </div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>   <span class="keyword">static</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> fLineHeight;    <span class="comment">///&lt; Height of text boxes and progress bar</span></div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>   <span class="keyword">static</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> fWindowWidth;   <span class="comment">///&lt; Width of window</span></div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span> </div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>   <span class="comment">// graphic elements</span></div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>   std::vector&lt;TGLabel*&gt;    fSourceLabel;</div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>   std::vector&lt;TGComboBox*&gt; fSourceBox;</div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>   TGTab*                   fDatatypeTab{<span class="keyword">nullptr</span>};</div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>   TGHProgressBar*          fProgressBar{<span class="keyword">nullptr</span>};</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>   TGTextButton*            fStartButton{<span class="keyword">nullptr</span>};</div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span><span class="comment"></span> </div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span><span class="comment">   /// \cond CLASSIMP</span></div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span><span class="comment"></span>   ClassDefOverride(TEfficiencyCalibrator, 1)   <span class="comment">// NOLINT(readability-else-after-return)</span><span class="comment"></span></div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span><span class="comment">   /// \endcond</span></div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span><span class="comment"></span>};<span class="comment"></span></div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span><span class="comment">/*! @} */</span></div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="a_globals_8h_html"><div class="ttname"><a href="_globals_8h.html">Globals.h</a></div></div>
 <div class="ttc" id="a_globals_8h_html_abb4e78a946cba701b4127ed5191b3b1e"><div class="ttname"><a href="_globals_8h.html#abb4e78a946cba701b4127ed5191b3b1e">EVerbosity</a></div><div class="ttdeci">EVerbosity</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00143">Globals.h:143</a></div></div>
 <div class="ttc" id="a_t_calibration_graph_8h_html"><div class="ttname"><a href="_t_calibration_graph_8h.html">TCalibrationGraph.h</a></div></div>
@@ -451,7 +453,7 @@ $(function(){initNavTree('_t_efficiency_calibrator_8h_source.html',''); initResi
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="_t_efficiency_calibrator_8h.html">TEfficiencyCalibrator.h</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Tue Nov 25 2025 11:15:50.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Nov 28 2025 13:12:38.</li>
   </ul>
 </div>
 </body>

@@ -1,5 +1,17 @@
 var NAVTREEINDEX26 =
 {
+"class_t_detector_hit.html#a5ac38b672f118d32404043c84107d117":[8,2,11,56],
+"class_t_detector_hit.html#a62d3cd7d1e365fd104b57c35efd1ab45":[8,2,11,9],
+"class_t_detector_hit.html#a6a945e8d58872a2bee39ffc1c350901d":[8,2,11,73],
+"class_t_detector_hit.html#a6bb8b65702c2d8d1aed91f3878bfa87e":[8,2,11,29],
+"class_t_detector_hit.html#a6ff4a87f0158c5e161ec8783dbc10792":[8,2,11,23],
+"class_t_detector_hit.html#a713977fdcf9a8f890f6dd884f166177a":[8,2,11,22],
+"class_t_detector_hit.html#a760e30787813be2fb2659b1ab357fab6":[8,2,11,41],
+"class_t_detector_hit.html#a7618dba991d144b088ef5b7baa30f897":[8,2,11,78],
+"class_t_detector_hit.html#a7e3a6acc044fad3b3e9477078aa3e767":[8,2,11,57],
+"class_t_detector_hit.html#a7e9a8c84424c66455f9c21b99f06216e":[8,2,11,65],
+"class_t_detector_hit.html#a8525ff27d0304e460646c1bb9934f9cd":[8,2,11,16],
+"class_t_detector_hit.html#a892a4320fe35c1ee04fe3191e38d1b46":[8,2,11,46],
 "class_t_detector_hit.html#a8947a17721cefef11cfc4f855a239af8":[8,2,11,33],
 "class_t_detector_hit.html#a8e84f6a505d936502a0096a749522094":[8,2,11,68],
 "class_t_detector_hit.html#a8efdc7bd75faa5fdebb9f9e030a86fcf":[8,2,11,52],
@@ -237,17 +249,5 @@ var NAVTREEINDEX26 =
 "class_t_efficiency_cal.html#ac5c04dd022a0af749eb7f25b7a5f2d85":[8,1,7,17],
 "class_t_efficiency_cal.html#ac877a5209eb7478b3cf1c329665c5479":[8,1,7,5],
 "class_t_efficiency_cal.html#acc5aedbaca3dfc61bab08825f21709ad":[8,1,7,10],
-"class_t_efficiency_cal.html#ace59ec53c264e10e87231f19e4404961":[8,1,7,25],
-"class_t_efficiency_cal.html#ad0060a22683cfa00c711a6f05fbc9349":[8,1,7,26],
-"class_t_efficiency_cal.html#ad3a29c8369ce14d84dd39e13fa4fccde":[8,1,7,9],
-"class_t_efficiency_cal.html#ad725848c83eda474d71e559d71b0920e":[8,1,7,18],
-"class_t_efficiency_cal.html#ae1c5b9278db056c4d48bef3c65abe077":[8,1,7,24],
-"class_t_efficiency_cal.html#ae44ff57886a1045a1527280a6449f400":[8,1,7,14],
-"class_t_efficiency_cal.html#afcdadcfd2191729d71be0331c44ffa21":[8,1,7,12],
-"class_t_efficiency_calibration.html":[8,1,8],
-"class_t_efficiency_calibration.html#a0ff34728af59324cca9714d05b383134":[8,1,8,6],
-"class_t_efficiency_calibration.html#a170f9cba42a837a41ebc8bb7b9153031":[8,1,8,17],
-"class_t_efficiency_calibration.html#a19af5a7ff75037fe1a0ad52758702016":[8,1,8,16],
-"class_t_efficiency_calibration.html#a2b53a884d1a260bd0da460ce9c081493":[8,1,8,2],
-"class_t_efficiency_calibration.html#a3731ae354f339afc03ede36f2cda6c97":[8,1,8,21]
+"class_t_efficiency_cal.html#ace59ec53c264e10e87231f19e4404961":[8,1,7,25]
 };

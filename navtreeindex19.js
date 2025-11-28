@@ -1,5 +1,17 @@
 var NAVTREEINDEX19 =
 {
+"class_t_beta_decay.html#a9969019379bf1b7155f0b2603175a227":[8,3,7,5],
+"class_t_beta_decay.html#aa874802070aaca286682879aef04b959":[8,3,7,8],
+"class_t_beta_decay.html#ab2fb135310b6cd29e5a3d889b9328459":[8,3,7,2],
+"class_t_beta_decay.html#acbe67b3354a6875d24dc4c0b0d6ba691":[8,3,7,6],
+"class_t_beta_decay.html#acce2fb6ee4b139d129585e26ada6611b":[8,3,7,3],
+"class_t_bgo.html":[8,2,2],
+"class_t_bgo.html#a02285d85182fa3c0cd527ad9573bec49":[8,2,2,0],
+"class_t_bgo.html#a13ea06ba385aabcf09c1ea5a70d8145b":[8,2,2,21],
+"class_t_bgo.html#a202127adcc280ddb063ff7429822ce30":[8,2,2,13],
+"class_t_bgo.html#a3912c491450ed1564dead68529bc34b1":[8,2,2,17],
+"class_t_bgo.html#a48e900fea124e60c71f790f925a53f8e":[8,2,2,9],
+"class_t_bgo.html#a4b1206539f129d44f16a9ede9fab2fec":[8,2,2,1],
 "class_t_bgo.html#a5157695811c23caccbc71ce62b9cacd0":[8,2,2,8],
 "class_t_bgo.html#a58c8bd71049b0aa355bb3d8ded28ddcb":[8,2,2,20],
 "class_t_bgo.html#a5f45fc1f42487a536497212409389750":[8,2,2,7],
@@ -237,17 +249,5 @@ var NAVTREEINDEX19 =
 "class_t_c_s_m_hit.html#a2beb351ce9898c945f13264485d736e9":[8,2,5,53],
 "class_t_c_s_m_hit.html#a2d0ccf28cbe0792ebdf0987d47c14997":[8,2,5,68],
 "class_t_c_s_m_hit.html#a2e2e65ad068f8b8ab60024c56bac90e6":[8,2,5,62],
-"class_t_c_s_m_hit.html#a30dce30992ffd69db3872f6e29f52d9a":[8,2,5,49],
-"class_t_c_s_m_hit.html#a31ee4547a5a23ded0845a0a02603f783":[8,2,5,63],
-"class_t_c_s_m_hit.html#a3290bf9c582721fe2e81c79ce1098f42":[8,2,5,96],
-"class_t_c_s_m_hit.html#a3548d815985bbe93215d419a6e136d01":[8,2,5,59],
-"class_t_c_s_m_hit.html#a3636394d6fa66a12e29414851bf2d747":[8,2,5,92],
-"class_t_c_s_m_hit.html#a3698f01f1f32338b91930d491e4c5aa0":[8,2,5,127],
-"class_t_c_s_m_hit.html#a39dd0e70e98e507cfe0afc0bdab2b9a0":[8,2,5,117],
-"class_t_c_s_m_hit.html#a3b1e6e6edd968fa3aa687631f04c8d51":[8,2,5,103],
-"class_t_c_s_m_hit.html#a3c6c9d075c5a7445b502f9a1c1b0ccb2":[8,2,5,110],
-"class_t_c_s_m_hit.html#a3c925c5bd01fd15d0428d21427e00abf":[8,2,5,13],
-"class_t_c_s_m_hit.html#a3e5f58059fe4d44ed04a92830db546de":[8,2,5,37],
-"class_t_c_s_m_hit.html#a3f78c22bbed6607b8431ec4a43177fdb":[8,2,5,50],
-"class_t_c_s_m_hit.html#a3fef8381fac8a290cf47d9f286b5a71a":[8,2,5,45]
+"class_t_c_s_m_hit.html#a30dce30992ffd69db3872f6e29f52d9a":[8,2,5,49]
 };
