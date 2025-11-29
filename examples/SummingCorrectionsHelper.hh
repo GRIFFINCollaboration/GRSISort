@@ -31,18 +31,18 @@ public:
          fHighEnergy           = fUserSettings->GetDouble("Energy.High", fHighEnergy);
          fPromptLow            = fUserSettings->GetDouble("Timing.GriffinGriffin.Prompt.Low", fPromptLow);
          fPromptHigh           = fUserSettings->GetDouble("Timing.GriffinGriffin.Prompt.High", fPromptHigh);
-         fCoincidentLow            = fUserSettings->GetDouble("Timing.GriffinGriffin.Coincident.Low", fCoincidentLow);
-         fCoincidentHigh           = fUserSettings->GetDouble("Timing.GriffinGriffin.Coincident.High", fCoincidentHigh);
-         fTimeRandomLow            = fUserSettings->GetDouble("Timing.GriffinGriffin.TimeRandom.Low", fTimeRandomLow);
-         fTimeRandomHigh           = fUserSettings->GetDouble("Timing.GriffinGriffin.TimeRandom.High", fTimeRandomHigh);
-         fTimeRandomRatio           = fUserSettings->GetDouble("Timing.GriffinGriffin.TimeRandom.Ratio", fTimeRandomRatio);
-         fEnergyGateLow = fUserSettings->GetDouble("Energy.Gate.Low", fEnergyGateLow);
-         fEnergyGateHigh = fUserSettings->GetDouble("Energy.Gate.High", fEnergyGateHigh);
-         for(int i = 0;;++i) {
-            double tmpLow = 0.;
+         fCoincidentLow        = fUserSettings->GetDouble("Timing.GriffinGriffin.Coincident.Low", fCoincidentLow);
+         fCoincidentHigh       = fUserSettings->GetDouble("Timing.GriffinGriffin.Coincident.High", fCoincidentHigh);
+         fTimeRandomLow        = fUserSettings->GetDouble("Timing.GriffinGriffin.TimeRandom.Low", fTimeRandomLow);
+         fTimeRandomHigh       = fUserSettings->GetDouble("Timing.GriffinGriffin.TimeRandom.High", fTimeRandomHigh);
+         fTimeRandomRatio      = fUserSettings->GetDouble("Timing.GriffinGriffin.TimeRandom.Ratio", fTimeRandomRatio);
+         fEnergyGateLow        = fUserSettings->GetDouble("Energy.Gate.Low", fEnergyGateLow);
+         fEnergyGateHigh       = fUserSettings->GetDouble("Energy.Gate.High", fEnergyGateHigh);
+         for(int i = 0;; ++i) {
+            double tmpLow  = 0.;
             double tmpHigh = 0.;
             try {
-               tmpLow = fUserSettings->GetDouble(Form("Energy.Background.%d.Low", i), true);
+               tmpLow  = fUserSettings->GetDouble(Form("Energy.Background.%d.Low", i), true);
                tmpHigh = fUserSettings->GetDouble(Form("Energy.Background.%d.High", i), true);
             } catch(std::out_of_range& e) {
                break;
@@ -107,10 +107,10 @@ private:
    double fTimeRandomHigh{1500.};
    double fTimeRandomRatio{0.};
    // energies
-   double fEnergyGateLow{0.};
-   double fEnergyGateHigh{0.};
+   double                                 fEnergyGateLow{0.};
+   double                                 fEnergyGateHigh{0.};
    std::vector<std::pair<double, double>> fEnergyBackground;
-   double fEnergyRatio{0.};
+   double                                 fEnergyRatio{0.};
 
    // ==========  functions that fill histograms  ==========
    void FillEfficiencyHistograms(unsigned int slot, TGriffin& grif, TGriffinBgo& grifBgo);
