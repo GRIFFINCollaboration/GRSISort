@@ -19,10 +19,10 @@ float TGamma::fTextSize = 0.020;
 float TLevel::fTextSize = 0.025;
 
 std::vector<TLevelScheme*> TLevelScheme::fLevelSchemes;
-bool TLevelScheme::fDrawLevelEnergy = true;
-bool TLevelScheme::fDrawLevelLabel = true;
-bool TLevelScheme::fDrawName = true;
-bool TLevelScheme::fDrawBandLabel = true;
+bool                       TLevelScheme::fDrawLevelEnergy = true;
+bool                       TLevelScheme::fDrawLevelLabel  = true;
+bool                       TLevelScheme::fDrawName        = true;
+bool                       TLevelScheme::fDrawBandLabel   = true;
 
 TGamma::TGamma(TLevelScheme* levelScheme, std::string label, const double& br, const double& ts)
    : fBranchingRatio(br), fTransitionStrength(ts), fLabelText(std::move(label)), fLevelScheme(levelScheme)

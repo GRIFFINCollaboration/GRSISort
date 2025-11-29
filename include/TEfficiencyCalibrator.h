@@ -206,7 +206,7 @@ class TEfficiencyCalibrator : public TGMainFrame {
    ///
    /// This is a class that determines the efficiency from source
    /// data.
-   /// It expects a list of files with a 1D singles histogram and 
+   /// It expects a list of files with a 1D singles histogram and
    /// 2D histograms of energy vs. (suppressed) energy and
    /// energy vs. sum of energies. In case of suppressed data only the
    /// x-axis of the former 2D histogram should use suppressed data,

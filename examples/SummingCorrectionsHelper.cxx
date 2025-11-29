@@ -88,7 +88,7 @@ void SummingCorrectionsHelper::FillEfficiencyHistograms(unsigned int slot, TGrif
          }
       }
       for(int g2 = 0; g2 < grif.GetMultiplicity(); ++g2) {
-         if(g1 == g2) { continue; } // this is wrong? maybe check energy and time instead?
+         if(g1 == g2) { continue; }   // this is wrong? maybe check energy and time instead?
          auto* grif2 = grif.GetGriffinHit(g2);
          if(Reject(grif2) || !GoodCfd(grif2)) { continue; }
          if(grif1->GetPosition().Angle(grif2->GetPosition()) / TMath::Pi() * 180. > 179.) {
