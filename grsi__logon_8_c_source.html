@@ -107,30 +107,31 @@ $(function(){initNavTree('grsi__logon_8_c_source.html',''); initResizable(true);
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &quot;TStyle.h&quot;</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="foldopen" id="foldopen00004" data-start="{" data-end="}">
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno"><a class="line" href="grsi__logon_8_c.html#a9ed3364842dc74754d1d12836223adc0">    4</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="grsi__logon_8_c.html#a9ed3364842dc74754d1d12836223adc0">grsi_logon</a>() {</div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span>   std::cout&lt;&lt;<span class="stringliteral">&quot;setting GRSISort environment ... &quot;</span>&lt;&lt;std::flush;</div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>   gStyle-&gt;Reset();</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>   <span class="comment">//gStyle-&gt;SetFillColor(kWhite);</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>   gStyle-&gt;SetPalette(55);</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>   gStyle-&gt;SetPadColor(kWhite);</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>   gStyle-&gt;SetCanvasColor(kWhite);</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>   gStyle-&gt;SetStatColor(kWhite);</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>   gStyle-&gt;SetTitleColor(kWhite,<span class="stringliteral">&quot;T&quot;</span>);</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>   gStyle-&gt;SetTitleBorderSize(1);</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>   gStyle-&gt;SetTitleAlign(23); <span class="comment">// reference of title, default is 13 = left top, 23 = middle top?</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>   gStyle-&gt;SetTitleX(0.5); <span class="comment">//centered title</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>   gStyle-&gt;SetStatBorderSize(1);</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>   gStyle-&gt;SetFrameFillStyle(4000);</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>   gStyle-&gt;SetHistFillStyle(4000);</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>   <span class="comment">//to turn off highlighting of active pad/frame/canvas</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>   <span class="comment">//gStyle-&gt;SetPadBorderMode(0);</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>   <span class="comment">//gStyle-&gt;SetFrameBorderMode(0);</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>   <span class="comment">//gStyle-&gt;SetCanvasBorderMode(0);</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>   gStyle-&gt;SetOptStat(<span class="stringliteral">&quot;neuoi&quot;</span>);</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>   std::cout&lt;&lt;<span class="stringliteral">&quot;done&quot;</span>&lt;&lt;std::endl;</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>}</div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno"><a class="line" href="grsi__logon_8_c.html#a9ed3364842dc74754d1d12836223adc0">    4</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="grsi__logon_8_c.html#a9ed3364842dc74754d1d12836223adc0">grsi_logon</a>()</div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span>{</div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span>   std::cout &lt;&lt; <span class="stringliteral">&quot;setting GRSISort environment ... &quot;</span> &lt;&lt; std::flush;</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>   gStyle-&gt;Reset();</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>   <span class="comment">//gStyle-&gt;SetFillColor(kWhite);</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>   gStyle-&gt;SetPalette(55);</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>   gStyle-&gt;SetPadColor(kWhite);</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>   gStyle-&gt;SetCanvasColor(kWhite);</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>   gStyle-&gt;SetStatColor(kWhite);</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>   gStyle-&gt;SetTitleColor(kWhite, <span class="stringliteral">&quot;T&quot;</span>);</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>   gStyle-&gt;SetTitleBorderSize(1);</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>   gStyle-&gt;SetTitleAlign(23);   <span class="comment">// reference of title, default is 13 = left top, 23 = middle top?</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>   gStyle-&gt;SetTitleX(0.5);      <span class="comment">//centered title</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>   gStyle-&gt;SetStatBorderSize(1);</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>   gStyle-&gt;SetFrameFillStyle(4000);</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>   gStyle-&gt;SetHistFillStyle(4000);</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>   <span class="comment">//to turn off highlighting of active pad/frame/canvas</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>   <span class="comment">//gStyle-&gt;SetPadBorderMode(0);</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>   <span class="comment">//gStyle-&gt;SetFrameBorderMode(0);</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>   <span class="comment">//gStyle-&gt;SetCanvasBorderMode(0);</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>   gStyle-&gt;SetOptStat(<span class="stringliteral">&quot;neuoi&quot;</span>);</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>   std::cout &lt;&lt; <span class="stringliteral">&quot;done&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>}</div>
 </div>
 <div class="ttc" id="agrsi__logon_8_c_html_a9ed3364842dc74754d1d12836223adc0"><div class="ttname"><a href="grsi__logon_8_c.html#a9ed3364842dc74754d1d12836223adc0">grsi_logon</a></div><div class="ttdeci">void grsi_logon()</div><div class="ttdef"><b>Definition</b> <a href="#l00004">grsi_logon.C:4</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
@@ -140,7 +141,7 @@ $(function(){initNavTree('grsi__logon_8_c_source.html',''); initResizable(true);
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="grsi__logon_8_c.html">grsi_logon.C</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Nov 28 2025 13:12:36.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Sat Nov 29 2025 11:44:30.</li>
   </ul>
 </div>
 </body>

@@ -198,7 +198,7 @@ $(function(){initNavTree('_summing_corrections_helper_8cxx_source.html',''); ini
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>         }</div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>      }</div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>      <span class="keywordflow">for</span>(<span class="keywordtype">int</span> g2 = 0; g2 &lt; grif.<a class="code hl_function" href="class_t_detector.html#a9d5c07abd73ec148fe0adbee0c7c1eec">GetMultiplicity</a>(); ++g2) {</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>         <span class="keywordflow">if</span>(g1 == g2) { <span class="keywordflow">continue</span>; } <span class="comment">// this is wrong? maybe check energy and time instead?</span></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>         <span class="keywordflow">if</span>(g1 == g2) { <span class="keywordflow">continue</span>; }   <span class="comment">// this is wrong? maybe check energy and time instead?</span></div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>         <span class="keyword">auto</span>* grif2 = grif.<a class="code hl_function" href="class_t_griffin.html#ac2ad5c730ed2dcfaacb7a0e0710f259a">GetGriffinHit</a>(g2);</div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>         <span class="keywordflow">if</span>(<a class="code hl_function" href="class_summing_corrections_helper.html#abce6b095a71f70bf09669bdeea0279a6">Reject</a>(grif2) || !<a class="code hl_function" href="class_summing_corrections_helper.html#ada91701c927fd8ada05e1a0413fec005">GoodCfd</a>(grif2)) { <span class="keywordflow">continue</span>; }</div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>         <span class="keywordflow">if</span>(grif1-&gt;GetPosition().Angle(grif2-&gt;GetPosition()) / TMath::Pi() * 180. &gt; 179.) {</div>
@@ -675,7 +675,7 @@ $(function(){initNavTree('_summing_corrections_helper_8cxx_source.html',''); ini
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d28a4824dc47e487b107a5db32ef43c4.html">examples</a></li><li class="navelem"><a class="el" href="_summing_corrections_helper_8cxx.html">SummingCorrectionsHelper.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Fri Nov 28 2025 13:12:36.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Sat Nov 29 2025 11:44:30.</li>
   </ul>
 </div>
 </body>
