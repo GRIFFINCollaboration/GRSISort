@@ -19,6 +19,10 @@ float TGamma::fTextSize = 0.020;
 float TLevel::fTextSize = 0.025;
 
 std::vector<TLevelScheme*> TLevelScheme::fLevelSchemes;
+bool                       TLevelScheme::fDrawLevelEnergy = true;
+bool                       TLevelScheme::fDrawLevelLabel  = true;
+bool                       TLevelScheme::fDrawName        = true;
+bool                       TLevelScheme::fDrawBandLabel   = true;
 
 TGamma::TGamma(TLevelScheme* levelScheme, std::string label, const double& br, const double& ts)
    : fBranchingRatio(br), fTransitionStrength(ts), fLabelText(std::move(label)), fLevelScheme(levelScheme)
@@ -105,6 +109,7 @@ void TGamma::Draw(const double& x1, const double& y1, const double& x2, const do
    SetY1(y1);
    SetX2(x2);
    SetY2(y2);
+   SetFillColor(GetLineColor());
    TArrow::Draw("|>");   // |> means using a filled triangle as point at x2,y2
    if(fLabel == nullptr) {
       fLabel = new TLatex((x1 + x2) / 2., (y1 + y2) / 2., fLabelText.c_str());
@@ -1167,7 +1172,7 @@ void TLevelScheme::Draw(Option_t*)
    SetY2(fX2);
    SetTextSize(0);     // default size (?)
    SetTextAlign(22);   // centered in x and y
-   TPaveLabel::Draw();
+   if(fDrawName) { TPaveLabel::Draw(); }
 
    if(fGammaWidth == EGammaWidth::kGlobal) {
       // if we want the gamma width to be on a global scale, i.e. across all bands, we need to find the minimum and maximum values
@@ -1190,7 +1195,7 @@ void TLevelScheme::Draw(Option_t*)
       fBands[b].SetX2(right);
       fBands[b].SetY2(-height / 40.);
       fBands[b].SetFillColor(10);
-      fBands[b].Draw();
+      if(fDrawBandLabel) { fBands[b].Draw(); }
       // get the scaling for the gamma's so that the widths are between fMinWidth and fMaxWidth
       // for global scaling we use the first minMax where we stored the global mininum and maximum
       auto& [min, max] = minMaxGamma[0];
@@ -1304,8 +1309,8 @@ void TLevelScheme::Draw(Option_t*)
          level.Draw(left, right);
          // double labelWidth = level.DrawLabel(right);
          // double energyWidth = level.DrawEnergy(left);
-         level.DrawLabel(right);
-         level.DrawEnergy(left);
+         if(fDrawLevelLabel) { level.DrawLabel(right); }
+         if(fDrawLevelEnergy) { level.DrawEnergy(left); }
          // TODO: check these widths to see if we need to adjust the margins.
          // Should also adjust gaps between bands to be equal to their sum, but how?
          // If we call Draw recursively if we changed anything it will never stop (as that re-adjusts the text sizes).

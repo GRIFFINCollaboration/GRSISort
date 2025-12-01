@@ -1,0 +1,32 @@
+# pile-up rejection settings
+PileUpRejection:   true
+KValue.Griffin:    379
+
+# good hit conditions
+MinimumGriffinEnergy: 0.
+MaximumCfd: 20.
+
+# binning
+Energy.Bins.1D: 10000
+Energy.Bins.2D: 2000
+Energy.Low: 0.
+Energy.High: 2000.
+
+# prompt time gate, i.e. timing of 180 degree hits
+Timing.GriffinGriffin.Prompt.Low:  -250.
+Timing.GriffinGriffin.Prompt.High:  250.
+
+## if these values are set, branching ratio plots will be produced instead of efficiency plots
+#Timing.GriffinGriffin.Coincident.Low:  -250.
+#Timing.GriffinGriffin.Coincident.High:  250.
+#Timing.GriffinGriffin.TimeRandom.Low:   500.
+#Timing.GriffinGriffin.TimeRandom.High: 1500.
+## this will get calculated automatically from the values above, unless a custom one is provided here
+## Timing.GriffinGriffin.TimeRandom.Ratio: 0.25
+#Energy.Gate.Low: 
+#Energy.Gate.High: 
+## as many of these as wanted, have to be numbered consecutive from zero on
+#Energy.Background.0.Low: 
+#Energy.Background.0.High: 
+## this will get calculated automatically from the values above, unless a custom one is provided here
+#Energy.Gate.Ratio: 0.5
