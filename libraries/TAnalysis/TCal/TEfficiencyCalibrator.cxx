@@ -167,7 +167,7 @@ void TEfficiencyTab::FindPeaks()
          fSummingInProj.back()->Write(Form("%s_%.0fkeV", fSummingInProj.back()->GetName(), centroid), TObject::kOverwrite);
          fSummingInProjBg.back()->Write(Form("%s_%.0fkeV", fSummingInProjBg.back()->GetName(), centroid), TObject::kOverwrite);
 
-         double summingOut = summingOutPeaks[p]->Area();
+         double summingOut    = summingOutPeaks[p]->Area();
          double correctedArea = peak->Area() - summingIn + summingOutPeaks[p]->AreaErr();
          // uncertainties for summing in and summing out is sqrt(N) (?)
          double correctedAreaErr = TMath::Sqrt(TMath::Power(peak->AreaErr(), 2) + summingIn + summingOut);
