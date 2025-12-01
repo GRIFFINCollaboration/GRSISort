@@ -443,7 +443,7 @@ $(function(){initNavTree('_t_fipps_8cxx_source.html',''); initResizable(true); }
 <div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>      <span class="comment">// Calculate Cross Talk on each hit</span></div>
 <div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>      <a class="code hl_function" href="class_t_fipps.html#abd90b35cc7eb692523e0caefe9e18256">FixCrossTalk</a>();</div>
 <div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>   }</div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>   <span class="keyword">auto</span>&amp; hit_vec = GetHitVector();</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>   <span class="keyword">auto</span>&amp; hit_vec = <a class="code hl_function" href="class_t_detector.html#acbf359f899b738719e19bb326e45c790">Hits</a>();</div>
 <div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>   <span class="keyword">auto</span>&amp; sup_vec = <a class="code hl_function" href="class_t_fipps.html#a94546e855e1e1f5ab86779b5f7d88449">GetSuppressedVector</a>();</div>
 <div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>   <span class="keywordflow">if</span>(hit_vec.empty()) {</div>
 <div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>      <span class="keywordflow">return</span> 0;</div>
@@ -473,7 +473,7 @@ $(function(){initNavTree('_t_fipps_8cxx_source.html',''); initResizable(true); }
 <div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>   <span class="keywordflow">if</span>(!<a class="code hl_function" href="class_t_fipps.html#ab23bfe63fe99155fc30ab8a0fa3a3d05">IsCrossTalkSet</a>()) {</div>
 <div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>      <a class="code hl_function" href="class_t_fipps.html#abd90b35cc7eb692523e0caefe9e18256">FixCrossTalk</a>();</div>
 <div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>   }</div>
-<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>   <span class="keyword">auto</span>&amp; hit_vec  = GetHitVector();</div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>   <span class="keyword">auto</span>&amp; hit_vec  = <a class="code hl_function" href="class_t_detector.html#acbf359f899b738719e19bb326e45c790">Hits</a>();</div>
 <div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>   <span class="keyword">auto</span>&amp; ab_vec   = <a class="code hl_function" href="class_t_fipps.html#a00b71c8eca3c6ff045fb5b1bafb13fba">GetAddbackVector</a>();</div>
 <div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>   <span class="keyword">auto</span>&amp; frag_vec = <a class="code hl_function" href="class_t_fipps.html#a015e0a6046e5a6fd019ae0e701cff5f1">GetAddbackFragVector</a>();</div>
 <div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>   <span class="keywordflow">if</span>(hit_vec.empty()) {</div>
@@ -506,7 +506,7 @@ $(function(){initNavTree('_t_fipps_8cxx_source.html',''); initResizable(true); }
 <div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>   <span class="keywordflow">if</span>(!<a class="code hl_function" href="class_t_fipps.html#ab23bfe63fe99155fc30ab8a0fa3a3d05">IsCrossTalkSet</a>()) {</div>
 <div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>      <a class="code hl_function" href="class_t_fipps.html#abd90b35cc7eb692523e0caefe9e18256">FixCrossTalk</a>();</div>
 <div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>   }</div>
-<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>   <span class="keyword">auto</span>&amp; hit_vec  = GetHitVector();</div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>   <span class="keyword">auto</span>&amp; hit_vec  = <a class="code hl_function" href="class_t_detector.html#acbf359f899b738719e19bb326e45c790">Hits</a>();</div>
 <div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>   <span class="keyword">auto</span>&amp; ab_vec   = <a class="code hl_function" href="class_t_fipps.html#a7b8f1fb1169abcfe209ed2b3349acb83">GetSuppressedAddbackVector</a>();</div>
 <div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>   <span class="keyword">auto</span>&amp; frag_vec = <a class="code hl_function" href="class_t_fipps.html#ae6b1f69302fcc6c737ba8985ff32cc8a">GetSuppressedAddbackFragVector</a>();</div>
 <div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>   <span class="keywordflow">if</span>(hit_vec.empty()) {</div>
@@ -739,7 +739,7 @@ $(function(){initNavTree('_t_fipps_8cxx_source.html',''); initResizable(true); }
 <div class="line"><a id="l00555" name="l00555"></a><span class="lineno">  555</span>{</div>
 <div class="line"><a id="l00556" name="l00556"></a><span class="lineno">  556</span>   <span class="keywordflow">if</span>(!<a class="code hl_function" href="class_t_g_r_s_i_options.html#a6d15353910ce4daa1b750d43d0aca2e3">TGRSIOptions::AnalysisOptions</a>()-&gt;IsCorrectingCrossTalk()) <span class="keywordflow">return</span>;</div>
 <div class="line"><a id="l00557" name="l00557"></a><span class="lineno">  557</span> </div>
-<div class="line"><a id="l00558" name="l00558"></a><span class="lineno">  558</span>   <span class="keyword">auto</span> hit_vec = GetHitVector();</div>
+<div class="line"><a id="l00558" name="l00558"></a><span class="lineno">  558</span>   <span class="keyword">auto</span> hit_vec = <a class="code hl_function" href="class_t_detector.html#acbf359f899b738719e19bb326e45c790">Hits</a>();</div>
 <div class="line"><a id="l00559" name="l00559"></a><span class="lineno">  559</span>   <span class="keywordflow">if</span>(hit_vec.size() &lt; 2) {</div>
 <div class="line"><a id="l00560" name="l00560"></a><span class="lineno">  560</span>      <a class="code hl_function" href="class_t_fipps.html#a4bab9cf1b68af0fdeee90fb02e80e753">SetCrossTalk</a>(<span class="keyword">true</span>);</div>
 <div class="line"><a id="l00561" name="l00561"></a><span class="lineno">  561</span>      <span class="keywordflow">return</span>;</div>
@@ -868,7 +868,7 @@ $(function(){initNavTree('_t_fipps_8cxx_source.html',''); initResizable(true); }
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d4ed71d809a9744f0162b8657ddda4f6.html">IllData</a></li><li class="navelem"><a class="el" href="dir_d4732219e4b8947ea6747f0d78e6e32b.html">libraries</a></li><li class="navelem"><a class="el" href="dir_c7779af344644afdd0586bb812bd7720.html">TILLAnalysis</a></li><li class="navelem"><a class="el" href="dir_b905687dc57ebbc78895aed8781c1b99.html">TFipps</a></li><li class="navelem"><a class="el" href="_t_fipps_8cxx.html">TFipps.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Sat Nov 29 2025 11:44:31.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Mon Dec 1 2025 10:42:26.</li>
   </ul>
 </div>
 </body>

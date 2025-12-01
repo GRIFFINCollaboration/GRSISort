@@ -108,24 +108,18 @@ $(function(){initNavTree('grsiproof_8cxx.html',''); initResizable(true); });
 <div class="contents">
 <div class="textblock"><code>#include &quot;TEnv.h&quot;</code><br />
 <code>#include &quot;TFile.h&quot;</code><br />
-<code>#include &quot;TTree.h&quot;</code><br />
 <code>#include &quot;TChain.h&quot;</code><br />
 <code>#include &quot;TProofLite.h&quot;</code><br />
 <code>#include &quot;TProofLog.h&quot;</code><br />
-<code>#include &quot;TSystemDirectory.h&quot;</code><br />
-<code>#include &quot;TList.h&quot;</code><br />
-<code>#include &quot;TChainElement.h&quot;</code><br />
 <code>#include &quot;TROOT.h&quot;</code><br />
 <code>#include &quot;TInterpreter.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="_t_g_r_s_i_proof_8h_source.html">TGRSIProof.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_arg_parser_8h_source.html">ArgParser.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_t_g_r_s_i_options_8h_source.html">TGRSIOptions.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_t_channel_8h_source.html">TChannel.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="_t_object_wrapper_8h_source.html">TObjectWrapper.h</a>&quot;</code><br />
 <code>#include &quot;TStopwatch.h&quot;</code><br />
-<code>#include &quot;<a class="el" href="_t_g_r_s_i_map_8h_source.html">TGRSIMap.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_t_p_p_g_8h_source.html">TPPG.h</a>&quot;</code><br />
-<code>#include &quot;TCutG.h&quot;</code><br />
 <code>#include &lt;iostream&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
@@ -187,11 +181,11 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="grsiproof_8cxx_source.html#l00037">37</a> of file <a class="el" href="grsiproof_8cxx_source.html">grsiproof.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="grsiproof_8cxx_source.html#l00031">31</a> of file <a class="el" href="grsiproof_8cxx_source.html">grsiproof.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_p_p_g_8cxx_source.html#l00682">TPPG::Add()</a>, <a class="el" href="_t_singleton_8h_source.html#l00141">TSingleton&lt; TRunInfo &gt;::AddCurrent()</a>, <a class="el" href="_t_g_r_s_i_map_8h_source.html#l00111">TGRSIMapException&lt; key_type &gt;::detail()</a>, <a class="el" href="_globals_8h_source.html#l00018">DRED</a>, <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>, <a class="el" href="grsiproof_8cxx_source.html#l00030">gGRSIOpt</a>, <a class="el" href="grsiproof_8cxx_source.html#l00029">gGRSIProof</a>, <a class="el" href="grsiproof_8cxx_source.html#l00032">gPpg</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00049">TGRSIOptions::MacroInputFiles()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00114">TGRSIOptions::NumberOfEvents()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00072">TRunInfo::Print()</a>, <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00042">TGRSIOptions::RootInputFiles()</a>, and <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00133">TGRSIOptions::SelectorOnly()</a>.</p>
+<p class="reference">References <a class="el" href="_t_p_p_g_8cxx_source.html#l00682">TPPG::Add()</a>, <a class="el" href="_t_singleton_8h_source.html#l00141">TSingleton&lt; TRunInfo &gt;::AddCurrent()</a>, <a class="el" href="_t_g_r_s_i_map_8h_source.html#l00111">TGRSIMapException&lt; key_type &gt;::detail()</a>, <a class="el" href="_globals_8h_source.html#l00018">DRED</a>, <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>, <a class="el" href="grsiproof_8cxx_source.html#l00024">gGRSIOpt</a>, <a class="el" href="grsiproof_8cxx_source.html#l00023">gGRSIProof</a>, <a class="el" href="grsiproof_8cxx_source.html#l00026">gPpg</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00049">TGRSIOptions::MacroInputFiles()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00114">TGRSIOptions::NumberOfEvents()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00072">TRunInfo::Print()</a>, <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00042">TGRSIOptions::RootInputFiles()</a>, and <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00133">TGRSIOptions::SelectorOnly()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00186">main()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00180">main()</a>.</p>
 
 </div>
 </div>
@@ -210,11 +204,11 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="grsiproof_8cxx_source.html#l00107">107</a> of file <a class="el" href="grsiproof_8cxx_source.html">grsiproof.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="grsiproof_8cxx_source.html#l00101">101</a> of file <a class="el" href="grsiproof_8cxx_source.html">grsiproof.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="grsiproof_8cxx_source.html#l00035">controlC</a>, <a class="el" href="_globals_8h_source.html#l00020">DMAGENTA</a>, <a class="el" href="_t_run_info_8h_source.html#l00210">TRunInfo::FirstRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00211">TRunInfo::FirstSubRunNumber()</a>, <a class="el" href="grsiproof_8cxx_source.html#l00030">gGRSIOpt</a>, <a class="el" href="grsiproof_8cxx_source.html#l00029">gGRSIProof</a>, <a class="el" href="grsiproof_8cxx_source.html#l00031">gStopwatch</a>, <a class="el" href="_t_run_info_8h_source.html#l00213">TRunInfo::LastRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00214">TRunInfo::LastSubRunNumber()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00049">TGRSIOptions::MacroInputFiles()</a>, <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>, <a class="el" href="_t_run_info_8h_source.html#l00207">TRunInfo::RunNumber()</a>, <a class="el" href="grsiproof_8cxx_source.html#l00034">startedProof</a>, and <a class="el" href="_t_run_info_8h_source.html#l00208">TRunInfo::SubRunNumber()</a>.</p>
+<p class="reference">References <a class="el" href="grsiproof_8cxx_source.html#l00029">controlC</a>, <a class="el" href="_globals_8h_source.html#l00020">DMAGENTA</a>, <a class="el" href="_t_run_info_8h_source.html#l00210">TRunInfo::FirstRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00211">TRunInfo::FirstSubRunNumber()</a>, <a class="el" href="grsiproof_8cxx_source.html#l00024">gGRSIOpt</a>, <a class="el" href="grsiproof_8cxx_source.html#l00023">gGRSIProof</a>, <a class="el" href="grsiproof_8cxx_source.html#l00025">gStopwatch</a>, <a class="el" href="_t_run_info_8h_source.html#l00213">TRunInfo::LastRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00214">TRunInfo::LastSubRunNumber()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00049">TGRSIOptions::MacroInputFiles()</a>, <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>, <a class="el" href="_t_run_info_8h_source.html#l00207">TRunInfo::RunNumber()</a>, <a class="el" href="grsiproof_8cxx_source.html#l00028">startedProof</a>, and <a class="el" href="_t_run_info_8h_source.html#l00208">TRunInfo::SubRunNumber()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00158">HandleSignal()</a>, and <a class="el" href="grsiproof_8cxx_source.html#l00186">main()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00152">HandleSignal()</a>, and <a class="el" href="grsiproof_8cxx_source.html#l00180">main()</a>.</p>
 
 </div>
 </div>
@@ -241,11 +235,11 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="grsiproof_8cxx_source.html#l00165">165</a> of file <a class="el" href="grsiproof_8cxx_source.html">grsiproof.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="grsiproof_8cxx_source.html#l00159">159</a> of file <a class="el" href="grsiproof_8cxx_source.html">grsiproof.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="grsiproof_8cxx_source.html#l00158">HandleSignal()</a>.</p>
+<p class="reference">References <a class="el" href="grsiproof_8cxx_source.html#l00152">HandleSignal()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00186">main()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00180">main()</a>.</p>
 
 </div>
 </div>
@@ -264,11 +258,11 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="grsiproof_8cxx_source.html#l00158">158</a> of file <a class="el" href="grsiproof_8cxx_source.html">grsiproof.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="grsiproof_8cxx_source.html#l00152">152</a> of file <a class="el" href="grsiproof_8cxx_source.html">grsiproof.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="grsiproof_8cxx_source.html#l00107">AtExitHandler()</a>.</p>
+<p class="reference">References <a class="el" href="grsiproof_8cxx_source.html#l00101">AtExitHandler()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00165">CatchSignals()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00159">CatchSignals()</a>.</p>
 
 </div>
 </div>
@@ -291,9 +285,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="grsiproof_8cxx_source.html#l00186">186</a> of file <a class="el" href="grsiproof_8cxx_source.html">grsiproof.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="grsiproof_8cxx_source.html#l00180">180</a> of file <a class="el" href="grsiproof_8cxx_source.html">grsiproof.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00069">TGRSIOptions::AnalysisOptions()</a>, <a class="el" href="grsiproof_8cxx_source.html#l00037">Analyze()</a>, <a class="el" href="grsiproof_8cxx_source.html#l00107">AtExitHandler()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00134">TGRSIOptions::AverageRateEstimation()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00136">TGRSIOptions::CacheSize()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00043">TGRSIOptions::CalInputFiles()</a>, <a class="el" href="grsiproof_8cxx_source.html#l00165">CatchSignals()</a>, <a class="el" href="_globals_8h_source.html#l00021">DCYAN</a>, <a class="el" href="_globals_8h_source.html#l00018">DRED</a>, <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00020">TGRSIOptions::Get()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00130">TGRSIOptions::GetMaxWorkers()</a>, <a class="el" href="grsiproof_8cxx_source.html#l00030">gGRSIOpt</a>, <a class="el" href="grsiproof_8cxx_source.html#l00029">gGRSIProof</a>, <a class="el" href="grsiproof_8cxx_source.html#l00032">gPpg</a>, <a class="el" href="grsiproof_8cxx_source.html#l00031">gStopwatch</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00047">TGRSIOptions::InputCutFiles()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00041">TGRSIOptions::InputFiles()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00049">TGRSIOptions::MacroInputFiles()</a>, <a class="el" href="_t_g_r_s_i_proof_8h_source.html#l00044">TGRSIProof::Open()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00135">TGRSIOptions::ParallelUnzip()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00143">TGRSIOptions::ParserLibrary()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00138">TGRSIOptions::ProofStats()</a>, <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00133">TGRSIOptions::SelectorOnly()</a>, <a class="el" href="grsiproof_8cxx_source.html#l00175">SetGRSIEnv()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00040">TGRSIOptions::ShouldExit()</a>, <a class="el" href="grsiproof_8cxx_source.html#l00034">startedProof</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00137">TGRSIOptions::Submergers()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00131">TGRSIOptions::TreeName()</a>, and <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00044">TGRSIOptions::ValInputFiles()</a>.</p>
+<p class="reference">References <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00069">TGRSIOptions::AnalysisOptions()</a>, <a class="el" href="grsiproof_8cxx_source.html#l00031">Analyze()</a>, <a class="el" href="grsiproof_8cxx_source.html#l00101">AtExitHandler()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00134">TGRSIOptions::AverageRateEstimation()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00136">TGRSIOptions::CacheSize()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00043">TGRSIOptions::CalInputFiles()</a>, <a class="el" href="grsiproof_8cxx_source.html#l00159">CatchSignals()</a>, <a class="el" href="_globals_8h_source.html#l00021">DCYAN</a>, <a class="el" href="_globals_8h_source.html#l00018">DRED</a>, <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00020">TGRSIOptions::Get()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00130">TGRSIOptions::GetMaxWorkers()</a>, <a class="el" href="grsiproof_8cxx_source.html#l00024">gGRSIOpt</a>, <a class="el" href="grsiproof_8cxx_source.html#l00023">gGRSIProof</a>, <a class="el" href="grsiproof_8cxx_source.html#l00026">gPpg</a>, <a class="el" href="grsiproof_8cxx_source.html#l00025">gStopwatch</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00047">TGRSIOptions::InputCutFiles()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00041">TGRSIOptions::InputFiles()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00049">TGRSIOptions::MacroInputFiles()</a>, <a class="el" href="_t_g_r_s_i_proof_8h_source.html#l00044">TGRSIProof::Open()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00135">TGRSIOptions::ParallelUnzip()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00143">TGRSIOptions::ParserLibrary()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00138">TGRSIOptions::ProofStats()</a>, <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00133">TGRSIOptions::SelectorOnly()</a>, <a class="el" href="grsiproof_8cxx_source.html#l00169">SetGRSIEnv()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00040">TGRSIOptions::ShouldExit()</a>, <a class="el" href="grsiproof_8cxx_source.html#l00028">startedProof</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00137">TGRSIOptions::Submergers()</a>, <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00131">TGRSIOptions::TreeName()</a>, and <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00044">TGRSIOptions::ValInputFiles()</a>.</p>
 
 </div>
 </div>
@@ -312,9 +306,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="grsiproof_8cxx_source.html#l00175">175</a> of file <a class="el" href="grsiproof_8cxx_source.html">grsiproof.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="grsiproof_8cxx_source.html#l00169">169</a> of file <a class="el" href="grsiproof_8cxx_source.html">grsiproof.cxx</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00186">main()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00180">main()</a>.</p>
 
 </div>
 </div>
@@ -331,9 +325,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="grsiproof_8cxx_source.html#l00035">35</a> of file <a class="el" href="grsiproof_8cxx_source.html">grsiproof.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="grsiproof_8cxx_source.html#l00029">29</a> of file <a class="el" href="grsiproof_8cxx_source.html">grsiproof.cxx</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00107">AtExitHandler()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00101">AtExitHandler()</a>.</p>
 
 </div>
 </div>
@@ -349,9 +343,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="grsiproof_8cxx_source.html#l00030">30</a> of file <a class="el" href="grsiproof_8cxx_source.html">grsiproof.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="grsiproof_8cxx_source.html#l00024">24</a> of file <a class="el" href="grsiproof_8cxx_source.html">grsiproof.cxx</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00037">Analyze()</a>, <a class="el" href="grsiproof_8cxx_source.html#l00107">AtExitHandler()</a>, and <a class="el" href="grsiproof_8cxx_source.html#l00186">main()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00031">Analyze()</a>, <a class="el" href="grsiproof_8cxx_source.html#l00101">AtExitHandler()</a>, and <a class="el" href="grsiproof_8cxx_source.html#l00180">main()</a>.</p>
 
 </div>
 </div>
@@ -367,9 +361,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="grsiproof_8cxx_source.html#l00029">29</a> of file <a class="el" href="grsiproof_8cxx_source.html">grsiproof.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="grsiproof_8cxx_source.html#l00023">23</a> of file <a class="el" href="grsiproof_8cxx_source.html">grsiproof.cxx</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00037">Analyze()</a>, <a class="el" href="grsiproof_8cxx_source.html#l00107">AtExitHandler()</a>, and <a class="el" href="grsiproof_8cxx_source.html#l00186">main()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00031">Analyze()</a>, <a class="el" href="grsiproof_8cxx_source.html#l00101">AtExitHandler()</a>, and <a class="el" href="grsiproof_8cxx_source.html#l00180">main()</a>.</p>
 
 </div>
 </div>
@@ -385,9 +379,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="grsiproof_8cxx_source.html#l00032">32</a> of file <a class="el" href="grsiproof_8cxx_source.html">grsiproof.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="grsiproof_8cxx_source.html#l00026">26</a> of file <a class="el" href="grsiproof_8cxx_source.html">grsiproof.cxx</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00037">Analyze()</a>, and <a class="el" href="grsiproof_8cxx_source.html#l00186">main()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00031">Analyze()</a>, and <a class="el" href="grsiproof_8cxx_source.html#l00180">main()</a>.</p>
 
 </div>
 </div>
@@ -403,9 +397,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="grsiproof_8cxx_source.html#l00031">31</a> of file <a class="el" href="grsiproof_8cxx_source.html">grsiproof.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="grsiproof_8cxx_source.html#l00025">25</a> of file <a class="el" href="grsiproof_8cxx_source.html">grsiproof.cxx</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00107">AtExitHandler()</a>, and <a class="el" href="grsiproof_8cxx_source.html#l00186">main()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00101">AtExitHandler()</a>, and <a class="el" href="grsiproof_8cxx_source.html#l00180">main()</a>.</p>
 
 </div>
 </div>
@@ -421,9 +415,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="grsiproof_8cxx_source.html#l00034">34</a> of file <a class="el" href="grsiproof_8cxx_source.html">grsiproof.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="grsiproof_8cxx_source.html#l00028">28</a> of file <a class="el" href="grsiproof_8cxx_source.html">grsiproof.cxx</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00107">AtExitHandler()</a>, and <a class="el" href="grsiproof_8cxx_source.html#l00186">main()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00101">AtExitHandler()</a>, and <a class="el" href="grsiproof_8cxx_source.html#l00180">main()</a>.</p>
 
 </div>
 </div>
@@ -434,7 +428,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_9898311765dba9e8b5ad6a9c9b1db5d5.html">GRSIProof</a></li><li class="navelem"><a class="el" href="grsiproof_8cxx.html">grsiproof.cxx</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Sat Nov 29 2025 11:44:32.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Mon Dec 1 2025 10:42:28.</li>
   </ul>
 </div>
 </body>
