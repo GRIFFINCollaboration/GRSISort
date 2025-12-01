@@ -17,7 +17,7 @@
 #include "TRedirect.h"
 
 //////////////////////////////////////// TEfficiencyTab ////////////////////////////////////////
-TEfficiencyTab::TEfficiencyTab(TEfficiencyDatatypeTab* parent, TNucleus* nucleus, std::tuple<TH1*, TH2*, TH2*> hists, TGCompositeFrame* frame)
+TEfficiencyTab::TEfficiencyTab(TEfficiencyDatatypeTab* parent, TNucleus* nucleus, std::tuple<TH1*, TH1*, TH2*> hists, TGCompositeFrame* frame)
    : fFrame(frame), fNucleus(nucleus), fParent(parent),
      fSingles(std::get<0>(hists)), fSummingOut(std::get<1>(hists)), fSummingIn(std::get<2>(hists))
 // name *180Corr                 // name *Sum180Corr
@@ -62,22 +62,6 @@ void TEfficiencyTab::FindPeaks()
       std::cout << "Using parent " << fParent << std::flush << ", trying to get peak type " << TEfficiencyCalibrator::PeakType() << std::endl;
    }
    fProjectionCanvas->GetCanvas()->cd();
-   if(TEfficiencyCalibrator::VerboseLevel() > EVerbosity::kLoops) {
-      std::cout << "Got peak type " << TEfficiencyCalibrator::PeakType() << ", getting projection from " << fSummingOut->GetName() << std::endl;
-   }
-   fSummingOutTotalProj = fSummingOut->ProjectionY();
-   if(TEfficiencyCalibrator::VerboseLevel() > EVerbosity::kSubroutines) {
-      std::cout << "Writing '" << fSummingOutTotalProj->GetName() << "' to '" << gDirectory->GetName() << "'" << std::endl;
-   }
-   fSummingOutTotalProj->Write(nullptr, TObject::kOverwrite);
-   if(TEfficiencyCalibrator::VerboseLevel() > EVerbosity::kLoops) {
-      std::cout << "Got projection " << fSummingOutTotalProj << ", getting background from " << fSummingOutTotalProj->GetName() << std::endl;
-   }
-   fSummingOutTotalProjBg = fSummingOutTotalProj->ShowBackground(TEfficiencyCalibrator::BgParam());
-   if(TEfficiencyCalibrator::VerboseLevel() > EVerbosity::kSubroutines) {
-      std::cout << "Writing '" << fSummingOutTotalProjBg->GetName() << "' to '" << gDirectory->GetName() << "'" << std::endl;
-   }
-   fSummingOutTotalProjBg->Write(nullptr, TObject::kOverwrite);
    // loop through all gamma-rays of the source
    // TODO: combine ranges if peak ranges overlap
    // probably need to: change loop to using size and ->At(index), plus extra loop that finds all peaks within the range
@@ -95,6 +79,8 @@ void TEfficiencyTab::FindPeaks()
       }
       fPeakFitter.RemoveAllPeaks();
       fPeakFitter.ResetInitFlag();
+      fSummingOutPeakFitter.RemoveAllPeaks();
+      fSummingOutPeakFitter.ResetInitFlag();
 
       std::vector<TSinglePeak*> peaks;
       peaks.push_back(NewPeak(energy));
@@ -127,7 +113,18 @@ void TEfficiencyTab::FindPeaks()
       fPeakFitter.Print();
       fPeakFitter.PrintParameters();
       fPeakFitter.Fit(fSingles, "retryfit");
-      for(auto& peak : peaks) {
+      // we also need to fit the summing out peaks, so we create a copy of the vector of peaks to be added to the summing out peak fitter
+      // we could also simply create them in the same loop as the other peaks?
+      std::vector<TSinglePeak*> summingOutPeaks = peaks;
+      fSummingOutPeakFitter.SetRange(energy - TEfficiencyCalibrator::Range(), lastEnergy + TEfficiencyCalibrator::Range());
+      // before we add the peaks to the peak fitter, we need to copy them
+      for(auto& peak : summingOutPeaks) {
+         peak = NewPeak(peak);
+         fSummingOutPeakFitter.AddPeak(peak);
+      }
+      fSummingOutPeakFitter.Fit(fSummingOut, "retryfit");
+      for(size_t p = 0; p < peaks.size(); ++p) {
+         auto* peak = peaks[p];
          if(TEfficiencyCalibrator::VerboseLevel() > EVerbosity::kSubroutines) {
             std::cout << "================================================================================" << std::endl;
             std::cout << "Got centroid " << peak->Centroid() << " +- " << peak->CentroidErr() << " (" << 100 * peak->CentroidErr() / peak->Centroid() << " %), area " << peak->Area() << " +- " << peak->AreaErr() << " (" << 100 * peak->AreaErr() / peak->Area() << " %), FWHM " << peak->FWHM() << ", red. chi sq. " << peak->GetReducedChi2() << std::endl;
@@ -156,6 +153,10 @@ void TEfficiencyTab::FindPeaks()
             std::cout << "Writing '" << Form("%s_%.0fkeV", fSingles->GetName(), centroid) << "' to '" << gDirectory->GetName() << "'" << std::endl;
          }
          fSingles->Write(Form("%s_%.0fkeV", fSingles->GetName(), centroid), TObject::kOverwrite);
+         if(TEfficiencyCalibrator::VerboseLevel() > EVerbosity::kSubroutines) {
+            std::cout << "Writing '" << Form("%s_%.0fkeV", fSummingOut->GetName(), centroid) << "' to '" << gDirectory->GetName() << "'" << std::endl;
+         }
+         fSummingOut->Write(Form("%s_%.0fkeV", fSummingOut->GetName(), centroid), TObject::kOverwrite);
          // for summing in we need to estimate the background and subtract that from the integral
          fSummingInProj.push_back(fSummingIn->ProjectionY(Form("%s_%.0f_to_%.0f", fSummingIn->GetName(), centroid - fwhm / 2., centroid + fwhm / 2.), fSummingIn->GetXaxis()->FindBin(centroid - fwhm / 2.), fSummingIn->GetXaxis()->FindBin(centroid + fwhm / 2.)));
          fSummingInProjBg.push_back(fSummingInProj.back()->ShowBackground(TEfficiencyCalibrator::BgParam()));
@@ -165,26 +166,13 @@ void TEfficiencyTab::FindPeaks()
          double summingIn = fSummingInProj.back()->Integral() - fSummingInProjBg.back()->Integral();
          fSummingInProj.back()->Write(Form("%s_%.0fkeV", fSummingInProj.back()->GetName(), centroid), TObject::kOverwrite);
          fSummingInProjBg.back()->Write(Form("%s_%.0fkeV", fSummingInProjBg.back()->GetName(), centroid), TObject::kOverwrite);
-         // for summing out we need to do a background subtraction - to make this easier we just use a total projection and scale it according to the bg integral?
-         fSummingOutProj.push_back(fSummingOut->ProjectionY(Form("%s_%.0f_to_%.0f", fSummingOut->GetName(), centroid - fwhm / 2., centroid + fwhm / 2.), fSummingOut->GetXaxis()->FindBin(centroid - fwhm / 2.), fSummingOut->GetXaxis()->FindBin(centroid + fwhm / 2.)));
-         double ratio      = fSummingOutTotalProjBg->Integral(fSummingOutTotalProjBg->GetXaxis()->FindBin(centroid - fwhm / 2.), fSummingOutTotalProjBg->GetXaxis()->FindBin(centroid + fwhm / 2.)) / fSummingOutTotalProjBg->Integral();
-         double summingOut = fSummingOutProj.back()->Integral() - fSummingOutTotalProj->Integral() * ratio;
-         if(TEfficiencyCalibrator::VerboseLevel() > EVerbosity::kSubroutines) {
-            std::cout << "Writing '" << Form("%s_%.0fkeV", fSummingOutProj.back()->GetName(), centroid) << "' to '" << gDirectory->GetName() << "'" << std::endl;
-         }
-         fSummingOutProj.back()->Write(Form("%s_%.0fkeV", fSummingOutProj.back()->GetName(), centroid), TObject::kOverwrite);
-         auto* hist = static_cast<TH1*>(fSummingOutProj.back()->Clone(Form("%s_subtracted_%.0f", fSummingOutProj.back()->GetName(), 1000000 * ratio)));
-         hist->Add(fSummingOutTotalProj, -ratio);
-         if(TEfficiencyCalibrator::VerboseLevel() > EVerbosity::kSubroutines) {
-            std::cout << "Writing '" << hist->GetName() << "' to '" << gDirectory->GetName() << "'" << std::endl;
-         }
-         hist->Write(nullptr, TObject::kOverwrite);
 
-         double correctedArea = peak->Area() - summingIn + summingOut;
+         double summingOut    = summingOutPeaks[p]->Area();
+         double correctedArea = peak->Area() - summingIn + summingOutPeaks[p]->AreaErr();
          // uncertainties for summing in and summing out is sqrt(N) (?)
          double correctedAreaErr = TMath::Sqrt(TMath::Power(peak->AreaErr(), 2) + summingIn + summingOut);
          if(TEfficiencyCalibrator::VerboseLevel() > EVerbosity::kLoops) {
-            std::cout << "Got summingIn " << summingIn << ", ratio " << ratio << ", summingOut " << summingOut << ", correctedArea " << correctedArea << " +- " << correctedAreaErr << std::endl;
+            std::cout << "Got summingIn " << summingIn << ", summingOut " << summingOut << ", correctedArea " << correctedArea << " +- " << correctedAreaErr << std::endl;
          }
          fPeaks.emplace_back(transition, centroid, centroidErr, correctedArea, correctedAreaErr, peak->Area(), peak->AreaErr(), summingIn, summingOut);
          fFitFunctions.push_back(fPeakFitter.GetFitFunction()->Clone(Form("fit_%.1f", centroid)));
@@ -226,6 +214,27 @@ TSinglePeak* TEfficiencyTab::NewPeak(const double& energy)
    }
 }
 
+TSinglePeak* TEfficiencyTab::NewPeak(TSinglePeak* peak)
+{
+   switch(TEfficiencyCalibrator::PeakType()) {
+   case kRWPeak:
+      return new TRWPeak(*static_cast<TRWPeak*>(peak));
+      break;
+   case kABPeak:
+      return new TABPeak(*static_cast<TABPeak*>(peak));
+      break;
+   case kAB3Peak:
+      return new TAB3Peak(*static_cast<TAB3Peak*>(peak));
+      break;
+   case kGauss:
+      return new TGauss(*static_cast<TGauss*>(peak));
+      break;
+   default:
+      std::cerr << "Unknow peak type " << TEfficiencyCalibrator::PeakType() << ", defaulting to TRWPeak!" << std::endl;
+      return new TRWPeak(*static_cast<TRWPeak*>(peak));
+   }
+}
+
 void TEfficiencyTab::Redraw()
 {
    fProjectionCanvas->GetCanvas()->cd();
@@ -261,7 +270,7 @@ void TEfficiencyTab::Status(Int_t, Int_t px, Int_t py, TObject* selected)
 }
 
 //////////////////////////////////////// TEfficiencyDatatypeTab ////////////////////////////////////////
-TEfficiencyDatatypeTab::TEfficiencyDatatypeTab(TEfficiencyCalibrator* parent, std::vector<TNucleus*> nucleus, std::vector<std::tuple<TH1*, TH2*, TH2*>> hists, TGCompositeFrame* frame, const std::string& dataType, TGHProgressBar* progressBar)
+TEfficiencyDatatypeTab::TEfficiencyDatatypeTab(TEfficiencyCalibrator* parent, std::vector<TNucleus*> nucleus, std::vector<std::tuple<TH1*, TH1*, TH2*>> hists, TGCompositeFrame* frame, const std::string& dataType, TGHProgressBar* progressBar)
    : fFrame(frame), fNucleus(std::move(nucleus)), fParent(parent), fDataType(dataType)
 {
    if(TEfficiencyCalibrator::VerboseLevel() > EVerbosity::kBasicFlow) {
@@ -516,17 +525,17 @@ void TEfficiencyDatatypeTab::UpdateEfficiencyGraph()
       std::cout << __PRETTY_FUNCTION__ << ": switching from gDirectory " << gDirectory->GetName() << " to main directory " << fMainDirectory << " = " << fMainDirectory->GetName() << std::endl;   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
    }
    fMainDirectory->cd();
-   if(fSubDirectory == nullptr) {
-      std::cout << "No subdirectory open (" << fSubDirectory << "), main directory is " << fMainDirectory << ", gDirectory is " << gDirectory->GetName() << std::endl;
-   } else {
-      if(TEfficiencyCalibrator::VerboseLevel() > EVerbosity::kSubroutines) {
-         std::cout << __PRETTY_FUNCTION__ << ": switching from gDirectory " << gDirectory->GetName() << " to sub directory " << fSubDirectory;   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-      }
-      fSubDirectory->cd();
-      if(TEfficiencyCalibrator::VerboseLevel() > EVerbosity::kSubroutines) {
-         std::cout << " = " << fSubDirectory->GetName() << ", main directory is " << fMainDirectory << " = " << (fMainDirectory == nullptr ? "" : fMainDirectory->GetName()) << std::endl;
-      }
-   }
+   //if(fSubDirectory == nullptr) {
+   //   std::cout << "No subdirectory open (" << fSubDirectory << "), main directory is " << fMainDirectory << ", gDirectory is " << gDirectory->GetName() << std::endl;
+   //} else {
+   //   if(TEfficiencyCalibrator::VerboseLevel() > EVerbosity::kSubroutines) {
+   //      std::cout << __PRETTY_FUNCTION__ << ": switching from gDirectory " << gDirectory->GetName() << " to sub directory " << fSubDirectory;   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+   //   }
+   //   fSubDirectory->cd();
+   //   if(TEfficiencyCalibrator::VerboseLevel() > EVerbosity::kSubroutines) {
+   //      std::cout << " = " << fSubDirectory->GetName() << ", main directory is " << fMainDirectory << " = " << (fMainDirectory == nullptr ? "" : fMainDirectory->GetName()) << std::endl;
+   //   }
+   //}
    delete fEfficiencyGraph;
    fEfficiencyGraph = new TCalibrationGraphSet();
    delete fUncorrEfficiencyGraph;
@@ -730,8 +739,8 @@ TEfficiencyCalibrator::TEfficiencyCalibrator(int n...)
    // we want to store the histograms in a vector of types (suppressed/addback), but we don't know yet if we have all types present
    // so we create a vector of 4 now (unsuppressed singles, suppressed singles, unsuppressed addback, and suppressed addback)
    // and then remove the missing ones at the end
-   fHistograms.resize(4);
-   fDataType = {"Unsuppressed Singles", "Suppressed Singles", "Unsuppressed Addback", "Suppressed Addback"};
+   fHistograms.resize(5);
+   fDataType = {"Unsuppressed Singles", "Suppressed Singles", "Unsuppressed Addback", "Suppressed Addback", "Single Crystal"};
 
    va_list args;
    va_start(args, n);   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
@@ -748,48 +757,59 @@ TEfficiencyCalibrator::TEfficiencyCalibrator(int n...)
       if(fVerboseLevel > EVerbosity::kQuiet) {
          std::cout << "Checking file \"" << name << "\":";
       }
-      if(fFiles.back()->FindKey("griffinE") != nullptr) {
+      if(fFiles.back()->FindKey("griffinE") != nullptr && fFiles.back()->FindKey("griffinGriffinEProj") != nullptr && fFiles.back()->FindKey("griffinGriffinESum") != nullptr) {
          // unsuppressed singles data
          fHistograms[0].emplace_back(
             static_cast<TH1*>(fFiles.back()->Get("griffinE")),
-            static_cast<TH2*>(fFiles.back()->Get("griffinGriffinE180Corr")),
-            static_cast<TH2*>(fFiles.back()->Get("griffinGriffinESum180Corr")));
+            static_cast<TH1*>(fFiles.back()->Get("griffinGriffinEProj")),
+            static_cast<TH2*>(fFiles.back()->Get("griffinGriffinESum")));
          goodFile = true;
          if(fVerboseLevel > EVerbosity::kQuiet) {
             std::cout << " found unsuppressed singles";
          }
       }
-      if(fFiles.back()->FindKey("griffinESupp") != nullptr) {
+      if(fFiles.back()->FindKey("griffinESupp") != nullptr && fFiles.back()->FindKey("griffinGriffinESuppProj") != nullptr && fFiles.back()->FindKey("griffinGriffinESuppSum") != nullptr) {
          // suppressed singles data
          fHistograms[1].emplace_back(
             static_cast<TH1*>(fFiles.back()->Get("griffinESupp")),
-            static_cast<TH2*>(fFiles.back()->Get("griffinGriffinEMixed180Corr")),
-            static_cast<TH2*>(fFiles.back()->Get("griffinGriffinESuppSum180Corr")));
+            static_cast<TH1*>(fFiles.back()->Get("griffinGriffinESuppProj")),
+            static_cast<TH2*>(fFiles.back()->Get("griffinGriffinESuppSum")));
          goodFile = true;
          if(fVerboseLevel > EVerbosity::kQuiet) {
             std::cout << " found suppressed singles";
          }
       }
-      if(fFiles.back()->FindKey("griffinEAddback") != nullptr) {
+      if(fFiles.back()->FindKey("griffinEAddback") != nullptr && fFiles.back()->FindKey("griffinGriffinEAddbackProj") != nullptr && fFiles.back()->FindKey("griffinGriffinEAddbackSum") != nullptr) {
          // unsuppressed addback data
          fHistograms[2].emplace_back(
             static_cast<TH1*>(fFiles.back()->Get("griffinEAddback")),
-            static_cast<TH2*>(fFiles.back()->Get("griffinGriffinEAddback180Corr")),
-            static_cast<TH2*>(fFiles.back()->Get("griffinGriffinEAddbackSum180Corr")));
+            static_cast<TH1*>(fFiles.back()->Get("griffinGriffinEAddbackProj")),
+            static_cast<TH2*>(fFiles.back()->Get("griffinGriffinEAddbackSum")));
          goodFile = true;
          if(fVerboseLevel > EVerbosity::kQuiet) {
             std::cout << " found unsuppressed addback";
          }
       }
-      if(fFiles.back()->FindKey("griffinESuppAddback") != nullptr) {
+      if(fFiles.back()->FindKey("griffinESuppAddback") != nullptr && fFiles.back()->FindKey("griffinGriffinESuppAddbackProj") != nullptr && fFiles.back()->FindKey("griffinGriffinESuppAddbackSum") != nullptr) {
          // suppressed addback data
          fHistograms[3].emplace_back(
             static_cast<TH1*>(fFiles.back()->Get("griffinESuppAddback")),
-            static_cast<TH2*>(fFiles.back()->Get("griffinGriffinEMixedAddback180Corr")),
-            static_cast<TH2*>(fFiles.back()->Get("griffinGriffinESuppAddbackSum180Corr")));
+            static_cast<TH1*>(fFiles.back()->Get("griffinGriffinESuppAddbackProj")),
+            static_cast<TH2*>(fFiles.back()->Get("griffinGriffinESuppAddbackSum")));
          goodFile = true;
          if(fVerboseLevel > EVerbosity::kQuiet) {
             std::cout << " found suppressed addback";
+         }
+      }
+      if(fFiles.back()->FindKey("griffinESingleCrystal") != nullptr && fFiles.back()->FindKey("griffinGriffinESingleCrystalProj") != nullptr && fFiles.back()->FindKey("griffinGriffinESingleCrystalSum") != nullptr) {
+         // suppressed addback data
+         fHistograms[4].emplace_back(
+            static_cast<TH1*>(fFiles.back()->Get("griffinESingleCrystal")),
+            static_cast<TH1*>(fFiles.back()->Get("griffinGriffinESingleCrystalProj")),
+            static_cast<TH2*>(fFiles.back()->Get("griffinGriffinESingleCrystalSum")));
+         goodFile = true;
+         if(fVerboseLevel > EVerbosity::kQuiet) {
+            std::cout << " found single crystal";
          }
       }
       if(fVerboseLevel > EVerbosity::kQuiet) {
