@@ -1,24 +1,18 @@
 #include "TEnv.h"
 #include "TFile.h"
-#include "TTree.h"
 #include "TChain.h"
 #include "TProofLite.h"
 #include "TProofLog.h"
-#include "TSystemDirectory.h"
-#include "TList.h"
-#include "TChainElement.h"
 #include "TROOT.h"
 #include "TInterpreter.h"
 
 #include "TGRSIProof.h"
+#include "ArgParser.h"
 #include "TGRSIOptions.h"
 #include "TChannel.h"
 #include "TRunInfo.h"
-#include "TObjectWrapper.h"
 #include "TStopwatch.h"
-#include "TGRSIMap.h"
 #include "TPPG.h"
-#include "TCutG.h"
 
 #include <iostream>
 #include <vector>
