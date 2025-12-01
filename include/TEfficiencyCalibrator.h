@@ -56,7 +56,7 @@ public:
                                    kAB3Peak = 2,
                                    kGauss   = 3 };
 
-   TEfficiencyTab(TEfficiencyDatatypeTab* parent, TNucleus* nucleus, std::tuple<TH1*, TH2*, TH2*> hists, TGCompositeFrame* frame);
+   TEfficiencyTab(TEfficiencyDatatypeTab* parent, TNucleus* nucleus, std::tuple<TH1*, TH1*, TH2*> hists, TGCompositeFrame* frame);
    TEfficiencyTab(const TEfficiencyTab&)                = default;
    TEfficiencyTab(TEfficiencyTab&&) noexcept            = default;
    TEfficiencyTab& operator=(const TEfficiencyTab&)     = default;
@@ -65,6 +65,7 @@ public:
 
    void         FindPeaks();
    TSinglePeak* NewPeak(const double& energy);
+   TSinglePeak* NewPeak(TSinglePeak* peak);
    void         Redraw();
    void         MakeConnections();
    void         Disconnect();
@@ -87,14 +88,12 @@ private:
    TNucleus*                                                                                             fNucleus;               ///< the source nucleus
    TEfficiencyDatatypeTab*                                                                               fParent;                ///< the parent of this tab
    TH1*                                                                                                  fSingles{nullptr};      ///< the singles histogram we're using
-   TH2*                                                                                                  fSummingOut{nullptr};   ///< the (mixed) matrix we're using for summing out
+   TH1*                                                                                                  fSummingOut{nullptr};   ///< the (mixed) matrix we're using for summing out
    TH2*                                                                                                  fSummingIn{nullptr};    ///< the sum matrix we're using for summing in
    TPeakFitter                                                                                           fPeakFitter;
+   TPeakFitter                                                                                           fSummingOutPeakFitter;
    std::vector<TH1*>                                                                                     fSummingInProj;
    std::vector<TH1*>                                                                                     fSummingInProjBg;
-   std::vector<TH1*>                                                                                     fSummingOutProj;
-   TH1*                                                                                                  fSummingOutTotalProj;
-   TH1*                                                                                                  fSummingOutTotalProjBg;
    std::vector<std::tuple<TTransition*, double, double, double, double, double, double, double, double>> fPeaks;
    std::vector<TObject*>                                                                                 fFitFunctions;          ///< vector with all fits of the singles histogram
    std::vector<TObject*>                                                                                 fRemovedFitFunctions;   ///< vector with all removed fits of the singles histogram
@@ -123,7 +122,7 @@ public:
                                 kPlotSummingInCheck,
                                 kPlotSummingOutCheck };
 
-   TEfficiencyDatatypeTab(TEfficiencyCalibrator* parent, std::vector<TNucleus*> nucleus, std::vector<std::tuple<TH1*, TH2*, TH2*>> hists, TGCompositeFrame* frame, const std::string& dataType, TGHProgressBar* progressBar);
+   TEfficiencyDatatypeTab(TEfficiencyCalibrator* parent, std::vector<TNucleus*> nucleus, std::vector<std::tuple<TH1*, TH1*, TH2*>> hists, TGCompositeFrame* frame, const std::string& dataType, TGHProgressBar* progressBar);
    TEfficiencyDatatypeTab(const TEfficiencyDatatypeTab&)                = default;
    TEfficiencyDatatypeTab(TEfficiencyDatatypeTab&&) noexcept            = default;
    TEfficiencyDatatypeTab& operator=(const TEfficiencyDatatypeTab&)     = default;
@@ -304,7 +303,7 @@ private:
    std::vector<TFile*>                                    fFiles;
    std::vector<TNucleus*>                                 fSources;
    std::vector<std::string>                               fDataType;     ///< type of each data set
-   std::vector<std::vector<std::tuple<TH1*, TH2*, TH2*>>> fHistograms;   ///< for each type of data (suppressed, addback) in the file a vector with three histograms for each source
+   std::vector<std::vector<std::tuple<TH1*, TH1*, TH2*>>> fHistograms;   ///< for each type of data (suppressed, addback) in the file a vector with three histograms for each source
    std::vector<TEfficiencyDatatypeTab*>                   fEfficiencyDatatypeTab;
    std::vector<TCalibrationGraphSet*>                     fEfficiencyGraph;
    TFile*                                                 fOutput{nullptr};

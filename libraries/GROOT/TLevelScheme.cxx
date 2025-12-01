@@ -182,11 +182,14 @@ std::vector<std::tuple<double, std::vector<double>>> TGamma::ParallelGammas()
       std::cout << "Looking for parallel gammas for gamma of " << fEnergy << " kev from level at " << fInitialEnergy << " keV to level at " << fFinalEnergy << " keV" << std::endl;
    }
    auto result = fLevelScheme->ParallelGammas(fInitialEnergy, fFinalEnergy);
+   // remove any path of less than two gammas (
    auto last   = std::remove_if(result.begin(), result.end(), [](std::tuple<double, std::vector<double>> x) { return std::get<1>(x).size() < 2; });
    if(fDebug) {
       std::cout << "Removing " << std::distance(last, result.end()) << " paths, keeping " << std::distance(result.begin(), last) << std::endl;
    }
    result.erase(last, result.end());
+   // sort the vector by strength
+   std::sort(result.begin(), result.end(), [](std::tuple<double, std::vector<double>> one, std::tuple<double, std::vector<double>> two) { return std::get<0>(one) > std::get<0>(two); });
    // if(fDebug) {
    //	std::cout<<"Got "<<result.size()<<" paths from level at "<<fInitialEnergy<<" keV to level at "<<fFinalEnergy<<" keV:"<<std::endl;
    //	for(auto& element : result) {
@@ -500,8 +503,10 @@ TLevel* TBand::FindLevel(double energy, double energyUncertainty)
    auto low  = fLevels.lower_bound(energy - energyUncertainty);
    auto high = fLevels.upper_bound(energy + energyUncertainty);
    if(low == high) {
-      std::cout << this << ": failed to find level with " << energy << " +- " << energyUncertainty << " keV" << std::endl;
-      Print();
+      if(fDebug) {
+         std::cout << this << ": failed to find level with " << energy << " +- " << energyUncertainty << " keV" << std::endl;
+         Print();
+      }
       return nullptr;
    }
    if(std::distance(low, high) == 1) {
@@ -651,7 +656,9 @@ TLevelScheme::TLevelScheme(const std::string& filename, bool debug)
          } else {
             std::string ext = filename.substr(lastDot + 1);
             if(ext == "ensdf") {
-               ParseENSDF(filename);
+               if(!ParseENSDF(filename)) {
+                  throw std::runtime_error("Failed to parse ensdf file!");
+               }
             } else {
                std::cout << "Unknown extension " << ext << " => unknown data format" << std::endl;
             }
@@ -751,9 +758,11 @@ TLevel* TLevelScheme::FindLevel(double energy, double energyUncertainty)
    }
    // if we reach here we failed to find a level with this energy
    // output bands with min/max levels and return null pointer
-   std::cout << "Failed to find level with energy " << energy << " +- " << energyUncertainty << " in " << fBands.size() << " bands:" << std::endl;
-   for(const auto& band : fBands) {
-      band.Print();
+   if(fDebug) {
+      std::cout << "Failed to find level with energy " << energy << " +- " << energyUncertainty << " in " << fBands.size() << " bands:" << std::endl;
+      for(const auto& band : fBands) {
+         band.Print();
+      }
    }
 
    return nullptr;
@@ -1460,14 +1469,14 @@ void TLevelScheme::Print(Option_t*) const
    }
 }
 
-void TLevelScheme::ParseENSDF(const std::string& filename)
+bool TLevelScheme::ParseENSDF(const std::string& filename)
 {
    /// This function parses the given file assuming it's ENSDF formatted.
    // TODO: check if file exists
    std::ifstream input(filename);
    if(!input.is_open()) {
       std::cerr << DRED << "Failed to open \"" << filename << "\"" << RESET_COLOR << std::endl;
-      return;
+      return false;
    }
 
    std::string        line;
@@ -1487,9 +1496,13 @@ void TLevelScheme::ParseENSDF(const std::string& filename)
    // trimWS(fNuclide); // trim whitespace
    std::cout << "Reading level scheme for " << GetLabel() << std::endl;
    // check that data set ident is "ADOPTED LEVELS, GAMMAS" or at least "ADOPTED LEVELS"
-   if(line.substr(9, 14) == "ADOPTED LEVELS") {
+   //auto substr = line.substr(9, 14);
+   //std::string ref = "ADOPTED LEVELS";
+   //if(substr.compare(ref) != 0) {
+   //   std::cout << R"(Data set is not "ADOPTED LEVELS" or "ADOPTED LEVELS, GAMMAS", but ")" << substr << "\" (!= \"" << ref << "\", don't know how to read that (" << line << ")" << std::endl;
+   if(line.substr(9, 14) != "ADOPTED LEVELS") {
       std::cout << R"(Data set is not "ADOPTED LEVELS" or "ADOPTED LEVELS, GAMMAS", but ")" << line.substr(9, 14) << "\", don't know how to read that (" << line << ")" << std::endl;
-      return;
+      return false;
    }
    // if the identification record is continued, 6 will not be blank
    do {
@@ -1498,6 +1511,9 @@ void TLevelScheme::ParseENSDF(const std::string& filename)
 
    // now we have the first line that is not part of the identification record, so we check it's format and continue reading lines as long as we can
    do {
+      if(fDebug) {
+         std::cout << "           \"" << line << "\"" << std::endl;
+      }
       switch(line[7]) {
       case 'H':   // history record (1-5 nuclide, 6 blank or anything but '1' for cont., 7 blank, 8 'H', 9 blank, 10-80 history)
          // ignored
@@ -1645,7 +1661,7 @@ void TLevelScheme::ParseENSDF(const std::string& filename)
                std::cout << "Adding gamma with energy " << energy << " +- " << energyUncertainty << ", " << photonIntensity << " +- " << photonIntensityUncertainty << ", " << multipolarity << ", " << mixingRatio << " +- " << mixingRatioUncertainty << ", " << conversionCoeff << " +- " << conversionCoeffUncertainty << ", " << totalIntensity << " +- " << totalIntensityUncertainty << ", final level energy " << currentLevel->Energy() - energy << std::endl;
                std::cout << "\"" << line.substr(9, 10) << "\", \"" << line.substr(19, 2) << "\", \"" << line.substr(21, 8) << "\", \"" << line.substr(29, 2) << "\", \"" << line.substr(31, 10) << "\", \"" << line.substr(41, 8) << "\", \"" << line.substr(49, 6) << "\", \"" << line.substr(55, 7) << "\", \"" << line.substr(62, 2) << "\", \"" << line.substr(64, 10) << "\", \"" << line.substr(74, 2) << "\"" << std::endl;
             }
-            auto* gamma = currentLevel->AddGamma(currentLevel->Energy() - energy, energyUncertainty, multipolarity.c_str(), photonIntensity, totalIntensity);
+            auto* gamma = currentLevel->AddGamma(currentLevel->Energy() - energy, currentLevel->EnergyUncertainty() + energyUncertainty, multipolarity.c_str(), photonIntensity, totalIntensity);
             if(gamma != nullptr) {
                gamma->BranchingRatioUncertainty(photonIntensityUncertainty);
                gamma->TransitionStrengthUncertainty(totalIntensityUncertainty);
@@ -1683,5 +1699,7 @@ void TLevelScheme::ParseENSDF(const std::string& filename)
    if(fDebug) { std::cout << "Done reading \"" << filename << "\"" << std::endl; }
 
    input.close();
+
+   return true;
 }
 #endif

@@ -361,7 +361,7 @@ public:
    }
 
 private:
-   void ParseENSDF(const std::string& filename);
+   bool ParseENSDF(const std::string& filename);
    void DrawAuxillaryLevel(const double& energy, const double& left, const double& right);
    void BuildGammaMap(double levelEnergy);
 
