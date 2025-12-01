@@ -188,7 +188,7 @@ std::vector<std::tuple<double, std::vector<double>>> TGamma::ParallelGammas()
    }
    auto result = fLevelScheme->ParallelGammas(fInitialEnergy, fFinalEnergy);
    // remove any path of less than two gammas (
-   auto last   = std::remove_if(result.begin(), result.end(), [](std::tuple<double, std::vector<double>> x) { return std::get<1>(x).size() < 2; });
+   auto last = std::remove_if(result.begin(), result.end(), [](std::tuple<double, std::vector<double>> x) { return std::get<1>(x).size() < 2; });
    if(fDebug) {
       std::cout << "Removing " << std::distance(last, result.end()) << " paths, keeping " << std::distance(result.begin(), last) << std::endl;
    }
