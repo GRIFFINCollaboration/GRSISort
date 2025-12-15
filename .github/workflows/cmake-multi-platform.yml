@@ -51,7 +51,7 @@ jobs:
         
     - name: Linux - Cache ROOT
       if: ${{runner.os == 'Linux'}}
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       id: cache-root
       with:
         path: root_v${{matrix.config.root}}
