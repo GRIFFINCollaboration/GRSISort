@@ -161,7 +161,7 @@ $(function(){initNavTree('class_t_run_info.html',''); initResizable(true); });
 <div class="line">      Missing runs:       21952, 21953</div>
 <div class="line">      Combined <a class="code hl_function" href="#a7eee7560c250e452c5f3ec8a0d005dc3">RunLength</a>: 10794 s</div>
 </div><!-- fragment --><p>From version 18 on <a class="el" href="class_t_run_info.html">TRunInfo</a> also stores information about the GRSISort version used to sort the data. This can be accessed via </p><div class="fragment"><div class="line"><a class="code hl_function" href="class_t_singleton.html#a58e2a8e03fa6a7c20638044626add93a">TRunInfo::Get</a>()-&gt;<a class="code hl_function" href="#abe83368d782dfd171294ce980fdab449">PrintVersion</a>();</div>
-<div class="ttc" id="aclass_t_run_info_html_abe83368d782dfd171294ce980fdab449"><div class="ttname"><a href="#abe83368d782dfd171294ce980fdab449">TRunInfo::PrintVersion</a></div><div class="ttdeci">void PrintVersion() const</div><div class="ttdef"><b>Definition</b> <a href="_t_run_info_8cxx_source.html#l00571">TRunInfo.cxx:571</a></div></div>
+<div class="ttc" id="aclass_t_run_info_html_abe83368d782dfd171294ce980fdab449"><div class="ttname"><a href="#abe83368d782dfd171294ce980fdab449">TRunInfo::PrintVersion</a></div><div class="ttdeci">void PrintVersion() const</div><div class="ttdef"><b>Definition</b> <a href="_t_run_info_8cxx_source.html#l00577">TRunInfo.cxx:577</a></div></div>
 </div><!-- fragment --><p>Using a newer version of grsiframe on data created with an older version of GRSISort should not overwrite the version reported.</p>
 <p>Summary of different states the run info can be in:</p>
 <table class="markdownTable">
@@ -625,7 +625,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_singleton_8h_source.html#l00141">141</a> of file <a class="el" href="_t_singleton_8h_source.html">TSingleton.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00031">Analyze()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00032">Analyze()</a>.</p>
 
 </div>
 </div>
@@ -866,7 +866,7 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 <p>This function creates a label/string based on the run number and the subrun number.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8cxx_source.html#l00582">582</a> of file <a class="el" href="_t_run_info_8cxx_source.html">TRunInfo.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8cxx_source.html#l00588">588</a> of file <a class="el" href="_t_run_info_8cxx_source.html">TRunInfo.cxx</a>.</p>
 
 <p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00210">FirstRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00211">FirstSubRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00213">LastRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00214">LastSubRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00207">RunNumber()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00208">SubRunNumber()</a>.</p>
 
@@ -930,7 +930,7 @@ Friends</h2></td></tr>
 
 <p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00300">fFirstRunNumber</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00101">AtExitHandler()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00582">CreateLabel()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00219">TGRSISelector::Terminate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00102">AtExitHandler()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00588">CreateLabel()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00219">TGRSISelector::Terminate()</a>.</p>
 
 </div>
 </div>
@@ -961,7 +961,7 @@ Friends</h2></td></tr>
 
 <p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00301">fFirstSubRunNumber</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00101">AtExitHandler()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00582">CreateLabel()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00219">TGRSISelector::Terminate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00102">AtExitHandler()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00588">CreateLabel()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00219">TGRSISelector::Terminate()</a>.</p>
 
 </div>
 </div>
@@ -990,7 +990,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_singleton_8h_source.html#l00033">33</a> of file <a class="el" href="_t_singleton_8h_source.html">TSingleton.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00290">AddBadCycle()</a>, <a class="el" href="grsiproof_8cxx_source.html#l00031">Analyze()</a>, <a class="el" href="_t_run_info_8h_source.html#l00166">ClearDate()</a>, <a class="el" href="_t_run_info_8h_source.html#l00154">ClearFullVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00190">ClearLibraryPath()</a>, <a class="el" href="_t_run_info_8h_source.html#l00178">ClearLibraryVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00142">ClearVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00210">FirstRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00211">FirstSubRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00252">GetCalFileData()</a>, <a class="el" href="_t_run_info_8h_source.html#l00251">GetCalFileName()</a>, <a class="el" href="_t_run_info_8h_source.html#l00165">GetDate()</a>, <a class="el" href="_t_run_info_8h_source.html#l00286">GetDetectorInformation()</a>, <a class="el" href="_t_run_info_8h_source.html#l00153">GetFullVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00189">GetLibraryPath()</a>, <a class="el" href="_t_run_info_8h_source.html#l00177">GetLibraryVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00258">GetRunInfoFileData()</a>, <a class="el" href="_t_run_info_8h_source.html#l00257">GetRunInfoFileName()</a>, <a class="el" href="_t_run_info_8h_source.html#l00141">GetVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00255">GetXMLODBFileData()</a>, <a class="el" href="_t_run_info_8h_source.html#l00254">GetXMLODBFileName()</a>, <a class="el" href="_t_run_info_8h_source.html#l00267">HPGeArrayPosition()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00304">IsBadCycle()</a>, <a class="el" href="_t_run_info_8h_source.html#l00213">LastRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00214">LastSubRunNumber()</a>, <a class="el" href="_fix_run_info_8cxx_source.html#l00010">main()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00277">PrintBadCycles()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00363">PrintToString()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00015">ReadInfoFromFile()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00298">RemoveBadCycle()</a>, <a class="el" href="_t_g_r_s_i_frame_8cxx_source.html#l00121">TGRSIFrame::Run()</a>, <a class="el" href="_t_run_info_8h_source.html#l00226">RunComment()</a>, <a class="el" href="_t_run_info_8h_source.html#l00243">RunLength()</a>, <a class="el" href="_t_run_info_8h_source.html#l00207">RunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00241">RunStart()</a>, <a class="el" href="_t_run_info_8h_source.html#l00242">RunStop()</a>, <a class="el" href="_t_run_info_8h_source.html#l00225">RunTitle()</a>, <a class="el" href="_t_run_info_8h_source.html#l00246">SetCalFileData()</a>, <a class="el" href="_t_run_info_8h_source.html#l00245">SetCalFileName()</a>, <a class="el" href="_t_run_info_8h_source.html#l00168">SetDate()</a>, <a class="el" href="_t_run_info_8h_source.html#l00285">SetDetectorInformation()</a>, <a class="el" href="_t_run_info_8h_source.html#l00156">SetFullVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00266">SetHPGeArrayPosition()</a>, <a class="el" href="_t_run_info_8h_source.html#l00192">SetLibraryPath()</a>, <a class="el" href="_t_run_info_8h_source.html#l00180">SetLibraryVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00220">SetRunComment()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>, <a class="el" href="_t_run_info_8h_source.html#l00264">SetRunInfoFile()</a>, <a class="el" href="_t_run_info_8h_source.html#l00263">SetRunInfoFileName()</a>, <a class="el" href="_t_run_info_8h_source.html#l00231">SetRunLength()</a>, <a class="el" href="_t_run_info_8h_source.html#l00230">SetRunLength()</a>, <a class="el" href="_t_run_info_8h_source.html#l00204">SetRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00228">SetRunStart()</a>, <a class="el" href="_t_run_info_8h_source.html#l00229">SetRunStop()</a>, <a class="el" href="_t_run_info_8h_source.html#l00216">SetRunTitle()</a>, <a class="el" href="_t_run_info_8h_source.html#l00205">SetSubRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00144">SetVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00249">SetXMLODBFileData()</a>, <a class="el" href="_t_run_info_8h_source.html#l00248">SetXMLODBFileName()</a>, <a class="el" href="_t_run_info_8h_source.html#l00208">SubRunNumber()</a>, <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00219">TGRSISelector::Terminate()</a>, and <a class="el" href="_t_run_info_8cxx_source.html#l00309">WriteToRoot()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00290">AddBadCycle()</a>, <a class="el" href="grsiproof_8cxx_source.html#l00032">Analyze()</a>, <a class="el" href="_t_run_info_8h_source.html#l00166">ClearDate()</a>, <a class="el" href="_t_run_info_8h_source.html#l00154">ClearFullVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00190">ClearLibraryPath()</a>, <a class="el" href="_t_run_info_8h_source.html#l00178">ClearLibraryVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00142">ClearVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00210">FirstRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00211">FirstSubRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00252">GetCalFileData()</a>, <a class="el" href="_t_run_info_8h_source.html#l00251">GetCalFileName()</a>, <a class="el" href="_t_run_info_8h_source.html#l00165">GetDate()</a>, <a class="el" href="_t_run_info_8h_source.html#l00286">GetDetectorInformation()</a>, <a class="el" href="_t_run_info_8h_source.html#l00153">GetFullVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00189">GetLibraryPath()</a>, <a class="el" href="_t_run_info_8h_source.html#l00177">GetLibraryVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00258">GetRunInfoFileData()</a>, <a class="el" href="_t_run_info_8h_source.html#l00257">GetRunInfoFileName()</a>, <a class="el" href="_t_run_info_8h_source.html#l00141">GetVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00255">GetXMLODBFileData()</a>, <a class="el" href="_t_run_info_8h_source.html#l00254">GetXMLODBFileName()</a>, <a class="el" href="_t_run_info_8h_source.html#l00267">HPGeArrayPosition()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00304">IsBadCycle()</a>, <a class="el" href="_t_run_info_8h_source.html#l00213">LastRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00214">LastSubRunNumber()</a>, <a class="el" href="_fix_run_info_8cxx_source.html#l00010">main()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00277">PrintBadCycles()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00363">PrintToString()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00015">ReadInfoFromFile()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00298">RemoveBadCycle()</a>, <a class="el" href="_t_g_r_s_i_frame_8cxx_source.html#l00121">TGRSIFrame::Run()</a>, <a class="el" href="_t_run_info_8h_source.html#l00226">RunComment()</a>, <a class="el" href="_t_run_info_8h_source.html#l00243">RunLength()</a>, <a class="el" href="_t_run_info_8h_source.html#l00207">RunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00241">RunStart()</a>, <a class="el" href="_t_run_info_8h_source.html#l00242">RunStop()</a>, <a class="el" href="_t_run_info_8h_source.html#l00225">RunTitle()</a>, <a class="el" href="_t_run_info_8h_source.html#l00246">SetCalFileData()</a>, <a class="el" href="_t_run_info_8h_source.html#l00245">SetCalFileName()</a>, <a class="el" href="_t_run_info_8h_source.html#l00168">SetDate()</a>, <a class="el" href="_t_run_info_8h_source.html#l00285">SetDetectorInformation()</a>, <a class="el" href="_t_run_info_8h_source.html#l00156">SetFullVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00266">SetHPGeArrayPosition()</a>, <a class="el" href="_t_run_info_8h_source.html#l00192">SetLibraryPath()</a>, <a class="el" href="_t_run_info_8h_source.html#l00180">SetLibraryVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00220">SetRunComment()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>, <a class="el" href="_t_run_info_8h_source.html#l00264">SetRunInfoFile()</a>, <a class="el" href="_t_run_info_8h_source.html#l00263">SetRunInfoFileName()</a>, <a class="el" href="_t_run_info_8h_source.html#l00231">SetRunLength()</a>, <a class="el" href="_t_run_info_8h_source.html#l00230">SetRunLength()</a>, <a class="el" href="_t_run_info_8h_source.html#l00204">SetRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00228">SetRunStart()</a>, <a class="el" href="_t_run_info_8h_source.html#l00229">SetRunStop()</a>, <a class="el" href="_t_run_info_8h_source.html#l00216">SetRunTitle()</a>, <a class="el" href="_t_run_info_8h_source.html#l00205">SetSubRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00144">SetVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00249">SetXMLODBFileData()</a>, <a class="el" href="_t_run_info_8h_source.html#l00248">SetXMLODBFileName()</a>, <a class="el" href="_t_run_info_8h_source.html#l00208">SubRunNumber()</a>, <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00219">TGRSISelector::Terminate()</a>, and <a class="el" href="_t_run_info_8cxx_source.html#l00309">WriteToRoot()</a>.</p>
 
 </div>
 </div>
@@ -1458,7 +1458,7 @@ Friends</h2></td></tr>
 
 <p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00302">fLastRunNumber</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00101">AtExitHandler()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00582">CreateLabel()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00219">TGRSISelector::Terminate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00102">AtExitHandler()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00588">CreateLabel()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00219">TGRSISelector::Terminate()</a>.</p>
 
 </div>
 </div>
@@ -1489,7 +1489,7 @@ Friends</h2></td></tr>
 
 <p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00303">fLastSubRunNumber</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00101">AtExitHandler()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00582">CreateLabel()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00219">TGRSISelector::Terminate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00102">AtExitHandler()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00588">CreateLabel()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00219">TGRSISelector::Terminate()</a>.</p>
 
 </div>
 </div>
@@ -1509,7 +1509,7 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 <p>Outputs a comma separated list of all runs missing between fFirstRunNumber and fLastRunNumber. If no runs are missing prints "none".</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8cxx_source.html#l00533">533</a> of file <a class="el" href="_t_run_info_8cxx_source.html">TRunInfo.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8cxx_source.html#l00539">539</a> of file <a class="el" href="_t_run_info_8cxx_source.html">TRunInfo.cxx</a>.</p>
 
 <p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00304">fRunList</a>.</p>
 
@@ -1649,9 +1649,9 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_run_info_8cxx_source.html#l00072">72</a> of file <a class="el" href="_t_run_info_8cxx_source.html">TRunInfo.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_globals_8h_source.html#l00015">DBLUE</a>, <a class="el" href="_globals_8h_source.html#l00018">DRED</a>, <a class="el" href="_t_run_info_8h_source.html#l00333">fDetectorInformation</a>, <a class="el" href="_t_run_info_8h_source.html#l00210">FirstRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00211">FirstSubRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00304">fRunList</a>, <a class="el" href="_t_run_info_8h_source.html#l00267">HPGeArrayPosition()</a>, <a class="el" href="_t_run_info_8h_source.html#l00213">LastRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00214">LastSubRunNumber()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00533">ListOfMissingRuns()</a>, <a class="el" href="_t_detector_information_8h_source.html#l00033">TDetectorInformation::Print()</a>, <a class="el" href="_t_singleton_8h_source.html#l00170">TSingleton&lt; T &gt;::PrintDirectory()</a>, <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>, <a class="el" href="_t_run_info_8h_source.html#l00226">RunComment()</a>, <a class="el" href="_t_run_info_8h_source.html#l00243">RunLength()</a>, <a class="el" href="_t_run_info_8h_source.html#l00207">RunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00241">RunStart()</a>, <a class="el" href="_t_run_info_8h_source.html#l00242">RunStop()</a>, <a class="el" href="_t_run_info_8h_source.html#l00225">RunTitle()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00208">SubRunNumber()</a>.</p>
+<p class="reference">References <a class="el" href="_globals_8h_source.html#l00015">DBLUE</a>, <a class="el" href="_globals_8h_source.html#l00018">DRED</a>, <a class="el" href="_t_run_info_8h_source.html#l00333">fDetectorInformation</a>, <a class="el" href="_t_run_info_8h_source.html#l00210">FirstRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00211">FirstSubRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00304">fRunList</a>, <a class="el" href="_t_run_info_8h_source.html#l00267">HPGeArrayPosition()</a>, <a class="el" href="_t_run_info_8h_source.html#l00213">LastRunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00214">LastSubRunNumber()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00539">ListOfMissingRuns()</a>, <a class="el" href="_t_detector_information_8h_source.html#l00033">TDetectorInformation::Print()</a>, <a class="el" href="_t_singleton_8h_source.html#l00170">TSingleton&lt; T &gt;::PrintDirectory()</a>, <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>, <a class="el" href="_t_run_info_8h_source.html#l00226">RunComment()</a>, <a class="el" href="_t_run_info_8h_source.html#l00243">RunLength()</a>, <a class="el" href="_t_run_info_8h_source.html#l00207">RunNumber()</a>, <a class="el" href="_t_run_info_8h_source.html#l00241">RunStart()</a>, <a class="el" href="_t_run_info_8h_source.html#l00242">RunStop()</a>, <a class="el" href="_t_run_info_8h_source.html#l00225">RunTitle()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00208">SubRunNumber()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00031">Analyze()</a>, <a class="el" href="_fix_run_info_8cxx_source.html#l00010">main()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00219">TGRSISelector::Terminate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00032">Analyze()</a>, <a class="el" href="_fix_run_info_8cxx_source.html#l00010">main()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00219">TGRSISelector::Terminate()</a>.</p>
 
 </div>
 </div>
@@ -1726,7 +1726,7 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8cxx_source.html#l00521">521</a> of file <a class="el" href="_t_run_info_8cxx_source.html">TRunInfo.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8cxx_source.html#l00527">527</a> of file <a class="el" href="_t_run_info_8cxx_source.html">TRunInfo.cxx</a>.</p>
 
 <p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00304">fRunList</a>.</p>
 
@@ -1778,7 +1778,7 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_run_info_8cxx_source.html#l00571">571</a> of file <a class="el" href="_t_run_info_8cxx_source.html">TRunInfo.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_run_info_8cxx_source.html#l00577">577</a> of file <a class="el" href="_t_run_info_8cxx_source.html">TRunInfo.cxx</a>.</p>
 
 <p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00312">fDate</a>, <a class="el" href="_t_run_info_8h_source.html#l00311">fFullVersion</a>, <a class="el" href="_t_run_info_8h_source.html#l00314">fLibraryPath</a>, <a class="el" href="_t_run_info_8h_source.html#l00313">fLibraryVersion</a>, <a class="el" href="_t_run_info_8h_source.html#l00310">fVersion</a>, <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>, and <a class="el" href="_globals_8h_source.html#l00007">YELLOW</a>.</p>
 
@@ -1965,7 +1965,7 @@ Friends</h2></td></tr>
 
 <p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00298">fRunNumber</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00101">AtExitHandler()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00582">CreateLabel()</a>, <a class="el" href="_fix_run_info_8cxx_source.html#l00010">main()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>, <a class="el" href="_t_g_r_s_i_sort_info_8cxx_source.html#l00085">TGRSISortInfo::SetRunInfo()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>, <a class="el" href="_t_run_info_8h_source.html#l00231">SetRunLength()</a>, <a class="el" href="_t_p_p_g_8cxx_source.html#l00462">TPPG::Setup()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00219">TGRSISelector::Terminate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00102">AtExitHandler()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00588">CreateLabel()</a>, <a class="el" href="_fix_run_info_8cxx_source.html#l00010">main()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>, <a class="el" href="_t_g_r_s_i_sort_info_8cxx_source.html#l00085">TGRSISortInfo::SetRunInfo()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>, <a class="el" href="_t_run_info_8h_source.html#l00231">SetRunLength()</a>, <a class="el" href="_t_p_p_g_8cxx_source.html#l00462">TPPG::Setup()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00219">TGRSISelector::Terminate()</a>.</p>
 
 </div>
 </div>
@@ -2967,7 +2967,7 @@ Friends</h2></td></tr>
 
 <p class="reference">References <a class="el" href="_t_run_info_8h_source.html#l00299">fSubRunNumber</a>, and <a class="el" href="_t_singleton_8h_source.html#l00033">TSingleton&lt; TRunInfo &gt;::Get()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00101">AtExitHandler()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00582">CreateLabel()</a>, <a class="el" href="_lean_compton_matrices_8cxx_source.html#l00074">main()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>, <a class="el" href="_t_g_r_s_i_sort_info_8cxx_source.html#l00085">TGRSISortInfo::SetRunInfo()</a>, <a class="el" href="_t_midas_file_8cxx_source.html#l00704">TMidasFile::SetRunInfo()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>, <a class="el" href="_t_p_p_g_8cxx_source.html#l00462">TPPG::Setup()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00219">TGRSISelector::Terminate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="grsiproof_8cxx_source.html#l00102">AtExitHandler()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00588">CreateLabel()</a>, <a class="el" href="_lean_compton_matrices_8cxx_source.html#l00074">main()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>, <a class="el" href="_t_g_r_s_i_sort_info_8cxx_source.html#l00085">TGRSISortInfo::SetRunInfo()</a>, <a class="el" href="_t_midas_file_8cxx_source.html#l00704">TMidasFile::SetRunInfo()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00135">SetRunInfo()</a>, <a class="el" href="_t_p_p_g_8cxx_source.html#l00462">TPPG::Setup()</a>, and <a class="el" href="_t_g_r_s_i_selector_8cxx_source.html#l00219">TGRSISelector::Terminate()</a>.</p>
 
 </div>
 </div>
@@ -3166,7 +3166,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00312">312</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_run_info_8h_source.html#l00166">ClearDate()</a>, <a class="el" href="_t_run_info_8h_source.html#l00165">GetDate()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00571">PrintVersion()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00168">SetDate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_run_info_8h_source.html#l00166">ClearDate()</a>, <a class="el" href="_t_run_info_8h_source.html#l00165">GetDate()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00577">PrintVersion()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00168">SetDate()</a>.</p>
 
 </div>
 </div>
@@ -3302,7 +3302,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00311">311</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_run_info_8h_source.html#l00154">ClearFullVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00153">GetFullVersion()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00571">PrintVersion()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00156">SetFullVersion()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_run_info_8h_source.html#l00154">ClearFullVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00153">GetFullVersion()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00577">PrintVersion()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00156">SetFullVersion()</a>.</p>
 
 </div>
 </div>
@@ -3414,7 +3414,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00314">314</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_run_info_8h_source.html#l00190">ClearLibraryPath()</a>, <a class="el" href="_t_run_info_8h_source.html#l00189">GetLibraryPath()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00571">PrintVersion()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00192">SetLibraryPath()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_run_info_8h_source.html#l00190">ClearLibraryPath()</a>, <a class="el" href="_t_run_info_8h_source.html#l00189">GetLibraryPath()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00577">PrintVersion()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00192">SetLibraryPath()</a>.</p>
 
 </div>
 </div>
@@ -3442,7 +3442,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00313">313</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_run_info_8h_source.html#l00178">ClearLibraryVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00177">GetLibraryVersion()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00571">PrintVersion()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00180">SetLibraryVersion()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_run_info_8h_source.html#l00178">ClearLibraryVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00177">GetLibraryVersion()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00577">PrintVersion()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00180">SetLibraryVersion()</a>.</p>
 
 </div>
 </div>
@@ -3582,7 +3582,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00304">304</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00387">Add()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00533">ListOfMissingRuns()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>, and <a class="el" href="_t_run_info_8cxx_source.html#l00521">PrintRunList()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_run_info_8cxx_source.html#l00387">Add()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00539">ListOfMissingRuns()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00072">Print()</a>, and <a class="el" href="_t_run_info_8cxx_source.html#l00527">PrintRunList()</a>.</p>
 
 </div>
 </div>
@@ -3774,7 +3774,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_run_info_8h_source.html#l00310">310</a> of file <a class="el" href="_t_run_info_8h_source.html">TRunInfo.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_run_info_8h_source.html#l00142">ClearVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00141">GetVersion()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00571">PrintVersion()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00144">SetVersion()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_run_info_8h_source.html#l00142">ClearVersion()</a>, <a class="el" href="_t_run_info_8h_source.html#l00141">GetVersion()</a>, <a class="el" href="_t_run_info_8cxx_source.html#l00577">PrintVersion()</a>, and <a class="el" href="_t_run_info_8h_source.html#l00144">SetVersion()</a>.</p>
 
 </div>
 </div>
@@ -3841,7 +3841,7 @@ Friends</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_t_run_info.html">TRunInfo</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Wed Jan 14 2026 21:25:05.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Jan 29 2026 18:55:16.</li>
   </ul>
 </div>
 </body>
