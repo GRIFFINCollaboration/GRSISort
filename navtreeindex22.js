@@ -1,5 +1,7 @@
 var NAVTREEINDEX22 =
 {
+"class_t_channel.html#a331e0071378686dace8a6daa2a983555":[8,11,5,29],
+"class_t_channel.html#a339168b965d3c1dcd35c6ccb23a5d904":[8,11,5,52],
 "class_t_channel.html#a340a7dbbfc62e136b060e8000ba4fdcf":[8,11,5,71],
 "class_t_channel.html#a345f6a04c7f7c5b4fe272d3001779328":[8,11,5,191],
 "class_t_channel.html#a346c52f64e1cf1e1c97aef9f2f624e78":[8,11,5,190],
@@ -247,7 +249,5 @@ var NAVTREEINDEX22 =
 "class_t_compiled_histograms.html#adbb2aba755a783236d872440ad244a67":[10,0,92,3],
 "class_t_compiled_histograms.html#ae549d9610a23ff9d20c89b53f80d397f":[10,0,92,17],
 "class_t_compiled_histograms.html#ae6f0aacf385ea4b9810fbc94e8d19769":[10,0,92,10],
-"class_t_compiled_histograms.html#ae846be7c07fd69f729acfb49798c4834":[10,0,92,0],
-"class_t_compiled_histograms.html#aec36d4af9cf02d1944e1f7ce7a862ad0":[10,0,92,4],
-"class_t_compiled_histograms.html#af018853c9aa4767e7e0689957eda626c":[10,0,92,1]
+"class_t_compiled_histograms.html#ae846be7c07fd69f729acfb49798c4834":[10,0,92,0]
 };

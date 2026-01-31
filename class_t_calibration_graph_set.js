@@ -26,6 +26,7 @@ var class_t_calibration_graph_set =
     [ "operator=", "class_t_calibration_graph_set.html#a16aa5d3f94391efc53567b0fb69108d6", null ],
     [ "operator=", "class_t_calibration_graph_set.html#a7f3f90d6e192e535227c2db618cc4ae3", null ],
     [ "Print", "class_t_calibration_graph_set.html#a7118a744a3f1c5caf2924e9f8c91a44c", null ],
+    [ "RefreshResidualLine", "class_t_calibration_graph_set.html#a7e9363e4aad2ac7870da4fbf177335a7", null ],
     [ "RemoveGraph", "class_t_calibration_graph_set.html#a0f88511caba49bb5426099494feea613", null ],
     [ "RemovePoint", "class_t_calibration_graph_set.html#a9dcf7a5f59e34780d173404cc19baad8", null ],
     [ "RemovePoint", "class_t_calibration_graph_set.html#ab1f6ef01ebb7950704f74c879637ae24", null ],
@@ -64,5 +65,6 @@ var class_t_calibration_graph_set =
     [ "fTotalResidualGraph", "class_t_calibration_graph_set.html#aa44991836226d716309103f149d69467", null ],
     [ "fVerboseLevel", "class_t_calibration_graph_set.html#a3c0a4d602b7364a3a0a111382d2f290e", null ],
     [ "fXAxisLabel", "class_t_calibration_graph_set.html#a8967fdaae529711f6604995c2ceabd5e", null ],
-    [ "fYAxisLabel", "class_t_calibration_graph_set.html#a3b486977d37e2838386761e7e2c0284c", null ]
+    [ "fYAxisLabel", "class_t_calibration_graph_set.html#a3b486977d37e2838386761e7e2c0284c", null ],
+    [ "fZeroResidual", "class_t_calibration_graph_set.html#a562d713fd4022a399e4b5aa93b2cd362", null ]
 ];

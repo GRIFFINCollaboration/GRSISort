@@ -106,6 +106,7 @@ $(function(){initNavTree('class_t_nucleus.html',''); initResizable(true); });
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-static-methods">Static Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
+<a href="#pri-static-attribs">Static Private Attributes</a> &#124;
 <a href="class_t_nucleus-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">TNucleus Class Reference</div></div>
 </div><!--header-->
@@ -206,6 +207,8 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:aa4266168a548c57886f2f577a3a67e72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0349969334d995792b4b30e69efefddb" id="r_a0349969334d995792b4b30e69efefddb"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0349969334d995792b4b30e69efefddb">SortName</a> (std::string input)</td></tr>
 <tr class="separator:a0349969334d995792b4b30e69efefddb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a386b99b9ede674c0840085c9e0d2187b" id="r_a386b99b9ede674c0840085c9e0d2187b"><td class="memItemLeft" align="right" valign="top">static std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a386b99b9ede674c0840085c9e0d2187b">SourceDirectory</a> ()</td></tr>
+<tr class="separator:a386b99b9ede674c0840085c9e0d2187b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -237,6 +240,13 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a00efd34f54edfbfc5c917220566b9a4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a595894a4a56bad04e8845f311f3f37ad" id="r_a595894a4a56bad04e8845f311f3f37ad"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a595894a4a56bad04e8845f311f3f37ad">fZ</a> {0}</td></tr>
 <tr class="separator:a595894a4a56bad04e8845f311f3f37ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-static-attribs" name="pri-static-attribs"></a>
+Static Private Attributes</h2></td></tr>
+<tr class="memitem:a35d4ee06b28849348b1ff43b3bab68ea" id="r_a35d4ee06b28849348b1ff43b3bab68ea"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a35d4ee06b28849348b1ff43b3bab68ea">fSourceDirectory</a></td></tr>
+<tr class="separator:a35d4ee06b28849348b1ff43b3bab68ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8531a6129ea0008b4165a736c43d7197" id="r_a8531a6129ea0008b4165a736c43d7197"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8531a6129ea0008b4165a736c43d7197">fSourceDirectoryChecked</a> = false</td></tr>
+<tr class="separator:a8531a6129ea0008b4165a736c43d7197"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <div id="dynsection-0" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for TNucleus:</div>
@@ -250,7 +260,7 @@ Private Attributes</h2></td></tr>
 <div id="dynsection-1-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-1-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_nucleus__coll__graph.svg" width="207" height="215"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_nucleus__coll__graph.svg" width="218" height="231"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a2dc5cbac910f125c4225abbcf478a271" name="a2dc5cbac910f125c4225abbcf478a271"></a>
@@ -305,9 +315,9 @@ Private Attributes</h2></td></tr>
 
 <p>Creates a nucleus based on symbol and sets all parameters from mass.dat. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00019">19</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00041">41</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_nucleus_8cxx_source.html#l00329">LoadTransitionFile()</a>, <a class="el" href="_t_nucleus_8cxx_source.html#l00013">Massfile()</a>, <a class="el" href="_t_nucleus_8h_source.html#l00036">ParseName()</a>, <a class="el" href="_t_nucleus_8cxx_source.html#l00220">SetMass()</a>, <a class="el" href="_t_nucleus_8cxx_source.html#l00208">SetMassExcess()</a>, <a class="el" href="_t_nucleus_8cxx_source.html#l00203">SetN()</a>, <a class="el" href="_t_nucleus_8cxx_source.html#l00123">SetName()</a>, <a class="el" href="_t_nucleus_8cxx_source.html#l00226">SetSymbol()</a>, and <a class="el" href="_t_nucleus_8cxx_source.html#l00198">SetZ()</a>.</p>
+<p class="reference">References <a class="el" href="_t_nucleus_8cxx_source.html#l00350">LoadTransitionFile()</a>, <a class="el" href="_t_nucleus_8cxx_source.html#l00035">Massfile()</a>, <a class="el" href="_t_nucleus_8h_source.html#l00036">ParseName()</a>, <a class="el" href="_t_nucleus_8cxx_source.html#l00241">SetMass()</a>, <a class="el" href="_t_nucleus_8cxx_source.html#l00229">SetMassExcess()</a>, <a class="el" href="_t_nucleus_8cxx_source.html#l00224">SetN()</a>, <a class="el" href="_t_nucleus_8cxx_source.html#l00144">SetName()</a>, <a class="el" href="_t_nucleus_8cxx_source.html#l00247">SetSymbol()</a>, and <a class="el" href="_t_nucleus_8cxx_source.html#l00219">SetZ()</a>.</p>
 
 </div>
 </div>
@@ -343,9 +353,9 @@ Private Attributes</h2></td></tr>
 <p>Creates a nucleus with Z, N, mass, and symbol. </p>
 <p>Creates a nucleus with Z, N, mass, and symbol</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00071">71</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00092">92</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_nucleus_8cxx_source.html#l00329">LoadTransitionFile()</a>, and <a class="el" href="_t_nucleus_8cxx_source.html#l00123">SetName()</a>.</p>
+<p class="reference">References <a class="el" href="_t_nucleus_8cxx_source.html#l00350">LoadTransitionFile()</a>, and <a class="el" href="_t_nucleus_8cxx_source.html#l00144">SetName()</a>.</p>
 
 </div>
 </div>
@@ -376,9 +386,9 @@ Private Attributes</h2></td></tr>
 <p>Creates a nucleus with Z, N using mass table (default MassFile = "mass.dat") </p>
 <p>Creates a nucleus with Z, N using mass table (default MassFile = "mass.dat")</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00079">79</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00100">100</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_nucleus_8cxx_source.html#l00013">Massfile()</a>.</p>
+<p class="reference">References <a class="el" href="_t_nucleus_8cxx_source.html#l00035">Massfile()</a>.</p>
 
 </div>
 </div>
@@ -447,9 +457,9 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00130">130</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00151">151</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00099">fTransitionListByEnergy</a>, and <a class="el" href="_t_nucleus_8h_source.html#l00098">fTransitionListByIntensity</a>.</p>
+<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00104">fTransitionListByEnergy</a>, and <a class="el" href="_t_nucleus_8h_source.html#l00103">fTransitionListByIntensity</a>.</p>
 
 </div>
 </div>
@@ -483,11 +493,11 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00262">262</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00283">283</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_nucleus_8cxx_source.html#l00262">AddTransition()</a>.</p>
+<p class="reference">References <a class="el" href="_t_nucleus_8cxx_source.html#l00283">AddTransition()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_nucleus_8cxx_source.html#l00262">AddTransition()</a>, and <a class="el" href="_t_nucleus_8cxx_source.html#l00329">LoadTransitionFile()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_nucleus_8cxx_source.html#l00283">AddTransition()</a>, and <a class="el" href="_t_nucleus_8cxx_source.html#l00350">LoadTransitionFile()</a>.</p>
 
 </div>
 </div>
@@ -506,9 +516,9 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00274">274</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00295">295</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00099">fTransitionListByEnergy</a>, and <a class="el" href="_t_nucleus_8h_source.html#l00098">fTransitionListByIntensity</a>.</p>
+<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00104">fTransitionListByEnergy</a>, and <a class="el" href="_t_nucleus_8h_source.html#l00103">fTransitionListByIntensity</a>.</p>
 
 </div>
 </div>
@@ -539,9 +549,9 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_nucleus_8h_source.html#l00059">59</a> of file <a class="el" href="_t_nucleus_8h_source.html">TNucleus.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00092">fN</a>, and <a class="el" href="_t_nucleus_8h_source.html#l00093">fZ</a>.</p>
+<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00097">fN</a>, and <a class="el" href="_t_nucleus_8h_source.html#l00098">fZ</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_nucleus_8cxx_source.html#l00255">GetRadius()</a>, <a class="el" href="_t_nucleus_8cxx_source.html#l00329">LoadTransitionFile()</a>, <a class="el" href="_t_reaction_8cxx_source.html#l00437">TReaction::Print()</a>, <a class="el" href="_t_nucleus_8cxx_source.html#l00220">SetMass()</a>, and <a class="el" href="_t_nucleus_8cxx_source.html#l00123">SetName()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_nucleus_8cxx_source.html#l00276">GetRadius()</a>, <a class="el" href="_t_nucleus_8cxx_source.html#l00350">LoadTransitionFile()</a>, <a class="el" href="_t_reaction_8cxx_source.html#l00437">TReaction::Print()</a>, <a class="el" href="_t_nucleus_8cxx_source.html#l00241">SetMass()</a>, and <a class="el" href="_t_nucleus_8cxx_source.html#l00144">SetName()</a>.</p>
 
 </div>
 </div>
@@ -560,9 +570,9 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00389">389</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00409">409</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00094">fMass</a>.</p>
+<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00099">fMass</a>.</p>
 
 </div>
 </div>
@@ -581,9 +591,9 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00383">383</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00403">403</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00094">fMass</a>.</p>
+<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00099">fMass</a>.</p>
 
 </div>
 </div>
@@ -614,7 +624,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_nucleus_8h_source.html#l00061">61</a> of file <a class="el" href="_t_nucleus_8h_source.html">TNucleus.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00094">fMass</a>.</p>
+<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00099">fMass</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_kinematics_8cxx_source.html#l00090">TKinematics::TKinematics()</a>, <a class="el" href="_t_kinematics_8cxx_source.html#l00006">TKinematics::TKinematics()</a>, <a class="el" href="_t_kinematics_8cxx_source.html#l00039">TKinematics::TKinematics()</a>, <a class="el" href="_t_kinematics_8cxx_source.html#l00054">TKinematics::TKinematics()</a>, <a class="el" href="_t_kinematics_8cxx_source.html#l00072">TKinematics::TKinematics()</a>, <a class="el" href="_t_reaction_8cxx_source.html#l00010">TReaction::TReaction()</a>, <a class="el" href="_t_kinematics_8cxx_source.html#l00320">TKinematics::FinalCm()</a>, and <a class="el" href="_t_kinematics_8cxx_source.html#l00222">TKinematics::GetExcEnergy()</a>.</p>
 
@@ -647,9 +657,9 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_nucleus_8h_source.html#l00060">60</a> of file <a class="el" href="_t_nucleus_8h_source.html">TNucleus.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00095">fMassExcess</a>.</p>
+<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00100">fMassExcess</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_nucleus_8cxx_source.html#l00220">SetMass()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_nucleus_8cxx_source.html#l00241">SetMass()</a>.</p>
 
 </div>
 </div>
@@ -680,7 +690,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_nucleus_8h_source.html#l00058">58</a> of file <a class="el" href="_t_nucleus_8h_source.html">TNucleus.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00092">fN</a>.</p>
+<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00097">fN</a>.</p>
 
 </div>
 </div>
@@ -709,7 +719,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_nucleus_8h_source.html#l00073">73</a> of file <a class="el" href="_t_nucleus_8h_source.html">TNucleus.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00098">fTransitionListByIntensity</a>.</p>
+<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00103">fTransitionListByIntensity</a>.</p>
 
 </div>
 </div>
@@ -728,7 +738,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00255">255</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00276">276</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
 
 <p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00059">GetA()</a>.</p>
 
@@ -761,9 +771,9 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_nucleus_8h_source.html#l00062">62</a> of file <a class="el" href="_t_nucleus_8h_source.html">TNucleus.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00096">fSymbol</a>.</p>
+<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00101">fSymbol</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_nucleus_8cxx_source.html#l00329">LoadTransitionFile()</a>, and <a class="el" href="_t_nucleus_8cxx_source.html#l00123">SetName()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_nucleus_8cxx_source.html#l00350">LoadTransitionFile()</a>, and <a class="el" href="_t_nucleus_8cxx_source.html#l00144">SetName()</a>.</p>
 
 </div>
 </div>
@@ -792,7 +802,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_nucleus_8h_source.html#l00068">68</a> of file <a class="el" href="_t_nucleus_8h_source.html">TNucleus.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_nucleus_8cxx_source.html#l00282">GetTransitionByIntensity()</a>.</p>
+<p class="reference">References <a class="el" href="_t_nucleus_8cxx_source.html#l00303">GetTransitionByIntensity()</a>.</p>
 
 </div>
 </div>
@@ -811,9 +821,9 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00292">292</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00313">313</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00099">fTransitionListByEnergy</a>.</p>
+<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00104">fTransitionListByEnergy</a>.</p>
 
 </div>
 </div>
@@ -832,9 +842,9 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00282">282</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00303">303</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00098">fTransitionListByIntensity</a>.</p>
+<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00103">fTransitionListByIntensity</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_nucleus_8h_source.html#l00068">GetTransition()</a>.</p>
 
@@ -896,7 +906,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_nucleus_8h_source.html#l00082">82</a> of file <a class="el" href="_t_nucleus_8h_source.html">TNucleus.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00099">fTransitionListByEnergy</a>.</p>
+<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00104">fTransitionListByEnergy</a>.</p>
 
 </div>
 </div>
@@ -925,7 +935,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_nucleus_8h_source.html#l00081">81</a> of file <a class="el" href="_t_nucleus_8h_source.html">TNucleus.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00098">fTransitionListByIntensity</a>.</p>
+<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00103">fTransitionListByIntensity</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_nucleus_8h_source.html#l00080">GetTransitionList()</a>.</p>
 
@@ -958,7 +968,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_nucleus_8h_source.html#l00057">57</a> of file <a class="el" href="_t_nucleus_8h_source.html">TNucleus.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00093">fZ</a>.</p>
+<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00098">fZ</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_reaction_8cxx_source.html#l00437">TReaction::Print()</a>, and <a class="el" href="_t_kinematics_8cxx_source.html#l00596">TKinematics::Rutherford()</a>.</p>
 
@@ -979,9 +989,9 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00232">232</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00253">253</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_nucleus_8cxx_source.html#l00198">SetZ()</a>.</p>
+<p class="reference">References <a class="el" href="_t_nucleus_8cxx_source.html#l00219">SetZ()</a>.</p>
 
 </div>
 </div>
@@ -1008,11 +1018,11 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00329">329</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00350">350</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_nucleus_8cxx_source.html#l00262">AddTransition()</a>, <a class="el" href="_t_nucleus_8h_source.html#l00098">fTransitionListByIntensity</a>, <a class="el" href="_t_nucleus_8h_source.html#l00059">GetA()</a>, and <a class="el" href="_t_nucleus_8h_source.html#l00062">GetSymbol()</a>.</p>
+<p class="reference">References <a class="el" href="_t_nucleus_8cxx_source.html#l00283">AddTransition()</a>, <a class="el" href="_t_nucleus_8h_source.html#l00103">fTransitionListByIntensity</a>, <a class="el" href="_t_nucleus_8h_source.html#l00059">GetA()</a>, <a class="el" href="_t_nucleus_8h_source.html#l00062">GetSymbol()</a>, and <a class="el" href="_t_nucleus_8cxx_source.html#l00019">SourceDirectory()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_nucleus_8cxx_source.html#l00019">TNucleus()</a>, and <a class="el" href="_t_nucleus_8cxx_source.html#l00071">TNucleus()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_nucleus_8cxx_source.html#l00041">TNucleus()</a>, and <a class="el" href="_t_nucleus_8cxx_source.html#l00092">TNucleus()</a>.</p>
 
 </div>
 </div>
@@ -1039,11 +1049,14 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Returns the massfile to be used, which includes Z, N, atomic symbol, and mass excess. </p>
+<p>&lt; Returns the directory with the .sou files and the mass file </p>
+<p>Returns the massfile to be used, which includes Z, N, atomic symbol, and mass excess </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00013">13</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00035">35</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_nucleus_8cxx_source.html#l00019">TNucleus()</a>, and <a class="el" href="_t_nucleus_8cxx_source.html#l00079">TNucleus()</a>.</p>
+<p class="reference">References <a class="el" href="_t_nucleus_8cxx_source.html#l00019">SourceDirectory()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_nucleus_8cxx_source.html#l00041">TNucleus()</a>, and <a class="el" href="_t_nucleus_8cxx_source.html#l00100">TNucleus()</a>.</p>
 
 </div>
 </div>
@@ -1072,7 +1085,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_nucleus_8h_source.html#l00072">72</a> of file <a class="el" href="_t_nucleus_8h_source.html">TNucleus.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00098">fTransitionListByIntensity</a>.</p>
+<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00103">fTransitionListByIntensity</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_energy_cal_8cxx_source.html#l00038">TEnergyCal::SetNucleus()</a>.</p>
 
@@ -1180,7 +1193,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_nucleus_8h_source.html#l00084">84</a> of file <a class="el" href="_t_nucleus_8h_source.html">TNucleus.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00091">fA</a>, <a class="el" href="_t_nucleus_8h_source.html#l00092">fN</a>, and <a class="el" href="_t_nucleus_8h_source.html#l00093">fZ</a>.</p>
+<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00096">fA</a>, <a class="el" href="_t_nucleus_8h_source.html#l00097">fN</a>, and <a class="el" href="_t_nucleus_8h_source.html#l00098">fZ</a>.</p>
 
 </div>
 </div>
@@ -1225,7 +1238,7 @@ Private Attributes</h2></td></tr>
 
 <p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00036">ParseName()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_nucleus_8cxx_source.html#l00019">TNucleus()</a>, <a class="el" href="_t_nucleus_8h_source.html#l00036">ParseName()</a>, and <a class="el" href="_t_nucleus_8cxx_source.html#l00185">SortName()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_nucleus_8cxx_source.html#l00041">TNucleus()</a>, <a class="el" href="_t_nucleus_8h_source.html#l00036">ParseName()</a>, and <a class="el" href="_t_nucleus_8cxx_source.html#l00206">SortName()</a>.</p>
 
 </div>
 </div>
@@ -1267,7 +1280,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Strips any non-alphanumeric character from input, parses rest as number and symbol. E.g. turns "na26" into "Na" and 26 or "  152  EU... " into "Eu" and 152. Only uses the first number and first letter, so "na26   eu152" would be turned into "Na" and 26, but "na26  152eu" would be turned into "Na" and 26152, and "26na  152eu" would be turned into "Na152eu" and 26. Special inputs are "p" for "H" and 1, "d" for "H" and 2, "t" for "H" and 3, and "a" for "He" and 4. element simply is the combined string of number and element.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00136">136</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00157">157</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
 
 </div>
 </div>
@@ -1294,9 +1307,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00302">302</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00323">323</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00098">fTransitionListByIntensity</a>.</p>
+<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00103">fTransitionListByIntensity</a>.</p>
 
 </div>
 </div>
@@ -1317,11 +1330,11 @@ Private Attributes</h2></td></tr>
 
 <p>Sets the mass based on the A and mass excess of nucleus (in MeV) </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00220">220</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00241">241</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_nucleus_8cxx_source.html#l00011">amu</a>, <a class="el" href="_t_nucleus_8h_source.html#l00094">fMass</a>, <a class="el" href="_t_nucleus_8h_source.html#l00059">GetA()</a>, and <a class="el" href="_t_nucleus_8h_source.html#l00060">GetMassExcess()</a>.</p>
+<p class="reference">References <a class="el" href="_t_nucleus_8cxx_source.html#l00014">amu</a>, <a class="el" href="_t_nucleus_8h_source.html#l00099">fMass</a>, <a class="el" href="_t_nucleus_8h_source.html#l00059">GetA()</a>, and <a class="el" href="_t_nucleus_8h_source.html#l00060">GetMassExcess()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_nucleus_8cxx_source.html#l00019">TNucleus()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_nucleus_8cxx_source.html#l00041">TNucleus()</a>.</p>
 
 </div>
 </div>
@@ -1342,9 +1355,9 @@ Private Attributes</h2></td></tr>
 
 <p>Sets the mass manually (in MeV) </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00214">214</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00235">235</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00094">fMass</a>.</p>
+<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00099">fMass</a>.</p>
 
 </div>
 </div>
@@ -1365,11 +1378,11 @@ Private Attributes</h2></td></tr>
 
 <p>Sets the mass excess of the nucleus (in MeV) </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00208">208</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00229">229</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00095">fMassExcess</a>.</p>
+<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00100">fMassExcess</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_nucleus_8cxx_source.html#l00019">TNucleus()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_nucleus_8cxx_source.html#l00041">TNucleus()</a>.</p>
 
 </div>
 </div>
@@ -1390,11 +1403,11 @@ Private Attributes</h2></td></tr>
 
 <p>Sets the N (# of neutrons) of the nucleus. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00203">203</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00224">224</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00092">fN</a>.</p>
+<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00097">fN</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_nucleus_8cxx_source.html#l00019">TNucleus()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_nucleus_8cxx_source.html#l00041">TNucleus()</a>.</p>
 
 </div>
 </div>
@@ -1421,11 +1434,11 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00123">123</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00144">144</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
 
 <p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00059">GetA()</a>, and <a class="el" href="_t_nucleus_8h_source.html#l00062">GetSymbol()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_nucleus_8cxx_source.html#l00019">TNucleus()</a>, and <a class="el" href="_t_nucleus_8cxx_source.html#l00071">TNucleus()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_nucleus_8cxx_source.html#l00041">TNucleus()</a>, and <a class="el" href="_t_nucleus_8cxx_source.html#l00092">TNucleus()</a>.</p>
 
 </div>
 </div>
@@ -1446,11 +1459,11 @@ Private Attributes</h2></td></tr>
 
 <p>Sets the atomic symbol for the nucleus. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00226">226</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00247">247</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00096">fSymbol</a>.</p>
+<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00101">fSymbol</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_nucleus_8cxx_source.html#l00019">TNucleus()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_nucleus_8cxx_source.html#l00041">TNucleus()</a>.</p>
 
 </div>
 </div>
@@ -1471,11 +1484,11 @@ Private Attributes</h2></td></tr>
 
 <p>Sets the Z (# of protons) of the nucleus. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00198">198</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00219">219</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00093">fZ</a>.</p>
+<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00098">fZ</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_nucleus_8cxx_source.html#l00019">TNucleus()</a>, and <a class="el" href="_t_nucleus_8cxx_source.html#l00232">GetZfromSymbol()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_nucleus_8cxx_source.html#l00041">TNucleus()</a>, and <a class="el" href="_t_nucleus_8cxx_source.html#l00253">GetZfromSymbol()</a>.</p>
 
 </div>
 </div>
@@ -1534,9 +1547,40 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Strips any non-alphanumeric character from input, parses rest as number and symbol. E.g. turns "na26" into "26Na" or "  152  EU... " into "152Eu". Special inputs are "p" for "1H", "d" for "2H", "t" for "2H", and "a" for "4He".</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00185">185</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00206">206</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
 
 <p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00036">ParseName()</a>.</p>
+
+</div>
+</div>
+<a id="a386b99b9ede674c0840085c9e0d2187b" name="a386b99b9ede674c0840085c9e0d2187b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a386b99b9ede674c0840085c9e0d2187b">&#9670;&#160;</a></span>SourceDirectory()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string &amp; TNucleus::SourceDirectory </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00019">19</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
+
+<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00093">fSourceDirectory</a>, and <a class="el" href="_t_nucleus_8h_source.html#l00094">fSourceDirectoryChecked</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_source_calibration_8cxx_source.html#l02278">TSourceCalibration::BuildFirstInterface()</a>, <a class="el" href="_t_nucleus_8cxx_source.html#l00350">LoadTransitionFile()</a>, and <a class="el" href="_t_nucleus_8cxx_source.html#l00035">Massfile()</a>.</p>
 
 </div>
 </div>
@@ -1555,9 +1599,9 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00314">314</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_nucleus_8cxx_source.html#l00335">335</a> of file <a class="el" href="_t_nucleus_8cxx_source.html">TNucleus.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00098">fTransitionListByIntensity</a>.</p>
+<p class="reference">References <a class="el" href="_t_nucleus_8h_source.html#l00103">fTransitionListByIntensity</a>.</p>
 
 </div>
 </div>
@@ -1584,7 +1628,7 @@ Private Attributes</h2></td></tr>
 
 <p>Number of nucleons (Z + N) </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_nucleus_8h_source.html#l00091">91</a> of file <a class="el" href="_t_nucleus_8h_source.html">TNucleus.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_nucleus_8h_source.html#l00096">96</a> of file <a class="el" href="_t_nucleus_8h_source.html">TNucleus.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_nucleus_8h_source.html#l00084">operator==()</a>.</p>
 
@@ -1612,9 +1656,9 @@ Private Attributes</h2></td></tr>
 
 <p>Mass (in MeV) </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_nucleus_8h_source.html#l00094">94</a> of file <a class="el" href="_t_nucleus_8h_source.html">TNucleus.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_nucleus_8h_source.html#l00099">99</a> of file <a class="el" href="_t_nucleus_8h_source.html">TNucleus.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_nucleus_8cxx_source.html#l00389">GetBetaFromEnergy()</a>, <a class="el" href="_t_nucleus_8cxx_source.html#l00383">GetEnergyFromBeta()</a>, <a class="el" href="_t_nucleus_8h_source.html#l00061">GetMass()</a>, <a class="el" href="_t_nucleus_8cxx_source.html#l00220">SetMass()</a>, and <a class="el" href="_t_nucleus_8cxx_source.html#l00214">SetMass()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_nucleus_8cxx_source.html#l00409">GetBetaFromEnergy()</a>, <a class="el" href="_t_nucleus_8cxx_source.html#l00403">GetEnergyFromBeta()</a>, <a class="el" href="_t_nucleus_8h_source.html#l00061">GetMass()</a>, <a class="el" href="_t_nucleus_8cxx_source.html#l00241">SetMass()</a>, and <a class="el" href="_t_nucleus_8cxx_source.html#l00235">SetMass()</a>.</p>
 
 </div>
 </div>
@@ -1640,9 +1684,9 @@ Private Attributes</h2></td></tr>
 
 <p>Mass excess (in MeV) </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_nucleus_8h_source.html#l00095">95</a> of file <a class="el" href="_t_nucleus_8h_source.html">TNucleus.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_nucleus_8h_source.html#l00100">100</a> of file <a class="el" href="_t_nucleus_8h_source.html">TNucleus.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_nucleus_8h_source.html#l00060">GetMassExcess()</a>, and <a class="el" href="_t_nucleus_8cxx_source.html#l00208">SetMassExcess()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_nucleus_8h_source.html#l00060">GetMassExcess()</a>, and <a class="el" href="_t_nucleus_8cxx_source.html#l00229">SetMassExcess()</a>.</p>
 
 </div>
 </div>
@@ -1668,9 +1712,65 @@ Private Attributes</h2></td></tr>
 
 <p>Number of neutrons (N) </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_nucleus_8h_source.html#l00092">92</a> of file <a class="el" href="_t_nucleus_8h_source.html">TNucleus.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_nucleus_8h_source.html#l00097">97</a> of file <a class="el" href="_t_nucleus_8h_source.html">TNucleus.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_nucleus_8h_source.html#l00059">GetA()</a>, <a class="el" href="_t_nucleus_8h_source.html#l00058">GetN()</a>, <a class="el" href="_t_nucleus_8h_source.html#l00084">operator==()</a>, and <a class="el" href="_t_nucleus_8cxx_source.html#l00203">SetN()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_nucleus_8h_source.html#l00059">GetA()</a>, <a class="el" href="_t_nucleus_8h_source.html#l00058">GetN()</a>, <a class="el" href="_t_nucleus_8h_source.html#l00084">operator==()</a>, and <a class="el" href="_t_nucleus_8cxx_source.html#l00224">SetN()</a>.</p>
+
+</div>
+</div>
+<a id="a35d4ee06b28849348b1ff43b3bab68ea" name="a35d4ee06b28849348b1ff43b3bab68ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a35d4ee06b28849348b1ff43b3bab68ea">&#9670;&#160;</a></span>fSourceDirectory</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string TNucleus::fSourceDirectory</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>! path of directory with .sou files </p>
+
+<p class="definition">Definition at line <a class="el" href="_t_nucleus_8h_source.html#l00093">93</a> of file <a class="el" href="_t_nucleus_8h_source.html">TNucleus.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_nucleus_8cxx_source.html#l00019">SourceDirectory()</a>.</p>
+
+</div>
+</div>
+<a id="a8531a6129ea0008b4165a736c43d7197" name="a8531a6129ea0008b4165a736c43d7197"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8531a6129ea0008b4165a736c43d7197">&#9670;&#160;</a></span>fSourceDirectoryChecked</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TNucleus::fSourceDirectoryChecked = false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>! flag to indicate whetehr the source directory path has been checked </p>
+
+<p class="definition">Definition at line <a class="el" href="_t_nucleus_8h_source.html#l00094">94</a> of file <a class="el" href="_t_nucleus_8h_source.html">TNucleus.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_nucleus_8cxx_source.html#l00019">SourceDirectory()</a>.</p>
 
 </div>
 </div>
@@ -1696,9 +1796,9 @@ Private Attributes</h2></td></tr>
 
 <p>Atomic symbol (ex. Ba, C, O, N) </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_nucleus_8h_source.html#l00096">96</a> of file <a class="el" href="_t_nucleus_8h_source.html">TNucleus.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_nucleus_8h_source.html#l00101">101</a> of file <a class="el" href="_t_nucleus_8h_source.html">TNucleus.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_nucleus_8h_source.html#l00062">GetSymbol()</a>, and <a class="el" href="_t_nucleus_8cxx_source.html#l00226">SetSymbol()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_nucleus_8h_source.html#l00062">GetSymbol()</a>, and <a class="el" href="_t_nucleus_8cxx_source.html#l00247">SetSymbol()</a>.</p>
 
 </div>
 </div>
@@ -1722,9 +1822,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_nucleus_8h_source.html#l00099">99</a> of file <a class="el" href="_t_nucleus_8h_source.html">TNucleus.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_nucleus_8h_source.html#l00104">104</a> of file <a class="el" href="_t_nucleus_8h_source.html">TNucleus.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_nucleus_8cxx_source.html#l00130">~TNucleus()</a>, <a class="el" href="_t_nucleus_8cxx_source.html#l00274">AddTransition()</a>, <a class="el" href="_t_nucleus_8cxx_source.html#l00292">GetTransitionByEnergy()</a>, and <a class="el" href="_t_nucleus_8h_source.html#l00082">GetTransitionListByEnergy()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_nucleus_8cxx_source.html#l00151">~TNucleus()</a>, <a class="el" href="_t_nucleus_8cxx_source.html#l00295">AddTransition()</a>, <a class="el" href="_t_nucleus_8cxx_source.html#l00313">GetTransitionByEnergy()</a>, and <a class="el" href="_t_nucleus_8h_source.html#l00082">GetTransitionListByEnergy()</a>.</p>
 
 </div>
 </div>
@@ -1748,9 +1848,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_nucleus_8h_source.html#l00098">98</a> of file <a class="el" href="_t_nucleus_8h_source.html">TNucleus.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_nucleus_8h_source.html#l00103">103</a> of file <a class="el" href="_t_nucleus_8h_source.html">TNucleus.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_nucleus_8cxx_source.html#l00130">~TNucleus()</a>, <a class="el" href="_t_nucleus_8cxx_source.html#l00274">AddTransition()</a>, <a class="el" href="_t_nucleus_8h_source.html#l00073">GetNTransitions()</a>, <a class="el" href="_t_nucleus_8cxx_source.html#l00282">GetTransitionByIntensity()</a>, <a class="el" href="_t_nucleus_8h_source.html#l00081">GetTransitionListByIntensity()</a>, <a class="el" href="_t_nucleus_8cxx_source.html#l00329">LoadTransitionFile()</a>, <a class="el" href="_t_nucleus_8h_source.html#l00072">NTransitions()</a>, <a class="el" href="_t_nucleus_8cxx_source.html#l00302">Print()</a>, and <a class="el" href="_t_nucleus_8cxx_source.html#l00314">WriteSourceFile()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_nucleus_8cxx_source.html#l00151">~TNucleus()</a>, <a class="el" href="_t_nucleus_8cxx_source.html#l00295">AddTransition()</a>, <a class="el" href="_t_nucleus_8h_source.html#l00073">GetNTransitions()</a>, <a class="el" href="_t_nucleus_8cxx_source.html#l00303">GetTransitionByIntensity()</a>, <a class="el" href="_t_nucleus_8h_source.html#l00081">GetTransitionListByIntensity()</a>, <a class="el" href="_t_nucleus_8cxx_source.html#l00350">LoadTransitionFile()</a>, <a class="el" href="_t_nucleus_8h_source.html#l00072">NTransitions()</a>, <a class="el" href="_t_nucleus_8cxx_source.html#l00323">Print()</a>, and <a class="el" href="_t_nucleus_8cxx_source.html#l00335">WriteSourceFile()</a>.</p>
 
 </div>
 </div>
@@ -1776,9 +1876,9 @@ Private Attributes</h2></td></tr>
 
 <p>Number of protons (Z) </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_nucleus_8h_source.html#l00093">93</a> of file <a class="el" href="_t_nucleus_8h_source.html">TNucleus.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_nucleus_8h_source.html#l00098">98</a> of file <a class="el" href="_t_nucleus_8h_source.html">TNucleus.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_nucleus_8h_source.html#l00059">GetA()</a>, <a class="el" href="_t_nucleus_8h_source.html#l00057">GetZ()</a>, <a class="el" href="_t_nucleus_8h_source.html#l00084">operator==()</a>, and <a class="el" href="_t_nucleus_8cxx_source.html#l00198">SetZ()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_nucleus_8h_source.html#l00059">GetA()</a>, <a class="el" href="_t_nucleus_8h_source.html#l00057">GetZ()</a>, <a class="el" href="_t_nucleus_8h_source.html#l00084">operator==()</a>, and <a class="el" href="_t_nucleus_8cxx_source.html#l00219">SetZ()</a>.</p>
 
 </div>
 </div>
@@ -1789,7 +1889,7 @@ Private Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_t_nucleus.html">TNucleus</a></li>
-    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Thu Jan 29 2026 18:55:16.</li>
+    <li class="footer">GRSISort ("v4.0.0.5") Reference Guide Generated on Sat Jan 31 2026 21:08:16.</li>
   </ul>
 </div>
 </body>
