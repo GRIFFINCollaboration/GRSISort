@@ -127,6 +127,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:affd9ec48a7a47d2b14acd00f857f8258"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad074987916492995d9b0d97d69cba7db" id="r_ad074987916492995d9b0d97d69cba7db"><td class="memItemLeft" align="right" valign="top">ROOT::RDF::RResultPtr&lt; std::map&lt; std::string, TList &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad074987916492995d9b0d97d69cba7db">Book</a> (ROOT::RDataFrame *d) override</td></tr>
 <tr class="separator:ad074987916492995d9b0d97d69cba7db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3388c1ab55d9ccba38b3eb5ef9eb7fd" id="r_ad3388c1ab55d9ccba38b3eb5ef9eb7fd"><td class="memItemLeft" align="right" valign="top">ROOT::RDF::ColumnNames_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_g_r_s_i_helper.html#ad3388c1ab55d9ccba38b3eb5ef9eb7fd">ColumnNames</a> () const</td></tr>
+<tr class="separator:ad3388c1ab55d9ccba38b3eb5ef9eb7fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a413d0111af2e7dc99c621456d3d7eab8" id="r_a413d0111af2e7dc99c621456d3d7eab8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_g_r_s_i_helper.html#a413d0111af2e7dc99c621456d3d7eab8">ColumnNames</a> (ROOT::RDF::ColumnNames_t names)</td></tr>
+<tr class="separator:a413d0111af2e7dc99c621456d3d7eab8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4091599e7894d8e909d5d7112c43fe86" id="r_a4091599e7894d8e909d5d7112c43fe86"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4091599e7894d8e909d5d7112c43fe86">CreateHistograms</a> (unsigned int slot) override</td></tr>
 <tr class="separator:a4091599e7894d8e909d5d7112c43fe86"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5018f29580f6a27dfb43500dd224757" id="r_ab5018f29580f6a27dfb43500dd224757"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab5018f29580f6a27dfb43500dd224757">EndOfSort</a> (std::shared_ptr&lt; std::map&lt; std::string, TList &gt; &gt; &amp;list) override</td></tr>
@@ -163,6 +167,8 @@ Protected Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
+<tr class="memitem:ad65d2e5e27b0b8652cd77eefd2cfaef2" id="r_ad65d2e5e27b0b8652cd77eefd2cfaef2"><td class="memItemLeft" align="right" valign="top">ROOT::RDF::ColumnNames_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_g_r_s_i_helper.html#ad65d2e5e27b0b8652cd77eefd2cfaef2">fColumnNames</a></td></tr>
+<tr class="separator:ad65d2e5e27b0b8652cd77eefd2cfaef2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a134602d3db37506ecdcd5665bb339942" id="r_a134602d3db37506ecdcd5665bb339942"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="class_t_g_r_s_i_map.html">TGRSIMap</a>&lt; std::string, <a class="el" href="class_g_cube.html">GCube</a> * &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_g_r_s_i_helper.html#a134602d3db37506ecdcd5665bb339942">fCube</a></td></tr>
 <tr class="separator:a134602d3db37506ecdcd5665bb339942"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a106305b1b18827f1f5ec4952b63b54f3" id="r_a106305b1b18827f1f5ec4952b63b54f3"><td class="memItemLeft" align="right" valign="top">std::map&lt; std::string, TCutG * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_g_r_s_i_helper.html#a106305b1b18827f1f5ec4952b63b54f3">fCuts</a></td></tr>
@@ -296,7 +302,7 @@ Static Private Attributes</h2></td></tr>
 
 <p>This type is a requirement for every helper. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00063">63</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00068">68</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
 
 </div>
 </div>
@@ -326,7 +332,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_summing_corrections_helper_8hh_source.html#l00018">18</a> of file <a class="el" href="_summing_corrections_helper_8hh_source.html">SummingCorrectionsHelper.hh</a>.</p>
 
-<p class="reference">References <a class="el" href="_summing_corrections_helper_8hh_source.html#l00105">fCoincidentHigh</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00104">fCoincidentLow</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00112">fEnergyBackground</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00087">fEnergyBins1D</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00088">fEnergyBins2D</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00111">fEnergyGateHigh</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00110">fEnergyGateLow</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00113">fEnergyRatio</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00090">fHighEnergy</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00093">fKValueGriffin</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00089">fLowEnergy</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00096">fMaxCfd</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00095">fMinimumGriffinEnergy</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00094">fPileUpRejection</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00100">fPromptHigh</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00099">fPromptLow</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00107">fTimeRandomHigh</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00106">fTimeRandomLow</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00108">fTimeRandomRatio</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00054">TGRSIHelper::fUserSettings</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00119">TUserSettings::GetBool()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00145">TUserSettings::GetDouble()</a>, and <a class="el" href="_t_user_settings_8cxx_source.html#l00132">TUserSettings::GetInt()</a>.</p>
+<p class="reference">References <a class="el" href="_summing_corrections_helper_8hh_source.html#l00105">fCoincidentHigh</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00104">fCoincidentLow</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00112">fEnergyBackground</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00087">fEnergyBins1D</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00088">fEnergyBins2D</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00111">fEnergyGateHigh</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00110">fEnergyGateLow</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00113">fEnergyRatio</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00090">fHighEnergy</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00093">fKValueGriffin</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00089">fLowEnergy</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00096">fMaxCfd</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00095">fMinimumGriffinEnergy</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00094">fPileUpRejection</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00100">fPromptHigh</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00099">fPromptLow</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00107">fTimeRandomHigh</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00106">fTimeRandomLow</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00108">fTimeRandomRatio</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00058">TGRSIHelper::fUserSettings</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00119">TUserSettings::GetBool()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00145">TUserSettings::GetDouble()</a>, and <a class="el" href="_t_user_settings_8cxx_source.html#l00132">TUserSettings::GetInt()</a>.</p>
 
 </div>
 </div>
@@ -421,7 +427,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8cxx_source.html#l00220">220</a> of file <a class="el" href="_t_g_r_s_i_helper_8cxx_source.html">TGRSIHelper.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_globals_8h_source.html#l00018">DRED</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00043">TGRSIHelper::fLists</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00058">TGRSIHelper::fSizeLimit</a>, and <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>.</p>
+<p class="reference">References <a class="el" href="_globals_8h_source.html#l00018">DRED</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00047">TGRSIHelper::fLists</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00063">TGRSIHelper::fSizeLimit</a>, and <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_helper_8cxx_source.html#l00159">TGRSIHelper::Finalize()</a>, and <a class="el" href="_t_g_r_s_i_helper_8cxx_source.html#l00076">TGRSIHelper::Setup()</a>.</p>
 
@@ -462,6 +468,66 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="ad3388c1ab55d9ccba38b3eb5ef9eb7fd" name="ad3388c1ab55d9ccba38b3eb5ef9eb7fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3388c1ab55d9ccba38b3eb5ef9eb7fd">&#9670;&#160;</a></span>ColumnNames() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">ROOT::RDF::ColumnNames_t TGRSIHelper::ColumnNames </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00040">40</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
+
+<p class="reference">References <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00060">TGRSIHelper::fColumnNames</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_example_tree_helper_8hh_source.html#l00035">ExampleTreeHelper::Book()</a>.</p>
+
+</div>
+</div>
+<a id="a413d0111af2e7dc99c621456d3d7eab8" name="a413d0111af2e7dc99c621456d3d7eab8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a413d0111af2e7dc99c621456d3d7eab8">&#9670;&#160;</a></span>ColumnNames() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TGRSIHelper::ColumnNames </td>
+          <td>(</td>
+          <td class="paramtype">ROOT::RDF::ColumnNames_t</td>          <td class="paramname"><span class="paramname"><em>names</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00039">39</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
+
+<p class="reference">References <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00060">TGRSIHelper::fColumnNames</a>.</p>
+
+</div>
+</div>
 <a id="a4091599e7894d8e909d5d7112c43fe86" name="a4091599e7894d8e909d5d7112c43fe86"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4091599e7894d8e909d5d7112c43fe86">&#9670;&#160;</a></span>CreateHistograms()</h2>
 
@@ -491,7 +557,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_summing_corrections_helper_8cxx_source.html#l00003">3</a> of file <a class="el" href="_summing_corrections_helper_8cxx_source.html">SummingCorrectionsHelper.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_summing_corrections_helper_8hh_source.html#l00087">fEnergyBins1D</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00088">fEnergyBins2D</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00044">TGRSIHelper::fH1</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00045">TGRSIHelper::fH2</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00090">fHighEnergy</a>, and <a class="el" href="_summing_corrections_helper_8hh_source.html#l00089">fLowEnergy</a>.</p>
+<p class="reference">References <a class="el" href="_summing_corrections_helper_8hh_source.html#l00087">fEnergyBins1D</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00088">fEnergyBins2D</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00048">TGRSIHelper::fH1</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00049">TGRSIHelper::fH2</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00090">fHighEnergy</a>, and <a class="el" href="_summing_corrections_helper_8hh_source.html#l00089">fLowEnergy</a>.</p>
 
 </div>
 </div>
@@ -590,7 +656,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_summing_corrections_helper_8cxx_source.html#l00180">180</a> of file <a class="el" href="_summing_corrections_helper_8cxx_source.html">SummingCorrectionsHelper.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_summing_corrections_helper_8hh_source.html#l00140">Background()</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00127">Coincident()</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00113">fEnergyRatio</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00044">TGRSIHelper::fH1</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00045">TGRSIHelper::fH2</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00108">fTimeRandomRatio</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00136">Gate()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00288">TGriffin::GetAddbackHit()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00264">TGriffin::GetAddbackMultiplicity()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00243">TGriffin::GetGriffinHit()</a>, <a class="el" href="_t_detector_8h_source.html#l00070">TDetector::GetMultiplicity()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00593">TGriffin::GetNSuppressedAddbackFrags()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00538">TGriffin::GetSuppressedAddbackHit()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00554">TGriffin::GetSuppressedAddbackMultiplicity()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00485">TGriffin::GetSuppressedHit()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00501">TGriffin::GetSuppressedMultiplicity()</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00146">GoodCfd()</a>, <a class="el" href="_g_root_commands_8cxx_source.html#l00047">Prompt()</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00152">Reject()</a>, and <a class="el" href="_summing_corrections_helper_8hh_source.html#l00131">TimeRandom()</a>.</p>
+<p class="reference">References <a class="el" href="_summing_corrections_helper_8hh_source.html#l00140">Background()</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00127">Coincident()</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00113">fEnergyRatio</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00048">TGRSIHelper::fH1</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00049">TGRSIHelper::fH2</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00108">fTimeRandomRatio</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00136">Gate()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00288">TGriffin::GetAddbackHit()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00264">TGriffin::GetAddbackMultiplicity()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00243">TGriffin::GetGriffinHit()</a>, <a class="el" href="_t_detector_8h_source.html#l00070">TDetector::GetMultiplicity()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00593">TGriffin::GetNSuppressedAddbackFrags()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00538">TGriffin::GetSuppressedAddbackHit()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00554">TGriffin::GetSuppressedAddbackMultiplicity()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00485">TGriffin::GetSuppressedHit()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00501">TGriffin::GetSuppressedMultiplicity()</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00146">GoodCfd()</a>, <a class="el" href="_g_root_commands_8cxx_source.html#l00047">Prompt()</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00152">Reject()</a>, and <a class="el" href="_summing_corrections_helper_8hh_source.html#l00131">TimeRandom()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_summing_corrections_helper_8cxx_source.html#l00040">Exec()</a>.</p>
 
@@ -630,7 +696,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_summing_corrections_helper_8cxx_source.html#l00049">49</a> of file <a class="el" href="_summing_corrections_helper_8cxx_source.html">SummingCorrectionsHelper.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00044">TGRSIHelper::fH1</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00045">TGRSIHelper::fH2</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00288">TGriffin::GetAddbackHit()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00264">TGriffin::GetAddbackMultiplicity()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00243">TGriffin::GetGriffinHit()</a>, <a class="el" href="_t_detector_8h_source.html#l00070">TDetector::GetMultiplicity()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00593">TGriffin::GetNSuppressedAddbackFrags()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00538">TGriffin::GetSuppressedAddbackHit()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00554">TGriffin::GetSuppressedAddbackMultiplicity()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00485">TGriffin::GetSuppressedHit()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00501">TGriffin::GetSuppressedMultiplicity()</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00146">GoodCfd()</a>, <a class="el" href="_g_root_commands_8cxx_source.html#l00047">Prompt()</a>, and <a class="el" href="_summing_corrections_helper_8hh_source.html#l00152">Reject()</a>.</p>
+<p class="reference">References <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00048">TGRSIHelper::fH1</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00049">TGRSIHelper::fH2</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00288">TGriffin::GetAddbackHit()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00264">TGriffin::GetAddbackMultiplicity()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00243">TGriffin::GetGriffinHit()</a>, <a class="el" href="_t_detector_8h_source.html#l00070">TDetector::GetMultiplicity()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00593">TGriffin::GetNSuppressedAddbackFrags()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00538">TGriffin::GetSuppressedAddbackHit()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00554">TGriffin::GetSuppressedAddbackMultiplicity()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00485">TGriffin::GetSuppressedHit()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00501">TGriffin::GetSuppressedMultiplicity()</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00146">GoodCfd()</a>, <a class="el" href="_g_root_commands_8cxx_source.html#l00047">Prompt()</a>, and <a class="el" href="_summing_corrections_helper_8hh_source.html#l00152">Reject()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_summing_corrections_helper_8cxx_source.html#l00040">Exec()</a>.</p>
 
@@ -663,7 +729,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8cxx_source.html#l00159">159</a> of file <a class="el" href="_t_g_r_s_i_helper_8cxx_source.html">TGRSIHelper.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_g_r_s_i_helper_8cxx_source.html#l00220">TGRSIHelper::CheckSizes()</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00096">TGRSIHelper::EndOfSort()</a>, and <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00043">TGRSIHelper::fLists</a>.</p>
+<p class="reference">References <a class="el" href="_t_g_r_s_i_helper_8cxx_source.html#l00220">TGRSIHelper::CheckSizes()</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00101">TGRSIHelper::EndOfSort()</a>, and <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00047">TGRSIHelper::fLists</a>.</p>
 
 </div>
 </div>
@@ -721,9 +787,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00100">100</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00105">105</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00036">TGRSIHelper::Prefix()</a>.</p>
+<p class="reference">References <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00038">TGRSIHelper::Prefix()</a>.</p>
 
 </div>
 </div>
@@ -750,9 +816,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00088">88</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00093">93</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00043">TGRSIHelper::fLists</a>.</p>
+<p class="reference">References <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00047">TGRSIHelper::fLists</a>.</p>
 
 </div>
 </div>
@@ -810,7 +876,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00090">90</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00095">95</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
 
 </div>
 </div>
@@ -841,7 +907,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00089">89</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00094">94</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
 
 </div>
 </div>
@@ -868,9 +934,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00039">39</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00043">43</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00052">TGRSIHelper::fPpg</a>.</p>
+<p class="reference">References <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00056">TGRSIHelper::fPpg</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_example_event_helper_8cxx_source.html#l00003">ExampleEventHelper::CreateHistograms()</a>.</p>
 
@@ -899,11 +965,11 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00036">36</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00038">38</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00055">TGRSIHelper::fPrefix</a>.</p>
+<p class="reference">References <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00059">TGRSIHelper::fPrefix</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_alphanumeric_helper_8hh_source.html#l00017">AlphanumericHelper::AlphanumericHelper()</a>, <a class="el" href="_angular_correlation_helper_8hh_source.html#l00067">AngularCorrelationHelper::AngularCorrelationHelper()</a>, <a class="el" href="_compton_polarimetry_helper_8hh_source.html#l00070">ComptonPolarimetryHelper::ComptonPolarimetryHelper()</a>, <a class="el" href="_cross_talk_helper_8hh_source.html#l00011">CrossTalkHelper::CrossTalkHelper()</a>, <a class="el" href="_directory_helper_8hh_source.html#l00018">DirectoryHelper::DirectoryHelper()</a>, <a class="el" href="_example_event_helper_8hh_source.html#l00022">ExampleEventHelper::ExampleEventHelper()</a>, <a class="el" href="_example_fragment_helper_8hh_source.html#l00010">ExampleFragmentHelper::ExampleFragmentHelper()</a>, <a class="el" href="_example_tree_helper_8hh_source.html#l00028">ExampleTreeHelper::ExampleTreeHelper()</a>, <a class="el" href="_griffin_k_value_helper_8hh_source.html#l00012">GriffinKValueHelper::GriffinKValueHelper()</a>, <a class="el" href="_tac_offset_helper_8hh_source.html#l00019">TacOffsetHelper::TacOffsetHelper()</a>, <a class="el" href="_time_walk_helper_8hh_source.html#l00011">TimeWalkHelper::TimeWalkHelper()</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00077">TGRSIHelper::Book()</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00072">TGRSIHelper::CreateHistograms()</a>, and <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00100">TGRSIHelper::GetActionName()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_alphanumeric_helper_8hh_source.html#l00017">AlphanumericHelper::AlphanumericHelper()</a>, <a class="el" href="_angular_correlation_helper_8hh_source.html#l00067">AngularCorrelationHelper::AngularCorrelationHelper()</a>, <a class="el" href="_compton_polarimetry_helper_8hh_source.html#l00070">ComptonPolarimetryHelper::ComptonPolarimetryHelper()</a>, <a class="el" href="_cross_talk_helper_8hh_source.html#l00011">CrossTalkHelper::CrossTalkHelper()</a>, <a class="el" href="_directory_helper_8hh_source.html#l00018">DirectoryHelper::DirectoryHelper()</a>, <a class="el" href="_example_event_helper_8hh_source.html#l00022">ExampleEventHelper::ExampleEventHelper()</a>, <a class="el" href="_example_fragment_helper_8hh_source.html#l00010">ExampleFragmentHelper::ExampleFragmentHelper()</a>, <a class="el" href="_example_tree_helper_8hh_source.html#l00028">ExampleTreeHelper::ExampleTreeHelper()</a>, <a class="el" href="_griffin_k_value_helper_8hh_source.html#l00012">GriffinKValueHelper::GriffinKValueHelper()</a>, <a class="el" href="_tac_offset_helper_8hh_source.html#l00019">TacOffsetHelper::TacOffsetHelper()</a>, <a class="el" href="_time_walk_helper_8hh_source.html#l00011">TimeWalkHelper::TimeWalkHelper()</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00082">TGRSIHelper::Book()</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00077">TGRSIHelper::CreateHistograms()</a>, and <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00105">TGRSIHelper::GetActionName()</a>.</p>
 
 </div>
 </div>
@@ -930,9 +996,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00098">98</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00103">103</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00055">TGRSIHelper::fPrefix</a>.</p>
+<p class="reference">References <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00059">TGRSIHelper::fPrefix</a>.</p>
 
 </div>
 </div>
@@ -959,9 +1025,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00099">99</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00104">104</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00055">TGRSIHelper::fPrefix</a>.</p>
+<p class="reference">References <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00059">TGRSIHelper::fPrefix</a>.</p>
 
 </div>
 </div>
@@ -1052,9 +1118,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00040">40</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00044">44</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00053">TGRSIHelper::fRunInfo</a>.</p>
+<p class="reference">References <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00057">TGRSIHelper::fRunInfo</a>.</p>
 
 </div>
 </div>
@@ -1084,7 +1150,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8cxx_source.html#l00076">76</a> of file <a class="el" href="_t_g_r_s_i_helper_8cxx_source.html">TGRSIHelper.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_g_r_s_i_helper_8cxx_source.html#l00220">TGRSIHelper::CheckSizes()</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00072">TGRSIHelper::CreateHistograms()</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00048">TGRSIHelper::fCube</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00044">TGRSIHelper::fH1</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00045">TGRSIHelper::fH2</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00046">TGRSIHelper::fH3</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00043">TGRSIHelper::fLists</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00050">TGRSIHelper::fObject</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00047">TGRSIHelper::fSym</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00049">TGRSIHelper::fTree</a>, <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00020">TGRSIOptions::Get()</a>, and <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00130">TGRSIOptions::GetMaxWorkers()</a>.</p>
+<p class="reference">References <a class="el" href="_t_g_r_s_i_helper_8cxx_source.html#l00220">TGRSIHelper::CheckSizes()</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00077">TGRSIHelper::CreateHistograms()</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00052">TGRSIHelper::fCube</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00048">TGRSIHelper::fH1</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00049">TGRSIHelper::fH2</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00050">TGRSIHelper::fH3</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00047">TGRSIHelper::fLists</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00054">TGRSIHelper::fObject</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00051">TGRSIHelper::fSym</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00053">TGRSIHelper::fTree</a>, <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00020">TGRSIOptions::Get()</a>, and <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00130">TGRSIOptions::GetMaxWorkers()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_alphanumeric_helper_8hh_source.html#l00017">AlphanumericHelper::AlphanumericHelper()</a>, <a class="el" href="_angular_correlation_helper_8hh_source.html#l00067">AngularCorrelationHelper::AngularCorrelationHelper()</a>, <a class="el" href="_compton_polarimetry_helper_8hh_source.html#l00070">ComptonPolarimetryHelper::ComptonPolarimetryHelper()</a>, <a class="el" href="_cross_talk_helper_8hh_source.html#l00011">CrossTalkHelper::CrossTalkHelper()</a>, <a class="el" href="_directory_helper_8hh_source.html#l00018">DirectoryHelper::DirectoryHelper()</a>, <a class="el" href="_example_event_helper_8hh_source.html#l00022">ExampleEventHelper::ExampleEventHelper()</a>, <a class="el" href="_example_fragment_helper_8hh_source.html#l00010">ExampleFragmentHelper::ExampleFragmentHelper()</a>, <a class="el" href="_example_tree_helper_8hh_source.html#l00028">ExampleTreeHelper::ExampleTreeHelper()</a>, <a class="el" href="_griffin_k_value_helper_8hh_source.html#l00012">GriffinKValueHelper::GriffinKValueHelper()</a>, <a class="el" href="_tac_offset_helper_8hh_source.html#l00019">TacOffsetHelper::TacOffsetHelper()</a>, and <a class="el" href="_time_walk_helper_8hh_source.html#l00011">TimeWalkHelper::TimeWalkHelper()</a>.</p>
 
@@ -1148,9 +1214,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00041">41</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00045">45</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00054">TGRSIHelper::fUserSettings</a>.</p>
+<p class="reference">References <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00058">TGRSIHelper::fUserSettings</a>.</p>
 
 </div>
 </div>
@@ -1207,6 +1273,32 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="ad65d2e5e27b0b8652cd77eefd2cfaef2" name="ad65d2e5e27b0b8652cd77eefd2cfaef2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad65d2e5e27b0b8652cd77eefd2cfaef2">&#9670;&#160;</a></span>fColumnNames</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">ROOT::RDF::ColumnNames_t TGRSIHelper::fColumnNames</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00060">60</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00040">TGRSIHelper::ColumnNames()</a>, and <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00039">TGRSIHelper::ColumnNames()</a>.</p>
+
+</div>
+</div>
 <a id="a134602d3db37506ecdcd5665bb339942" name="a134602d3db37506ecdcd5665bb339942"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a134602d3db37506ecdcd5665bb339942">&#9670;&#160;</a></span>fCube</h2>
 
@@ -1227,7 +1319,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00048">48</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00052">52</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_helper_8cxx_source.html#l00076">TGRSIHelper::Setup()</a>.</p>
 
@@ -1253,7 +1345,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00051">51</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00055">55</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_helper_8cxx_source.html#l00009">TGRSIHelper::TGRSIHelper()</a>.</p>
 
@@ -1435,7 +1527,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00044">44</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00048">48</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_compton_polarimetry_helper_8cxx_source.html#l00003">ComptonPolarimetryHelper::CreateHistograms()</a>, <a class="el" href="_cross_talk_helper_8cxx_source.html#l00026">CrossTalkHelper::CreateHistograms()</a>, <a class="el" href="_directory_helper_8cxx_source.html#l00003">DirectoryHelper::CreateHistograms()</a>, <a class="el" href="_example_event_helper_8cxx_source.html#l00003">ExampleEventHelper::CreateHistograms()</a>, <a class="el" href="_example_tree_helper_8cxx_source.html#l00003">ExampleTreeHelper::CreateHistograms()</a>, <a class="el" href="_griffin_k_value_helper_8cxx_source.html#l00003">GriffinKValueHelper::CreateHistograms()</a>, <a class="el" href="_summing_corrections_helper_8cxx_source.html#l00003">CreateHistograms()</a>, <a class="el" href="_tac_offset_helper_8cxx_source.html#l00003">TacOffsetHelper::CreateHistograms()</a>, <a class="el" href="_compton_polarimetry_helper_8cxx_source.html#l00099">ComptonPolarimetryHelper::Exec()</a>, <a class="el" href="_cross_talk_helper_8cxx_source.html#l00053">CrossTalkHelper::Exec()</a>, <a class="el" href="_directory_helper_8cxx_source.html#l00045">DirectoryHelper::Exec()</a>, <a class="el" href="_example_event_helper_8cxx_source.html#l00071">ExampleEventHelper::Exec()</a>, <a class="el" href="_example_tree_helper_8cxx_source.html#l00043">ExampleTreeHelper::Exec()</a>, <a class="el" href="_griffin_k_value_helper_8cxx_source.html#l00023">GriffinKValueHelper::Exec()</a>, <a class="el" href="_tac_offset_helper_8cxx_source.html#l00034">TacOffsetHelper::Exec()</a>, <a class="el" href="_summing_corrections_helper_8cxx_source.html#l00180">FillBranchingRatioHistograms()</a>, <a class="el" href="_summing_corrections_helper_8cxx_source.html#l00049">FillEfficiencyHistograms()</a>, and <a class="el" href="_t_g_r_s_i_helper_8cxx_source.html#l00076">TGRSIHelper::Setup()</a>.</p>
 
@@ -1461,7 +1553,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00045">45</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00049">49</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_alphanumeric_helper_8cxx_source.html#l00003">AlphanumericHelper::CreateHistograms()</a>, <a class="el" href="_angular_correlation_helper_8cxx_source.html#l00003">AngularCorrelationHelper::CreateHistograms()</a>, <a class="el" href="_compton_polarimetry_helper_8cxx_source.html#l00003">ComptonPolarimetryHelper::CreateHistograms()</a>, <a class="el" href="_cross_talk_helper_8cxx_source.html#l00026">CrossTalkHelper::CreateHistograms()</a>, <a class="el" href="_directory_helper_8cxx_source.html#l00003">DirectoryHelper::CreateHistograms()</a>, <a class="el" href="_example_event_helper_8cxx_source.html#l00003">ExampleEventHelper::CreateHistograms()</a>, <a class="el" href="_example_fragment_helper_8cxx_source.html#l00003">ExampleFragmentHelper::CreateHistograms()</a>, <a class="el" href="_example_tree_helper_8cxx_source.html#l00003">ExampleTreeHelper::CreateHistograms()</a>, <a class="el" href="_griffin_k_value_helper_8cxx_source.html#l00003">GriffinKValueHelper::CreateHistograms()</a>, <a class="el" href="_summing_corrections_helper_8cxx_source.html#l00003">CreateHistograms()</a>, <a class="el" href="_time_walk_helper_8cxx_source.html#l00003">TimeWalkHelper::CreateHistograms()</a>, <a class="el" href="_example_event_helper_8cxx_source.html#l00140">ExampleEventHelper::EndOfSort()</a>, <a class="el" href="_alphanumeric_helper_8cxx_source.html#l00037">AlphanumericHelper::Exec()</a>, <a class="el" href="_angular_correlation_helper_8cxx_source.html#l00052">AngularCorrelationHelper::Exec()</a>, <a class="el" href="_compton_polarimetry_helper_8cxx_source.html#l00099">ComptonPolarimetryHelper::Exec()</a>, <a class="el" href="_cross_talk_helper_8cxx_source.html#l00053">CrossTalkHelper::Exec()</a>, <a class="el" href="_directory_helper_8cxx_source.html#l00045">DirectoryHelper::Exec()</a>, <a class="el" href="_example_event_helper_8cxx_source.html#l00071">ExampleEventHelper::Exec()</a>, <a class="el" href="_example_fragment_helper_8cxx_source.html#l00009">ExampleFragmentHelper::Exec()</a>, <a class="el" href="_example_tree_helper_8cxx_source.html#l00043">ExampleTreeHelper::Exec()</a>, <a class="el" href="_griffin_k_value_helper_8cxx_source.html#l00023">GriffinKValueHelper::Exec()</a>, <a class="el" href="_time_walk_helper_8cxx_source.html#l00058">TimeWalkHelper::Exec()</a>, <a class="el" href="_summing_corrections_helper_8cxx_source.html#l00180">FillBranchingRatioHistograms()</a>, <a class="el" href="_summing_corrections_helper_8cxx_source.html#l00049">FillEfficiencyHistograms()</a>, and <a class="el" href="_t_g_r_s_i_helper_8cxx_source.html#l00076">TGRSIHelper::Setup()</a>.</p>
 
@@ -1487,7 +1579,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00046">46</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00050">50</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_time_walk_helper_8cxx_source.html#l00003">TimeWalkHelper::CreateHistograms()</a>, <a class="el" href="_time_walk_helper_8cxx_source.html#l00058">TimeWalkHelper::Exec()</a>, and <a class="el" href="_t_g_r_s_i_helper_8cxx_source.html#l00076">TGRSIHelper::Setup()</a>.</p>
 
@@ -1565,9 +1657,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00043">43</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00047">47</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_helper_8cxx_source.html#l00220">TGRSIHelper::CheckSizes()</a>, <a class="el" href="_t_g_r_s_i_helper_8cxx_source.html#l00159">TGRSIHelper::Finalize()</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00088">TGRSIHelper::GetResultPtr()</a>, and <a class="el" href="_t_g_r_s_i_helper_8cxx_source.html#l00076">TGRSIHelper::Setup()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_helper_8cxx_source.html#l00220">TGRSIHelper::CheckSizes()</a>, <a class="el" href="_t_g_r_s_i_helper_8cxx_source.html#l00159">TGRSIHelper::Finalize()</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00093">TGRSIHelper::GetResultPtr()</a>, and <a class="el" href="_t_g_r_s_i_helper_8cxx_source.html#l00076">TGRSIHelper::Setup()</a>.</p>
 
 </div>
 </div>
@@ -1669,7 +1761,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00050">50</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00054">54</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_angular_correlation_helper_8cxx_source.html#l00003">AngularCorrelationHelper::CreateHistograms()</a>, and <a class="el" href="_t_g_r_s_i_helper_8cxx_source.html#l00076">TGRSIHelper::Setup()</a>.</p>
 
@@ -1721,9 +1813,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00052">52</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00056">56</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_angular_correlation_helper_8cxx_source.html#l00003">AngularCorrelationHelper::CreateHistograms()</a>, and <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00039">TGRSIHelper::Ppg()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_angular_correlation_helper_8cxx_source.html#l00003">AngularCorrelationHelper::CreateHistograms()</a>, and <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00043">TGRSIHelper::Ppg()</a>.</p>
 
 </div>
 </div>
@@ -1747,9 +1839,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00055">55</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00059">59</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00036">TGRSIHelper::Prefix()</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00098">TGRSIHelper::Prefix()</a>, and <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00099">TGRSIHelper::Prefix()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00038">TGRSIHelper::Prefix()</a>, <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00103">TGRSIHelper::Prefix()</a>, and <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00104">TGRSIHelper::Prefix()</a>.</p>
 
 </div>
 </div>
@@ -1825,9 +1917,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00053">53</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00057">57</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00040">TGRSIHelper::RunInfo()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00044">TGRSIHelper::RunInfo()</a>.</p>
 
 </div>
 </div>
@@ -1853,7 +1945,7 @@ Static Private Attributes</h2></td></tr>
 
 <p>! 1 GiB size limit for objects in ROOT </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00058">58</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00063">63</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_helper_8cxx_source.html#l00220">TGRSIHelper::CheckSizes()</a>.</p>
 
@@ -1879,7 +1971,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00047">47</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00051">51</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_g_r_s_i_helper_8cxx_source.html#l00076">TGRSIHelper::Setup()</a>.</p>
 
@@ -1983,7 +2075,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00049">49</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00053">53</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_example_tree_helper_8cxx_source.html#l00003">ExampleTreeHelper::CreateHistograms()</a>, <a class="el" href="_example_tree_helper_8cxx_source.html#l00043">ExampleTreeHelper::Exec()</a>, and <a class="el" href="_t_g_r_s_i_helper_8cxx_source.html#l00076">TGRSIHelper::Setup()</a>.</p>
 
@@ -2009,9 +2101,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00054">54</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00058">58</a> of file <a class="el" href="_t_g_r_s_i_helper_8h_source.html">TGRSIHelper.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_angular_correlation_helper_8hh_source.html#l00067">AngularCorrelationHelper::AngularCorrelationHelper()</a>, <a class="el" href="_compton_polarimetry_helper_8hh_source.html#l00070">ComptonPolarimetryHelper::ComptonPolarimetryHelper()</a>, <a class="el" href="_directory_helper_8hh_source.html#l00018">DirectoryHelper::DirectoryHelper()</a>, <a class="el" href="_griffin_k_value_helper_8hh_source.html#l00012">GriffinKValueHelper::GriffinKValueHelper()</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00018">SummingCorrectionsHelper()</a>, and <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00041">TGRSIHelper::UserSettings()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_angular_correlation_helper_8hh_source.html#l00067">AngularCorrelationHelper::AngularCorrelationHelper()</a>, <a class="el" href="_compton_polarimetry_helper_8hh_source.html#l00070">ComptonPolarimetryHelper::ComptonPolarimetryHelper()</a>, <a class="el" href="_directory_helper_8hh_source.html#l00018">DirectoryHelper::DirectoryHelper()</a>, <a class="el" href="_griffin_k_value_helper_8hh_source.html#l00012">GriffinKValueHelper::GriffinKValueHelper()</a>, <a class="el" href="_summing_corrections_helper_8hh_source.html#l00018">SummingCorrectionsHelper()</a>, and <a class="el" href="_t_g_r_s_i_helper_8h_source.html#l00045">TGRSIHelper::UserSettings()</a>.</p>
 
 </div>
 </div>
@@ -2022,7 +2114,7 @@ Static Private Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_summing_corrections_helper.html">SummingCorrectionsHelper</a></li>
-    <li class="footer">GRSISort ("v4.1.1.0") Reference Guide Generated on Mon Mar 2 2026 09:46:42.</li>
+    <li class="footer">GRSISort ("v4.1.1.0") Reference Guide Generated on Mon Mar 2 2026 09:52:34.</li>
   </ul>
 </div>
 </body>
