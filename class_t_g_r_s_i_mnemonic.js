@@ -31,6 +31,7 @@ var class_t_g_r_s_i_mnemonic =
     ] ],
     [ "ESystem", "class_t_g_r_s_i_mnemonic.html#aba94aea8c0b8cf86e70048623a485b20", [
       [ "kTigress", "class_t_g_r_s_i_mnemonic.html#aba94aea8c0b8cf86e70048623a485b20af07ab71946eb15083088197971b223c8", null ],
+      [ "kTigressBgo", "class_t_g_r_s_i_mnemonic.html#aba94aea8c0b8cf86e70048623a485b20a4cab28b4e70789d5e40e4ead2fa1e206", null ],
       [ "kSharc", "class_t_g_r_s_i_mnemonic.html#aba94aea8c0b8cf86e70048623a485b20a2d3ea66ab4d04f62dbf7456e8c73eb93", null ],
       [ "kTriFoil", "class_t_g_r_s_i_mnemonic.html#aba94aea8c0b8cf86e70048623a485b20a1e565f5fb1fda59cf1f0330ef10c982d", null ],
       [ "kRF", "class_t_g_r_s_i_mnemonic.html#aba94aea8c0b8cf86e70048623a485b20aae75414828120521bf834a7dedf6c769", null ],

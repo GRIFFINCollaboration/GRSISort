@@ -39,10 +39,11 @@ var searchData=
   ['etdrcloverhitbits_36',['ETdrCloverHitBits',['../class_t_tdr_clover_hit.html#a38cbb48140637333f1871c6687702529',1,'TTdrCloverHit']]],
   ['etdrtigressbits_37',['ETdrTigressBits',['../class_t_tdr_tigress.html#a3fede2985f1301e92159e87dfb9de171',1,'TTdrTigress']]],
   ['etdrtigresshitbits_38',['ETdrTigressHitBits',['../class_t_tdr_tigress_hit.html#a5bf6a27de5320d7dbb67d01f52ab46eb',1,'TTdrTigressHit']]],
-  ['etigressbits_39',['ETigressBits',['../class_t_tigress.html#a91c1de4560b4f051fe2245d692f1253d',1,'TTigress']]],
-  ['etigressglobalbits_40',['ETigressGlobalBits',['../class_t_tigress.html#ae3be457cf358e11016195319355ba79b',1,'TTigress']]],
-  ['etimeflag_41',['ETimeFlag',['../class_t_detector_hit.html#a9677bfb19ee70b9ce819ea8d1fceb00e',1,'TDetectorHit']]],
-  ['etrificbits_42',['ETrificBits',['../class_t_trific.html#a96d2ee2359053f431b1dba3f7b52b5b4',1,'TTrific']]],
-  ['etype_43',['EType',['../_gain_match_g_r_i_f_f_i_n_8cxx.html#ad5d0e87f61ba99c47a539492df7917a1',1,'GainMatchGRIFFIN.cxx']]],
-  ['everbosity_44',['EVerbosity',['../_globals_8h.html#abb4e78a946cba701b4127ed5191b3b1e',1,'Globals.h']]]
+  ['etigressbits_39',['ETigressBits',['../class_t_tigress.html#aaf94dd109cc2eff59b2aba41013c38c9',1,'TTigress']]],
+  ['etigressglobalbits_40',['ETigressGlobalBits',['../class_t_tigress.html#a5fcb163419ef3c437b5c0df47be907b4',1,'TTigress']]],
+  ['etigresshitbits_41',['ETigressHitBits',['../class_t_tigress_hit.html#a3443199c0872a09a92dd56c0cda4db3f',1,'TTigressHit']]],
+  ['etimeflag_42',['ETimeFlag',['../class_t_detector_hit.html#a9677bfb19ee70b9ce819ea8d1fceb00e',1,'TDetectorHit']]],
+  ['etrificbits_43',['ETrificBits',['../class_t_trific.html#a96d2ee2359053f431b1dba3f7b52b5b4',1,'TTrific']]],
+  ['etype_44',['EType',['../_gain_match_g_r_i_f_f_i_n_8cxx.html#ad5d0e87f61ba99c47a539492df7917a1',1,'GainMatchGRIFFIN.cxx']]],
+  ['everbosity_45',['EVerbosity',['../_globals_8h.html#abb4e78a946cba701b4127ed5191b3b1e',1,'Globals.h']]]
 ];

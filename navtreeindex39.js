@@ -1,5 +1,14 @@
 var NAVTREEINDEX39 =
 {
+"class_t_griffin_hit.html#a8e84f6a505d936502a0096a749522094":[8,2,32,84],
+"class_t_griffin_hit.html#a8f661bfa4acafcc3f2052dbbfa6ec54c":[8,2,32,19],
+"class_t_griffin_hit.html#a9677bfb19ee70b9ce819ea8d1fceb00e":[8,2,32,2],
+"class_t_griffin_hit.html#a9677bfb19ee70b9ce819ea8d1fceb00ea30c7a6c70a2592413069d0a46e2309d4":[8,2,32,2,2],
+"class_t_griffin_hit.html#a9677bfb19ee70b9ce819ea8d1fceb00ea34bdbffdb1c0e1b603f58fc0d49548b6":[8,2,32,2,4],
+"class_t_griffin_hit.html#a9677bfb19ee70b9ce819ea8d1fceb00ea383fd110f350f2b35dbc1b245a216d19":[8,2,32,2,3],
+"class_t_griffin_hit.html#a9677bfb19ee70b9ce819ea8d1fceb00eac46818fff0cdb9892bdca69fca363333":[8,2,32,2,0],
+"class_t_griffin_hit.html#a9677bfb19ee70b9ce819ea8d1fceb00eac8f4925a383e3bfc8c12746da1370f00":[8,2,32,2,1],
+"class_t_griffin_hit.html#a97051bfa3581a486cfa5eca421161dac":[8,2,32,9],
 "class_t_griffin_hit.html#aa1954926fa95976703a0f7d486c490da":[8,2,32,14],
 "class_t_griffin_hit.html#aa3070f9cbb9772097705d5f4bfb29ec2":[8,2,32,96],
 "class_t_griffin_hit.html#aa474df803121ce2e02a1c51b71b07bcb":[8,2,32,93],
@@ -240,14 +249,5 @@ var NAVTREEINDEX39 =
 "class_t_h_i_l_fragment.html#a48f0f2fa2ad09c049fede0e50d42a87f":[8,11,27,87],
 "class_t_h_i_l_fragment.html#a49a028ad730d54e161eb580bbcabc813":[8,11,27,138],
 "class_t_h_i_l_fragment.html#a4aff9a49584ac5ff9be25e7ba01ba29e":[8,11,27,35],
-"class_t_h_i_l_fragment.html#a4c5ff98e596fb104ea04e1cba63b4a27":[8,11,27,44],
-"class_t_h_i_l_fragment.html#a4d15ff1a7488bc0ce8c9c7dab6b9c70e":[8,11,27,147],
-"class_t_h_i_l_fragment.html#a4e260809a8c15861da1feac852d4e060":[8,11,27,108],
-"class_t_h_i_l_fragment.html#a4e9eba0c69cedd731a66158674291d5a":[8,11,27,88],
-"class_t_h_i_l_fragment.html#a50959f166bad0de769a417318b061e63":[8,11,27,145],
-"class_t_h_i_l_fragment.html#a5900e5d5d0e567dfccecfd12eee77a88":[8,11,27,29],
-"class_t_h_i_l_fragment.html#a593ada24f64445d8081bae5938f654cf":[8,11,27,57],
-"class_t_h_i_l_fragment.html#a5ac38b672f118d32404043c84107d117":[8,11,27,102],
-"class_t_h_i_l_fragment.html#a5cce6e7461a4c1fdf3c8a48f119075db":[8,11,27,95],
-"class_t_h_i_l_fragment.html#a5dcb6698af936ff5001b8282646959af":[8,11,27,31]
+"class_t_h_i_l_fragment.html#a4c5ff98e596fb104ea04e1cba63b4a27":[8,11,27,44]
 };

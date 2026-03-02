@@ -256,7 +256,8 @@ var hierarchy =
           [ "TIfinBgo", "class_t_ifin_bgo.html", null ],
           [ "TLaBrBgo", "class_t_la_br_bgo.html", null ],
           [ "TTdrCloverBgo", "class_t_tdr_clover_bgo.html", null ],
-          [ "TTdrTigressBgo", "class_t_tdr_tigress_bgo.html", null ]
+          [ "TTdrTigressBgo", "class_t_tdr_tigress_bgo.html", null ],
+          [ "TTigressBgo", "class_t_tigress_bgo.html", null ]
         ] ],
         [ "TCSM", "class_t_c_s_m.html", null ],
         [ "TDemand", "class_t_demand.html", null ],
@@ -282,12 +283,12 @@ var hierarchy =
           [ "TIfin", "class_t_ifin.html", null ],
           [ "TLaBr", "class_t_la_br.html", null ],
           [ "TTdrClover", "class_t_tdr_clover.html", null ],
-          [ "TTdrTigress", "class_t_tdr_tigress.html", null ]
+          [ "TTdrTigress", "class_t_tdr_tigress.html", null ],
+          [ "TTigress", "class_t_tigress.html", null ]
         ] ],
         [ "TTAC", "class_t_t_a_c.html", null ],
         [ "TTdrPlastic", "class_t_tdr_plastic.html", null ],
         [ "TTdrSiLi", "class_t_tdr_si_li.html", null ],
-        [ "TTigress", "class_t_tigress.html", null ],
         [ "TTip", "class_t_tip.html", null ],
         [ "TTriFoil", "class_t_tri_foil.html", null ],
         [ "TTrific", "class_t_trific.html", null ],
@@ -300,7 +301,8 @@ var hierarchy =
           [ "TFippsLaBrBgoHit", "class_t_fipps_la_br_bgo_hit.html", null ],
           [ "TGriffinBgoHit", "class_t_griffin_bgo_hit.html", null ],
           [ "TIfinBgoHit", "class_t_ifin_bgo_hit.html", null ],
-          [ "TLaBrBgoHit", "class_t_la_br_bgo_hit.html", null ]
+          [ "TLaBrBgoHit", "class_t_la_br_bgo_hit.html", null ],
+          [ "TTigressBgoHit", "class_t_tigress_bgo_hit.html", null ]
         ] ],
         [ "TCSMHit", "class_t_c_s_m_hit.html", null ],
         [ "TDemandHit", "class_t_demand_hit.html", null ],
@@ -439,6 +441,7 @@ var hierarchy =
     [ "TTdrEventHeader", "struct_t_tdr_event_header.html", null ],
     [ "TTransientBits< T >", "class_t_transient_bits.html", null ],
     [ "TTransientBits< UChar_t >", "class_t_transient_bits.html", null ],
+    [ "TTransientBits< uint8_t >", "class_t_transient_bits.html", null ],
     [ "TTransientBits< UShort_t >", "class_t_transient_bits.html", null ],
     [ "TUnpackedEvent", "class_t_unpacked_event.html", null ],
     [ "TXMLOdb", "class_t_x_m_l_odb.html", null ],

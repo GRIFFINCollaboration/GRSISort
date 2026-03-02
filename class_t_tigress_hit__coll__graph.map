@@ -1,15 +1,15 @@
 <map id="TTigressHit" name="TTigressHit">
-<area shape="rect" id="Node000001" title=" " alt="" coords="1657,555,1746,581"/>
-<area shape="rect" id="Node000002" href="$class_t_detector_hit.html" title=" " alt="" coords="1406,523,1502,549"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1517,541,1656,560,1656,565,1516,547"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="183,14,250,40"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="266,18,381,8,519,3,1165,3,1208,8,1248,22,1283,44,1313,73,1340,107,1363,146,1400,233,1425,323,1442,407,1455,523,1449,523,1436,408,1420,324,1395,234,1359,149,1336,110,1309,77,1279,48,1245,27,1207,13,1164,8,519,8,381,14,266,24"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="1657,635,1746,661"/>
+<area shape="rect" id="Node000002" href="$class_t_detector_hit.html" title=" " alt="" coords="1406,546,1502,572"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1507,575,1664,632,1662,637,1505,580"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="183,10,250,36"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="266,16,381,7,519,3,1165,3,1210,8,1250,23,1286,46,1317,76,1344,112,1368,153,1387,197,1404,243,1429,337,1444,425,1455,545,1450,546,1438,426,1423,338,1399,245,1382,199,1363,155,1340,115,1313,80,1283,50,1248,27,1209,13,1164,8,519,8,382,12,266,21"/>
 <area shape="rect" id="Node000014" href="$class_t_mnemonic.html" title=" " alt="" coords="476,43,565,69"/>
-<area shape="poly" id="edge14_Node000014_Node000003" title=" " alt="" coords="266,29,475,49,475,54,266,34"/>
+<area shape="poly" id="edge14_Node000014_Node000003" title=" " alt="" coords="266,25,476,48,475,54,266,31"/>
 <area shape="rect" id="Node000004" title=" " alt="" coords="1090,547,1236,573"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="1251,558,1341,554,1405,544,1406,549,1342,559,1252,564"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="1252,557,1406,556,1406,562,1252,562"/>
 <area shape="rect" id="Node000005" href="$class_t_channel.html" title=" " alt="" coords="1125,498,1201,524"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="1217,513,1406,529,1405,535,1216,518"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="1217,517,1406,548,1405,553,1216,522"/>
 <area shape="rect" id="Node000006" title=" " alt="" coords="765,92,836,118"/>
 <area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="852,90,898,83,951,82,1005,92,1030,102,1053,117,1076,145,1096,189,1113,243,1128,303,1151,418,1163,497,1158,498,1146,419,1123,304,1108,245,1091,191,1071,148,1049,121,1027,107,1003,97,951,87,899,88,852,95"/>
 <area shape="rect" id="Node000007" href="$class_t_priority_value.html" title=" " alt="" coords="732,143,870,169"/>
@@ -58,8 +58,9 @@
 <area shape="poly" id="edge28_Node000005_Node000028" title=" " alt="" coords="884,1007,927,1010,972,1007,1014,995,1032,984,1049,971,1058,945,1062,895,1062,755,1060,614,1064,562,1073,533,1097,516,1124,509,1125,514,1099,521,1077,536,1069,563,1066,614,1067,755,1068,895,1063,946,1053,974,1035,989,1016,1000,973,1013,927,1016,883,1012"/>
 <area shape="rect" id="Node000029" title=" " alt="" coords="734,1036,868,1076"/>
 <area shape="poly" id="edge29_Node000005_Node000029" title=" " alt="" coords="884,1071,927,1073,972,1070,1014,1057,1032,1046,1049,1032,1055,1021,1059,1002,1063,945,1062,785,1059,625,1063,566,1073,533,1096,516,1124,509,1125,514,1099,521,1077,536,1068,567,1065,625,1067,785,1069,945,1064,1003,1060,1023,1053,1035,1036,1050,1016,1062,973,1075,927,1079,883,1076"/>
-<area shape="rect" id="Node000030" href="$class_t_transient_bits.html" title=" " alt="" coords="1075,596,1251,622"/>
-<area shape="poly" id="edge31_Node000002_Node000030" title=" " alt="" coords="1266,600,1304,591,1340,578,1352,568,1364,558,1405,542,1407,547,1367,562,1355,572,1343,583,1306,596,1267,605"/>
-<area shape="rect" id="Node000031" title=" " alt="" coords="1365,572,1543,598"/>
-<area shape="poly" id="edge32_Node000001_Node000031" title=" " alt="" coords="1558,580,1632,575,1656,572,1657,578,1633,580,1558,585"/>
+<area shape="rect" id="Node000030" href="$class_t_transient_bits.html" title=" " alt="" coords="1075,614,1251,640"/>
+<area shape="poly" id="edge32_Node000001_Node000030" title=" " alt="" coords="1267,628,1656,644,1656,649,1267,633"/>
+<area shape="poly" id="edge31_Node000002_Node000030" title=" " alt="" coords="1236,607,1405,567,1406,572,1237,612"/>
+<area shape="rect" id="Node000031" title=" " alt="" coords="1365,696,1543,722"/>
+<area shape="poly" id="edge33_Node000001_Node000031" title=" " alt="" coords="1558,696,1632,679,1677,659,1679,664,1634,684,1559,701"/>
 </map>

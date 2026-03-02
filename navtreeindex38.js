@@ -1,5 +1,14 @@
 var NAVTREEINDEX38 =
 {
+"class_t_griffin.html#af83ad943618a30f7d1639675e18fc5b8":[8,2,29,7],
+"class_t_griffin_angles.html":[8,0,0],
+"class_t_griffin_angles.html#a00eedd4403d2f3422790d21d94dd5fef":[8,0,0,4],
+"class_t_griffin_angles.html#a02e15b4482f3ba041de933f7d2503284":[8,0,0,30],
+"class_t_griffin_angles.html#a05c242e672cfa012d96152cf5f17c931":[8,0,0,24],
+"class_t_griffin_angles.html#a17fc2cac8143cf6c9a029ccf42571fe5":[8,0,0,2],
+"class_t_griffin_angles.html#a1f40299e089d926b011c03a68dfbc89d":[8,0,0,18],
+"class_t_griffin_angles.html#a4d8216f8b155e3dc0de0a1adb8bec09c":[8,0,0,5],
+"class_t_griffin_angles.html#a4fe18047004696db0da2820947512b11":[8,0,0,3],
 "class_t_griffin_angles.html#a56887ccdc6d92cec48d7a86845f53050":[8,0,0,16],
 "class_t_griffin_angles.html#a59fbe1bec5ffa30ed634b4ec183397ce":[8,0,0,37],
 "class_t_griffin_angles.html#a5eb36f9c66af1efa37b9bf1fda15193d":[8,0,0,15],
@@ -240,14 +249,5 @@ var NAVTREEINDEX38 =
 "class_t_griffin_hit.html#a7fdb3fca2870deeda721cc32a1001ae2":[8,2,32,22],
 "class_t_griffin_hit.html#a84bc76e0a55b6a766497718ebede9f2f":[8,2,32,38],
 "class_t_griffin_hit.html#a892a4320fe35c1ee04fe3191e38d1b46":[8,2,32,55],
-"class_t_griffin_hit.html#a8947a17721cefef11cfc4f855a239af8":[8,2,32,39],
-"class_t_griffin_hit.html#a8e84f6a505d936502a0096a749522094":[8,2,32,84],
-"class_t_griffin_hit.html#a8f661bfa4acafcc3f2052dbbfa6ec54c":[8,2,32,19],
-"class_t_griffin_hit.html#a9677bfb19ee70b9ce819ea8d1fceb00e":[8,2,32,2],
-"class_t_griffin_hit.html#a9677bfb19ee70b9ce819ea8d1fceb00ea30c7a6c70a2592413069d0a46e2309d4":[8,2,32,2,2],
-"class_t_griffin_hit.html#a9677bfb19ee70b9ce819ea8d1fceb00ea34bdbffdb1c0e1b603f58fc0d49548b6":[8,2,32,2,4],
-"class_t_griffin_hit.html#a9677bfb19ee70b9ce819ea8d1fceb00ea383fd110f350f2b35dbc1b245a216d19":[8,2,32,2,3],
-"class_t_griffin_hit.html#a9677bfb19ee70b9ce819ea8d1fceb00eac46818fff0cdb9892bdca69fca363333":[8,2,32,2,0],
-"class_t_griffin_hit.html#a9677bfb19ee70b9ce819ea8d1fceb00eac8f4925a383e3bfc8c12746da1370f00":[8,2,32,2,1],
-"class_t_griffin_hit.html#a97051bfa3581a486cfa5eca421161dac":[8,2,32,9]
+"class_t_griffin_hit.html#a8947a17721cefef11cfc4f855a239af8":[8,2,32,39]
 };

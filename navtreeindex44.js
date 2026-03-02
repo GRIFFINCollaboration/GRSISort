@@ -1,5 +1,14 @@
 var NAVTREEINDEX44 =
 {
+"class_t_la_br_bgo_hit.html#ac9202e62116783982bac618bea13cbb7":[8,2,39,46],
+"class_t_la_br_bgo_hit.html#acdb38ab68d5513dab900d3471e348270":[8,2,39,54],
+"class_t_la_br_bgo_hit.html#ad046c38d7b93b87b7e169e3418c43a09":[8,2,39,69],
+"class_t_la_br_bgo_hit.html#ad08e816347670259c6624a8be3ab6594":[8,2,39,59],
+"class_t_la_br_bgo_hit.html#ad62673f38054fff81556da5aa2770a3b":[8,2,39,45],
+"class_t_la_br_bgo_hit.html#ad722731c5fde16e444eccbc61a697dda":[8,2,39,21],
+"class_t_la_br_bgo_hit.html#ad7fb301833e90f4b36b7fa1be7fe1334":[8,2,39,79],
+"class_t_la_br_bgo_hit.html#ad7fc819e54332ab04928b3fc9aff599e":[8,2,39,27],
+"class_t_la_br_bgo_hit.html#add3b51accdd8928805388e43d5c99602":[8,2,39,6],
 "class_t_la_br_bgo_hit.html#ae035598462afc7faf4035ada0bd183dd":[8,2,39,71],
 "class_t_la_br_bgo_hit.html#ae8e8f7fdd137db1b8b5df4deca0f8c99":[8,2,39,63],
 "class_t_la_br_bgo_hit.html#aeaa7459f30606c0b4b5cefc5cbf32ca6":[8,2,39,7],
@@ -240,14 +249,5 @@ var NAVTREEINDEX44 =
 "class_t_midas_file.html#a3f985024ead0a724e8914d7916feb3c8":[8,11,41,38],
 "class_t_midas_file.html#a3f99d639a304553f6ff85d8aa7c7846a":[8,11,41,30],
 "class_t_midas_file.html#a4201fcc9277abf25d433728e8806358e":[8,11,41,59],
-"class_t_midas_file.html#a44351018afd09da6d229dac41005f5e9":[8,11,41,7],
-"class_t_midas_file.html#a488d45179a7bcf12d9e16dc4765aa176":[8,11,41,22],
-"class_t_midas_file.html#a4bfed42f0f3750d5c9fa97939571e8dc":[8,11,41,56],
-"class_t_midas_file.html#a53de5efaebfd99800d4d74585d85f305":[8,11,41,60],
-"class_t_midas_file.html#a55ffaa696f8a91a794aa2d4112b209af":[8,11,41,18],
-"class_t_midas_file.html#a5819329bc0a0e76f7953b943aac86fbb":[8,11,41,63],
-"class_t_midas_file.html#a5ac71f62189863e52f71679a5fc98cb8":[8,11,41,47],
-"class_t_midas_file.html#a5cb232e7494fca35df41018e100c62b9":[8,11,41,43],
-"class_t_midas_file.html#a6143a53f9084f558225bcec4f7971b8e":[8,11,41,34],
-"class_t_midas_file.html#a6535b8fa8870ce398198aad6d784d808":[8,11,41,49]
+"class_t_midas_file.html#a44351018afd09da6d229dac41005f5e9":[8,11,41,7]
 };

@@ -1,6 +1,5 @@
 var _t_tigress_8cxx =
 [
-    [ "DefaultAddback", "_t_tigress_8cxx.html#ab08e17b82b6f17f07e0d1b8cdd2c4713", null ],
-    [ "DefaultSuppression", "_t_tigress_8cxx.html#a9e8a65ed52935c801c0d68668508936f", null ],
-    [ "operator|", "group___detectors.html#ga2810eb31093e784df8cc78ca0e3922af", null ]
+    [ "DefaultTigressAddback", "_t_tigress_8cxx.html#a9289608ce85ea8a54ea20e359362fe09", null ],
+    [ "DefaultTigressSuppression", "_t_tigress_8cxx.html#a8654cf2c1d6dfb1a8b001304171e53b3", null ]
 ];

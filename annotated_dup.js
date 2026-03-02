@@ -295,6 +295,8 @@ var annotated_dup =
     [ "TTdrTigressHit", "class_t_tdr_tigress_hit.html", "class_t_tdr_tigress_hit" ],
     [ "TTerminalLoop", "class_t_terminal_loop.html", "class_t_terminal_loop" ],
     [ "TTigress", "class_t_tigress.html", "class_t_tigress" ],
+    [ "TTigressBgo", "class_t_tigress_bgo.html", "class_t_tigress_bgo" ],
+    [ "TTigressBgoHit", "class_t_tigress_bgo_hit.html", "class_t_tigress_bgo_hit" ],
     [ "TTigressHit", "class_t_tigress_hit.html", "class_t_tigress_hit" ],
     [ "TTimeCal", "class_t_time_cal.html", "class_t_time_cal" ],
     [ "TTip", "class_t_tip.html", "class_t_tip" ],
