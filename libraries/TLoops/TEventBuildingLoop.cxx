@@ -310,16 +310,33 @@ void TEventBuildingLoop::CheckWrapAround(const std::shared_ptr<TFragment>& frag)
    /// If we are past the background plus both implants (ignoring the decay w/ DAQ off) we correct the timestamp
    /// by adding the background, both implants, and the decay w/ DAQ on plus (the difference between TS and corr. DAQ TS
    /// divided by the cycle length) times the cycle length. The latter ensure we only add full cycles.
+
    Long64_t timeStamp    = frag->GetTimeStampNs();
+
+   // first we check that the time difference between this hit and the last (good) hit for this address is not larger than one cycle
+   // otherwise this is probably leftover from the previous run and we don't do anything with it
+   if(fLastTimeStamp.find(frag->GetAddress()) != fLastTimeStamp.end()) {
+      if(timeStamp - fLastTimeStamp[frag->GetAddress()] > fCycleLength * 1000) {
+         //std::cout << "Skipping hit for address " << hex(frag->GetAddress()) << " with timestamp " << hex(timeStamp) << " = " << timeStamp << " since last timestamp " << hex(fLastTimeStamp[frag->GetAddress()]) << " = " << fLastTimeStamp[frag->GetAddress()] << " is more than cycle length (" << fCycleLength << " = " << static_cast<double>(fCycleLength) / 1e6 << " s) earlier" << std::endl;
+         return;
+      }
+   }
    time_t   daqTimeStamp = frag->GetDaqTimeStamp();
 
    if(fDaqTimeStampOffset == 0 && TRunInfo::SubRunNumber() == 0) {
+      if(timeStamp > fCycleLength * 1000) {
+         //std::cout << "Skipping hit for address " << hex(frag->GetAddress()) << " with timestamp " << hex(timeStamp) << " = " << timeStamp << " since it's larger than the cycle length " << fCycleLength << " = " << static_cast<double>(fCycleLength) / 1e6 << " s, DAQ time stamp offset not yet set!" << std::endl;
+         return;
+      }
       fDaqTimeStampOffset = daqTimeStamp - timeStamp / 1000000000;
       std::ofstream file(fOffsetFile);
       file << fDaqTimeStampOffset;
       file.close();
-      std::cout << "Wrote daq time offset " << fDaqTimeStampOffset << " to " << fOffsetFile << std::endl;
+      std::cout << "Wrote daq time offset " << fDaqTimeStampOffset << " to " << fOffsetFile << " using timestamp " << timeStamp << " = " << hex(timeStamp) << " = " << static_cast<double>(timeStamp) / 1e9 << " s" << std::endl;
    }
+
+   // this is a good hit, so we update the last time stamp (or if this is the first hit of this adddress, set it)
+   fLastTimeStamp[frag->GetAddress()] = timeStamp;
 
    Long64_t offset = daqTimeStamp - fDaqTimeStampOffset - timeStamp / 1000000000;
    if(offset > (fImplantDaqOffLength + fDecayDaqOffLength) / 1000000 - 1) {   // -1 to account for uncertainty of offset between DAQ time (1 s precision) and timestamps
