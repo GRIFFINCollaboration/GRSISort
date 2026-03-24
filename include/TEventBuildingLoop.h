@@ -100,7 +100,7 @@ private:
    Long64_t    fImplantDaqOffLength{0};   ///< length of the implant(s) in us (DAQ is off) (code 0x8001)
    Long64_t    fDecayDaqOffLength{0};     ///< length of the decay with DAQ off in us (code 0x8004)
 
-   std::map<UInt_t, Long64_t> fLastTimeStamp; ///< map of the last time stamp for each address
+   std::map<UInt_t, Long64_t> fLastTimeStamp;   ///< map of the last time stamp for each address
 
 #ifndef __CINT__
    std::vector<std::shared_ptr<TFragment>> fNextEvent;
