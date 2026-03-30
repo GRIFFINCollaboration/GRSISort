@@ -311,7 +311,7 @@ void TEventBuildingLoop::CheckWrapAround(const std::shared_ptr<TFragment>& frag)
    /// by adding the background, both implants, and the decay w/ DAQ on plus (the difference between TS and corr. DAQ TS
    /// divided by the cycle length) times the cycle length. The latter ensure we only add full cycles.
 
-   Long64_t timeStamp    = frag->GetTimeStampNs();
+   Long64_t timeStamp = frag->GetTimeStampNs();
 
    // first we check that the time difference between this hit and the last (good) hit for this address is not larger than one cycle
    // otherwise this is probably leftover from the previous run and we don't do anything with it
@@ -321,7 +321,7 @@ void TEventBuildingLoop::CheckWrapAround(const std::shared_ptr<TFragment>& frag)
          return;
       }
    }
-   time_t   daqTimeStamp = frag->GetDaqTimeStamp();
+   time_t daqTimeStamp = frag->GetDaqTimeStamp();
 
    if(fDaqTimeStampOffset == 0 && TRunInfo::SubRunNumber() == 0) {
       if(timeStamp > fCycleLength * 1000) {
