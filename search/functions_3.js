@@ -160,7 +160,7 @@ var searchData=
   ['createsuppressedaddback_157',['CreateSuppressedAddback',['../class_t_suppressed.html#abcc6366a598a7641ab93ceada912dfad',1,'TSuppressed']]],
   ['crosstalk_158',['CrossTalk',['../class_cross_talk.html#a49f7c7d5f253e578790756c5ac254093',1,'CrossTalk']]],
   ['crosstalkfit_159',['CrossTalkFit',['../_griffin_c_t_fix_8cxx.html#afc9fef42cbd907209240ef82d2ddcf2e',1,'GriffinCTFix.cxx']]],
-  ['crosstalkfix_160',['CrossTalkFix',['../_griffin_c_t_fix_8cxx.html#a59563385f38e039618716857b4924b4c',1,'GriffinCTFix.cxx']]],
+  ['crosstalkfix_160',['CrossTalkFix',['../_griffin_c_t_fix_8cxx.html#a83a49505d20d4f3f3b96e9926b5bef99',1,'GriffinCTFix.cxx']]],
   ['crosstalkhelper_161',['CrossTalkHelper',['../class_cross_talk_helper.html#a3531a553147430c2255d510f0b2bbcb0',1,'CrossTalkHelper']]],
   ['csifitfunction_162',['CsIFitFunction',['../namespace_t_g_r_s_i_functions.html#a582ecd5ae604a5f080302a50004db5a5',1,'TGRSIFunctions']]],
   ['csiisset_163',['CsIIsSet',['../class_t_pulse_analyzer.html#a1e2204e686f82c06a6c4a30eaaf851fa',1,'TPulseAnalyzer']]],
