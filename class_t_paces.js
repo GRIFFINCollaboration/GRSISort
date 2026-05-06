@@ -21,8 +21,6 @@ var class_t_paces =
     [ "operator=", "class_t_paces.html#aae9270a0646a661ace52b47998a89c84", null ],
     [ "Print", "class_t_paces.html#a15e3eeb4aa08005c986f49ca6567d930", null ],
     [ "Print", "class_t_paces.html#a070f87c2407776f314056cda2a65f9f0", null ],
-    [ "SetCoreWave", "class_t_paces.html#a2996231651a3762d7b1beb72efaeff78", null ],
     [ "fDetectorPosition", "class_t_paces.html#a6cb869b2d7523fabe218702737fb2dd6", null ],
-    [ "fHits", "class_t_paces.html#a13ea06ba385aabcf09c1ea5a70d8145b", null ],
-    [ "fSetCoreWave", "class_t_paces.html#a6ea05954383d02981c0f7e675bb38e63", null ]
+    [ "fHits", "class_t_paces.html#a13ea06ba385aabcf09c1ea5a70d8145b", null ]
 ];

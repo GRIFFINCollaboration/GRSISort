@@ -907,8 +907,8 @@ var group___detectors =
       [ "IsPPGSet", "class_t_detector_hit.html#a892a4320fe35c1ee04fe3191e38d1b46", null ],
       [ "IsTimeSet", "class_t_detector_hit.html#a48f0f2fa2ad09c049fede0e50d42a87f", null ],
       [ "operator<", "class_t_detector_hit.html#af58eacf1f4d733600e1bbb4979cd0a50", null ],
-      [ "operator=", "class_t_detector_hit.html#a95b3d02503f060ea3156aaefdc5cb2ca", null ],
-      [ "operator=", "class_t_detector_hit.html#a9b5bda3fd5be500b0c13e65cfb0bed49", null ],
+      [ "operator=", "class_t_detector_hit.html#a1f865fdf8ad7c811af99d28c3665f3d6", null ],
+      [ "operator=", "class_t_detector_hit.html#a0a536320ba69f67d53a5fb2d322d5bec", null ],
       [ "Print", "class_t_detector_hit.html#afe8678787bd4e9090732c9d7828b874a", null ],
       [ "Print", "class_t_detector_hit.html#a8efdc7bd75faa5fdebb9f9e030a86fcf", null ],
       [ "SetAddress", "class_t_detector_hit.html#acdb38ab68d5513dab900d3471e348270", null ],
@@ -2124,7 +2124,6 @@ var group___detectors =
       [ "SetAddback", "class_t_griffin.html#ab97fef58c1446d2bc3c96105041bee0f", null ],
       [ "SetAddbackCriterion", "class_t_griffin.html#ab0f5b0f199d130cfceac265a6f28bc4d", null ],
       [ "SetBitNumber", "class_t_griffin.html#a93eba6b8af87f92fea7e5f91205eb5c7", null ],
-      [ "SetCoreWave", "class_t_griffin.html#adca87a7a2eb215ac7724ea758644526e", null ],
       [ "SetCrossTalk", "class_t_griffin.html#af7f38d1ac4da0c080f27153b3890bfd6", null ],
       [ "SetSuppressed", "class_t_griffin.html#a79c9a461ea53ce6c2876448eba158de2", null ],
       [ "SetSuppressedAddback", "class_t_griffin.html#a9cbd0f761ff8683f1ea22fd63a7f280b", null ],
@@ -2138,7 +2137,6 @@ var group___detectors =
       [ "fCycleStart", "class_t_griffin.html#a480cf2e139842a2c6e97a9b24d57c800", null ],
       [ "fGriffinBits", "class_t_griffin.html#a78349578bc2408a4049bc295af08ab7e", null ],
       [ "fHits", "class_t_griffin.html#a13ea06ba385aabcf09c1ea5a70d8145b", null ],
-      [ "fSetCoreWave", "class_t_griffin.html#ada7b046cefade862401e2ac356e5038e", null ],
       [ "fSuppressedAddbackFrags", "class_t_griffin.html#ae452fb7c3fe408d04f1d55ad1672362e", null ],
       [ "fSuppressedAddbackHits", "class_t_griffin.html#a2588b3d82793c64cde13d7abd3886c7a", null ],
       [ "fSuppressedHits", "class_t_griffin.html#a14398efc3a93ca462344a1cdfc01a77d", null ],
@@ -3056,10 +3054,8 @@ var group___detectors =
       [ "operator=", "class_t_paces.html#aae9270a0646a661ace52b47998a89c84", null ],
       [ "Print", "class_t_paces.html#a15e3eeb4aa08005c986f49ca6567d930", null ],
       [ "Print", "class_t_paces.html#a070f87c2407776f314056cda2a65f9f0", null ],
-      [ "SetCoreWave", "class_t_paces.html#a2996231651a3762d7b1beb72efaeff78", null ],
       [ "fDetectorPosition", "class_t_paces.html#a6cb869b2d7523fabe218702737fb2dd6", null ],
-      [ "fHits", "class_t_paces.html#a13ea06ba385aabcf09c1ea5a70d8145b", null ],
-      [ "fSetCoreWave", "class_t_paces.html#a6ea05954383d02981c0f7e675bb38e63", null ]
+      [ "fHits", "class_t_paces.html#a13ea06ba385aabcf09c1ea5a70d8145b", null ]
     ] ],
     [ "TPacesHit", "class_t_paces_hit.html", [
       [ "EBitFlag", "class_t_paces_hit.html#a187897c681b829247a98022bbb81fffe", [

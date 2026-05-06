@@ -1,7 +1,5 @@
 var NAVTREEINDEX45 =
 {
-"class_t_midas_event.html#a882d4b9fefd6f859cafec2e59ea0a75d":[8,11,40,7],
-"class_t_midas_event.html#a9190d98299353eed902cabc15b9e9d3b":[8,11,40,0],
 "class_t_midas_event.html#a96d00e61ec48ac323804d0b7ea1472e3":[8,11,40,23],
 "class_t_midas_event.html#a9f3048ac4b25d91e4b6c8f4b95cd9df6":[8,11,40,30],
 "class_t_midas_event.html#aa19f835a197a7ec88c145743f45a66db":[8,11,40,22],
@@ -249,5 +247,7 @@ var NAVTREEINDEX45 =
 "class_t_nucleus.html#aa4266168a548c57886f2f577a3a67e72":[10,0,197,43],
 "class_t_nucleus.html#aaaa88155ab2021c5547a747c06edd864":[10,0,197,47],
 "class_t_nucleus.html#aab5998da47f64b9a3761be0242c8e74b":[10,0,197,1],
-"class_t_nucleus.html#aaca87302e9bae3d49b1bcc86748d834d":[10,0,197,18]
+"class_t_nucleus.html#aaca87302e9bae3d49b1bcc86748d834d":[10,0,197,18],
+"class_t_nucleus.html#ab62f4ee9ab76506e6f86607525f1e86c":[10,0,197,21],
+"class_t_nucleus.html#ab6b559e2c14d12d7bb16d7f27e898f3e":[10,0,197,54]
 };

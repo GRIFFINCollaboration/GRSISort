@@ -1,9 +1,5 @@
 var NAVTREEINDEX69 =
 {
-"classpygui_1_1util_1_1_preserve_g_dir.html#a87352be637c1d6baee4e8a84cb290071":[9,0,5,7,0,4],
-"classpygui_1_1util_1_1_preserve_g_dir.html#a87352be637c1d6baee4e8a84cb290071":[10,0,1,5,0,4],
-"classpygui_1_1util_1_1_preserve_g_dir.html#aa4a1e5bac5569e6143af7ea54f60b983":[9,0,5,7,0,1],
-"classpygui_1_1util_1_1_preserve_g_dir.html#aa4a1e5bac5569e6143af7ea54f60b983":[10,0,1,5,0,1],
 "classpygui_1_1util_1_1_preserve_g_dir.html#ac8dbfd9de4261ff6d66e6e94d436fded":[9,0,5,7,0,2],
 "classpygui_1_1util_1_1_preserve_g_dir.html#ac8dbfd9de4261ff6d66e6e94d436fded":[10,0,1,5,0,2],
 "classpygui_1_1util_1_1_t_key_dict.html":[9,0,5,7,1],
@@ -249,5 +245,9 @@ var NAVTREEINDEX69 =
 "functions_y.html":[10,3,0,25],
 "functions_z.html":[10,3,0,26],
 "functions_~.html":[10,3,0,27],
-"globals.html":[11,1,0]
+"globals.html":[11,1,0],
+"globals.html":[11,1,0,0],
+"globals_a.html":[11,1,0,1],
+"globals_b.html":[11,1,0,2],
+"globals_c.html":[11,1,0,3]
 };

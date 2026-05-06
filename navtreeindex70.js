@@ -1,9 +1,5 @@
 var NAVTREEINDEX70 =
 {
-"globals.html":[11,1,0,0],
-"globals_a.html":[11,1,0,1],
-"globals_b.html":[11,1,0,2],
-"globals_c.html":[11,1,0,3],
 "globals_d.html":[11,1,0,4],
 "globals_defs.html":[11,1,6],
 "globals_e.html":[11,1,0,5],
@@ -249,5 +245,9 @@ var NAVTREEINDEX70 =
 "grsiproof_8cxx.html#a3c04138a5bfe5d72780bb7e82a18e627":[11,0,3,16,4],
 "grsiproof_8cxx.html#a411d2a9f7240d2d45ee4888efbefbf83":[11,0,3,16,2],
 "grsiproof_8cxx.html#a43d82899d0debf7098583ec99891e9d0":[11,0,3,16,11],
-"grsiproof_8cxx.html#a559f8e6b08cfc421c65b509ecdc61e03":[11,0,3,16,0]
+"grsiproof_8cxx.html#a559f8e6b08cfc421c65b509ecdc61e03":[11,0,3,16,0],
+"grsiproof_8cxx.html#a71a74b9c177ff01097d993110a2b92be":[11,0,3,16,7],
+"grsiproof_8cxx.html#a81cc151d0cdb0e7c41717363ced1d91f":[11,0,3,16,5],
+"grsiproof_8cxx.html#a90a49b50a652d99b8d612ad0f76a3565":[11,0,3,16,1],
+"grsiproof_8cxx.html#a995a22a8c9044c9bb20b398f5ad9d675":[11,0,3,16,3]
 };
