@@ -339,7 +339,7 @@ void TEventBuildingLoop::CheckWrapAround(const std::shared_ptr<TFragment>& frag)
    fLastTimeStamp[frag->GetAddress()] = timeStamp;
 
    Long64_t offset = daqTimeStamp - fDaqTimeStampOffset - timeStamp / 1000000000;
-   if(offset > (fImplantDaqOffLength + fDecayDaqOffLength) / 1000000 - 1) {   // -1 to account for uncertainty of offset between DAQ time (1 s precision) and timestamps
+   if(offset > (fImplantDaqOffLength + fDecayDaqOffLength) / 1000000 - 1 && fCycleLength > 0) {   // -1 to account for uncertainty of offset between DAQ time (1 s precision) and timestamps
       timeStamp += (fTapeMoveLength + fBackgroundLength + fImplantDaqOnLength + fImplantDaqOffLength + fDecayDaqOffLength) * 1000 + (offset / (fCycleLength / 1000000)) * fCycleLength * 1000;
       frag->SetTimeStamp(timeStamp / frag->GetTimeStampUnit());
    }

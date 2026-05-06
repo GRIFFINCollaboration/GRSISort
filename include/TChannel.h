@@ -20,7 +20,7 @@
 /// The TChannel is designed to hold all non-essential
 /// information of a TFragment (now the same as a hit; name, energy coeff, etc..)
 /// that would otherwise clog up the FragmentTree.  The TChannel class
-/// contains a static map to every channel make retrieval fairly
+/// contains a static map to every channel to make retrieval fairly
 /// easy.  The TChannel class also contains the ability to
 /// read and write a custom calibration file to set or
 /// save the TChannel information. Most of the information is read out

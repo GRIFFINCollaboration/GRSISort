@@ -10,7 +10,6 @@
 TReaction::TReaction(const char* beam, const char* targ, const char* ejec, const char* reco, double eBeam, double ex3, bool inverse)
    : fTBeam(eBeam), fInverse(inverse), fExc(ex3)
 {
-   Clear();
    // I THINK INVERSE KINEMATICS NECESSITATES THE BEAM<->TARGET ENTIRELY ?
    fNuc[0] = new TNucleus(beam);
    fNuc[1] = new TNucleus(targ);
