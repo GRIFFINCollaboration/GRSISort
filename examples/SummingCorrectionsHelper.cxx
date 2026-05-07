@@ -66,8 +66,10 @@ void SummingCorrectionsHelper::FillEfficiencyHistograms(unsigned int slot, TGrif
                fH2[slot].at("griffinGriffinE")->Fill(grif2->GetEnergy(), grif1->GetEnergy());
                fH1[slot].at("griffinGriffinEProj")->Fill(grif1->GetEnergy());
                fH1[slot].at("griffinGriffinEProj")->Fill(grif2->GetEnergy());
+               // we only fill these histograms once, as otherwise we would be double counting
+               // doing it this way means we will have only one of the two gamma rays that contribute to the sum on the x-axis entered on the y-axis
+               // but that is fine as we will fit all peaks that contribute to this sum and add them all together
                fH2[slot].at("griffinGriffinESum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif1->GetEnergy());
-               fH2[slot].at("griffinGriffinESum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif2->GetEnergy());
             }
          }
       }
@@ -83,8 +85,10 @@ void SummingCorrectionsHelper::FillEfficiencyHistograms(unsigned int slot, TGrif
          if(Reject(grif2) || !GoodCfd(grif2)) { continue; }
          if(grif1->GetPosition().Angle(grif2->GetPosition()) / TMath::Pi() * 180. > 179.) {
             if(Prompt(grif1, grif2)) {
+               // we only fill these histograms once, as otherwise we would be double counting
+               // doing it this way means we will have only one of the two gamma rays that contribute to the sum on the x-axis entered on the y-axis
+               // but that is fine as we will fit all peaks that contribute to this sum and add them all together
                fH2[slot].at("griffinGriffinESuppSum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif1->GetEnergy());
-               fH2[slot].at("griffinGriffinESuppSum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif2->GetEnergy());
             }
          }
       }
@@ -117,8 +121,10 @@ void SummingCorrectionsHelper::FillEfficiencyHistograms(unsigned int slot, TGrif
                fH2[slot].at("griffinGriffinEAddback")->Fill(grif2->GetEnergy(), grif1->GetEnergy());
                fH1[slot].at("griffinGriffinEAddbackProj")->Fill(grif1->GetEnergy());
                fH1[slot].at("griffinGriffinEAddbackProj")->Fill(grif2->GetEnergy());
+               // we only fill these histograms once, as otherwise we would be double counting
+               // doing it this way means we will have only one of the two gamma rays that contribute to the sum on the x-axis entered on the y-axis
+               // but that is fine as we will fit all peaks that contribute to this sum and add them all together
                fH2[slot].at("griffinGriffinEAddbackSum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif1->GetEnergy());
-               fH2[slot].at("griffinGriffinEAddbackSum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif2->GetEnergy());
             }
          }
       }
@@ -134,8 +140,10 @@ void SummingCorrectionsHelper::FillEfficiencyHistograms(unsigned int slot, TGrif
          if(Reject(grif2) || !GoodCfd(grif2)) { continue; }
          if(grif1->GetPosition().Angle(grif2->GetPosition()) / TMath::Pi() * 180. > 157.) {
             if(Prompt(grif1, grif2)) {
+               // we only fill these histograms once, as otherwise we would be double counting
+               // doing it this way means we will have only one of the two gamma rays that contribute to the sum on the x-axis entered on the y-axis
+               // but that is fine as we will fit all peaks that contribute to this sum and add them all together
                fH2[slot].at("griffinGriffinESuppAddbackSum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif1->GetEnergy());
-               fH2[slot].at("griffinGriffinESuppAddbackSum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif2->GetEnergy());
             }
          }
       }
@@ -164,8 +172,10 @@ void SummingCorrectionsHelper::FillEfficiencyHistograms(unsigned int slot, TGrif
          // for the single crystal method, we only consider summing in if it's the crystal opposite
          if(grif1->GetPosition().Angle(grif2->GetPosition()) / TMath::Pi() * 180. > 179.) {
             if(Prompt(grif1, grif2)) {
+               // we only fill these histograms once, as otherwise we would be double counting
+               // doing it this way means we will have only one of the two gamma rays that contribute to the sum on the x-axis entered on the y-axis
+               // but that is fine as we will fit all peaks that contribute to this sum and add them all together
                fH2[slot].at("griffinGriffinESingleCrystalSum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif1->GetEnergy());
-               fH2[slot].at("griffinGriffinESingleCrystalSum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif2->GetEnergy());
             }
          }
       }
@@ -212,7 +222,6 @@ void SummingCorrectionsHelper::FillBranchingRatioHistograms(unsigned int slot, T
                      fH2[slot].at("griffinGriffinE")->Fill(grif1->GetEnergy(), grif2->GetEnergy());
                      fH2[slot].at("griffinGriffinE")->Fill(grif2->GetEnergy(), grif1->GetEnergy());
                      fH2[slot].at("griffinGriffinESum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif1->GetEnergy());
-                     fH2[slot].at("griffinGriffinESum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif2->GetEnergy());
                   }
                }
             }
@@ -227,7 +236,6 @@ void SummingCorrectionsHelper::FillBranchingRatioHistograms(unsigned int slot, T
                      fH2[slot].at("griffinGriffinE")->Fill(grif1->GetEnergy(), grif2->GetEnergy(), -fTimeRandomRatio);
                      fH2[slot].at("griffinGriffinE")->Fill(grif2->GetEnergy(), grif1->GetEnergy(), -fTimeRandomRatio);
                      fH2[slot].at("griffinGriffinESum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif1->GetEnergy(), -fTimeRandomRatio);
-                     fH2[slot].at("griffinGriffinESum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif2->GetEnergy(), -fTimeRandomRatio);
                   }
                }
             }
@@ -242,7 +250,6 @@ void SummingCorrectionsHelper::FillBranchingRatioHistograms(unsigned int slot, T
                      fH2[slot].at("griffinGriffinE")->Fill(grif1->GetEnergy(), grif2->GetEnergy(), -fEnergyRatio);
                      fH2[slot].at("griffinGriffinE")->Fill(grif2->GetEnergy(), grif1->GetEnergy(), -fEnergyRatio);
                      fH2[slot].at("griffinGriffinESum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif1->GetEnergy(), -fEnergyRatio);
-                     fH2[slot].at("griffinGriffinESum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif2->GetEnergy(), -fEnergyRatio);
                   }
                }
             }
@@ -257,7 +264,6 @@ void SummingCorrectionsHelper::FillBranchingRatioHistograms(unsigned int slot, T
                      fH2[slot].at("griffinGriffinE")->Fill(grif1->GetEnergy(), grif2->GetEnergy(), fTimeRandomRatio * fEnergyRatio);
                      fH2[slot].at("griffinGriffinE")->Fill(grif2->GetEnergy(), grif1->GetEnergy(), fTimeRandomRatio * fEnergyRatio);
                      fH2[slot].at("griffinGriffinESum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif1->GetEnergy(), fTimeRandomRatio * fEnergyRatio);
-                     fH2[slot].at("griffinGriffinESum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif2->GetEnergy(), fTimeRandomRatio * fEnergyRatio);
                   }
                }
             }
@@ -294,19 +300,15 @@ void SummingCorrectionsHelper::FillBranchingRatioHistograms(unsigned int slot, T
                   if(Coincident(grif0, grif1) && Gate(grif0)) {
                      // coincident gate
                      fH2[slot].at("griffinGriffinESuppSum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif1->GetEnergy());
-                     fH2[slot].at("griffinGriffinESuppSum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif2->GetEnergy());
                   } else if(TimeRandom(grif0, grif1) && Gate(grif0)) {
                      // time-random gate - subtract with time random weight
                      fH2[slot].at("griffinGriffinESuppSum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif1->GetEnergy(), -fTimeRandomRatio);
-                     fH2[slot].at("griffinGriffinESuppSum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif2->GetEnergy(), -fTimeRandomRatio);
                   } else if(Coincident(grif0, grif1) && Background(grif0)) {
                      // coincident Compton background - subtract with energy gate weight
                      fH2[slot].at("griffinGriffinESuppSum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif1->GetEnergy(), -fEnergyRatio);
-                     fH2[slot].at("griffinGriffinESuppSum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif2->GetEnergy(), -fEnergyRatio);
                   } else if(TimeRandom(grif0, grif1) && Background(grif0)) {
                      // time random Compton background - add with time random weight time energy gate weight
                      fH2[slot].at("griffinGriffinESuppSum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif1->GetEnergy(), fTimeRandomRatio * fEnergyRatio);
-                     fH2[slot].at("griffinGriffinESuppSum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif2->GetEnergy(), fTimeRandomRatio * fEnergyRatio);
                   }
                }
             }
@@ -356,7 +358,6 @@ void SummingCorrectionsHelper::FillBranchingRatioHistograms(unsigned int slot, T
                      fH2[slot].at("griffinGriffinEAddback")->Fill(grif1->GetEnergy(), grif2->GetEnergy());
                      fH2[slot].at("griffinGriffinEAddback")->Fill(grif2->GetEnergy(), grif1->GetEnergy());
                      fH2[slot].at("griffinGriffinEAddbackSum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif1->GetEnergy());
-                     fH2[slot].at("griffinGriffinEAddbackSum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif2->GetEnergy());
                   }
                }
             }
@@ -371,7 +372,6 @@ void SummingCorrectionsHelper::FillBranchingRatioHistograms(unsigned int slot, T
                      fH2[slot].at("griffinGriffinEAddback")->Fill(grif1->GetEnergy(), grif2->GetEnergy(), -fTimeRandomRatio);
                      fH2[slot].at("griffinGriffinEAddback")->Fill(grif2->GetEnergy(), grif1->GetEnergy(), -fTimeRandomRatio);
                      fH2[slot].at("griffinGriffinEAddbackSum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif1->GetEnergy(), -fTimeRandomRatio);
-                     fH2[slot].at("griffinGriffinEAddbackSum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif2->GetEnergy(), -fTimeRandomRatio);
                   }
                }
             }
@@ -386,7 +386,6 @@ void SummingCorrectionsHelper::FillBranchingRatioHistograms(unsigned int slot, T
                      fH2[slot].at("griffinGriffinEAddback")->Fill(grif1->GetEnergy(), grif2->GetEnergy(), -fEnergyRatio);
                      fH2[slot].at("griffinGriffinEAddback")->Fill(grif2->GetEnergy(), grif1->GetEnergy(), -fEnergyRatio);
                      fH2[slot].at("griffinGriffinEAddbackSum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif1->GetEnergy(), -fEnergyRatio);
-                     fH2[slot].at("griffinGriffinEAddbackSum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif2->GetEnergy(), -fEnergyRatio);
                   }
                }
             }
@@ -401,7 +400,6 @@ void SummingCorrectionsHelper::FillBranchingRatioHistograms(unsigned int slot, T
                      fH2[slot].at("griffinGriffinEAddback")->Fill(grif1->GetEnergy(), grif2->GetEnergy(), fTimeRandomRatio * fEnergyRatio);
                      fH2[slot].at("griffinGriffinEAddback")->Fill(grif2->GetEnergy(), grif1->GetEnergy(), fTimeRandomRatio * fEnergyRatio);
                      fH2[slot].at("griffinGriffinEAddbackSum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif1->GetEnergy(), fTimeRandomRatio * fEnergyRatio);
-                     fH2[slot].at("griffinGriffinEAddbackSum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif2->GetEnergy(), fTimeRandomRatio * fEnergyRatio);
                   }
                }
             }
@@ -438,19 +436,15 @@ void SummingCorrectionsHelper::FillBranchingRatioHistograms(unsigned int slot, T
                   if(Coincident(grif0, grif1) && Gate(grif0)) {
                      // coincident gate
                      fH2[slot].at("griffinGriffinESuppAddbackSum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif1->GetEnergy());
-                     fH2[slot].at("griffinGriffinESuppAddbackSum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif2->GetEnergy());
                   } else if(TimeRandom(grif0, grif1) && Gate(grif0)) {
                      // time-random gate - subtract with time random weight
                      fH2[slot].at("griffinGriffinESuppAddbackSum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif1->GetEnergy(), -fTimeRandomRatio);
-                     fH2[slot].at("griffinGriffinESuppAddbackSum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif2->GetEnergy(), -fTimeRandomRatio);
                   } else if(Coincident(grif0, grif1) && Background(grif0)) {
                      // coincident Compton background - subtract with energy gate weight
                      fH2[slot].at("griffinGriffinESuppAddbackSum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif1->GetEnergy(), -fEnergyRatio);
-                     fH2[slot].at("griffinGriffinESuppAddbackSum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif2->GetEnergy(), -fEnergyRatio);
                   } else if(TimeRandom(grif0, grif1) && Background(grif0)) {
                      // time random Compton background - add with time random weight time energy gate weight
                      fH2[slot].at("griffinGriffinESuppAddbackSum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif1->GetEnergy(), fTimeRandomRatio * fEnergyRatio);
-                     fH2[slot].at("griffinGriffinESuppAddbackSum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif2->GetEnergy(), fTimeRandomRatio * fEnergyRatio);
                   }
                }
             }
@@ -510,19 +504,15 @@ void SummingCorrectionsHelper::FillBranchingRatioHistograms(unsigned int slot, T
                   if(Coincident(grif0, grif1) && Gate(grif0)) {
                      // coincident gate
                      fH2[slot].at("griffinGriffinESingleCrystalSum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif1->GetEnergy());
-                     fH2[slot].at("griffinGriffinESingleCrystalSum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif2->GetEnergy());
                   } else if(TimeRandom(grif0, grif1) && Gate(grif0)) {
                      // time-random gate - subtract with time random weight
                      fH2[slot].at("griffinGriffinESingleCrystalSum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif1->GetEnergy(), -fTimeRandomRatio);
-                     fH2[slot].at("griffinGriffinESingleCrystalSum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif2->GetEnergy(), -fTimeRandomRatio);
                   } else if(Coincident(grif0, grif1) && Background(grif0)) {
                      // coincident Compton background - subtract with energy gate weight
                      fH2[slot].at("griffinGriffinESingleCrystalSum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif1->GetEnergy(), -fEnergyRatio);
-                     fH2[slot].at("griffinGriffinESingleCrystalSum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif2->GetEnergy(), -fEnergyRatio);
                   } else if(TimeRandom(grif0, grif1) && Background(grif0)) {
                      // time random Compton background - add with time random weight time energy gate weight
                      fH2[slot].at("griffinGriffinESingleCrystalSum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif1->GetEnergy(), fTimeRandomRatio * fEnergyRatio);
-                     fH2[slot].at("griffinGriffinESingleCrystalSum")->Fill(grif1->GetEnergy() + grif2->GetEnergy(), grif2->GetEnergy(), fTimeRandomRatio * fEnergyRatio);
                   }
                }
             }
