@@ -77,8 +77,16 @@ public:
    TDetectorHit(TDetectorHit&&) noexcept = default;
    ~TDetectorHit();
 
-   TDetectorHit& operator=(const TDetectorHit& rhs)     { rhs.Copy(*this); return *this; }
-   TDetectorHit& operator=(TDetectorHit&& rhs) noexcept { rhs.Copy(*this); return *this; }
+   TDetectorHit& operator=(const TDetectorHit& rhs)
+   {
+      rhs.Copy(*this);
+      return *this;
+   }
+   TDetectorHit& operator=(TDetectorHit&& rhs) noexcept
+   {
+      rhs.Copy(*this);
+      return *this;
+   }
 
    // static void SetPPGPtr(TPPG* ptr) { fPPG = ptr; }
 
