@@ -23,4 +23,7 @@ inline size_t FindFileSize(const char* fname)
    return fsize;
 }
 
+const char* GetColorFromNumber(int number);
+const char* GetLongColorFromNumber(int number);
+
 #endif
