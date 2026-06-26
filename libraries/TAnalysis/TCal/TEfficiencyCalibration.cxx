@@ -168,7 +168,7 @@ TFitResultPtr TEfficiencyCalibration::Fit(Option_t*)
    // This fits the relative efficiency curve
    UInt_t n_rel_graphs = fRelativeEffGraph->GetListOfGraphs()->GetSize();
    delete fRelativeFit;
-   fRelativeFit = new TF1("fRelativeFit", this, &TEfficiencyCalibration::PhotoPeakEfficiency, 0, 8000, 8 + n_rel_graphs, "TEfficiencyCalibration", "PhotoPeakEfficiency");
+   fRelativeFit = new TF1("fRelativeFit", this, &TEfficiencyCalibration::PhotoPeakEfficiency, 0, 8000, 8 + n_rel_graphs);
 
    // Start by naming the parameters of the fit
    for(int mapIdx = 0; mapIdx < static_cast<int>(fGraphMap.size()); ++mapIdx) {
@@ -301,16 +301,13 @@ bool TEfficiencyCalibration::ScaleToAbsolute()
 {
    if((fAbsEffGraph->GetListOfGraphs()->GetSize() != 0) && (fRelativeFit != nullptr)) {
       if(fAbsoluteFunc == nullptr) {
-         fAbsoluteFunc = new TF1("fAbsoluteFunc", this, &TEfficiencyCalibration::AbsoluteEfficiency, 0, 8000, 9,
-                                 "TEfficiencyCalibration", "AbsoluteEfficiency");
+         fAbsoluteFunc = new TF1("fAbsoluteFunc", this, &TEfficiencyCalibration::AbsoluteEfficiency, 0, 8000, 9);
       }
       fAbsoluteFunc->SetParName(0, "Scale");
       for(int i = 0; i < 8; ++i) {
          fAbsoluteFunc->SetParName(i + 1, Form("a%d", i));
-         fAbsoluteFunc->SetParameter(i + 1,
-                                     fRelativeFit->GetParameter(i + fRelativeEffGraph->GetListOfGraphs()->GetSize()));
-         fAbsoluteFunc->SetParError(i + 1,
-                                    fRelativeFit->GetParError(i + fRelativeEffGraph->GetListOfGraphs()->GetSize()));
+         fAbsoluteFunc->SetParameter(i + 1, fRelativeFit->GetParameter(i + fRelativeEffGraph->GetListOfGraphs()->GetSize()));
+         fAbsoluteFunc->SetParError(i + 1, fRelativeFit->GetParError(i + fRelativeEffGraph->GetListOfGraphs()->GetSize()));
       }
 
       // we need to find the average amount that we must scale the relative efficiency fit by in order to have it line

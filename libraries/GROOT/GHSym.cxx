@@ -101,7 +101,10 @@ Int_t GHSym::BufferEmpty(Int_t action)
       fBuffer = buffer;
    }
 
-   if(CanExtendAllAxes() || fXaxis.GetXmax() <= fXaxis.GetXmin() || fYaxis.GetXmax() <= fYaxis.GetXmin()) {
+   const bool xbinAuto = fXaxis.GetXmax() <= fXaxis.GetXmin();
+   const bool ybinAuto = fYaxis.GetXmax() <= fYaxis.GetXmin();
+   const bool extend = CanExtendAllAxes();
+   if(extend || xbinAuto || ybinAuto) {
       // find min, max of entries in buffer
       // for the symmetric matrix x- and y-range are the same
       Double_t min = fBuffer[2];
@@ -128,8 +131,12 @@ Int_t GHSym::BufferEmpty(Int_t action)
             max = y;
          }
       }
-      if(fXaxis.GetXmax() <= fXaxis.GetXmin() || fYaxis.GetXmax() <= fYaxis.GetXmin()) {
+      if(xbinAuto || ybinAuto) {
+#if ROOT_VERSION_CODE < ROOT_VERSION(6, 40, 0)
          THLimitsFinder::GetLimitsFinder()->FindGoodLimits(this, min, max, min, max);
+#else
+         THLimitsFinder::GetLimitsFinder()->FindGoodLimitsXY(this, min, max, min, max, xbinAuto ? 0 : fXaxis.GetNbins(), ybinAuto ? 0 : fYaxis.GetNbins());
+#endif
       } else {
          fBuffer     = nullptr;
          Int_t keep  = fBufferSize;

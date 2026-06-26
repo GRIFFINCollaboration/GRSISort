@@ -3,8 +3,8 @@
 
 void TABPeak::Centroid(const Double_t& centroid)
 {
-   SetFitFunction(new TF1("ab_fit", this, &TABPeak::TotalFunction, 0, 1, 6, "TABPeak", "TotalFunction"));
-   SetPeakFunction(new TF1("ab_peak", this, &TABPeak::PeakFunction, 0, 1, 5, "TABPeak", "PeakFunction"));
+   SetFitFunction(new TF1("ab_fit", this, &TABPeak::TotalFunction, 0, 1, 6));
+   SetPeakFunction(new TF1("ab_peak", this, &TABPeak::PeakFunction, 0, 1, 5));
    InitParNames();
    GetFitFunction()->SetParameter(1, centroid);
    SetListOfBGPar(std::vector<bool>{false, false, false, false, false, true});
@@ -137,8 +137,8 @@ void TABPeak::DrawComponents(Option_t* opt)
    if(fOneHitOnGlobal != nullptr) { fOneHitOnGlobal->Delete(); }
    if(fTwoHitOnGlobal != nullptr) { fTwoHitOnGlobal->Delete(); }
    // Make a copy of the total function, and then tack on the global background parameters.
-   fOneHitOnGlobal = new TF1("draw_component1", this, &TABPeak::OneHitPeakOnGlobalFunction, low, high, GetFitFunction()->GetNpar() + GetGlobalBackground()->GetNpar(), "TABPeak", "OneHitPeakOnGlobalFunction");
-   fTwoHitOnGlobal = new TF1("draw_component2", this, &TABPeak::TwoHitPeakOnGlobalFunction, low, high, GetFitFunction()->GetNpar() + GetGlobalBackground()->GetNpar(), "TABPeak", "TwoHitPeakOnGlobalFunction");
+   fOneHitOnGlobal = new TF1("draw_component1", this, &TABPeak::OneHitPeakOnGlobalFunction, low, high, GetFitFunction()->GetNpar() + GetGlobalBackground()->GetNpar());
+   fTwoHitOnGlobal = new TF1("draw_component2", this, &TABPeak::TwoHitPeakOnGlobalFunction, low, high, GetFitFunction()->GetNpar() + GetGlobalBackground()->GetNpar());
    for(int i = 0; i < GetFitFunction()->GetNpar(); ++i) {
       fOneHitOnGlobal->SetParameter(i, GetFitFunction()->GetParameter(i));
       fTwoHitOnGlobal->SetParameter(i, GetFitFunction()->GetParameter(i));

@@ -94,10 +94,13 @@ Int_t GCube::BufferEmpty(Int_t action)
       fBuffer = buffer;
    }
 
-   if(CanExtendAllAxes() || fXaxis.GetXmax() <= fXaxis.GetXmin() || fYaxis.GetXmax() <= fYaxis.GetXmin() ||
-      fZaxis.GetXmax() <= fZaxis.GetXmin()) {
+   const bool xbinAuto = fXaxis.GetXmax() <= fXaxis.GetXmin();
+   const bool ybinAuto = fYaxis.GetXmax() <= fYaxis.GetXmin();
+   const bool zbinAuto = fZaxis.GetXmax() <= fZaxis.GetXmin();
+   const bool extend = CanExtendAllAxes();
+   if(extend || xbinAuto || ybinAuto || zbinAuto) {
       // find min, max of entries in buffer
-      // for the symmetric matrix x- and y-range are the same
+      // for the symmetric matrix x-, y- and z-range are the same
       Double_t min = fBuffer[2];
       Double_t max = min;
       if(fBuffer[3] < min) {
@@ -129,9 +132,12 @@ Int_t GCube::BufferEmpty(Int_t action)
             max = z;
          }
       }
-      if(fXaxis.GetXmax() <= fXaxis.GetXmin() || fYaxis.GetXmax() <= fYaxis.GetXmin() ||
-         fZaxis.GetXmax() <= fZaxis.GetXmin()) {
+      if(xbinAuto || ybinAuto || zbinAuto) {
+#if ROOT_VERSION_CODE < ROOT_VERSION(6, 40, 0)
          THLimitsFinder::GetLimitsFinder()->FindGoodLimits(this, min, max, min, max, min, max);
+#else
+         THLimitsFinder::GetLimitsFinder()->FindGoodLimitsXYZ(this, min, max, min, max, min, max, xbinAuto ? 0 : fXaxis.GetNbins(), ybinAuto ? 0 : fYaxis.GetNbins(), zbinAuto ? 0 : fZaxis.GetNbins());
+#endif
       } else {
          fBuffer     = nullptr;
          Int_t keep  = fBufferSize;

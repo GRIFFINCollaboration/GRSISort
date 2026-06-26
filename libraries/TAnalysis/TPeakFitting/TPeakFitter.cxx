@@ -13,7 +13,7 @@ EVerbosity TPeakFitter::fVerboseLevel = EVerbosity::kQuiet;
 TPeakFitter::TPeakFitter(const Double_t& rangeLow, const Double_t& rangeHigh)
    : fRangeLow(rangeLow), fRangeHigh(rangeHigh)
 {
-   fBGToFit = new TF1("fbg", this, &TPeakFitter::DefaultBackgroundFunction, fRangeLow, fRangeHigh, 4, "TPeakFitter", "DefaultBackgroundFunction");
+   fBGToFit = new TF1("fbg", this, &TPeakFitter::DefaultBackgroundFunction, fRangeLow, fRangeHigh, 4);
    fBGToFit->FixParameter(3, 0);
    fBGToFit->SetLineColor(static_cast<Color_t>(kRed + fColorIndex));
    if(fVerboseLevel >= EVerbosity::kSubroutines) { std::cout << __PRETTY_FUNCTION__ << ": constructed peak fitter " << this << " using range " << fRangeLow << " - " << fRangeHigh << std::endl; }   // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
@@ -119,7 +119,7 @@ TFitResultPtr TPeakFitter::Fit(TH1* fit_hist, Option_t* opt)
    TVirtualFitter::SetMaxIterations(100000);
    TVirtualFitter::SetPrecision(1e-4);
    if(fTotalFitFunction == nullptr) {
-      fTotalFitFunction = new TF1(Form("total_fit_%.0f_%.0f", fRangeLow, fRangeHigh), this, &TPeakFitter::FitFunction, fRangeLow, fRangeHigh, GetNParameters(), "TPeakFitter", "FitFunction");
+      fTotalFitFunction = new TF1(Form("total_fit_%.0f_%.0f", fRangeLow, fRangeHigh), this, &TPeakFitter::FitFunction, fRangeLow, fRangeHigh, GetNParameters());
    }
    fTotalFitFunction->SetLineColor(static_cast<Color_t>(kMagenta + fColorIndex));
    fTotalFitFunction->SetRange(fRangeLow, fRangeHigh);
@@ -197,7 +197,7 @@ void TPeakFitter::UpdatePeakParameters(const TFitResultPtr& fit_res, TH1* fit_hi
    // what their new parameters should be.
    Int_t param_counter = 0;
 
-   TF1* global_bg = new TF1("global_bg", this, &TPeakFitter::BackgroundFunction, fRangeLow, fRangeHigh, fTotalFitFunction->GetNpar(), "TPeakFitter", "BackgroundFunction");
+   TF1* global_bg = new TF1("global_bg", this, &TPeakFitter::BackgroundFunction, fRangeLow, fRangeHigh, fTotalFitFunction->GetNpar());
    global_bg->SetParameters(fTotalFitFunction->GetParameters());
 
    // Start by looping through all of the peaks in the fitter.

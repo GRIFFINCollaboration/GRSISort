@@ -4,6 +4,7 @@
 #include <sys/stat.h>
 #include <iostream>
 #include <fstream>
+#include <algorithm>
 
 #include "TObjArray.h"
 #include "TObjString.h"

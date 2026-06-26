@@ -378,22 +378,22 @@ void TLevel::Draw(const double& left, const double& right)
       y.push_back(fEnergy + fOffset);
       x.push_back(left + tickLength);
       y.push_back(fEnergy + fOffset);
-      x.push_back(left + tickLength + std::fabs(fOffset) / 2.);
+      x.push_back(left + tickLength + std::abs(fOffset) / 2.);
       y.push_back(fEnergy);
-      if(fDebug) { std::cout << "Non-zero offset " << fOffset << " => left line " << left << ", " << fEnergy + fOffset << " via " << left + tickLength << ", " << fEnergy + fOffset << " to " << left + tickLength + std::fabs(fOffset) / 2. << ", " << fEnergy << std::endl; }
+      if(fDebug) { std::cout << "Non-zero offset " << fOffset << " => left line " << left << ", " << fEnergy + fOffset << " via " << left + tickLength << ", " << fEnergy + fOffset << " to " << left + tickLength + std::abs(fOffset) / 2. << ", " << fEnergy << std::endl; }
    }
-   x.push_back(left + tickLength + std::fabs(fOffset) / 2.);
+   x.push_back(left + tickLength + std::abs(fOffset) / 2.);
    y.push_back(fEnergy);
-   x.push_back(right - tickLength - std::fabs(fOffset) / 2.);
+   x.push_back(right - tickLength - std::abs(fOffset) / 2.);
    y.push_back(fEnergy);
    if(fOffset != 0.) {
-      x.push_back(right - tickLength - std::fabs(fOffset) / 2.);
+      x.push_back(right - tickLength - std::abs(fOffset) / 2.);
       y.push_back(fEnergy);
       x.push_back(right - tickLength);
       y.push_back(fEnergy + fOffset);
       x.push_back(right);
       y.push_back(fEnergy + fOffset);
-      if(fDebug) { std::cout << "Non-zero offset " << fOffset << " => right line " << right - tickLength - std::fabs(fOffset) / 2. << ", " << fEnergy << " via " << right - tickLength << ", " << fEnergy + fOffset << " to " << right << ", " << fEnergy + fOffset << std::endl; }
+      if(fDebug) { std::cout << "Non-zero offset " << fOffset << " => right line " << right - tickLength - std::abs(fOffset) / 2. << ", " << fEnergy << " via " << right - tickLength << ", " << fEnergy + fOffset << " to " << right << ", " << fEnergy + fOffset << std::endl; }
    }
    SetPolyLine(x.size(), x.data(), y.data());
    TPolyLine::Draw();
@@ -526,7 +526,7 @@ TLevel* TBand::FindLevel(double energy, double energyUncertainty)
    double  en    = low->first;
    TLevel* level = &(low->second);
    for(auto& it = ++low; it != high; ++it) {
-      if(std::fabs(energy - en) > std::fabs(energy - it->first)) {
+      if(std::abs(energy - en) > std::abs(energy - it->first)) {
          en    = it->first;
          level = &(it->second);
       }
@@ -786,7 +786,7 @@ TGamma* TLevelScheme::FindGamma(double energy, double energyUncertainty)
 
    auto* result = list[0];
    for(size_t i = 1; i < list.size(); ++i) {
-      if(std::fabs(list[i]->Energy() - energy) < std::fabs(result->Energy() - energy)) { result = list[i]; }
+      if(std::abs(list[i]->Energy() - energy) < std::abs(result->Energy() - energy)) { result = list[i]; }
    }
 
    return result;

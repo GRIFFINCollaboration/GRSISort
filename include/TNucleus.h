@@ -33,6 +33,18 @@ public:
 
    ~TNucleus();
 
+   enum class EFlag : uint8_t { kDefault, kUnobserved, kInferred, kTentative, kObserved};
+
+   void SetObserved() { fFlag = EFlag::kObserved; }
+   void SetUnobserved() { fFlag = EFlag::kUnobserved; }
+   void SetInferred() { fFlag = EFlag::kInferred; }
+   void SetTentative() { fFlag = EFlag::kTentative; }
+
+   bool Observed() { return fFlag == EFlag::kObserved; }
+   bool Unobserved() { return fFlag == EFlag::kUnobserved; }
+   bool Inferred() { return fFlag == EFlag::kInferred; }
+   bool Tentative() { return fFlag == EFlag::kTentative; }
+
    static void ParseName(const char* name, std::string& symbol, int& number, std::string& element)
    {
       ParseName(std::string(name), symbol, number, element);
@@ -93,12 +105,13 @@ private:
    static std::string fSourceDirectory;          //!<! path of directory with .sou files
    static bool        fSourceDirectoryChecked;   //!<! flag to indicate whetehr the source directory path has been checked
 
-   int         fA{0};             ///< Number of nucleons (Z + N)
-   int         fN{0};             ///< Number of neutrons (N)
-   int         fZ{0};             ///< Number of protons (Z)
-   double      fMass{0.};         ///< Mass (in MeV)
-   double      fMassExcess{0.};   ///< Mass excess (in MeV)
-   std::string fSymbol;           ///< Atomic symbol (ex. Ba, C, O, N)
+   int         fA{0};                    ///< Number of nucleons (Z + N)
+   int         fN{0};                    ///< Number of neutrons (N)
+   int         fZ{0};                    ///< Number of protons (Z)
+   double      fMass{0.};                ///< Mass (in MeV)
+   double      fMassExcess{0.};          ///< Mass excess (in MeV)
+   std::string fSymbol;                  ///< Atomic symbol (ex. Ba, C, O, N)
+   EFlag       fFlag{EFlag::kDefault};   ///< Flag indicating if nucleus is observed, unobserved, inferred, or tentative
 
    TSortedList fTransitionListByIntensity;
    TSortedList fTransitionListByEnergy;

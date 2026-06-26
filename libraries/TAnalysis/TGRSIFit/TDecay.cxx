@@ -127,14 +127,12 @@ TSingleDecay::TSingleDecay(TSingleDecay* parent, Double_t tlow, Double_t thigh)
       fGeneration  = 1;
    }
    // This will potentially leak with ROOT IO, shouldnt be a big deal. Might come back to this later
-   fDecayFunc = new TDecayFit(Form("decayfunc_gen%d", fGeneration), this, &TSingleDecay::ActivityFunc, 0, 10, 2,
-                              "TSingleDecay", "ActivityFunc");
+   fDecayFunc = new TDecayFit(Form("decayfunc_gen%d", fGeneration), this, &TSingleDecay::ActivityFunc, 0, 10, 2);
    fDecayFunc->SetDecay(this);
    fDecayFunc->SetParameters(fFirstParent->GetIntensity(), 0.0);
    fDecayFunc->SetParNames("Intensity", "DecayRate");
 
-   fTotalDecayFunc = new TDecayFit(Form("totaldecayfunc_gen%d", fGeneration), this, &TSingleDecay::ActivityFunc, 0, 10,
-                                   fGeneration + 1, "TSingleDecay", "ActivityFunc");
+   fTotalDecayFunc = new TDecayFit(Form("totaldecayfunc_gen%d", fGeneration), this, &TSingleDecay::ActivityFunc, 0, 10, fGeneration + 1);
    fTotalDecayFunc->SetDecay(this);
    SetTotalDecayParameters();
    if(fFirstParent != this) {
@@ -175,13 +173,12 @@ TSingleDecay::TSingleDecay(UInt_t generation, TSingleDecay* parent, Double_t tlo
 
    fGeneration = generation;
 
-   fDecayFunc = new TDecayFit("tmpname", this, &TSingleDecay::ActivityFunc, 0, 10, 2, "TSingleDecay", "ActivityFunc");
+   fDecayFunc = new TDecayFit("tmpname", this, &TSingleDecay::ActivityFunc, 0, 10, 2);
    fDecayFunc->SetDecay(this);
    fDecayFunc->SetParameters(fFirstParent->GetIntensity(), 0.0);
    fDecayFunc->SetParNames("Intensity", "DecayRate");
 
-   fTotalDecayFunc = new TDecayFit("tmpname", this, &TSingleDecay::ActivityFunc, 0, 10, fGeneration + 1, "TSingleDecay",
-                                   "ActivityFunc");
+   fTotalDecayFunc = new TDecayFit("tmpname", this, &TSingleDecay::ActivityFunc, 0, 10, fGeneration + 1);
    fTotalDecayFunc->SetDecay(this);
    SetTotalDecayParameters();
    if(fFirstParent != this) {
@@ -477,8 +474,7 @@ TDecayChain::TDecayChain(UInt_t generations)
       parent = curDecay;
    }
 
-   fChainFunc = new TDecayFit("tmpname", this, &TDecayChain::ChainActivityFunc, 0, 10, fDecayChain.size() + 1,
-                              "TDecayChain", "ChainActivityFunc");
+   fChainFunc = new TDecayFit("tmpname", this, &TDecayChain::ChainActivityFunc, 0, 10, fDecayChain.size() + 1);
    fChainFunc->SetDecay(this);
    SetChainParameters();
    fChainId = fChainCounter;
@@ -624,7 +620,7 @@ void TDecayChain::SetRange(Double_t xlow, Double_t xhigh)
 TDecay::TDecay(std::vector<TDecayChain*> chainList)
    : fChainList(std::move(chainList))
 {
-   fFitFunc = new TDecayFit("tmpfit", this, &TDecay::DecayFit, 0, 10, 1, "TDecay", "DecayFit");
+   fFitFunc = new TDecayFit("tmpfit", this, &TDecay::DecayFit, 0, 10, 1);
    fFitFunc->SetDecay(this);
    RemakeMap();
    SetParameters();
@@ -731,7 +727,7 @@ void TDecay::SetParameters()
    fFitFunc->GetParLimits(0, tmpbglow, tmpbghigh);
    Double_t tmpbgerr = fFitFunc->GetParError(0);
    delete fFitFunc;
-   fFitFunc = new TDecayFit("tmpfit", this, &TDecay::DecayFit, xlow, xhigh, unq_chains + unq_decays + 1, "TDecay", "DecayFit");
+   fFitFunc = new TDecayFit("tmpfit", this, &TDecay::DecayFit, xlow, xhigh, unq_chains + unq_decays + 1);
    fFitFunc->SetDecay(this);
    fFitFunc->SetParName(0, "Background");
    fFitFunc->SetParameter(0, tmpbg);
@@ -777,7 +773,7 @@ void TDecay::DrawComponents(Option_t*, Bool_t)
    Double_t high = 0.;
    fFitFunc->GetRange(low, high);
 
-   TF1* tmp_comp = new TF1("tmpname", this, &TDecay::ComponentFunc, low, high, 1, "TDecay", "ComponentFunc");
+   TF1* tmp_comp = new TF1("tmpname", this, &TDecay::ComponentFunc, low, high, 1);
    for(auto& iter : fDecayMap) {
       tmp_comp->SetName(Form("Component_%d", iter.first));
       tmp_comp->SetParameter(0, iter.first);
