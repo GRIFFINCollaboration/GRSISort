@@ -483,22 +483,22 @@ $(function(){initNavTree('_t_level_scheme_8cxx_source.html',''); initResizable(t
 <div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>      y.push_back(fEnergy + fOffset);</div>
 <div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>      x.push_back(left + tickLength);</div>
 <div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>      y.push_back(fEnergy + fOffset);</div>
-<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>      x.push_back(left + tickLength + std::fabs(fOffset) / 2.);</div>
+<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>      x.push_back(left + tickLength + std::abs(fOffset) / 2.);</div>
 <div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>      y.push_back(fEnergy);</div>
-<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>      <span class="keywordflow">if</span>(fDebug) { std::cout &lt;&lt; <span class="stringliteral">&quot;Non-zero offset &quot;</span> &lt;&lt; fOffset &lt;&lt; <span class="stringliteral">&quot; =&gt; left line &quot;</span> &lt;&lt; left &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fEnergy + fOffset &lt;&lt; <span class="stringliteral">&quot; via &quot;</span> &lt;&lt; left + tickLength &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fEnergy + fOffset &lt;&lt; <span class="stringliteral">&quot; to &quot;</span> &lt;&lt; left + tickLength + std::fabs(fOffset) / 2. &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fEnergy &lt;&lt; std::endl; }</div>
+<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>      <span class="keywordflow">if</span>(fDebug) { std::cout &lt;&lt; <span class="stringliteral">&quot;Non-zero offset &quot;</span> &lt;&lt; fOffset &lt;&lt; <span class="stringliteral">&quot; =&gt; left line &quot;</span> &lt;&lt; left &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fEnergy + fOffset &lt;&lt; <span class="stringliteral">&quot; via &quot;</span> &lt;&lt; left + tickLength &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fEnergy + fOffset &lt;&lt; <span class="stringliteral">&quot; to &quot;</span> &lt;&lt; left + tickLength + std::abs(fOffset) / 2. &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fEnergy &lt;&lt; std::endl; }</div>
 <div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>   }</div>
-<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>   x.push_back(left + tickLength + std::fabs(fOffset) / 2.);</div>
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>   x.push_back(left + tickLength + std::abs(fOffset) / 2.);</div>
 <div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>   y.push_back(fEnergy);</div>
-<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>   x.push_back(right - tickLength - std::fabs(fOffset) / 2.);</div>
+<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>   x.push_back(right - tickLength - std::abs(fOffset) / 2.);</div>
 <div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>   y.push_back(fEnergy);</div>
 <div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>   <span class="keywordflow">if</span>(fOffset != 0.) {</div>
-<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>      x.push_back(right - tickLength - std::fabs(fOffset) / 2.);</div>
+<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>      x.push_back(right - tickLength - std::abs(fOffset) / 2.);</div>
 <div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>      y.push_back(fEnergy);</div>
 <div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>      x.push_back(right - tickLength);</div>
 <div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>      y.push_back(fEnergy + fOffset);</div>
 <div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>      x.push_back(right);</div>
 <div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>      y.push_back(fEnergy + fOffset);</div>
-<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>      <span class="keywordflow">if</span>(fDebug) { std::cout &lt;&lt; <span class="stringliteral">&quot;Non-zero offset &quot;</span> &lt;&lt; fOffset &lt;&lt; <span class="stringliteral">&quot; =&gt; right line &quot;</span> &lt;&lt; right - tickLength - std::fabs(fOffset) / 2. &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fEnergy &lt;&lt; <span class="stringliteral">&quot; via &quot;</span> &lt;&lt; right - tickLength &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fEnergy + fOffset &lt;&lt; <span class="stringliteral">&quot; to &quot;</span> &lt;&lt; right &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fEnergy + fOffset &lt;&lt; std::endl; }</div>
+<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>      <span class="keywordflow">if</span>(fDebug) { std::cout &lt;&lt; <span class="stringliteral">&quot;Non-zero offset &quot;</span> &lt;&lt; fOffset &lt;&lt; <span class="stringliteral">&quot; =&gt; right line &quot;</span> &lt;&lt; right - tickLength - std::abs(fOffset) / 2. &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fEnergy &lt;&lt; <span class="stringliteral">&quot; via &quot;</span> &lt;&lt; right - tickLength &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fEnergy + fOffset &lt;&lt; <span class="stringliteral">&quot; to &quot;</span> &lt;&lt; right &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fEnergy + fOffset &lt;&lt; std::endl; }</div>
 <div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>   }</div>
 <div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>   SetPolyLine(x.size(), x.data(), y.data());</div>
 <div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>   TPolyLine::Draw();</div>
@@ -631,7 +631,7 @@ $(function(){initNavTree('_t_level_scheme_8cxx_source.html',''); initResizable(t
 <div class="line"><a id="l00526" name="l00526"></a><span class="lineno">  526</span>   <span class="keywordtype">double</span>  en    = low-&gt;first;</div>
 <div class="line"><a id="l00527" name="l00527"></a><span class="lineno">  527</span>   TLevel* level = &amp;(low-&gt;second);</div>
 <div class="line"><a id="l00528" name="l00528"></a><span class="lineno">  528</span>   <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; it = ++low; it != high; ++it) {</div>
-<div class="line"><a id="l00529" name="l00529"></a><span class="lineno">  529</span>      <span class="keywordflow">if</span>(std::fabs(energy - en) &gt; std::fabs(energy - it-&gt;first)) {</div>
+<div class="line"><a id="l00529" name="l00529"></a><span class="lineno">  529</span>      <span class="keywordflow">if</span>(std::abs(energy - en) &gt; std::abs(energy - it-&gt;first)) {</div>
 <div class="line"><a id="l00530" name="l00530"></a><span class="lineno">  530</span>         en    = it-&gt;first;</div>
 <div class="line"><a id="l00531" name="l00531"></a><span class="lineno">  531</span>         level = &amp;(it-&gt;second);</div>
 <div class="line"><a id="l00532" name="l00532"></a><span class="lineno">  532</span>      }</div>
@@ -891,7 +891,7 @@ $(function(){initNavTree('_t_level_scheme_8cxx_source.html',''); initResizable(t
 <div class="line"><a id="l00786" name="l00786"></a><span class="lineno">  786</span> </div>
 <div class="line"><a id="l00787" name="l00787"></a><span class="lineno">  787</span>   <span class="keyword">auto</span>* result = list[0];</div>
 <div class="line"><a id="l00788" name="l00788"></a><span class="lineno">  788</span>   <span class="keywordflow">for</span>(<span class="keywordtype">size_t</span> i = 1; i &lt; list.size(); ++i) {</div>
-<div class="line"><a id="l00789" name="l00789"></a><span class="lineno">  789</span>      <span class="keywordflow">if</span>(std::fabs(list[i]-&gt;Energy() - energy) &lt; std::fabs(result-&gt;Energy() - energy)) { result = list[i]; }</div>
+<div class="line"><a id="l00789" name="l00789"></a><span class="lineno">  789</span>      <span class="keywordflow">if</span>(std::abs(list[i]-&gt;Energy() - energy) &lt; std::abs(result-&gt;Energy() - energy)) { result = list[i]; }</div>
 <div class="line"><a id="l00790" name="l00790"></a><span class="lineno">  790</span>   }</div>
 <div class="line"><a id="l00791" name="l00791"></a><span class="lineno">  791</span> </div>
 <div class="line"><a id="l00792" name="l00792"></a><span class="lineno">  792</span>   <span class="keywordflow">return</span> result;</div>
@@ -1818,8 +1818,8 @@ $(function(){initNavTree('_t_level_scheme_8cxx_source.html',''); initResizable(t
 <div class="ttc" id="a_globals_8h_html_a6cd26ccb39c45583e5a1bd90bc2bbb66"><div class="ttname"><a href="_globals_8h.html#a6cd26ccb39c45583e5a1bd90bc2bbb66">DRED</a></div><div class="ttdeci">#define DRED</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00018">Globals.h:18</a></div></div>
 <div class="ttc" id="a_globals_8h_html_ad7c3b975e5552a122f836b02fa138502"><div class="ttname"><a href="_globals_8h.html#ad7c3b975e5552a122f836b02fa138502">RESET_COLOR</a></div><div class="ttdeci">#define RESET_COLOR</div><div class="ttdef"><b>Definition</b> <a href="_globals_8h_source.html#l00005">Globals.h:5</a></div></div>
 <div class="ttc" id="a_t_g_r_s_i_utilities_8h_html"><div class="ttname"><a href="_t_g_r_s_i_utilities_8h.html">TGRSIUtilities.h</a></div></div>
-<div class="ttc" id="a_t_g_r_s_i_utilities_8h_html_a3618a4ab6c3f933fa7a76619ea3bf8f1"><div class="ttname"><a href="_t_g_r_s_i_utilities_8h.html#a3618a4ab6c3f933fa7a76619ea3bf8f1">trimWS</a></div><div class="ttdeci">void trimWS(std::string &amp;line)</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_utilities_8cxx_source.html#l00060">TGRSIUtilities.cxx:60</a></div></div>
-<div class="ttc" id="a_t_g_r_s_i_utilities_8h_html_a375cfcc53c68847b7137a22876b5f973"><div class="ttname"><a href="_t_g_r_s_i_utilities_8h.html#a375cfcc53c68847b7137a22876b5f973">FileExists</a></div><div class="ttdeci">bool FileExists(const char *filename)</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_utilities_8cxx_source.html#l00013">TGRSIUtilities.cxx:13</a></div></div>
+<div class="ttc" id="a_t_g_r_s_i_utilities_8h_html_a3618a4ab6c3f933fa7a76619ea3bf8f1"><div class="ttname"><a href="_t_g_r_s_i_utilities_8h.html#a3618a4ab6c3f933fa7a76619ea3bf8f1">trimWS</a></div><div class="ttdeci">void trimWS(std::string &amp;line)</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_utilities_8cxx_source.html#l00061">TGRSIUtilities.cxx:61</a></div></div>
+<div class="ttc" id="a_t_g_r_s_i_utilities_8h_html_a375cfcc53c68847b7137a22876b5f973"><div class="ttname"><a href="_t_g_r_s_i_utilities_8h.html#a375cfcc53c68847b7137a22876b5f973">FileExists</a></div><div class="ttdeci">bool FileExists(const char *filename)</div><div class="ttdef"><b>Definition</b> <a href="_t_g_r_s_i_utilities_8cxx_source.html#l00014">TGRSIUtilities.cxx:14</a></div></div>
 <div class="ttc" id="a_t_level_scheme_8h_html"><div class="ttname"><a href="_t_level_scheme_8h.html">TLevelScheme.h</a></div></div>
 <div class="ttc" id="aclass_g_canvas_html"><div class="ttname"><a href="class_g_canvas.html">GCanvas</a></div><div class="ttdef"><b>Definition</b> <a href="_g_canvas_8h_source.html#l00238">GCanvas.h:238</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
@@ -1829,7 +1829,7 @@ $(function(){initNavTree('_t_level_scheme_8cxx_source.html',''); initResizable(t
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_47358ee868e3aed1e59cf9c2ead119a2.html">GROOT</a></li><li class="navelem"><a class="el" href="_t_level_scheme_8cxx.html">TLevelScheme.cxx</a></li>
-    <li class="footer">GRSISort ("v4.1.1.0") Reference Guide Generated on Wed Jun 24 2026 13:14:13.</li>
+    <li class="footer">GRSISort ("v4.1.1.0") Reference Guide Generated on Fri Jun 26 2026 21:05:04.</li>
   </ul>
 </div>
 </body>

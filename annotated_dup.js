@@ -41,6 +41,7 @@ var annotated_dup =
     [ "combinations", "classcombinations.html", "classcombinations" ],
     [ "ComptonPolarimetryHelper", "class_compton_polarimetry_helper.html", "class_compton_polarimetry_helper" ],
     [ "CrossTalk", "class_cross_talk.html", "class_cross_talk" ],
+    [ "CrossTalkCheckHelper", "class_cross_talk_check_helper.html", "class_cross_talk_check_helper" ],
     [ "CrossTalkHelper", "class_cross_talk_helper.html", "class_cross_talk_helper" ],
     [ "DifferentAxisLimits", "class_different_axis_limits.html", null ],
     [ "DifferentBinLimits", "class_different_bin_limits.html", null ],

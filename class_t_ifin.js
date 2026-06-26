@@ -36,6 +36,7 @@ var class_t_ifin =
     [ "GetIfinHit", "class_t_ifin.html#abe9c74a40b6fd297fd36a85b2fba9627", null ],
     [ "GetMultiplicity", "class_t_ifin.html#a9d5c07abd73ec148fe0adbee0c7c1eec", null ],
     [ "GetNAddbackFrags", "class_t_ifin.html#a39e48529dbac1ebc2423a93ceb72a965", null ],
+    [ "GetNSuppressedAddbackFrags", "class_t_ifin.html#a08f8e1d7ff9fc5e4121850593f860faa", null ],
     [ "GetPosition", "class_t_ifin.html#ab8da3d1ee6a8134b583b75ee965ded82", null ],
     [ "GetSuppressedAddbackFragVector", "class_t_ifin.html#a1faa6f1a8c5e0eb6b9b3b8eba924d36c", null ],
     [ "GetSuppressedAddbackHit", "class_t_ifin.html#a593ab7353f327eb1d5d1ab5af381f9ec", null ],

@@ -6,7 +6,7 @@ var class_t_decay_fit =
     [ "TDecayFit", "class_t_decay_fit.html#addcd6f275eb75cdef77bb56fcd9f825d", null ],
     [ "TDecayFit", "class_t_decay_fit.html#a096c826c12b5a7a5acd83872c478915a", null ],
     [ "TDecayFit", "class_t_decay_fit.html#abf049721b8d9cc83d9043192cf03a08d", null ],
-    [ "TDecayFit", "class_t_decay_fit.html#a83cf364a8afac60ce1852cddf0217125", null ],
+    [ "TDecayFit", "class_t_decay_fit.html#a58b24e7b5b28c80e2c3fc8e6de12b7f1", null ],
     [ "TDecayFit", "class_t_decay_fit.html#af148c1c88a260c2a3c785afc59d14143", null ],
     [ "TDecayFit", "class_t_decay_fit.html#af6a1024fdd70abefc46b6b6451bac97a", null ],
     [ "TDecayFit", "class_t_decay_fit.html#a576877a3e585dcc3bec2e856f3673d3f", null ],

@@ -9,6 +9,8 @@ var searchData=
   ['convertdriftfiles_2ecxx_6',['ConvertDriftFiles.cxx',['../_convert_drift_files_8cxx.html',1,'']]],
   ['crosstalk_2ec_7',['CrossTalk.C',['../_cross_talk_8_c.html',1,'']]],
   ['crosstalk_2eh_8',['CrossTalk.h',['../_cross_talk_8h.html',1,'']]],
-  ['crosstalkhelper_2ecxx_9',['CrossTalkHelper.cxx',['../_cross_talk_helper_8cxx.html',1,'']]],
-  ['crosstalkhelper_2ehh_10',['CrossTalkHelper.hh',['../_cross_talk_helper_8hh.html',1,'']]]
+  ['crosstalkcheckhelper_2ecxx_9',['CrossTalkCheckHelper.cxx',['../_cross_talk_check_helper_8cxx.html',1,'']]],
+  ['crosstalkcheckhelper_2ehh_10',['CrossTalkCheckHelper.hh',['../_cross_talk_check_helper_8hh.html',1,'']]],
+  ['crosstalkhelper_2ecxx_11',['CrossTalkHelper.cxx',['../_cross_talk_helper_8cxx.html',1,'']]],
+  ['crosstalkhelper_2ehh_12',['CrossTalkHelper.hh',['../_cross_talk_helper_8hh.html',1,'']]]
 ];

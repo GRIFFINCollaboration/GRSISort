@@ -154,9 +154,9 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:a9270f75d732f332cc262e8f2b54652db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d93311828256feb2f2527c53118659e" id="r_a7d93311828256feb2f2527c53118659e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7d93311828256feb2f2527c53118659e">TGRSIFit</a> (const char *name, const char *formula, Double_t xmin=0, Double_t xmax=1)</td></tr>
 <tr class="separator:a7d93311828256feb2f2527c53118659e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b8415969ef5b3ad2cd1e27b371bc8b8" id="r_a1b8415969ef5b3ad2cd1e27b371bc8b8"><td class="memTemplParams" colspan="2">template&lt;class PtrObj , typename MemFn &gt; </td></tr>
-<tr class="memitem:a1b8415969ef5b3ad2cd1e27b371bc8b8"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a1b8415969ef5b3ad2cd1e27b371bc8b8">TGRSIFit</a> (const char *name, const PtrObj &amp;pointer, MemFn memFn, Double_t xmin, Double_t xmax, Int_t npar, const char *class_name, const char *fcn_name)</td></tr>
-<tr class="separator:a1b8415969ef5b3ad2cd1e27b371bc8b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf22f7da75c32437dd874679231d60be" id="r_abf22f7da75c32437dd874679231d60be"><td class="memTemplParams" colspan="2">template&lt;class PtrObj , typename MemFn &gt; </td></tr>
+<tr class="memitem:abf22f7da75c32437dd874679231d60be"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#abf22f7da75c32437dd874679231d60be">TGRSIFit</a> (const char *name, const PtrObj &amp;pointer, MemFn memFn, Double_t xmin, Double_t xmax, Int_t npar)</td></tr>
+<tr class="separator:abf22f7da75c32437dd874679231d60be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a140e191a0dcd722c02bc6a222527fb8b" id="r_a140e191a0dcd722c02bc6a222527fb8b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a140e191a0dcd722c02bc6a222527fb8b">TGRSIFit</a> (const char *name, const ROOT::Math::ParamFunctor &amp;func, Double_t xmin=0, Double_t xmax=1, Int_t npar=0)</td></tr>
 <tr class="separator:a140e191a0dcd722c02bc6a222527fb8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95693fb756db8fdb2fee2b7a2d2020c0" id="r_a95693fb756db8fdb2fee2b7a2d2020c0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a95693fb756db8fdb2fee2b7a2d2020c0">TGRSIFit</a> (const char *name, Double_t xmin, Double_t xmax, Int_t npar)</td></tr>
@@ -389,8 +389,8 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a1b8415969ef5b3ad2cd1e27b371bc8b8" name="a1b8415969ef5b3ad2cd1e27b371bc8b8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1b8415969ef5b3ad2cd1e27b371bc8b8">&#9670;&#160;</a></span>TGRSIFit() <span class="overload">[5/7]</span></h2>
+<a id="abf22f7da75c32437dd874679231d60be" name="abf22f7da75c32437dd874679231d60be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf22f7da75c32437dd874679231d60be">&#9670;&#160;</a></span>TGRSIFit() <span class="overload">[5/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -428,17 +428,7 @@ template&lt;class PtrObj , typename MemFn &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Int_t</td>          <td class="paramname"><span class="paramname"><em>npar</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>class_name</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>fcn_name</em></span>&#160;)</td>
+          <td class="paramtype">Int_t</td>          <td class="paramname"><span class="paramname"><em>npar</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -1147,7 +1137,7 @@ template&lt;class PtrObj , typename MemFn &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_t_g_r_s_i_fit.html">TGRSIFit</a></li>
-    <li class="footer">GRSISort ("v4.1.1.0") Reference Guide Generated on Wed Jun 24 2026 13:14:17.</li>
+    <li class="footer">GRSISort ("v4.1.1.0") Reference Guide Generated on Fri Jun 26 2026 21:05:09.</li>
   </ul>
 </div>
 </body>

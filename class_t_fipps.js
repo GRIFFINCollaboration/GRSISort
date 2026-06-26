@@ -36,6 +36,7 @@ var class_t_fipps =
     [ "GetHit", "class_t_fipps.html#a9fb5bed513f435084094b92fb6a5b296", null ],
     [ "GetMultiplicity", "class_t_fipps.html#a9d5c07abd73ec148fe0adbee0c7c1eec", null ],
     [ "GetNAddbackFrags", "class_t_fipps.html#a0cf24435a14688fe449a206006d41ece", null ],
+    [ "GetNSuppressedAddbackFrags", "class_t_fipps.html#a3b6781c41a1de1db7d223e5406a35945", null ],
     [ "GetPosition", "class_t_fipps.html#a1dc05dee244d273f5421901a0ee28083", null ],
     [ "GetSuppressedAddbackFragVector", "class_t_fipps.html#ae6b1f69302fcc6c737ba8985ff32cc8a", null ],
     [ "GetSuppressedAddbackHit", "class_t_fipps.html#a8493e35da5082585e35ff6d5d9bcf0d7", null ],

@@ -6,6 +6,8 @@ var dir_d28a4824dc47e487b107a5db32ef43c4 =
     [ "AngularCorrelationHelper.hh", "_angular_correlation_helper_8hh.html", "_angular_correlation_helper_8hh" ],
     [ "ComptonPolarimetryHelper.cxx", "_compton_polarimetry_helper_8cxx.html", null ],
     [ "ComptonPolarimetryHelper.hh", "_compton_polarimetry_helper_8hh.html", "_compton_polarimetry_helper_8hh" ],
+    [ "CrossTalkCheckHelper.cxx", "_cross_talk_check_helper_8cxx.html", null ],
+    [ "CrossTalkCheckHelper.hh", "_cross_talk_check_helper_8hh.html", "_cross_talk_check_helper_8hh" ],
     [ "CrossTalkHelper.cxx", "_cross_talk_helper_8cxx.html", "_cross_talk_helper_8cxx" ],
     [ "CrossTalkHelper.hh", "_cross_talk_helper_8hh.html", "_cross_talk_helper_8hh" ],
     [ "DirectoryHelper.cxx", "_directory_helper_8cxx.html", "_directory_helper_8cxx" ],

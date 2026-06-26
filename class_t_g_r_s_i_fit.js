@@ -5,7 +5,7 @@ var class_t_g_r_s_i_fit =
     [ "TGRSIFit", "class_t_g_r_s_i_fit.html#a7d93311828256feb2f2527c53118659e", null ],
     [ "TGRSIFit", "class_t_g_r_s_i_fit.html#a95693fb756db8fdb2fee2b7a2d2020c0", null ],
     [ "TGRSIFit", "class_t_g_r_s_i_fit.html#a140e191a0dcd722c02bc6a222527fb8b", null ],
-    [ "TGRSIFit", "class_t_g_r_s_i_fit.html#a1b8415969ef5b3ad2cd1e27b371bc8b8", null ],
+    [ "TGRSIFit", "class_t_g_r_s_i_fit.html#abf22f7da75c32437dd874679231d60be", null ],
     [ "TGRSIFit", "class_t_g_r_s_i_fit.html#ac2c725a228aeedfee165c394179ee948", null ],
     [ "TGRSIFit", "class_t_g_r_s_i_fit.html#a0a02ea6d51a048cb39c977a1de8f7a39", null ],
     [ "AddToGlobalList", "class_t_g_r_s_i_fit.html#a205d2aa1eee5ededdbd4a6f11c576ec5", null ],
