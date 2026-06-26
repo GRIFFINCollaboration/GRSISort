@@ -36,8 +36,8 @@ double* CrossTalkFix(TFile* inputFile, int det, double energy, int minimumCounts
 
    // Clear all of the CT calibrations for this detector.
    for(int i = 0; i < 4; ++i) {
-      auto* channelName = Form("%s%02d%s%s", channelPrefix.c_str(), det, GetColorFromNumber(i), channelPostfix.c_str());
-      TChannel* chan = TChannel::FindChannelByName(channelName);
+      auto*     channelName = Form("%s%02d%s%s", channelPrefix.c_str(), det, GetColorFromNumber(i), channelPostfix.c_str());
+      TChannel* chan        = TChannel::FindChannelByName(channelName);
       if(chan == nullptr) {
          std::cout << DRED << "Couldn't find a channel for " << channelName << RESET_COLOR << std::endl;
          continue;
@@ -197,8 +197,8 @@ double* CrossTalkFix(TFile* inputFile, int det, double energy, int minimumCounts
          std::cout << d[j * 4 + i] << "\t";
 
          // Time to find the proper channels and build the corrections xind/i is row number
-         auto* channelName = Form("%s%02d%s%s", channelPrefix.c_str(), det, GetColorFromNumber(j), channelPostfix.c_str());
-         TChannel* chan = TChannel::FindChannelByName(channelName);
+         auto*     channelName = Form("%s%02d%s%s", channelPrefix.c_str(), det, GetColorFromNumber(j), channelPostfix.c_str());
+         TChannel* chan        = TChannel::FindChannelByName(channelName);
          if(chan == nullptr) {
             std::cout << DRED << "Couldn't find a channel for " << channelName << RESET_COLOR << std::endl;
             continue;
@@ -272,9 +272,9 @@ int main(int argc, char** argv)
    } catch(std::out_of_range& e) {
    }
 
-   double energy = userSettings->GetDouble("CrossTalkEnergy", 1332.);
-   int minimumCounts = userSettings->GetInt("MinimumCounts", 10);
-   std::string channelPrefix = userSettings->GetString("ChannelPrefix", "GRG");
+   double      energy         = userSettings->GetDouble("CrossTalkEnergy", 1332.);
+   int         minimumCounts  = userSettings->GetInt("MinimumCounts", 10);
+   std::string channelPrefix  = userSettings->GetString("ChannelPrefix", "GRG");
    std::string channelPostfix = userSettings->GetString("ChannelPostfix", "N00A");
 
    for(int d = userSettings->GetInt("FirstDetector", 1); d <= userSettings->GetInt("LastDetector", 16); d++) {

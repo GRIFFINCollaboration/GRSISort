@@ -47,7 +47,7 @@ public:
 private:
    // any constants that are set in the CreateHistograms function and used in the Exec function can be stored here
    // or any other settings
-   int fEnergyBins{10000};
+   int    fEnergyBins{10000};
    double fLowEnergy{0.};
    double fHighEnergy{2000.};
 };
