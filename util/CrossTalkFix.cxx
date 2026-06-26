@@ -29,7 +29,7 @@ double CrossTalkFit(double* x, double* par)   // NOLINT(readability-non-const-pa
    return x[0] * slope + intercept;
 }
 
-double* CrossTalkFix(TFile* inputFile, int det, double energy, int minimumCounts, std::string channelPrefix, std::string channelPostfix)
+double* CrossTalkFix(TFile* inputFile, int det, double energy, int minimumCounts, const std::string& channelPrefix, const std::string& channelPostfix)
 {
    // The outfile is implicit since it was the last file that was open.
    static double largestCorrection = 0.0;
