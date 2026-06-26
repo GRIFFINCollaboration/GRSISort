@@ -13,8 +13,8 @@ TGauss::TGauss(Double_t centroid, Double_t relativeLimit)
 void TGauss::Centroid(const Double_t& centroid)
 {
    if(TPeakFitter::VerboseLevel() >= EVerbosity::kSubroutines) { std::cout << __PRETTY_FUNCTION__ << std::endl; }   // NOLINT(cppcoreguidelines-pro-type-const-cast, cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-   SetFitFunction(new TF1("gauss_total", this, &TGauss::TotalFunction, 0, 1, 3, "TGauss", "TotalFunction"));
-   SetPeakFunction(new TF1("gauss_peak", this, &TGauss::PeakFunction, 0, 1, 3, "TGauss", "TotalFunction"));   // peak = total function
+   SetFitFunction(new TF1("gauss_total", this, &TGauss::TotalFunction, 0, 1, 3));
+   SetPeakFunction(new TF1("gauss_peak", this, &TGauss::PeakFunction, 0, 1, 3));   // peak = total function
    if(TPeakFitter::VerboseLevel() >= EVerbosity::kSubroutines) { std::cout << "Set the fit and peak functions" << std::endl; }
    InitParNames();
    GetFitFunction()->SetParameter(1, centroid);

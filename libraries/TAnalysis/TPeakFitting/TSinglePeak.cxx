@@ -28,7 +28,7 @@ Int_t TSinglePeak::GetNParameters() const
 TF1* TSinglePeak::GetBackgroundFunction()
 {
    if(fBackgroundFunction == nullptr) {
-      fBackgroundFunction = new TF1("peak_bg", this, &TSinglePeak::BackgroundFunction, 0, 1, fTotalFunction->GetNpar(), "TSinglePeak", "BackgroundFunction");
+      fBackgroundFunction = new TF1("peak_bg", this, &TSinglePeak::BackgroundFunction, 0, 1, fTotalFunction->GetNpar());
       fBackgroundFunction->SetLineStyle(9);
    }
    return fBackgroundFunction;
@@ -113,7 +113,7 @@ void TSinglePeak::Draw(Option_t* opt)
    fGlobalBackground->GetRange(low, high);
    if(fPeakOnGlobal != nullptr) { fPeakOnGlobal->Delete(); }
    // Make a copy of the total function, and then tack on the global background parameters.
-   fPeakOnGlobal = new TF1("draw_peak", this, &TSinglePeak::PeakOnGlobalFunction, low, high, fTotalFunction->GetNpar() + fGlobalBackground->GetNpar(), "TSinglePeak", "PeakOnGlobalFunction");
+   fPeakOnGlobal = new TF1("draw_peak", this, &TSinglePeak::PeakOnGlobalFunction, low, high, fTotalFunction->GetNpar() + fGlobalBackground->GetNpar());
    for(int i = 0; i < fTotalFunction->GetNpar(); ++i) {
       fPeakOnGlobal->SetParameter(i, fTotalFunction->GetParameter(i));
    }

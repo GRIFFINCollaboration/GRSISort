@@ -7,12 +7,13 @@
 #include <utility>
 #include <fstream>
 #include <sstream>
+#include <cmath>
 
 #include "TGRSIUtilities.h"
 
 // std::string GValue::fValueData
 // std::map<unsigned int, GValue*> GValue::fValueMap;
-GValue*                        GValue::fDefaultValue = new GValue("GValue", sqrt(-1));
+GValue*                        GValue::fDefaultValue = new GValue("GValue", std::sqrt(-1.));
 std::map<std::string, GValue*> GValue::fValueVector;
 
 GValue::GValue(const char* name, double value, EPriority priority)
@@ -38,7 +39,7 @@ void GValue::Copy(TObject& obj) const
 
 double GValue::Value(const std::string& name)
 {
-   return GValue::Value(name, sqrt(-1));
+   return GValue::Value(name, std::sqrt(-1.));
 }
 
 double GValue::Value(const std::string& name, const double& defaultValue)

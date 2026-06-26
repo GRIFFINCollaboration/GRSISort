@@ -4,8 +4,8 @@
 
 void TRWPeak::Centroid(const Double_t& centroid)
 {
-   SetFitFunction(new TF1("rw_total", this, &TRWPeak::TotalFunction, 0, 1, 6, "TRWPeak", "TotalFunction"));
-   SetPeakFunction(new TF1("rw_peak", this, &TRWPeak::PeakFunction, 0, 1, 5, "TRWPeak", "PeakFunction"));
+   SetFitFunction(new TF1("rw_total", this, &TRWPeak::TotalFunction, 0, 1, 6));
+   SetPeakFunction(new TF1("rw_peak", this, &TRWPeak::PeakFunction, 0, 1, 5));
    InitParNames();
    GetFitFunction()->SetParameter(1, centroid);
    SetListOfBGPar(std::vector<bool>{false, false, false, false, false, true});

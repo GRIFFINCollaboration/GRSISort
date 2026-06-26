@@ -49,9 +49,8 @@ public:
 #endif
 
    template <class PtrObj, typename MemFn>
-   TDecayFit(const char* name, const PtrObj& p, MemFn memFn, Double_t xmin, Double_t xmax, Int_t npar,
-             const char* className = nullptr, const char* methodName = nullptr)
-      : TF1(name, p, memFn, xmin, xmax, npar, className, methodName)
+   TDecayFit(const char* name, const PtrObj& p, MemFn memFn, Double_t xmin, Double_t xmax, Int_t npar)
+      : TF1(name, p, memFn, xmin, xmax, npar)
    {
       DefaultGraphs();
    }

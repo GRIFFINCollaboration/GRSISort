@@ -11,7 +11,7 @@ public:
    explicit CrossTalkHelper(TList* list)
       : TGRSIHelper(list)
    {
-      Prefix("Crosstalk");
+      Prefix("CrossTalk");
       Setup();
    }
    ROOT::RDF::RResultPtr<std::map<std::string, TList>> Book(ROOT::RDataFrame* d) override
