@@ -97,7 +97,7 @@ Int_t GCube::BufferEmpty(Int_t action)
    const bool xbinAuto = fXaxis.GetXmax() <= fXaxis.GetXmin();
    const bool ybinAuto = fYaxis.GetXmax() <= fYaxis.GetXmin();
    const bool zbinAuto = fZaxis.GetXmax() <= fZaxis.GetXmin();
-   const bool extend = CanExtendAllAxes();
+   const bool extend   = CanExtendAllAxes();
    if(extend || xbinAuto || ybinAuto || zbinAuto) {
       // find min, max of entries in buffer
       // for the symmetric matrix x-, y- and z-range are the same

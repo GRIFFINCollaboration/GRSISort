@@ -110,10 +110,10 @@ int GetSubRunNumber(const std::string& fileName)
 const char* GetColorFromNumber(int number)
 {
    switch(number) {
-      case(0): return "B";
-      case(1): return "G";
-      case(2): return "R";
-      case(3): return "W";
+   case(0): return "B";
+   case(1): return "G";
+   case(2): return "R";
+   case(3): return "W";
    };
    return "X";
 }
@@ -121,11 +121,10 @@ const char* GetColorFromNumber(int number)
 const char* GetLongColorFromNumber(int number)
 {
    switch(number) {
-      case(0): return "Blue";
-      case(1): return "Green";
-      case(2): return "Red";
-      case(3): return "White";
+   case(0): return "Blue";
+   case(1): return "Green";
+   case(2): return "Red";
+   case(3): return "White";
    };
    return "Unknown";
 }
-

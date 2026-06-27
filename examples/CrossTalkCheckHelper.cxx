@@ -3,11 +3,11 @@
 void CrossTalkCheckHelper::CreateHistograms(unsigned int slot)
 {
    // total addback spectrum
-   fH1[slot]["griffinESuppAddback"]             = new TH1F("griffinESuppAddback", Form("Suppressed griffin addback energy;energy [keV];counts/%.1f keV", (fHighEnergy - fLowEnergy) / fEnergyBins), fEnergyBins, fLowEnergy, fHighEnergy);
+   fH1[slot]["griffinESuppAddback"] = new TH1F("griffinESuppAddback", Form("Suppressed griffin addback energy;energy [keV];counts/%.1f keV", (fHighEnergy - fLowEnergy) / fEnergyBins), fEnergyBins, fLowEnergy, fHighEnergy);
 
    // addback spectrum with 1-4 cyrstals/fragments involved
    for(int nCry = 1; nCry <= 4; ++nCry) {
-      fH1[slot][Form("griffinESuppAddback%d", nCry)]             = new TH1F(Form("griffinESuppAddback%d", nCry), Form("Suppressed griffin addback energy with %d crystals/fragments;energy [keV];counts/%.1f keV", nCry, (fHighEnergy - fLowEnergy) / fEnergyBins), fEnergyBins, fLowEnergy, fHighEnergy);
+      fH1[slot][Form("griffinESuppAddback%d", nCry)] = new TH1F(Form("griffinESuppAddback%d", nCry), Form("Suppressed griffin addback energy with %d crystals/fragments;energy [keV];counts/%.1f keV", nCry, (fHighEnergy - fLowEnergy) / fEnergyBins), fEnergyBins, fLowEnergy, fHighEnergy);
    }
 }
 

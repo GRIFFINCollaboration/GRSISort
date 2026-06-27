@@ -33,7 +33,11 @@ public:
 
    ~TNucleus();
 
-   enum class EFlag : uint8_t { kDefault, kUnobserved, kInferred, kTentative, kObserved};
+   enum class EFlag : uint8_t { kDefault,
+                                kUnobserved,
+                                kInferred,
+                                kTentative,
+                                kObserved };
 
    void SetObserved() { fFlag = EFlag::kObserved; }
    void SetUnobserved() { fFlag = EFlag::kUnobserved; }

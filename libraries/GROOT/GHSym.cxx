@@ -103,7 +103,7 @@ Int_t GHSym::BufferEmpty(Int_t action)
 
    const bool xbinAuto = fXaxis.GetXmax() <= fXaxis.GetXmin();
    const bool ybinAuto = fYaxis.GetXmax() <= fYaxis.GetXmin();
-   const bool extend = CanExtendAllAxes();
+   const bool extend   = CanExtendAllAxes();
    if(extend || xbinAuto || ybinAuto) {
       // find min, max of entries in buffer
       // for the symmetric matrix x- and y-range are the same
