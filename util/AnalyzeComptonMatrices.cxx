@@ -317,10 +317,10 @@ double Polarization(TUserSettings* settings)
    double denominator = 1.;
 
    for(int i = 0; i < 4; ++i) {
-      auto a = (f_JiJx[3 * i] - 2. * mixing1 * f_JiJx[3 * i + 1] + TMath::Power(mixing1, 2.) * f_JiJx[3 * i + 2]) /
-               (1. + TMath::Power(mixing1, 2.));
-      auto b = (f_JiJx[3 * i] + 2. * mixing2 * f_JiJx[3 * i + 1] + TMath::Power(mixing2, 2.) * f_JiJx[3 * i + 2]) /
-               (1. + TMath::Power(mixing2, 2.));
+      auto a  = (f_JiJx[3 * i] - 2. * mixing1 * f_JiJx[3 * i + 1] + TMath::Power(mixing1, 2.) * f_JiJx[3 * i + 2]) /
+                (1. + TMath::Power(mixing1, 2.));
+      auto b  = (f_JiJx[3 * i] + 2. * mixing2 * f_JiJx[3 * i + 1] + TMath::Power(mixing2, 2.) * f_JiJx[3 * i + 2]) /
+                (1. + TMath::Power(mixing2, 2.));
       auto ap = (KCoefficent(2 * (i + 1), l2, l2) * f_JiJx[3 * i] -
                  KCoefficent(2 * (i + 1), l2, l2 + 1) * 2. * mixing2 * f_JiJx[3 * i + 1] -
                  KCoefficent(2 * (i + 1), l2 + 1, l2 + 1) * TMath::Power(mixing2, 2.) * f_JiJx[3 * i + 2]) /

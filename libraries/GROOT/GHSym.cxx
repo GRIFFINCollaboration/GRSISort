@@ -1221,7 +1221,7 @@ Double_t GHSym::Interpolate(Double_t x, Double_t y) const
    Double_t q22     = GetBinContent(bin_q22);
    Double_t d       = 1.0 * (x2 - x1) * (y2 - y1);
    f                = 1.0 * q11 / d * (x2 - x) * (y2 - y) + 1.0 * q21 / d * (x - x1) * (y2 - y) + 1.0 * q12 / d * (x2 - x) * (y - y1) +
-       1.0 * q22 / d * (x - x1) * (y - y1);
+                      1.0 * q22 / d * (x - x1) * (y - y1);
    return f;
 }
 

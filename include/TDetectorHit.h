@@ -144,13 +144,13 @@ public:
    virtual Long64_t            GetTimeStamp(Option_t* = "") const { return fTimeStamp; }
    virtual Long64_t            GetTimeStampNs(Option_t* opt = "") const;
    virtual Double_t            GetTime(const ETimeFlag& correct_flag = ETimeFlag::kAll,
-                                       Option_t*        opt          = "") const;           ///< Returns a time value to the nearest nanosecond!
-   virtual Float_t             GetCfd() const { return fCfd; }              //!<!
-   virtual UInt_t              GetAddress() const { return fAddress; }      //!<!
-   virtual Float_t             GetCharge() const;                           //!<!
-   virtual Float_t             Charge() const { return fCharge; }           //!<!
-   virtual Short_t             GetKValue() const { return fKValue; }        //!<!
-   const std::vector<Short_t>* GetWaveform() const { return &fWaveform; }   //!<!
+                                       Option_t*        opt          = "") const;   ///< Returns a time value to the nearest nanosecond!
+   virtual Float_t             GetCfd() const { return fCfd; }                      //!<!
+   virtual UInt_t              GetAddress() const { return fAddress; }              //!<!
+   virtual Float_t             GetCharge() const;                                   //!<!
+   virtual Float_t             Charge() const { return fCharge; }                   //!<!
+   virtual Short_t             GetKValue() const { return fKValue; }                //!<!
+   const std::vector<Short_t>* GetWaveform() const { return &fWaveform; }           //!<!
    TChannel*                   GetChannel() const
    {
       if(!IsChannelSet()) {
