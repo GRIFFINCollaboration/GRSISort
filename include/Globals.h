@@ -35,12 +35,10 @@
 #define ALERTTEXT "\033[47m\033[0;31m"
 // NOLINTEND(cppcoreguidelines-macro-usage)
 
-#if __APPLE__
-#ifdef __CINT__
+#if defined(__APPLE__) && defined(__CINT__) && !defined(__CLING__)
 #undef __GNUC__
 typedef char __signed;
 typedef char int8_t;
-#endif
 #endif
 
 #if __APPLE__
