@@ -22,9 +22,9 @@ int main(int argc, char** argv)
       }
 
       // get TPPG
-      TPPG* ppg = static_cast<TPPG*>(file.Get("TPPG"));
+      TPPG* ppg = static_cast<TPPG*>(file.Get("PPG"));
       if(ppg == nullptr) {
-         std::cerr << DRED << "Failed to find TPPG in " << argv[i] << " maybe this is a source run?" << RESET_COLOR << std::endl;
+         std::cerr << DRED << "Failed to find PPG in " << argv[i] << " maybe this is a source run?" << RESET_COLOR << std::endl;
          file.Close();
          continue;
       }
