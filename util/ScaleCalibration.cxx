@@ -1,11 +1,12 @@
 #include <unordered_map>
+#include <iostream>
 
 #include "TChannel.h"
 
 int main(int argc, char** argv)
 {
    if(argc < 3) {
-      printf("Usage: AddOneToChannel <scale by> <calfile.cal> <MNEMONIC>\n");
+      std::cout << "Usage: " << argv[0] << " <scale by> <calfile.cal> <MNEMONIC>" << std::endl;
       return 1;
    }
 
