@@ -338,7 +338,7 @@ target_link_libraries(grsisort PUBLIC ${GRSI_LIBRARIES} ${ROOT_LIBRARIES} ${X11_
 
 #----------------------------------------------------------------------------
 # add all executable in util
-set(UTIL_NAMES AddToChannelNumber AnalyzeDataLoss checkSort Compton_Scale_Plot converTH1 EfficCal EnableCrosstalkCorrection EnergyCal gadd grsiframe LeanAnalyzeComptonMatrices PlotVsRun ReadCalFromRoot Root2Ascii Root2Rad ScaleCalibration SetOdbFromData WriteCalToRoot WriteNonlinearitiesCal)
+set(UTIL_NAMES AddToChannelNumber AnalyzeDataLoss checkSort Compton_Scale_Plot EnableCrosstalkCorrection gadd grsiframe LeanAnalyzeComptonMatrices PlotVsRun ReadCalFromRoot Root2Ascii Root2Rad ScaleCalibration SetOdbFromData WriteCalToRoot WriteNonlinearitiesCal)
 foreach(UTIL IN LISTS UTIL_NAMES)
 	add_executable(${UTIL} ${PROJECT_SOURCE_DIR}/util/${UTIL}.cxx)
    target_link_libraries(${UTIL} PUBLIC ${GRSI_LIBRARIES} ${ROOT_LIBRARIES} ${X11_LIBRARIES} ${X11_Xpm_LIB})
