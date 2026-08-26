@@ -483,7 +483,21 @@ kFileType TGRSIOptions::DetermineFileType(const std::string& filename)
    if(dotPos == std::string::npos || (dotPos < slashPos && slashPos != std::string::npos)) {
       return kFileType::TDR_FILE;
    }
-   std::string ext = filename.substr(dotPos + 1);
+   size_t openingPos = filename.find_first_of('(');
+   // if we find an opening parenthese, we might have a case where arguments are supplied to a script
+   std::string ext;
+   if(openingPos != std::string::npos) {
+      if(openingPos < dotPos) { // . is after the opening parenthese it might be part of the arguments, so search before that point
+         size_t newDotPos = filename.substr(0, openingPos).find_last_of('.');
+         if(newDotPos != std::string::npos) {
+            ext = filename.substr(newDotPos + 1, openingPos - newDotPos - 1);
+            if((ext == "c") || (ext == "C") || (ext == "c+") || (ext == "C+") || (ext == "c++") || (ext == "C++")) {
+               return kFileType::ROOT_MACRO;
+            }
+         }
+      }
+   }
+   ext = filename.substr(dotPos + 1);
 
    // check if this is a zipped file and if so get the extension before the zip-extension
    bool isZipped = (ext == "gz") || (ext == "bz2") || (ext == "zip");
@@ -548,13 +562,14 @@ kFileType TGRSIOptions::DetermineFileType(const std::string& filename)
    }
 
    // strip possible parenthese with arguments for the script from the extension
-   size_t openingPos = ext.find_first_of('(');
+   openingPos = ext.find_first_of('(');
    if(openingPos != std::string::npos) {
       ext = ext.substr(0, openingPos);
       if((ext == "c") || (ext == "C") || (ext == "c+") || (ext == "C+") || (ext == "c++") || (ext == "C++")) {
          return kFileType::ROOT_MACRO;
       }
    }
+   std::cout << "Unknown file extension \"" << ext << "\"" << std::endl;
    return kFileType::UNKNOWN_FILETYPE;
 }
 
