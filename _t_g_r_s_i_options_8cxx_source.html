@@ -603,7 +603,7 @@ $(function(){initNavTree('_t_g_r_s_i_options_8cxx_source.html',''); initResizabl
 <div class="line"><a id="l00487" name="l00487"></a><span class="lineno">  487</span>   <span class="comment">// if we find an opening parenthese, we might have a case where arguments are supplied to a script</span></div>
 <div class="line"><a id="l00488" name="l00488"></a><span class="lineno">  488</span>   std::string ext;</div>
 <div class="line"><a id="l00489" name="l00489"></a><span class="lineno">  489</span>   <span class="keywordflow">if</span>(openingPos != std::string::npos) {</div>
-<div class="line"><a id="l00490" name="l00490"></a><span class="lineno">  490</span>      <span class="keywordflow">if</span>(openingPos &lt; dotPos) { <span class="comment">// . is after the opening parenthese it might be part of the arguments, so search before that point</span></div>
+<div class="line"><a id="l00490" name="l00490"></a><span class="lineno">  490</span>      <span class="keywordflow">if</span>(openingPos &lt; dotPos) {   <span class="comment">// . is after the opening parenthese it might be part of the arguments, so search before that point</span></div>
 <div class="line"><a id="l00491" name="l00491"></a><span class="lineno">  491</span>         <span class="keywordtype">size_t</span> newDotPos = filename.substr(0, openingPos).find_last_of(<span class="charliteral">&#39;.&#39;</span>);</div>
 <div class="line"><a id="l00492" name="l00492"></a><span class="lineno">  492</span>         <span class="keywordflow">if</span>(newDotPos != std::string::npos) {</div>
 <div class="line"><a id="l00493" name="l00493"></a><span class="lineno">  493</span>            ext = filename.substr(newDotPos + 1, openingPos - newDotPos - 1);</div>
@@ -998,7 +998,7 @@ $(function(){initNavTree('_t_g_r_s_i_options_8cxx_source.html',''); initResizabl
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_1f2c117abb9c439347e5eda4f80f97eb.html">TGRSIint</a></li><li class="navelem"><a class="el" href="_t_g_r_s_i_options_8cxx.html">TGRSIOptions.cxx</a></li>
-    <li class="footer">GRSISort ("v4.1.1.0") Reference Guide Generated on Wed Aug 26 2026 19:39:23.</li>
+    <li class="footer">GRSISort ("v4.1.1.0") Reference Guide Generated on Wed Aug 26 2026 19:42:44.</li>
   </ul>
 </div>
 </body>
