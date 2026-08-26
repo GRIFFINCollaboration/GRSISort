@@ -487,7 +487,7 @@ kFileType TGRSIOptions::DetermineFileType(const std::string& filename)
    // if we find an opening parenthese, we might have a case where arguments are supplied to a script
    std::string ext;
    if(openingPos != std::string::npos) {
-      if(openingPos < dotPos) { // . is after the opening parenthese it might be part of the arguments, so search before that point
+      if(openingPos < dotPos) {   // . is after the opening parenthese it might be part of the arguments, so search before that point
          size_t newDotPos = filename.substr(0, openingPos).find_last_of('.');
          if(newDotPos != std::string::npos) {
             ext = filename.substr(newDotPos + 1, openingPos - newDotPos - 1);
