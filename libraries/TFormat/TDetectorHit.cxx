@@ -125,9 +125,22 @@ void TDetectorHit::Copy(TObject& rhs) const
    static_cast<TDetectorHit&>(rhs).fTime      = fTime;
    static_cast<TDetectorHit&>(rhs).fChannel   = fChannel;
 
-   static_cast<TDetectorHit&>(rhs).fBitFlags       = 0;
+   static_cast<TDetectorHit&>(rhs).fBitFlags       = fBitFlags;
    static_cast<TDetectorHit&>(rhs).fPPGStatus      = fPPGStatus;
    static_cast<TDetectorHit&>(rhs).fCycleTimeStamp = fCycleTimeStamp;
+   if(IsEnergySet()) {
+      static_cast<TDetectorHit&>(rhs).fEnergy = fEnergy;
+   }
+   if(IsChannelSet()) {
+      static_cast<TDetectorHit&>(rhs).fChannel = fChannel;
+   }
+   if(IsTimeSet()) {
+      static_cast<TDetectorHit&>(rhs).fTime = fTime;
+   }
+   if(IsPPGSet()) {
+      static_cast<TDetectorHit&>(rhs).fPPGStatus = fPPGStatus;
+      static_cast<TDetectorHit&>(rhs).fCycleTimeStamp = fCycleTimeStamp;
+   }
 }
 
 void TDetectorHit::CopyWave(TObject& rhs) const
