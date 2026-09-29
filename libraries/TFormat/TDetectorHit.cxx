@@ -138,7 +138,7 @@ void TDetectorHit::Copy(TObject& rhs) const
       static_cast<TDetectorHit&>(rhs).fTime = fTime;
    }
    if(IsPPGSet()) {
-      static_cast<TDetectorHit&>(rhs).fPPGStatus = fPPGStatus;
+      static_cast<TDetectorHit&>(rhs).fPPGStatus      = fPPGStatus;
       static_cast<TDetectorHit&>(rhs).fCycleTimeStamp = fCycleTimeStamp;
    }
 }
