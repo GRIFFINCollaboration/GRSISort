@@ -1,5 +1,6 @@
 #include "TChannel.h"
 
+#include <cmath>
 #include <stdexcept>
 #include <fstream>
 #include <iostream>
@@ -74,6 +75,7 @@ TChannel::TChannel(const TChannel& chan) : TNamed(chan)
    SetENGRanges(chan.fENGRanges);
    SetAllENGChi2(chan.fENGChi2);
    SetENGDriftCoefficents(chan.fENGDriftCoefficents);
+   SetENGChargeCorrections(chan.fENGChargeCorrections);
    SetCFDCoefficients(chan.fCFDCoefficients);
    SetLEDCoefficients(chan.fLEDCoefficients);
    SetTIMECoefficients(chan.fTIMECoefficients);
@@ -112,6 +114,7 @@ TChannel::TChannel(TChannel&& chan) noexcept : TNamed(chan)
    SetENGRanges(chan.fENGRanges);
    SetAllENGChi2(chan.fENGChi2);
    SetENGDriftCoefficents(chan.fENGDriftCoefficents);
+   SetENGChargeCorrections(chan.fENGChargeCorrections);
    SetCFDCoefficients(chan.fCFDCoefficients);
    SetLEDCoefficients(chan.fLEDCoefficients);
    SetTIMECoefficients(chan.fTIMECoefficients);
@@ -149,6 +152,7 @@ TChannel::TChannel(TChannel* chan)
    SetENGRanges(chan->fENGRanges);
    SetAllENGChi2(chan->fENGChi2);
    SetENGDriftCoefficents(chan->fENGDriftCoefficents);
+   SetENGChargeCorrections(chan->fENGChargeCorrections);
    SetCFDCoefficients(chan->fCFDCoefficients);
    SetLEDCoefficients(chan->fLEDCoefficients);
    SetTIMECoefficients(chan->fTIMECoefficients);
@@ -187,6 +191,7 @@ TChannel& TChannel::operator=(const TChannel& rhs)
    SetENGRanges(rhs.fENGRanges);
    SetAllENGChi2(rhs.fENGChi2);
    SetENGDriftCoefficents(rhs.fENGDriftCoefficents);
+   SetENGChargeCorrections(rhs.fENGChargeCorrections);
    SetCFDCoefficients(rhs.fCFDCoefficients);
    SetLEDCoefficients(rhs.fLEDCoefficients);
    SetTIMECoefficients(rhs.fTIMECoefficients);
@@ -228,6 +233,7 @@ TChannel& TChannel::operator=(TChannel&& rhs) noexcept
    SetENGRanges(rhs.fENGRanges);
    SetAllENGChi2(rhs.fENGChi2);
    SetENGDriftCoefficents(rhs.fENGDriftCoefficents);
+   SetENGChargeCorrections(rhs.fENGChargeCorrections);
    SetCFDCoefficients(rhs.fCFDCoefficients);
    SetLEDCoefficients(rhs.fLEDCoefficients);
    SetTIMECoefficients(rhs.fTIMECoefficients);
@@ -347,6 +353,7 @@ void TChannel::OverWriteChannel(TChannel* chan)
    SetENGRanges(TPriorityValue<std::vector<std::pair<double, double>>>(chan->GetENGRanges(), EPriority::kForce));
    SetAllENGChi2(TPriorityValue<std::vector<double>>(chan->GetAllENGChi2(), EPriority::kForce));
    SetENGDriftCoefficents(TPriorityValue<std::vector<Float_t>>(chan->GetENGDriftCoefficents(), EPriority::kForce));
+   SetENGChargeCorrections(TPriorityValue<std::vector<Float_t>>(chan->GetENGChargeCorrections(), EPriority::kForce));
    SetCFDCoefficients(TPriorityValue<std::vector<double>>(chan->GetCFDCoeff(), EPriority::kForce));
    SetLEDCoefficients(TPriorityValue<std::vector<double>>(chan->GetLEDCoeff(), EPriority::kForce));
    SetTIMECoefficients(TPriorityValue<std::vector<double>>(chan->GetTIMECoeff(), EPriority::kForce));
@@ -386,6 +393,7 @@ void TChannel::AppendChannel(TChannel* chan)
    SetENGRanges(chan->fENGRanges);
    SetAllENGChi2(chan->fENGChi2);
    SetENGDriftCoefficents(chan->fENGDriftCoefficents);
+   SetENGChargeCorrections(chan->fENGChargeCorrections);
    SetCFDCoefficients(chan->fCFDCoefficients);
    SetLEDCoefficients(chan->fLEDCoefficients);
    SetTIMECoefficients(chan->fTIMECoefficients);
@@ -460,6 +468,7 @@ void TChannel::Clear(Option_t*)
    fENGRanges.Reset(std::vector<std::pair<double, double>>());
    fENGChi2.Reset(std::vector<double>());
    fENGDriftCoefficents.Reset(std::vector<Float_t>());
+   fENGChargeCorrections.Reset(std::vector<Float_t>());
    fCFDCoefficients.Reset(std::vector<double>());
    fCFDChi2.Reset(0.0);
    fLEDCoefficients.Reset(std::vector<double>());
@@ -575,6 +584,7 @@ void TChannel::DestroyENGCal()
    fENGRanges.Address()->clear();
    fENGChi2.Address()->clear();
    fENGDriftCoefficents.Address()->clear();
+   fENGChargeCorrections.Address()->clear();
 }
 
 void TChannel::DestroyCFDCal()
@@ -674,6 +684,14 @@ double TChannel::CalibrateENG(double charge) const
    if(fENGCoefficients.empty()) {
       return charge;
    }
+
+   // Apply the optional charge correction before selecting the calibration range.
+   // ENGChargeCorr contains the offset, square-root, and gain coefficients, in that order.
+   const bool useENGChargeCorrection = fENGChargeCorrections.size() == 3;
+   if(useENGChargeCorrection) {
+      charge = fENGChargeCorrections[0] + fENGChargeCorrections[1] * std::sqrt(charge) + fENGChargeCorrections[2] * charge;
+   }
+
    // select range to use, they should be sorted
    size_t currentRange = 0;
    if(!fENGRanges.empty()) {
@@ -703,7 +721,7 @@ double TChannel::CalibrateENG(double charge) const
    }
 
    // apply the drift correction first
-   if(!fENGDriftCoefficents.empty()) {
+   if(!useENGChargeCorrection && !fENGDriftCoefficents.empty()) {
       double corrCharge = -fENGDriftCoefficents[0];   // ILL subtracts the offset instead of adding it
       for(size_t i = 1; i < fENGDriftCoefficents.size(); i++) {
          corrCharge += fENGDriftCoefficents[i] * pow(charge, static_cast<double>(i));
@@ -936,6 +954,16 @@ std::string TChannel::PrintToString(Option_t*) const
       auto oldPrecision = str.precision();
       str.precision(9);
       for(auto coeff : fENGDriftCoefficents) {
+         str << coeff << "\t";
+      }
+      str.precision(oldPrecision);
+      str << std::endl;
+   }
+   if(!fENGChargeCorrections.empty()) {
+      str << "ENGChargeCorr:   ";
+      auto oldPrecision = str.precision();
+      str.precision(9);
+      for(auto coeff : fENGChargeCorrections) {
          str << coeff << "\t";
       }
       str.precision(oldPrecision);
@@ -1341,7 +1369,11 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
                   range = 0;
                }
                if(range == 0) {
+                  // ENGChargeCorr is independent of the polynomial calibration and may appear before ENGCoeff.
+                  // Preserve it while resetting the existing energy calibration.
+                  const auto chargeCorrections = channel->fENGChargeCorrections;
                   channel->DestroyENGCal();
+                  channel->fENGChargeCorrections = chargeCorrections;
                   channel->fENGCoefficients.SetPriority(prio);
                }
                float value = 0.;
@@ -1359,6 +1391,17 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
                float value = 0.;
                while(!(str >> value).fail()) {
                   channel->AddENGDriftCoefficent(value);
+               }
+            } else if(type == "ENGCHARGECORR") {
+               std::vector<Float_t> corrections;
+               float                value = 0.;
+               while(!(str >> value).fail()) {
+                  corrections.push_back(value);
+               }
+               if(corrections.size() != 3) {
+                  std::cerr << "ENGChargeCorr requires exactly three coefficients (offset, square root, gain), got " << corrections.size() << " on line " << linenumber << std::endl;
+               } else {
+                  channel->SetENGChargeCorrections(TPriorityValue<std::vector<Float_t>>(corrections, prio));
                }
             } else if(type == "LEDCOEFF") {
                channel->DestroyLEDCal();

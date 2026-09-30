@@ -59,6 +59,10 @@ protected:
             /// This means we can't use T directly to create a new hit, we need to use TClass::New().
             T* tmpT = static_cast<T*>(hit->IsA()->New());
             *tmpT   = *hit;
+            // Analysis copies must retain corrections already cached in the source.
+            // Do not force evaluation of values that have not been calculated yet.
+            if(hit->TestHitBit(TDetectorHit::EBitFlag::kIsEnergySet)) { tmpT->SetEnergy(hit->GetEnergy()); }
+            if(hit->TestHitBit(TDetectorHit::EBitFlag::kIsTimeSet)) { tmpT->SetTime(hit->GetTime()); }
             addbacks.push_back(tmpT);
             nofFragments.push_back(1);
          }
@@ -85,6 +89,10 @@ protected:
          if(!suppress) {
             T* tmpT = static_cast<T*>(hit->IsA()->New());
             *tmpT   = *hit;
+            // Analysis copies must retain corrections already cached in the source.
+            // Do not force evaluation of values that have not been calculated yet.
+            if(hit->TestHitBit(TDetectorHit::EBitFlag::kIsEnergySet)) { tmpT->SetEnergy(hit->GetEnergy()); }
+            if(hit->TestHitBit(TDetectorHit::EBitFlag::kIsTimeSet)) { tmpT->SetTime(hit->GetTime()); }
             suppressedHits.push_back(tmpT);
          }
       }
@@ -129,6 +137,10 @@ protected:
             /// This means we can't use T directly to create a new hit, we need to use TClass::New().
             T* tmpT = static_cast<T*>(hit->IsA()->New());
             *tmpT   = *hit;
+            // Analysis copies must retain corrections already cached in the source.
+            // Do not force evaluation of values that have not been calculated yet.
+            if(hit->TestHitBit(TDetectorHit::EBitFlag::kIsEnergySet)) { tmpT->SetEnergy(hit->GetEnergy()); }
+            if(hit->TestHitBit(TDetectorHit::EBitFlag::kIsTimeSet)) { tmpT->SetTime(hit->GetTime()); }
             addbacks.push_back(tmpT);
             nofFragments.push_back(1);
             suppressed.push_back(suppress);
