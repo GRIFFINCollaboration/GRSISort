@@ -107,7 +107,7 @@ public:
          std::cerr << "Error, can't use single crystal method if not using addback! Setting addback to true!" << std::endl;
          fAddback = true;
       }
-      std::cout << std::boolalpha << "# of mixed events " << fNofMixedEvents << ", distance " << fGriffinDistance << " mm, single crystal " << fSingleCrystal << ", addback " << fAddback << ", folding " << fFolding << ", and grouping " << fGrouping << std::endl;
+      std::cout << std::boolalpha << "# of mixed events " << fNofMixedEvents << ", distance " << fGriffinDistance << " mm, single crystal " << fSingleCrystal << ", addback " << fAddback << ", folding " << fFolding << ", and grouping " << fGrouping << "; prompt timing " << fPrompt << " ns, time random " << fTimeRandomLow << " - " << fTimeRandomHigh << " ns, and cycle time " << fCycleTimeLow << " - " << fCycleTimeHigh << std::endl;
 
       fAngles = new TGriffinAngles(fGriffinDistance, fFolding, fGrouping, fAddback);
       fAngles->Print();
