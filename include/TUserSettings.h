@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <stdexcept>
+#include <iostream>
 
 #include "TNamed.h"
 #include "TCollection.h"
@@ -109,6 +110,9 @@ public:
       try {
          return fInt.at(parameter);
       } catch(std::out_of_range& e) {
+         if(fDouble.find(parameter) != fDouble.end()) {
+            std::cout << "Returning default value " << def << " for integer \"" << parameter << "\", but this parameter also exists as a double?" << std::endl;
+         }
          return def;
       }
    }
@@ -117,6 +121,9 @@ public:
       try {
          return fDouble.at(parameter);
       } catch(std::out_of_range& e) {
+         if(fInt.find(parameter) != fInt.end()) {
+            std::cout << "Returning default value " << def << " for double \"" << parameter << "\", but this parameter also exists as an integer?" << std::endl;
+         }
          return def;
       }
    }
