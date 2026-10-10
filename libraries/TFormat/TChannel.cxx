@@ -1393,13 +1393,9 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt, EPriority p
                   channel->AddENGDriftCoefficent(value);
                }
             } else if(type == "ENGCHARGECORR") {
-               std::vector<Float_t> corrections;
-               float                value = 0.;
-               while(!(str >> value).fail()) {
-                  corrections.push_back(value);
-               }
-               if(corrections.size() != 3) {
-                  std::cerr << "ENGChargeCorr requires exactly three coefficients (offset, square root, gain), got " << corrections.size() << " on line " << linenumber << std::endl;
+               std::vector<Float_t> corrections(3);
+               if(!(str >> corrections[0] >> corrections[1] >> corrections[2]) || !(str >> std::ws).eof()) {
+                  std::cerr << "ENGChargeCorr requires exactly three numeric coefficients (offset, square root, gain) and no trailing input on line " << linenumber << std::endl;
                } else {
                   channel->SetENGChargeCorrections(TPriorityValue<std::vector<Float_t>>(corrections, prio));
                }
