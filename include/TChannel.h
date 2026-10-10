@@ -94,20 +94,21 @@ private:
    TPriorityValue<TMnemonic*> fMnemonic;
    static TClassRef           fMnemonicClass;
 
-   TPriorityValue<std::vector<std::vector<Float_t>>>      fENGCoefficients;       ///< Energy calibration coeffs (low to high order)
-   TPriorityValue<std::vector<std::pair<double, double>>> fENGRanges;             ///< Range of energy calibrations
-   TPriorityValue<std::vector<double>>                    fENGChi2;               ///< Chi2 of the energy calibration
-   TPriorityValue<std::vector<Float_t>>                   fENGDriftCoefficents;   ///< Energy drift coefficents (applied after energy calibration has been applied)
-   TPriorityValue<std::vector<double>>                    fCFDCoefficients;       ///< CFD calibration coeffs (low to high order)
-   TPriorityValue<double>                                 fCFDChi2;               ///< Chi2 of the CFD calibration
-   TPriorityValue<std::vector<double>>                    fLEDCoefficients;       ///< LED calibration coeffs (low to high order)
-   TPriorityValue<double>                                 fLEDChi2;               ///< Chi2 of LED calibration
-   TPriorityValue<std::vector<double>>                    fTIMECoefficients;      ///< Time calibration coeffs (low to high order)
-   TPriorityValue<double>                                 fTIMEChi2;              ///< Chi2 of the Time calibration
-   TPriorityValue<std::vector<double>>                    fEFFCoefficients;       ///< Efficiency calibration coeffs (low to high order)
-   TPriorityValue<double>                                 fEFFChi2;               ///< Chi2 of Efficiency calibration
-   TPriorityValue<std::vector<double>>                    fCTCoefficients;        ///< Cross talk coefficients
-   TPriorityValue<TGraph>                                 fEnergyNonlinearity;    ///< Energy nonlinearity as TGraph, is used as E=E+GetEnergyNonlinearity(E), so y should be E(source)-calibration(peak)
+   TPriorityValue<std::vector<std::vector<Float_t>>>      fENGCoefficients;        ///< Energy calibration coeffs (low to high order)
+   TPriorityValue<std::vector<std::pair<double, double>>> fENGRanges;              ///< Range of energy calibrations
+   TPriorityValue<std::vector<double>>                    fENGChi2;                ///< Chi2 of the energy calibration
+   TPriorityValue<std::vector<Float_t>>                   fENGDriftCoefficents;    ///< Energy drift coefficients applied before energy calibration
+   TPriorityValue<std::vector<Float_t>>                   fENGChargeCorrections;   ///< Three-term pre-calibration charge correction: offset, square root, and gain
+   TPriorityValue<std::vector<double>>                    fCFDCoefficients;        ///< CFD calibration coeffs (low to high order)
+   TPriorityValue<double>                                 fCFDChi2;                ///< Chi2 of the CFD calibration
+   TPriorityValue<std::vector<double>>                    fLEDCoefficients;        ///< LED calibration coeffs (low to high order)
+   TPriorityValue<double>                                 fLEDChi2;                ///< Chi2 of LED calibration
+   TPriorityValue<std::vector<double>>                    fTIMECoefficients;       ///< Time calibration coeffs (low to high order)
+   TPriorityValue<double>                                 fTIMEChi2;               ///< Chi2 of the Time calibration
+   TPriorityValue<std::vector<double>>                    fEFFCoefficients;        ///< Efficiency calibration coeffs (low to high order)
+   TPriorityValue<double>                                 fEFFChi2;                ///< Chi2 of Efficiency calibration
+   TPriorityValue<std::vector<double>>                    fCTCoefficients;         ///< Cross talk coefficients
+   TPriorityValue<TGraph>                                 fEnergyNonlinearity;     ///< Energy nonlinearity as TGraph, is used as E=E+GetEnergyNonlinearity(E), so y should be E(source)-calibration(peak)
    TPriorityValue<TGraph>                                 fTimeNonlinearity;
 
    struct WaveFormShapePar {
@@ -199,6 +200,7 @@ public:
    std::vector<std::pair<double, double>> GetENGRanges() const { return fENGRanges.Value(); }
    std::pair<double, double>              GetENGRange(size_t range) const { return fENGRanges.Value()[range]; }
    std::vector<Float_t>                   GetENGDriftCoefficents() const { return fENGDriftCoefficents.Value(); }
+   std::vector<Float_t>                   GetENGChargeCorrections() const { return fENGChargeCorrections.Value(); }
 
    void AddENGCoefficient(Float_t temp, size_t range = 0)
    {
@@ -234,6 +236,7 @@ public:
       fENGRanges.Address()->at(range) = tmp;
    }
    void SetENGDriftCoefficents(const TPriorityValue<std::vector<Float_t>>& tmp) { fENGDriftCoefficents = tmp; }
+   void SetENGChargeCorrections(const TPriorityValue<std::vector<Float_t>>& tmp) { fENGChargeCorrections = tmp; }
    void SetCFDCoefficients(const TPriorityValue<std::vector<double>>& tmp) { fCFDCoefficients = tmp; }
    void SetLEDCoefficients(const TPriorityValue<std::vector<double>>& tmp) { fLEDCoefficients = tmp; }
    void SetTIMECoefficients(const TPriorityValue<std::vector<double>>& tmp) { fTIMECoefficients = tmp; }
@@ -340,7 +343,7 @@ private:
    static Int_t ReadFile(TFile* tempf);
 
    /// \cond CLASSIMP
-   ClassDefOverride(TChannel, 6)   // NOLINT(readability-else-after-return)
+   ClassDefOverride(TChannel, 7)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 /*! @} */
