@@ -10,6 +10,8 @@
 #include "TNamed.h"
 #include "TCollection.h"
 
+#include "Globals.h"
+
 /** \addtogroup Sorting
  *  @{
  */
@@ -111,7 +113,7 @@ public:
          return fInt.at(parameter);
       } catch(std::out_of_range& e) {
          if(fDouble.find(parameter) != fDouble.end()) {
-            std::cout << "Returning default value " << def << " for integer \"" << parameter << "\", but this parameter also exists as a double?" << std::endl;
+            std::cout << DYELLOW << "Returning default value " << def << " for integer \"" << parameter << "\", but this parameter also exists as a double?" << RESET_COLOR << std::endl;
          }
          return def;
       }
@@ -122,7 +124,7 @@ public:
          return fDouble.at(parameter);
       } catch(std::out_of_range& e) {
          if(fInt.find(parameter) != fInt.end()) {
-            std::cout << "Returning default value " << def << " for double \"" << parameter << "\", but this parameter also exists as an integer?" << std::endl;
+            std::cout << DYELLOW << "Returning default value " << def << " for double \"" << parameter << "\", but this parameter also exists as an integer?" << RESET_COLOR << std::endl;
          }
          return def;
       }
