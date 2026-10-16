@@ -11,10 +11,10 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="struct_t_midas_event_1_1_t_midas___b_a_n_k___h_e_a_d_e_r.html" target="_top" xlink:title="Event header.">
+<g id="a_Node000000"><a xlink:href="struct_t_midas_event_1_1_t_midas___b_a_n_k32.html" target="_top" xlink:title="32&#45;bit data bank">
 <polygon fill="white" stroke="#666666" points="109.75,-30.5 0,-30.5 0,0 109.75,0 109.75,-30.5"/>
 <text text-anchor="start" x="8" y="-17" font-family="Helvetica,sans-Serif" font-size="10.00">TMidasEvent::TMidas</text>
-<text text-anchor="middle" x="54.88" y="-5.75" font-family="Helvetica,sans-Serif" font-size="10.00">_BANK_HEADER</text>
+<text text-anchor="middle" x="54.88" y="-5.75" font-family="Helvetica,sans-Serif" font-size="10.00">_BANK32</text>
 </a>
 </g>
 </g>

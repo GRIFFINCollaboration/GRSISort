@@ -113,7 +113,7 @@ $(function(){initNavTree('class_t_griffin_angles.html',''); initResizable(true);
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This class provides the number of angles, their values, and the index a specific angle is at, as well as how many combinations contribute to this angle. It is meant to be used for the angular correlation analysis. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00029">29</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00030">30</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -129,6 +129,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a4d8216f8b155e3dc0de0a1adb8bec09c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba4e29dc0e28191fe31fca151b3ce86f" id="r_aba4e29dc0e28191fe31fca151b3ce86f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aba4e29dc0e28191fe31fca151b3ce86f">Angle</a> (int index) const</td></tr>
 <tr class="separator:aba4e29dc0e28191fe31fca151b3ce86f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4de53fc610e03616b77b577cd1074a85" id="r_a4de53fc610e03616b77b577cd1074a85"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4de53fc610e03616b77b577cd1074a85">ApplyFolding</a> (bool grouping=false)</td></tr>
+<tr class="separator:a4de53fc610e03616b77b577cd1074a85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd646dd0beca73b9b2ba03b13746a3d6" id="r_afd646dd0beca73b9b2ba03b13746a3d6"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afd646dd0beca73b9b2ba03b13746a3d6">AverageAngle</a> (int index) const</td></tr>
 <tr class="separator:afd646dd0beca73b9b2ba03b13746a3d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae53441dc46c1588077d23572f703d03c" id="r_ae53441dc46c1588077d23572f703d03c"><td class="memItemLeft" align="right" valign="top">std::set&lt; double &gt;::iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae53441dc46c1588077d23572f703d03c">begin</a> () const</td></tr>
@@ -143,6 +145,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ae82a03978a5034937f4c46e826e5de93"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63e7ab32a1bf195ae7fabf0778de3eb4" id="r_a63e7ab32a1bf195ae7fabf0778de3eb4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a63e7ab32a1bf195ae7fabf0778de3eb4">ExcludeDetector</a> (int detector) const</td></tr>
 <tr class="separator:a63e7ab32a1bf195ae7fabf0778de3eb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2324956616833a5bcea9df2202f62d5b" id="r_a2324956616833a5bcea9df2202f62d5b"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2324956616833a5bcea9df2202f62d5b">FoldedAndGroupedIndices</a> (int index) const</td></tr>
+<tr class="separator:a2324956616833a5bcea9df2202f62d5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a88b463e303d2dbf5d671fb803ca02356" id="r_a88b463e303d2dbf5d671fb803ca02356"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a88b463e303d2dbf5d671fb803ca02356">Folding</a> () const</td></tr>
 <tr class="separator:a88b463e303d2dbf5d671fb803ca02356"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5eb36f9c66af1efa37b9bf1fda15193d" id="r_a5eb36f9c66af1efa37b9bf1fda15193d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5eb36f9c66af1efa37b9bf1fda15193d">FoldOrGroup</a> (TGraphErrors *z0, TGraphErrors *z2, TGraphErrors *z4, bool verbose=false) const</td></tr>
@@ -196,6 +200,8 @@ Private Attributes</h2></td></tr>
 <tr class="separator:ae168cff819e782c7ce3f4d74449d93f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ada59f37eb0221d344d5d8d280a76f418" id="r_ada59f37eb0221d344d5d8d280a76f418"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ada59f37eb0221d344d5d8d280a76f418">fExcludedDetectors</a></td></tr>
 <tr class="separator:ada59f37eb0221d344d5d8d280a76f418"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab866a8537aad38952f7a729458f783fb" id="r_ab866a8537aad38952f7a729458f783fb"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::vector&lt; int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab866a8537aad38952f7a729458f783fb">fFoldedAndGroupedIndices</a></td></tr>
+<tr class="separator:ab866a8537aad38952f7a729458f783fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96d17432086c0d69dd8756d161af01ad" id="r_a96d17432086c0d69dd8756d161af01ad"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a96d17432086c0d69dd8756d161af01ad">fFolding</a> {false}</td></tr>
 <tr class="separator:a96d17432086c0d69dd8756d161af01ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6779dc88b65c057d3d5eb8978c0bff39" id="r_a6779dc88b65c057d3d5eb8978c0bff39"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6779dc88b65c057d3d5eb8978c0bff39">fGrouping</a> {false}</td></tr>
@@ -220,7 +226,7 @@ Static Private Attributes</h2></td></tr>
 <div id="dynsection-1-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-1-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_griffin_angles__coll__graph.svg" width="424" height="247"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_griffin_angles__coll__graph.svg" width="474" height="314"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aa79a97ebb5cdfbc47442681ec4d0a58b" name="aa79a97ebb5cdfbc47442681ec4d0a58b"></a>
@@ -262,7 +268,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8cxx_source.html#l00008">8</a> of file <a class="el" href="_t_griffin_angles_8cxx_source.html">TGriffinAngles.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_globals_8h_source.html#l00018">DRED</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00061">end()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00389">ExcludeCrystal()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00383">ExcludeDetector()</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00087">fAddback</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00094">fAngleCount</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00093">fAngleMap</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00092">fAngles</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00091">fCustomGrouping</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00084">fDistance</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00090">fExcludedCrystals</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00089">fExcludedDetectors</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00085">fFolding</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00086">fGrouping</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00088">fRounding</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00083">fVerbosity</a>, <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00020">TGRSIOptions::Get()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00329">TGriffin::GetPosition()</a>, <a class="el" href="_globals_8h.html#abb4e78a946cba701b4127ed5191b3b1ea34bdbffdb1c0e1b603f58fc0d49548b6">kAll</a>, <a class="el" href="_globals_8h.html#abb4e78a946cba701b4127ed5191b3b1ead5b5f7a288e14dd7c92464e7c34ffb65">kQuiet</a>, <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>, and <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00070">TGRSIOptions::UserSettings()</a>.</p>
+<p class="reference">References <a class="el" href="_globals_8h_source.html#l00018">DRED</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00062">end()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00389">ExcludeCrystal()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00383">ExcludeDetector()</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00091">fAddback</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00098">fAngleCount</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00097">fAngleMap</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00096">fAngles</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00095">fCustomGrouping</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00088">fDistance</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00094">fExcludedCrystals</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00093">fExcludedDetectors</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00089">fFolding</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00090">fGrouping</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00092">fRounding</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00087">fVerbosity</a>, <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00020">TGRSIOptions::Get()</a>, <a class="el" href="_t_griffin_8cxx_source.html#l00329">TGriffin::GetPosition()</a>, <a class="el" href="_globals_8h.html#abb4e78a946cba701b4127ed5191b3b1ea34bdbffdb1c0e1b603f58fc0d49548b6">kAll</a>, <a class="el" href="_globals_8h.html#abb4e78a946cba701b4127ed5191b3b1ead5b5f7a288e14dd7c92464e7c34ffb65">kQuiet</a>, <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>, and <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00070">TGRSIOptions::UserSettings()</a>.</p>
 
 </div>
 </div>
@@ -367,9 +373,9 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8cxx_source.html#l00427">427</a> of file <a class="el" href="_t_griffin_angles_8cxx_source.html">TGriffinAngles.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_griffin_angles_8h_source.html#l00087">fAddback</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00094">fAngleCount</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00093">fAngleMap</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00092">fAngles</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00091">fCustomGrouping</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00084">fDistance</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00090">fExcludedCrystals</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00089">fExcludedDetectors</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00085">fFolding</a>, and <a class="el" href="_t_griffin_angles_8h_source.html#l00086">fGrouping</a>.</p>
+<p class="reference">References <a class="el" href="_t_griffin_angles_8h_source.html#l00091">fAddback</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00098">fAngleCount</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00097">fAngleMap</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00096">fAngles</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00095">fCustomGrouping</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00088">fDistance</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00094">fExcludedCrystals</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00093">fExcludedDetectors</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00089">fFolding</a>, and <a class="el" href="_t_griffin_angles_8h_source.html#l00090">fGrouping</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_griffin_angles_8h_source.html#l00068">Merge()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_griffin_angles_8h_source.html#l00072">Merge()</a>.</p>
 
 </div>
 </div>
@@ -396,9 +402,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00041">41</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00042">42</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_griffin_angles_8h_source.html#l00087">fAddback</a>.</p>
+<p class="reference">References <a class="el" href="_t_griffin_angles_8h_source.html#l00091">fAddback</a>.</p>
 
 </div>
 </div>
@@ -425,11 +431,33 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00045">45</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00046">46</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_griffin_angles_8h_source.html#l00092">fAngles</a>.</p>
+<p class="reference">References <a class="el" href="_t_griffin_angles_8h_source.html#l00096">fAngles</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_simulation_angular_correlation_8cxx_source.html#l00016">main()</a>.</p>
+
+</div>
+</div>
+<a id="a4de53fc610e03616b77b577cd1074a85" name="a4de53fc610e03616b77b577cd1074a85"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4de53fc610e03616b77b577cd1074a85">&#9670;&#160;</a></span>ApplyFolding()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TGriffinAngles::ApplyFolding </td>
+          <td>(</td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>grouping</em></span><span class="paramdefsep"> = </span><span class="paramdefval">false</span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>function that calculates which original indices belong to the new folded (and grouped) list of indices</p>
+
+<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8cxx_source.html#l00486">486</a> of file <a class="el" href="_t_griffin_angles_8cxx_source.html">TGriffinAngles.cxx</a>.</p>
+
+<p class="reference">References <a class="el" href="_globals_8h_source.html#l00018">DRED</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00062">end()</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00097">fAngleMap</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00095">fCustomGrouping</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00088">fDistance</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00099">fFoldedAndGroupedIndices</a>, <a class="el" href="_t_g_r_s_i_options_8cxx_source.html#l00020">TGRSIOptions::Get()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00149">Index()</a>, <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>, and <a class="el" href="_t_g_r_s_i_options_8h_source.html#l00070">TGRSIOptions::UserSettings()</a>.</p>
 
 </div>
 </div>
@@ -450,7 +478,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8cxx_source.html#l00165">165</a> of file <a class="el" href="_t_griffin_angles_8cxx_source.html">TGriffinAngles.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_griffin_angles_8h_source.html#l00093">fAngleMap</a>.</p>
+<p class="reference">References <a class="el" href="_t_griffin_angles_8h_source.html#l00097">fAngleMap</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_griffin_angles_8cxx_source.html#l00395">Print()</a>.</p>
 
@@ -479,9 +507,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00060">60</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00061">61</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_griffin_angles_8h_source.html#l00092">fAngles</a>.</p>
+<p class="reference">References <a class="el" href="_t_griffin_angles_8h_source.html#l00096">fAngles</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_angular_correlation_helper_8cxx_source.html#l00003">AngularCorrelationHelper::CreateHistograms()</a>, and <a class="el" href="_simulation_angular_correlation_8cxx_source.html#l00016">main()</a>.</p>
 
@@ -511,9 +539,9 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>If the angle is in our map, report how often it exists, otherwise return zero.</p>
 
-<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00052">52</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00053">53</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_griffin_angles_8h_source.html#l00094">fAngleCount</a>, and <a class="el" href="_t_griffin_angles_8h_source.html#l00088">fRounding</a>.</p>
+<p class="reference">References <a class="el" href="_t_griffin_angles_8h_source.html#l00098">fAngleCount</a>, and <a class="el" href="_t_griffin_angles_8h_source.html#l00092">fRounding</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_simulation_angular_correlation_8cxx_source.html#l00016">main()</a>.</p>
 
@@ -542,9 +570,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00038">38</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00039">39</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_griffin_angles_8h_source.html#l00084">fDistance</a>.</p>
+<p class="reference">References <a class="el" href="_t_griffin_angles_8h_source.html#l00088">fDistance</a>.</p>
 
 </div>
 </div>
@@ -571,11 +599,11 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00061">61</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00062">62</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_griffin_angles_8h_source.html#l00092">fAngles</a>.</p>
+<p class="reference">References <a class="el" href="_t_griffin_angles_8h_source.html#l00096">fAngles</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_griffin_angles_8cxx_source.html#l00008">TGriffinAngles()</a>, <a class="el" href="_angular_correlation_helper_8cxx_source.html#l00003">AngularCorrelationHelper::CreateHistograms()</a>, and <a class="el" href="_simulation_angular_correlation_8cxx_source.html#l00016">main()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_griffin_angles_8cxx_source.html#l00008">TGriffinAngles()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00486">ApplyFolding()</a>, <a class="el" href="_angular_correlation_helper_8cxx_source.html#l00003">AngularCorrelationHelper::CreateHistograms()</a>, and <a class="el" href="_simulation_angular_correlation_8cxx_source.html#l00016">main()</a>.</p>
 
 </div>
 </div>
@@ -601,7 +629,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8cxx_source.html#l00389">389</a> of file <a class="el" href="_t_griffin_angles_8cxx_source.html">TGriffinAngles.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_griffin_angles_8h_source.html#l00090">fExcludedCrystals</a>.</p>
+<p class="reference">References <a class="el" href="_t_griffin_angles_8h_source.html#l00094">fExcludedCrystals</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_griffin_angles_8cxx_source.html#l00008">TGriffinAngles()</a>.</p>
 
@@ -625,9 +653,38 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8cxx_source.html#l00383">383</a> of file <a class="el" href="_t_griffin_angles_8cxx_source.html">TGriffinAngles.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_griffin_angles_8h_source.html#l00089">fExcludedDetectors</a>.</p>
+<p class="reference">References <a class="el" href="_t_griffin_angles_8h_source.html#l00093">fExcludedDetectors</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_griffin_angles_8cxx_source.html#l00008">TGriffinAngles()</a>, and <a class="el" href="_simulation_angular_correlation_8cxx_source.html#l00016">main()</a>.</p>
+
+</div>
+</div>
+<a id="a2324956616833a5bcea9df2202f62d5b" name="a2324956616833a5bcea9df2202f62d5b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2324956616833a5bcea9df2202f62d5b">&#9670;&#160;</a></span>FoldedAndGroupedIndices()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; int &gt; TGriffinAngles::FoldedAndGroupedIndices </td>
+          <td>(</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>index</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00065">65</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
+
+<p class="reference">References <a class="el" href="_t_griffin_angles_8h_source.html#l00099">fFoldedAndGroupedIndices</a>.</p>
 
 </div>
 </div>
@@ -654,9 +711,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00039">39</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00040">40</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_griffin_angles_8h_source.html#l00085">fFolding</a>.</p>
+<p class="reference">References <a class="el" href="_t_griffin_angles_8h_source.html#l00089">fFolding</a>.</p>
 
 </div>
 </div>
@@ -692,7 +749,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8cxx_source.html#l00178">178</a> of file <a class="el" href="_t_griffin_angles_8cxx_source.html">TGriffinAngles.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_griffin_angles_8h_source.html#l00085">fFolding</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00086">fGrouping</a>, and <a class="el" href="_t_griffin_angles_8h_source.html#l00088">fRounding</a>.</p>
+<p class="reference">References <a class="el" href="_t_griffin_angles_8h_source.html#l00089">fFolding</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00090">fGrouping</a>, and <a class="el" href="_t_griffin_angles_8h_source.html#l00092">fRounding</a>.</p>
 
 </div>
 </div>
@@ -719,9 +776,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00040">40</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00041">41</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_griffin_angles_8h_source.html#l00086">fGrouping</a>.</p>
+<p class="reference">References <a class="el" href="_t_griffin_angles_8h_source.html#l00090">fGrouping</a>.</p>
 
 </div>
 </div>
@@ -742,9 +799,9 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8cxx_source.html#l00149">149</a> of file <a class="el" href="_t_griffin_angles_8cxx_source.html">TGriffinAngles.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_griffin_angles_8h_source.html#l00093">fAngleMap</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00092">fAngles</a>, and <a class="el" href="_t_griffin_angles_8h_source.html#l00088">fRounding</a>.</p>
+<p class="reference">References <a class="el" href="_t_griffin_angles_8h_source.html#l00097">fAngleMap</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00096">fAngles</a>, and <a class="el" href="_t_griffin_angles_8h_source.html#l00092">fRounding</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_angular_correlation_helper_8cxx_source.html#l00052">AngularCorrelationHelper::Exec()</a>, and <a class="el" href="_simulation_angular_correlation_8cxx_source.html#l00016">main()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_griffin_angles_8cxx_source.html#l00486">ApplyFolding()</a>, <a class="el" href="_angular_correlation_helper_8cxx_source.html#l00052">AngularCorrelationHelper::Exec()</a>, and <a class="el" href="_simulation_angular_correlation_8cxx_source.html#l00016">main()</a>.</p>
 
 </div>
 </div>
@@ -771,7 +828,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00068">68</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00072">72</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
 
 <p class="reference">References <a class="el" href="_t_griffin_angles_8cxx_source.html#l00427">Add()</a>.</p>
 
@@ -800,9 +857,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00044">44</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00045">45</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_griffin_angles_8h_source.html#l00092">fAngles</a>.</p>
+<p class="reference">References <a class="el" href="_t_griffin_angles_8h_source.html#l00096">fAngles</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_simulation_angular_correlation_8cxx_source.html#l00016">main()</a>.</p>
 
@@ -883,7 +940,7 @@ Static Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8cxx_source.html#l00395">395</a> of file <a class="el" href="_t_griffin_angles_8cxx_source.html">TGriffinAngles.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_griffin_angles_8cxx_source.html#l00165">AverageAngle()</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00094">fAngleCount</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00093">fAngleMap</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00092">fAngles</a>, and <a class="el" href="_t_griffin_angles_8h_source.html#l00088">fRounding</a>.</p>
+<p class="reference">References <a class="el" href="_t_griffin_angles_8cxx_source.html#l00165">AverageAngle()</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00098">fAngleCount</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00097">fAngleMap</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00096">fAngles</a>, and <a class="el" href="_t_griffin_angles_8h_source.html#l00092">fRounding</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_angular_correlation_helper_8hh_source.html#l00067">AngularCorrelationHelper::AngularCorrelationHelper()</a>, and <a class="el" href="_simulation_angular_correlation_8cxx_source.html#l00016">main()</a>.</p>
 
@@ -912,9 +969,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00074">74</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00078">78</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_griffin_angles_8h_source.html#l00088">fRounding</a>.</p>
+<p class="reference">References <a class="el" href="_t_griffin_angles_8h_source.html#l00092">fRounding</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_angular_correlation_helper_8cxx_source.html#l00052">AngularCorrelationHelper::Exec()</a>.</p>
 
@@ -943,9 +1000,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00075">75</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00079">79</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_griffin_angles_8h_source.html#l00088">fRounding</a>.</p>
+<p class="reference">References <a class="el" href="_t_griffin_angles_8h_source.html#l00092">fRounding</a>.</p>
 
 </div>
 </div>
@@ -972,9 +1029,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00077">77</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00081">81</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_griffin_angles_8h_source.html#l00083">fVerbosity</a>.</p>
+<p class="reference">References <a class="el" href="_t_griffin_angles_8h_source.html#l00087">fVerbosity</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_simulation_angular_correlation_8cxx_source.html#l00016">main()</a>.</p>
 
@@ -1003,9 +1060,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00078">78</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00082">82</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_griffin_angles_8h_source.html#l00083">fVerbosity</a>.</p>
+<p class="reference">References <a class="el" href="_t_griffin_angles_8h_source.html#l00087">fVerbosity</a>.</p>
 
 </div>
 </div>
@@ -1032,9 +1089,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>flag indicating whether we use addback </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00087">87</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00091">91</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_griffin_angles_8cxx_source.html#l00008">TGriffinAngles()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00427">Add()</a>, and <a class="el" href="_t_griffin_angles_8h_source.html#l00041">Addback()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_griffin_angles_8cxx_source.html#l00008">TGriffinAngles()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00427">Add()</a>, and <a class="el" href="_t_griffin_angles_8h_source.html#l00042">Addback()</a>.</p>
 
 </div>
 </div>
@@ -1060,9 +1117,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>Maps angles (divided by rounding and cast to integers) to number of combinations contributing to it. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00094">94</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00098">98</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_griffin_angles_8cxx_source.html#l00008">TGriffinAngles()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00427">Add()</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00052">Count()</a>, and <a class="el" href="_t_griffin_angles_8cxx_source.html#l00395">Print()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_griffin_angles_8cxx_source.html#l00008">TGriffinAngles()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00427">Add()</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00053">Count()</a>, and <a class="el" href="_t_griffin_angles_8cxx_source.html#l00395">Print()</a>.</p>
 
 </div>
 </div>
@@ -1088,9 +1145,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>Maps angles to indices. This is fairly straight forward without grouping, but if grouping is used multiple angles can be mapped to the same index. </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00093">93</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00097">97</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_griffin_angles_8cxx_source.html#l00008">TGriffinAngles()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00427">Add()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00165">AverageAngle()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00149">Index()</a>, and <a class="el" href="_t_griffin_angles_8cxx_source.html#l00395">Print()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_griffin_angles_8cxx_source.html#l00008">TGriffinAngles()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00427">Add()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00486">ApplyFolding()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00165">AverageAngle()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00149">Index()</a>, and <a class="el" href="_t_griffin_angles_8cxx_source.html#l00395">Print()</a>.</p>
 
 </div>
 </div>
@@ -1116,9 +1173,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>set of unique angles, when grouping is used, the largest angle of the group is used! </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00092">92</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00096">96</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_griffin_angles_8cxx_source.html#l00008">TGriffinAngles()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00427">Add()</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00045">Angle()</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00060">begin()</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00061">end()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00149">Index()</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00044">NumberOfAngles()</a>, and <a class="el" href="_t_griffin_angles_8cxx_source.html#l00395">Print()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_griffin_angles_8cxx_source.html#l00008">TGriffinAngles()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00427">Add()</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00046">Angle()</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00061">begin()</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00062">end()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00149">Index()</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00045">NumberOfAngles()</a>, and <a class="el" href="_t_griffin_angles_8cxx_source.html#l00395">Print()</a>.</p>
 
 </div>
 </div>
@@ -1144,9 +1201,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>list of custom groups </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00091">91</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00095">95</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_griffin_angles_8cxx_source.html#l00008">TGriffinAngles()</a>, and <a class="el" href="_t_griffin_angles_8cxx_source.html#l00427">Add()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_griffin_angles_8cxx_source.html#l00008">TGriffinAngles()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00427">Add()</a>, and <a class="el" href="_t_griffin_angles_8cxx_source.html#l00486">ApplyFolding()</a>.</p>
 
 </div>
 </div>
@@ -1172,9 +1229,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>distance of detector from center of array in mmm </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00084">84</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00088">88</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_griffin_angles_8cxx_source.html#l00008">TGriffinAngles()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00427">Add()</a>, and <a class="el" href="_t_griffin_angles_8h_source.html#l00038">Distance()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_griffin_angles_8cxx_source.html#l00008">TGriffinAngles()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00427">Add()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00486">ApplyFolding()</a>, and <a class="el" href="_t_griffin_angles_8h_source.html#l00039">Distance()</a>.</p>
 
 </div>
 </div>
@@ -1200,7 +1257,7 @@ Static Private Attributes</h2></td></tr>
 
 <p>list of crystals that are excluded in calculating the angles, the crystals are numbered as 4*(det-1)+cry, so start at 0 and go up to 63 </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00090">90</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00094">94</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_griffin_angles_8cxx_source.html#l00008">TGriffinAngles()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00427">Add()</a>, and <a class="el" href="_t_griffin_angles_8cxx_source.html#l00389">ExcludeCrystal()</a>.</p>
 
@@ -1228,9 +1285,37 @@ Static Private Attributes</h2></td></tr>
 
 <p>list of detectors that are excluded in calculating the angles </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00089">89</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00093">93</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_t_griffin_angles_8cxx_source.html#l00008">TGriffinAngles()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00427">Add()</a>, and <a class="el" href="_t_griffin_angles_8cxx_source.html#l00383">ExcludeDetector()</a>.</p>
+
+</div>
+</div>
+<a id="ab866a8537aad38952f7a729458f783fb" name="ab866a8537aad38952f7a729458f783fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab866a8537aad38952f7a729458f783fb">&#9670;&#160;</a></span>fFoldedAndGroupedIndices</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;std::vector&lt;int&gt; &gt; TGriffinAngles::fFoldedAndGroupedIndices</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>this gives for each folded (and grouped) index the list of original indices contained </p>
+
+<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00099">99</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_t_griffin_angles_8cxx_source.html#l00486">ApplyFolding()</a>, and <a class="el" href="_t_griffin_angles_8h_source.html#l00065">FoldedAndGroupedIndices()</a>.</p>
 
 </div>
 </div>
@@ -1256,9 +1341,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>flag indicating whether we fold our distribution around 90 degree </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00085">85</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00089">89</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_griffin_angles_8cxx_source.html#l00008">TGriffinAngles()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00427">Add()</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00039">Folding()</a>, and <a class="el" href="_t_griffin_angles_8cxx_source.html#l00178">FoldOrGroup()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_griffin_angles_8cxx_source.html#l00008">TGriffinAngles()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00427">Add()</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00040">Folding()</a>, and <a class="el" href="_t_griffin_angles_8cxx_source.html#l00178">FoldOrGroup()</a>.</p>
 
 </div>
 </div>
@@ -1284,9 +1369,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>flag indicating whether we group close angles together </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00086">86</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00090">90</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_griffin_angles_8cxx_source.html#l00008">TGriffinAngles()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00427">Add()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00178">FoldOrGroup()</a>, and <a class="el" href="_t_griffin_angles_8h_source.html#l00040">Grouping()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_griffin_angles_8cxx_source.html#l00008">TGriffinAngles()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00427">Add()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00178">FoldOrGroup()</a>, and <a class="el" href="_t_griffin_angles_8h_source.html#l00041">Grouping()</a>.</p>
 
 </div>
 </div>
@@ -1312,9 +1397,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>we consider any angles whose difference is less than this to be equal </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00088">88</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00092">92</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_griffin_angles_8cxx_source.html#l00008">TGriffinAngles()</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00052">Count()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00178">FoldOrGroup()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00149">Index()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00395">Print()</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00074">Rounding()</a>, and <a class="el" href="_t_griffin_angles_8h_source.html#l00075">Rounding()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_griffin_angles_8cxx_source.html#l00008">TGriffinAngles()</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00053">Count()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00178">FoldOrGroup()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00149">Index()</a>, <a class="el" href="_t_griffin_angles_8cxx_source.html#l00395">Print()</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00078">Rounding()</a>, and <a class="el" href="_t_griffin_angles_8h_source.html#l00079">Rounding()</a>.</p>
 
 </div>
 </div>
@@ -1340,9 +1425,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>verbosity level </p>
 
-<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00083">83</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_t_griffin_angles_8h_source.html#l00087">87</a> of file <a class="el" href="_t_griffin_angles_8h_source.html">TGriffinAngles.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_t_griffin_angles_8cxx_source.html#l00008">TGriffinAngles()</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00077">Verbosity()</a>, and <a class="el" href="_t_griffin_angles_8h_source.html#l00078">Verbosity()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_t_griffin_angles_8cxx_source.html#l00008">TGriffinAngles()</a>, <a class="el" href="_t_griffin_angles_8h_source.html#l00081">Verbosity()</a>, and <a class="el" href="_t_griffin_angles_8h_source.html#l00082">Verbosity()</a>.</p>
 
 </div>
 </div>
@@ -1353,7 +1438,7 @@ Static Private Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_t_griffin_angles.html">TGriffinAngles</a></li>
-    <li class="footer">GRSISort ("v4.1.1.0") Reference Guide Generated on Mon Oct 5 2026 18:20:35.</li>
+    <li class="footer">GRSISort ("v4.1.1.0") Reference Guide Generated on Fri Oct 16 2026 15:40:58.</li>
   </ul>
 </div>
 </body>

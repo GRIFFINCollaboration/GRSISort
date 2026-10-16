@@ -83,6 +83,7 @@ var annotated_dup =
     [ "GRSIxx", "class_g_r_s_ixx.html", null ],
     [ "GSnapshot", "class_g_snapshot.html", "class_g_snapshot" ],
     [ "GValue", "class_g_value.html", "class_g_value" ],
+    [ "mixingResult", "structmixing_result.html", "structmixing_result" ],
     [ "NRMat", "class_n_r_mat.html", "class_n_r_mat" ],
     [ "NRMat3d", "class_n_r_mat3d.html", "class_n_r_mat3d" ],
     [ "NRVec", "class_n_r_vec.html", "class_n_r_vec" ],

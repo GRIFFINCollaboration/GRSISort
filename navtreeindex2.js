@@ -1,5 +1,7 @@
 var NAVTREEINDEX2 =
 {
+"_gain_match_g_r_i_f_f_i_n_8cxx.html#a2cd4a232b482a5bbe2ec92d11b60d23f":[11,0,2,3,5,13],
+"_gain_match_g_r_i_f_f_i_n_8cxx.html#a335a3a7296efe9014055095a1f0dce10":[11,0,2,3,5,18],
 "_gain_match_g_r_i_f_f_i_n_8cxx.html#a36befb7e3944e9629a915c0e19f94cdb":[11,0,2,3,5,16],
 "_gain_match_g_r_i_f_f_i_n_8cxx.html#a3c04138a5bfe5d72780bb7e82a18e627":[11,0,2,3,5,19],
 "_gain_match_g_r_i_f_f_i_n_8cxx.html#a419a9230e12c3ec542c1f5af04b43211":[11,0,2,3,5,4],
@@ -247,7 +249,5 @@ var NAVTREEINDEX2 =
 "_t_cal_manager_8cxx.html":[11,0,9,1,2,4],
 "_t_cal_manager_8cxx_source.html":[11,0,9,1,2,4],
 "_t_cal_manager_8h.html":[11,0,7,41],
-"_t_cal_manager_8h_source.html":[11,0,7,41],
-"_t_cal_point_8cxx.html":[11,0,9,1,2,5],
-"_t_cal_point_8cxx_source.html":[11,0,9,1,2,5]
+"_t_cal_manager_8h_source.html":[11,0,7,41]
 };

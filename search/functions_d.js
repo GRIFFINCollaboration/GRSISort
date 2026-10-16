@@ -48,7 +48,7 @@ var searchData=
   ['minintensity_45',['MinIntensity',['../class_t_source_calibration.html#ab5915bc02c53abc9f57ffbdb984ccd66',1,'TSourceCalibration::MinIntensity(double val)'],['../class_t_source_calibration.html#a4ce4ff102b3b33de99a03cae2300615e',1,'TSourceCalibration::MinIntensity()']]],
   ['mintimestamp_46',['MinTimeStamp',['../class_t_parsing_diagnostics_data.html#a0bec978a6c060421aa1bf15df7151ad9',1,'TParsingDiagnosticsData']]],
   ['missingchannel_47',['MissingChannel',['../class_t_sorting_diagnostics.html#a931e2d0309558c922b2f9c0192418ffe',1,'TSortingDiagnostics']]],
-  ['mixingmethod_48',['MixingMethod',['../_angular_correlations_8cxx.html#a6a8fed45632adde84826f0c711fd0120',1,'AngularCorrelations.cxx']]],
+  ['mixingmethod_48',['MixingMethod',['../_angular_correlations_8cxx.html#aa3233e34b31b36bef6a457e67dca37d0',1,'AngularCorrelations.cxx']]],
   ['modify2dslice_49',['Modify2DSlice',['../class_t_angular_correlation.html#afbddeb9250fea79ccad2a99ae22fb23d',1,'TAngularCorrelation']]],
   ['monitorconnectionsthread_50',['MonitorConnectionsThread',['../class_t_g_r_s_i_server.html#ab4393e03fbe1f2c85363f3bfa661a2e1',1,'TGRSIServer']]],
   ['move1dhistogram_51',['Move1DHistogram',['../_g_root_commands_8h.html#a5c0598baa7fdc26814f237f4edd6c527',1,'Move1DHistogram(const Int_t &amp;key, TH1 *histogram=nullptr):&#160;GRootCommands.cxx'],['../_g_root_commands_8cxx.html#abc17133199a456ed839816947554c0b8',1,'Move1DHistogram(const Int_t &amp;key, TH1 *histogram):&#160;GRootCommands.cxx']]],

@@ -1,5 +1,7 @@
 var NAVTREEINDEX14 =
 {
+"class_g_root_browser.html#aa3391d94c17936de947081bdd73fb17b":[8,5,3,40],
+"class_g_root_browser.html#aa4b77860da83b4cb929bb7ef20c4097e":[8,5,3,94],
 "class_g_root_browser.html#aa6e65410195e7c19ff5892d64b3788ce":[8,5,3,71],
 "class_g_root_browser.html#aa8f941237f7836a1ab5e79e9ebdcb222":[8,5,3,15],
 "class_g_root_browser.html#aa99d07c7106dfc0bfe11e818eb18b2ca":[8,5,3,8],
@@ -247,7 +249,5 @@ var NAVTREEINDEX14 =
 "class_griffin_k_value_helper.html#ae2c692144a9b683f3bd206bf70dda117":[10,0,48,14],
 "class_griffin_k_value_helper.html#ae5c188f3fc54bc1e7ee607421a46b678":[10,0,48,19],
 "class_griffin_k_value_helper.html#ae95111fa334deef7e49ea2050899e972":[10,0,48,32],
-"class_griffin_k_value_helper.html#af70ba099fb02f24961d985d47f7a568d":[10,0,48,26],
-"class_griffin_k_value_helper.html#afac73b2662988899869aa7d4c9926924":[10,0,48,2],
-"class_griffin_k_value_selector.html":[10,0,49]
+"class_griffin_k_value_helper.html#af70ba099fb02f24961d985d47f7a568d":[10,0,48,26]
 };

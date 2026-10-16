@@ -48,6 +48,7 @@ var hierarchy =
     [ "combinations::iterator", "classcombinations_1_1iterator.html", null ],
     [ "GH2Base::iterator", "class_g_h2_base_1_1iterator.html", null ],
     [ "TPulseAnalyzer::LinePar", "struct_t_pulse_analyzer_1_1_line_par.html", null ],
+    [ "mixingResult", "structmixing_result.html", null ],
     [ "NRMat< T >", "class_n_r_mat.html", null ],
     [ "TLMFitter::NRMat< T >", "class_t_l_m_fitter_1_1_n_r_mat.html", null ],
     [ "NRMat3d< T >", "class_n_r_mat3d.html", null ],
