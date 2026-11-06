@@ -48,6 +48,7 @@ public:
    void FillRandom(const char* fname, Int_t ntimes = 5000, TRandom* rng = nullptr) override;
    void FillRandom(TH1* h, Int_t ntimes = 5000, TRandom* rng = nullptr) override;
 #else
+   using TH1::FillRandom;
    void FillRandom(const char* fname, Int_t ntimes = 5000, TRandom* rng = nullptr);
    void FillRandom(TH1* h, Int_t ntimes = 5000, TRandom* rng = nullptr) override;
 #endif

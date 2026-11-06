@@ -218,10 +218,10 @@ void TGRSIint::Terminate(Int_t status)
    }
 
    // clean up singletons
-   TParsingDiagnostics::Delete();
-   TSortingDiagnostics::Delete();
-   TRunInfo::Delete();
-   TPPG::Delete();
+   TParsingDiagnostics::Get()->Delete();
+   TSortingDiagnostics::Get()->Delete();
+   TRunInfo::Get()->Delete();
+   TPPG::Get()->Delete();
 
    // close/detroy all opened raw files
    for(auto* file : fRawFiles) {

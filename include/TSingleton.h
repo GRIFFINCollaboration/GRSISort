@@ -172,7 +172,7 @@ public:
       std::cout << "Singleton " << fSingleton << " was read from " << (fDir != nullptr ? fDir->GetName() : "N/A") << std::endl;
    }
 
-   static void Delete()
+   void Delete(Option_t* = "") override
    {
       delete fSingleton;
       fSingleton = nullptr;
@@ -192,7 +192,7 @@ private:
    static TDirectory* fDir;
 
    /// \cond CLASSIMP
-   ClassDef(TSingleton, 1)   // NOLINT(readability-else-after-return)
+   ClassDefOverride(TSingleton, 2)   // NOLINT(readability-else-after-return)
    /// \endcond
 };
 

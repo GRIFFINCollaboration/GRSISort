@@ -107,7 +107,7 @@ public:
    virtual bool   HasWave() const { return !fWaveform.empty(); }   //!<!
    virtual size_t WaveSize() const { return fWaveform.size(); }    //!<!
 
-   static bool CompareEnergy(TDetectorHit* lhs, TDetectorHit* rhs);
+   static bool CompareEnergy(const TDetectorHit* lhs, const TDetectorHit* rhs);
    // We need a common function for all detectors in here
    // static bool Compare(TDetectorHit* lhs,TDetectorHit* rhs); //!<!
 

@@ -250,6 +250,7 @@ public:
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Woverloaded-virtual"
+   using TCanvas::HandleInput;
    void HandleInput(int event, Int_t x, Int_t y);
 #pragma GCC diagnostic pop
    void Draw(Option_t* opt = "") override;
