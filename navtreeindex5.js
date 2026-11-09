@@ -1,5 +1,6 @@
 var NAVTREEINDEX5 =
 {
+"_t_kinematics_8h_source.html":[11,0,7,84],
 "_t_l_m_fitter_8cxx.html":[11,0,9,1,3,4],
 "_t_l_m_fitter_8cxx_source.html":[11,0,9,1,3,4],
 "_t_l_m_fitter_8h.html":[11,0,7,86],
@@ -248,6 +249,5 @@ var NAVTREEINDEX5 =
 "_t_tdr_clover_8h_source.html":[11,0,8,0,0],
 "_t_tdr_clover_bgo_8cxx.html":[11,0,8,1,1,0,2],
 "_t_tdr_clover_bgo_8cxx_source.html":[11,0,8,1,1,0,2],
-"_t_tdr_clover_bgo_8h.html":[11,0,8,0,1],
-"_t_tdr_clover_bgo_8h_source.html":[11,0,8,0,1]
+"_t_tdr_clover_bgo_8h.html":[11,0,8,0,1]
 };

@@ -40,7 +40,7 @@ var class_t_la_br_bgo_hit =
     [ "ClearChannel", "class_t_la_br_bgo_hit.html#aeea3aeb84822c4f565bf36659474db15", null ],
     [ "ClearEnergy", "class_t_la_br_bgo_hit.html#aa1954926fa95976703a0f7d486c490da", null ],
     [ "ClearTransients", "class_t_la_br_bgo_hit.html#a3c925c5bd01fd15d0428d21427e00abf", null ],
-    [ "CompareEnergy", "class_t_la_br_bgo_hit.html#aac412bd213790cd3544121d118dc665b", null ],
+    [ "CompareEnergy", "class_t_la_br_bgo_hit.html#a3907750ac84cfe9ce431498cd1e80726", null ],
     [ "Copy", "class_t_la_br_bgo_hit.html#a3118e32e1c1b6b06ad88ae6992d61c54", null ],
     [ "Copy", "class_t_la_br_bgo_hit.html#ab901600498f2b8d8ccc888398321c30d", null ],
     [ "CopyWave", "class_t_la_br_bgo_hit.html#afaf905f6ea1055e3982e2d814fe71bf1", null ],

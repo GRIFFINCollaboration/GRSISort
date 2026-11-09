@@ -30,7 +30,7 @@ var searchData=
   ['degree_27',['Degree',['../class_t_source_calibration.html#abd2ad7f12f1b0dbb8e8176cfd49d9f33',1,'TSourceCalibration']]],
   ['delayedprocessline_28',['DelayedProcessLine',['../class_t_g_r_s_iint.html#a45f3da527a664d379a404d7306806334',1,'TGRSIint']]],
   ['delayedprocessline_5faction_29',['DelayedProcessLine_Action',['../class_t_g_r_s_iint.html#a88e9f19df251c60358643788f5cb880c',1,'TGRSIint']]],
-  ['delete_30',['Delete',['../class_t_singleton.html#aff8d5fb8a262adb969a91fa029ed9785',1,'TSingleton']]],
+  ['delete_30',['Delete',['../class_t_singleton.html#ae4c501d81a21fc6b01fc1c7614ca69cc',1,'TSingleton']]],
   ['deleteallchannels_31',['DeleteAllChannels',['../class_t_channel.html#a4132e77693a8d6ed2da1c63277941443',1,'TChannel']]],
   ['deletecut_32',['DeleteCut',['../classpygui_1_1tcut__tab_1_1_t_cut_tab.html#a14eddc741c1a93305ebb8de65a2ef3f1',1,'pygui::tcut_tab::TCutTab']]],
   ['deleteelement_33',['DeleteElement',['../class_t_source_calibration.html#acf737e344a0ba93ebe724a0946d98f9b',1,'TSourceCalibration']]],

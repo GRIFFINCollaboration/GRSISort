@@ -39,7 +39,7 @@ var class_t_pin_diode_hit =
     [ "ClearChannel", "class_t_pin_diode_hit.html#aeea3aeb84822c4f565bf36659474db15", null ],
     [ "ClearEnergy", "class_t_pin_diode_hit.html#aa1954926fa95976703a0f7d486c490da", null ],
     [ "ClearTransients", "class_t_pin_diode_hit.html#a3c925c5bd01fd15d0428d21427e00abf", null ],
-    [ "CompareEnergy", "class_t_pin_diode_hit.html#aac412bd213790cd3544121d118dc665b", null ],
+    [ "CompareEnergy", "class_t_pin_diode_hit.html#a3907750ac84cfe9ce431498cd1e80726", null ],
     [ "Copy", "class_t_pin_diode_hit.html#ae2e4e31032b4612d138fef9cf86690d8", null ],
     [ "Copy", "class_t_pin_diode_hit.html#a698bdbc3e750ccd7009967d76c57ff5a", null ],
     [ "CopyWave", "class_t_pin_diode_hit.html#afaf905f6ea1055e3982e2d814fe71bf1", null ],

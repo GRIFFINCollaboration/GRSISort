@@ -111,7 +111,7 @@ var searchData=
   ['minintensity_108',['MinIntensity',['../class_t_source_calibration.html#ab5915bc02c53abc9f57ffbdb984ccd66',1,'TSourceCalibration::MinIntensity(double val)'],['../class_t_source_calibration.html#a4ce4ff102b3b33de99a03cae2300615e',1,'TSourceCalibration::MinIntensity()']]],
   ['mintimestamp_109',['MinTimeStamp',['../class_t_parsing_diagnostics_data.html#a0bec978a6c060421aa1bf15df7151ad9',1,'TParsingDiagnosticsData']]],
   ['missingchannel_110',['MissingChannel',['../class_t_sorting_diagnostics.html#a931e2d0309558c922b2f9c0192418ffe',1,'TSortingDiagnostics']]],
-  ['mixingmethod_111',['MixingMethod',['../_angular_correlations_8cxx.html#aa3233e34b31b36bef6a457e67dca37d0',1,'AngularCorrelations.cxx']]],
+  ['mixingmethod_111',['MixingMethod',['../_angular_correlations_8cxx.html#a394b7f41a3be2bfd543976f27af52908',1,'AngularCorrelations.cxx']]],
   ['mixingresult_112',['mixingResult',['../structmixing_result.html',1,'']]],
   ['mm_113',['mm',['../class_n_r_mat.html#af6077429fdf806ac4c8eba949fa2c0bf',1,'NRMat::mm'],['../class_n_r_mat3d.html#a17bea165bdf243a494883e76ce30bea1',1,'NRMat3d::mm']]],
   ['modify2dslice_114',['Modify2DSlice',['../class_t_angular_correlation.html#afbddeb9250fea79ccad2a99ae22fb23d',1,'TAngularCorrelation']]],

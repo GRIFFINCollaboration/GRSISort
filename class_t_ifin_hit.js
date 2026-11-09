@@ -39,7 +39,7 @@ var class_t_ifin_hit =
     [ "ClearChannel", "class_t_ifin_hit.html#aeea3aeb84822c4f565bf36659474db15", null ],
     [ "ClearEnergy", "class_t_ifin_hit.html#aa1954926fa95976703a0f7d486c490da", null ],
     [ "ClearTransients", "class_t_ifin_hit.html#a3c925c5bd01fd15d0428d21427e00abf", null ],
-    [ "CompareEnergy", "class_t_ifin_hit.html#aac412bd213790cd3544121d118dc665b", null ],
+    [ "CompareEnergy", "class_t_ifin_hit.html#a3907750ac84cfe9ce431498cd1e80726", null ],
     [ "CompareEnergy", "class_t_ifin_hit.html#a6a477f56edbdff51f4e37b60def7c100", null ],
     [ "Copy", "class_t_ifin_hit.html#a2aee6156bbe65b26d9816034ace25aa1", null ],
     [ "Copy", "class_t_ifin_hit.html#ae2c3f1384f0736c8ea9e8d5abdfe55b5", null ],

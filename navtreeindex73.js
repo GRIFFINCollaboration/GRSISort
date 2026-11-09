@@ -1,5 +1,6 @@
 var NAVTREEINDEX73 =
 {
+"struct_t_pulse_analyzer_1_1_wave_form_par.html#a5cebc48b6067dbd97a1a5184be502447":[8,3,19,4,24],
 "struct_t_pulse_analyzer_1_1_wave_form_par.html#a637d71085eb9aee1429ebcf41184f6ac":[8,3,19,4,38],
 "struct_t_pulse_analyzer_1_1_wave_form_par.html#a6b839e0d0005f5b732d480276ddc4e85":[8,3,19,4,27],
 "struct_t_pulse_analyzer_1_1_wave_form_par.html#a733fb26159e92e8c2b40d37998a920d0":[8,3,19,4,29],
@@ -42,8 +43,9 @@ var NAVTREEINDEX73 =
 "structgrsi_1_1exit__exception.html#acca63b1e9a57f9ad0375b4f63bdc38ca":[9,0,4,0,2],
 "structgrsi_1_1exit__exception.html#acca63b1e9a57f9ad0375b4f63bdc38ca":[10,0,0,0,2],
 "structmixing_result.html":[10,0,57],
-"structmixing_result.html#a8c805eee8226ab6d6e14e7f6fcf89223":[10,0,57,1],
-"structmixing_result.html#ad42e7679798c321b28fe432750bba32a":[10,0,57,0],
+"structmixing_result.html#a1aa19a5642020b62f373ce59a956c95b":[10,0,57,0],
+"structmixing_result.html#a8c805eee8226ab6d6e14e7f6fcf89223":[10,0,57,2],
+"structmixing_result.html#ad42e7679798c321b28fe432750bba32a":[10,0,57,1],
 "tac__calibrator_8cxx.html":[11,0,2,3,13],
 "tac__calibrator_8cxx.html#a3c04138a5bfe5d72780bb7e82a18e627":[11,0,2,3,13,0],
 "tac__calibrator_8cxx_source.html":[11,0,2,3,13],

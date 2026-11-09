@@ -54,7 +54,7 @@ var class_t_tigress_hit =
     [ "ClearEnergy", "class_t_tigress_hit.html#aa1954926fa95976703a0f7d486c490da", null ],
     [ "ClearTransients", "class_t_tigress_hit.html#a3c925c5bd01fd15d0428d21427e00abf", null ],
     [ "Compare", "class_t_tigress_hit.html#a8ad466599f297672e3a51ec28142cd14", null ],
-    [ "CompareEnergy", "class_t_tigress_hit.html#aac412bd213790cd3544121d118dc665b", null ],
+    [ "CompareEnergy", "class_t_tigress_hit.html#a3907750ac84cfe9ce431498cd1e80726", null ],
     [ "CompareEnergy", "class_t_tigress_hit.html#ac315eab5b63470110fe16f82146dc271", null ],
     [ "Copy", "class_t_tigress_hit.html#ae85e2c12a6fa9a90136c795265a2172a", null ],
     [ "Copy", "class_t_tigress_hit.html#ab7896f3f204530f7780dec1ff1e7799a", null ],

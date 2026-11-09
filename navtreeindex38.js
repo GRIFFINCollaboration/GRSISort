@@ -1,5 +1,6 @@
 var NAVTREEINDEX38 =
 {
+"class_t_generic_detector.html#ab8efddea3e6e15f1f400237340d7c8a0":[8,2,28,7],
 "class_t_generic_detector.html#ab907981ce861ab147879469064748ae2":[8,2,28,15],
 "class_t_generic_detector.html#ac3050608e488dc693205767a95b5b140":[8,2,28,0],
 "class_t_generic_detector.html#acbf359f899b738719e19bb326e45c790":[8,2,28,14],
@@ -192,6 +193,7 @@ var NAVTREEINDEX38 =
 "class_t_griffin_bgo_hit.html#a3118e32e1c1b6b06ad88ae6992d61c54":[8,2,31,16],
 "class_t_griffin_bgo_hit.html#a31ee4547a5a23ded0845a0a02603f783":[8,2,31,35],
 "class_t_griffin_bgo_hit.html#a3548d815985bbe93215d419a6e136d01":[8,2,31,31],
+"class_t_griffin_bgo_hit.html#a3907750ac84cfe9ce431498cd1e80726":[8,2,31,15],
 "class_t_griffin_bgo_hit.html#a39dd0e70e98e507cfe0afc0bdab2b9a0":[8,2,31,65],
 "class_t_griffin_bgo_hit.html#a3c925c5bd01fd15d0428d21427e00abf":[8,2,31,14],
 "class_t_griffin_bgo_hit.html#a403df2f2b7723bc84d83ea1060ca5119":[8,2,31,32],
@@ -230,7 +232,6 @@ var NAVTREEINDEX38 =
 "class_t_griffin_bgo_hit.html#aa1954926fa95976703a0f7d486c490da":[8,2,31,13],
 "class_t_griffin_bgo_hit.html#aa3070f9cbb9772097705d5f4bfb29ec2":[8,2,31,77],
 "class_t_griffin_bgo_hit.html#aaa325d9210494ec0af5dd5f640347f88":[8,2,31,75],
-"class_t_griffin_bgo_hit.html#aac412bd213790cd3544121d118dc665b":[8,2,31,15],
 "class_t_griffin_bgo_hit.html#ab34ad53f3a608de8cedb043f4aa8f194":[8,2,31,11],
 "class_t_griffin_bgo_hit.html#ab40f256532ebb01bd3437cd4ca32d1d6":[8,2,31,56],
 "class_t_griffin_bgo_hit.html#ab4f4c27b4ee3c8d8b24db08ae85c2fb0":[8,2,31,28],
@@ -248,6 +249,5 @@ var NAVTREEINDEX38 =
 "class_t_griffin_bgo_hit.html#ad046c38d7b93b87b7e169e3418c43a09":[8,2,31,69],
 "class_t_griffin_bgo_hit.html#ad08e816347670259c6624a8be3ab6594":[8,2,31,59],
 "class_t_griffin_bgo_hit.html#ad62673f38054fff81556da5aa2770a3b":[8,2,31,45],
-"class_t_griffin_bgo_hit.html#ad722731c5fde16e444eccbc61a697dda":[8,2,31,21],
-"class_t_griffin_bgo_hit.html#ad7fb301833e90f4b36b7fa1be7fe1334":[8,2,31,79]
+"class_t_griffin_bgo_hit.html#ad722731c5fde16e444eccbc61a697dda":[8,2,31,21]
 };

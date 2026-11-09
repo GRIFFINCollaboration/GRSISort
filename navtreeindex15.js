@@ -1,5 +1,6 @@
 var NAVTREEINDEX15 =
 {
+"class_griffin_k_value_helper.html#af70ba099fb02f24961d985d47f7a568d":[10,0,48,26],
 "class_griffin_k_value_helper.html#afac73b2662988899869aa7d4c9926924":[10,0,48,2],
 "class_griffin_k_value_selector.html":[10,0,49],
 "class_griffin_k_value_selector.html#a095a925b9e0e9ae440a758300f082c9c":[10,0,49,28],
@@ -248,6 +249,5 @@ var NAVTREEINDEX15 =
 "class_t_a_b3_peak.html#a7d18aa1b624a9678436eca30c5e1931c":[8,3,4,28],
 "class_t_a_b3_peak.html#a904bcfde1b85928d1b915b1781131a23":[8,3,4,21],
 "class_t_a_b3_peak.html#a93f9f0434dc8109d1155a8ec8d93a3e7":[8,3,4,0],
-"class_t_a_b3_peak.html#a94d3f320c91a98ae5eaffdd20453e2f6":[8,3,4,53],
-"class_t_a_b3_peak.html#a95a5a2ccb0a1684d4ba7b79694c1f527":[8,3,4,33]
+"class_t_a_b3_peak.html#a94d3f320c91a98ae5eaffdd20453e2f6":[8,3,4,53]
 };

@@ -151,18 +151,20 @@ Classes</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:af3145942581d38c8d48b423f36bd0ced" id="r_af3145942581d38c8d48b423f36bd0ced"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af3145942581d38c8d48b423f36bd0ced">A2a4Method</a> (TGraphErrors *data, TGraphErrors *z0, TGraphErrors *z2, TGraphErrors *z4)</td></tr>
 <tr class="separator:af3145942581d38c8d48b423f36bd0ced"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac2a612d3e2c73de4ba89e55fb719f09d" id="r_ac2a612d3e2c73de4ba89e55fb719f09d"><td class="memItemLeft" align="right" valign="top">std::pair&lt; double, double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac2a612d3e2c73de4ba89e55fb719f09d">FindLimits</a> (TGraph *redChi2Graph, double minChi2, int degreesOfFreedom)</td></tr>
-<tr class="separator:ac2a612d3e2c73de4ba89e55fb719f09d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5a459a3ccca033e813203a4cdc846b8" id="r_ad5a459a3ccca033e813203a4cdc846b8"><td class="memItemLeft" align="right" valign="top">TMultiGraph *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad5a459a3ccca033e813203a4cdc846b8">CreateMultigraph</a> (TGraphErrors *data, TGraphErrors *fit)</td></tr>
+<tr class="separator:ad5a459a3ccca033e813203a4cdc846b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ea4df8a92eaef1339b68c571d47a3d3" id="r_a0ea4df8a92eaef1339b68c571d47a3d3"><td class="memItemLeft" align="right" valign="top">std::tuple&lt; double, double, int, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0ea4df8a92eaef1339b68c571d47a3d3">FindLimits</a> (TGraph *redChi2Graph, double minChi2, int degreesOfFreedom)</td></tr>
+<tr class="separator:a0ea4df8a92eaef1339b68c571d47a3d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3facf894340487fbc19e2ad941ade6c5" id="r_a3facf894340487fbc19e2ad941ade6c5"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3facf894340487fbc19e2ad941ade6c5">GetYError</a> (TGraphErrors *graph, const double &amp;x)</td></tr>
 <tr class="separator:a3facf894340487fbc19e2ad941ade6c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c04138a5bfe5d72780bb7e82a18e627" id="r_a3c04138a5bfe5d72780bb7e82a18e627"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3c04138a5bfe5d72780bb7e82a18e627">main</a> (int argc, char **argv)</td></tr>
 <tr class="separator:a3c04138a5bfe5d72780bb7e82a18e627"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa3233e34b31b36bef6a457e67dca37d0" id="r_aa3233e34b31b36bef6a457e67dca37d0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structmixing_result.html">mixingResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa3233e34b31b36bef6a457e67dca37d0">MixingMethod</a> (TGraphErrors *data, TGraphErrors *z0, TGraphErrors *z2, TGraphErrors *z4, int twoJhigh, int twoJmid, int twoJlow, double mixingAngleHighToMid, double mixingAngleMidToLow, std::vector&lt; double &gt; &amp;bestParameters, std::ofstream &amp;logFile)</td></tr>
-<tr class="separator:aa3233e34b31b36bef6a457e67dca37d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00c11f366029b91d8109f4ea4d74c70e" id="r_a00c11f366029b91d8109f4ea4d74c70e"><td class="memItemLeft" align="right" valign="top">TMultiGraph *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a00c11f366029b91d8109f4ea4d74c70e">PlotCanvas</a> (TGraphErrors *data, TGraphErrors *fit, TGraphErrors *residual, const std::vector&lt; double &gt; &amp;parameters, const std::vector&lt; double &gt; &amp;errors, const double &amp;redChiSquare, const char *extraText=nullptr)</td></tr>
-<tr class="separator:a00c11f366029b91d8109f4ea4d74c70e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af4e44da6b49fb85192661ad471bffd23" id="r_af4e44da6b49fb85192661ad471bffd23"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af4e44da6b49fb85192661ad471bffd23">PlotMixingCanvas</a> (std::vector&lt; <a class="el" href="structmixing_result.html">mixingResult</a> &gt; &amp;spin, const size_t &amp;index, const double &amp;confidenceLevel, const std::vector&lt; double &gt; &amp;spinLabel)</td></tr>
-<tr class="separator:af4e44da6b49fb85192661ad471bffd23"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a394b7f41a3be2bfd543976f27af52908" id="r_a394b7f41a3be2bfd543976f27af52908"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structmixing_result.html">mixingResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a394b7f41a3be2bfd543976f27af52908">MixingMethod</a> (TGraphErrors *data, TGraphErrors *z0, TGraphErrors *z2, TGraphErrors *z4, int twoJhigh, int twoJmid, int twoJlow, double mixingAngleHighToMid, double mixingAngleMidToLow, int numberOfSteps, std::vector&lt; double &gt; &amp;bestParameters, std::ofstream &amp;logFile, const std::string &amp;pdfFileName)</td></tr>
+<tr class="separator:a394b7f41a3be2bfd543976f27af52908"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af68e39f0d763f0d568805d5468a9a07d" id="r_af68e39f0d763f0d568805d5468a9a07d"><td class="memItemLeft" align="right" valign="top">TMultiGraph *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af68e39f0d763f0d568805d5468a9a07d">PlotCanvas</a> (TGraphErrors *data, TGraphErrors *fit, TGraphErrors *residual, const std::vector&lt; double &gt; &amp;parameters, const std::vector&lt; double &gt; &amp;errors, const double &amp;redChiSquare, const std::vector&lt; const char * &gt; &amp;extraText={})</td></tr>
+<tr class="separator:af68e39f0d763f0d568805d5468a9a07d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d42cad1bfcd5151427195464fa6f2b6" id="r_a0d42cad1bfcd5151427195464fa6f2b6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0d42cad1bfcd5151427195464fa6f2b6">PlotMixingCanvas</a> (std::vector&lt; <a class="el" href="structmixing_result.html">mixingResult</a> &gt; &amp;spin, const size_t &amp;index, const std::vector&lt; double &gt; &amp;confidenceLevels, const std::vector&lt; double &gt; &amp;spinLabel)</td></tr>
+<tr class="separator:a0d42cad1bfcd5151427195464fa6f2b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="af3145942581d38c8d48b423f36bd0ced" name="af3145942581d38c8d48b423f36bd0ced"></a>
@@ -195,22 +197,46 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>This method does a free fit of a_0, a_2, and a_4 to get the best possible result. The resulting parameters do not necessarily correspond to a meaningful physical result.</p>
 
-<p class="definition">Definition at line <a class="el" href="_angular_correlations_8cxx_source.html#l01264">1264</a> of file <a class="el" href="_angular_correlations_8cxx_source.html">AngularCorrelations.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_angular_correlations_8cxx_source.html#l01383">1383</a> of file <a class="el" href="_angular_correlations_8cxx_source.html">AngularCorrelations.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_g_r_s_i_functions_8cxx_source.html#l00387">TGRSIFunctions::LegendrePolynomial()</a>, <a class="el" href="_angular_correlations_8cxx_source.html#l00797">Ac::Np()</a>, and <a class="el" href="_angular_correlations_8cxx_source.html#l00828">PlotCanvas()</a>.</p>
+<p class="reference">References <a class="el" href="_t_g_r_s_i_functions_8cxx_source.html#l00387">TGRSIFunctions::LegendrePolynomial()</a>, <a class="el" href="_angular_correlations_8cxx_source.html#l00876">Ac::Np()</a>, and <a class="el" href="_angular_correlations_8cxx_source.html#l00935">PlotCanvas()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_angular_correlations_8cxx_source.html#l00064">main()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_angular_correlations_8cxx_source.html#l00065">main()</a>.</p>
 
 </div>
 </div>
-<a id="ac2a612d3e2c73de4ba89e55fb719f09d" name="ac2a612d3e2c73de4ba89e55fb719f09d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac2a612d3e2c73de4ba89e55fb719f09d">&#9670;&#160;</a></span>FindLimits()</h2>
+<a id="ad5a459a3ccca033e813203a4cdc846b8" name="ad5a459a3ccca033e813203a4cdc846b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5a459a3ccca033e813203a4cdc846b8">&#9670;&#160;</a></span>CreateMultigraph()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::pair&lt; double, double &gt; FindLimits </td>
+          <td class="memname">TMultiGraph * CreateMultigraph </td>
+          <td>(</td>
+          <td class="paramtype">TGraphErrors *</td>          <td class="paramname"><span class="paramname"><em>data</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TGraphErrors *</td>          <td class="paramname"><span class="paramname"><em>fit</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This function creates a multigraph from the data (black, with error bars) and the fit (red, as a filled curve)</p>
+
+<p class="definition">Definition at line <a class="el" href="_angular_correlations_8cxx_source.html#l00907">907</a> of file <a class="el" href="_angular_correlations_8cxx_source.html">AngularCorrelations.cxx</a>.</p>
+
+</div>
+</div>
+<a id="a0ea4df8a92eaef1339b68c571d47a3d3" name="a0ea4df8a92eaef1339b68c571d47a3d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ea4df8a92eaef1339b68c571d47a3d3">&#9670;&#160;</a></span>FindLimits()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::tuple&lt; double, double, int, int &gt; FindLimits </td>
           <td>(</td>
           <td class="paramtype">TGraph *</td>          <td class="paramname"><span class="paramname"><em>redChi2Graph</em></span>, </td>
         </tr>
@@ -228,11 +254,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>calculates the limits for a graph of reduced chi squares using the provided minimum reduced chi square and degrees of freedom</p>
 
-<p class="definition">Definition at line <a class="el" href="_angular_correlations_8cxx_source.html#l00989">989</a> of file <a class="el" href="_angular_correlations_8cxx_source.html">AngularCorrelations.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_angular_correlations_8cxx_source.html#l01090">1090</a> of file <a class="el" href="_angular_correlations_8cxx_source.html">AngularCorrelations.cxx</a>.</p>
 
 <p class="reference">References <a class="el" href="_globals_8h_source.html#l00016">DYELLOW</a>, and <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_angular_correlations_8cxx_source.html#l01041">MixingMethod()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_angular_correlations_8cxx_source.html#l01149">MixingMethod()</a>.</p>
 
 </div>
 </div>
@@ -256,9 +282,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>general function to get the error of a graph at point x (takes the maximum of the errors of the bracketing points)</p>
 
-<p class="definition">Definition at line <a class="el" href="_angular_correlations_8cxx_source.html#l00038">38</a> of file <a class="el" href="_angular_correlations_8cxx_source.html">AngularCorrelations.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_angular_correlations_8cxx_source.html#l00039">39</a> of file <a class="el" href="_angular_correlations_8cxx_source.html">AngularCorrelations.cxx</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_angular_correlations_8cxx_source.html#l00064">main()</a>, and <a class="el" href="_angular_correlations_8cxx_source.html#l00799">Ac::operator()()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_angular_correlations_8cxx_source.html#l00065">main()</a>, and <a class="el" href="_angular_correlations_8cxx_source.html#l00878">Ac::operator()()</a>.</p>
 
 </div>
 </div>
@@ -282,16 +308,16 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>program to read in 2D matrices from <a class="el" href="class_angular_correlation_helper.html">AngularCorrelationHelper</a> project and fit peaks to create angular correlation plots and to create chi-square plots </p>
 
-<p class="definition">Definition at line <a class="el" href="_angular_correlations_8cxx_source.html#l00064">64</a> of file <a class="el" href="_angular_correlations_8cxx_source.html">AngularCorrelations.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_angular_correlations_8cxx_source.html#l00065">65</a> of file <a class="el" href="_angular_correlations_8cxx_source.html">AngularCorrelations.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_angular_correlations_8cxx_source.html#l01264">A2a4Method()</a>, <a class="el" href="_t_peak_fitter_8h_source.html#l00037">TPeakFitter::AddPeak()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00051">TSinglePeak::Area()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00052">TSinglePeak::AreaErr()</a>, <a class="el" href="_angular_correlation_selector_8_c_source.html#l00009">bgHigh</a>, <a class="el" href="_angular_correlation_selector_8_c_source.html#l00008">bgLow</a>, <a class="el" href="_t_r_w_peak_8cxx_source.html#l00005">TRWPeak::Centroid()</a>, <a class="el" href="_t_r_w_peak_8cxx_source.html#l00067">TRWPeak::CentroidErr()</a>, <a class="el" href="_globals_8h_source.html#l00018">DRED</a>, <a class="el" href="_t_peak_fitter_8cxx_source.html#l00091">TPeakFitter::Fit()</a>, <a class="el" href="_t_single_peak_8cxx_source.html#l00077">TSinglePeak::FWHM()</a>, <a class="el" href="_t_single_peak_8cxx_source.html#l00092">TSinglePeak::FWHMErr()</a>, <a class="el" href="_t_peak_fitter_8h_source.html#l00072">TPeakFitter::GetBackground()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00145">TUserSettings::GetDouble()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00072">TSinglePeak::GetFitFunction()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00087">TSinglePeak::GetReducedChi2()</a>, <a class="el" href="_angular_correlations_8cxx_source.html#l00038">GetYError()</a>, <a class="el" href="_angular_correlations_8cxx_source.html#l01041">MixingMethod()</a>, <a class="el" href="_arg_parser_8h_source.html#l00412">ArgParser::option()</a>, <a class="el" href="_arg_parser_8h_source.html#l00333">ArgParser::parse()</a>, <a class="el" href="_angular_correlations_8cxx_source.html#l00914">PlotMixingCanvas()</a>, and <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>.</p>
+<p class="reference">References <a class="el" href="_angular_correlations_8cxx_source.html#l01383">A2a4Method()</a>, <a class="el" href="_t_peak_fitter_8h_source.html#l00037">TPeakFitter::AddPeak()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00051">TSinglePeak::Area()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00052">TSinglePeak::AreaErr()</a>, <a class="el" href="_angular_correlation_selector_8_c_source.html#l00009">bgHigh</a>, <a class="el" href="_angular_correlation_selector_8_c_source.html#l00008">bgLow</a>, <a class="el" href="_t_r_w_peak_8cxx_source.html#l00005">TRWPeak::Centroid()</a>, <a class="el" href="_t_r_w_peak_8cxx_source.html#l00067">TRWPeak::CentroidErr()</a>, <a class="el" href="_globals_8h_source.html#l00018">DRED</a>, <a class="el" href="_globals_8h_source.html#l00016">DYELLOW</a>, <a class="el" href="_t_peak_fitter_8cxx_source.html#l00091">TPeakFitter::Fit()</a>, <a class="el" href="_t_single_peak_8cxx_source.html#l00077">TSinglePeak::FWHM()</a>, <a class="el" href="_t_single_peak_8cxx_source.html#l00092">TSinglePeak::FWHMErr()</a>, <a class="el" href="_t_peak_fitter_8h_source.html#l00072">TPeakFitter::GetBackground()</a>, <a class="el" href="_t_user_settings_8cxx_source.html#l00145">TUserSettings::GetDouble()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00072">TSinglePeak::GetFitFunction()</a>, <a class="el" href="_t_single_peak_8h_source.html#l00087">TSinglePeak::GetReducedChi2()</a>, <a class="el" href="_angular_correlations_8cxx_source.html#l00039">GetYError()</a>, <a class="el" href="_angular_correlations_8cxx_source.html#l01149">MixingMethod()</a>, <a class="el" href="_arg_parser_8h_source.html#l00412">ArgParser::option()</a>, <a class="el" href="_arg_parser_8h_source.html#l00333">ArgParser::parse()</a>, <a class="el" href="_angular_correlations_8cxx_source.html#l01011">PlotMixingCanvas()</a>, and <a class="el" href="_globals_8h_source.html#l00005">RESET_COLOR</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_g_root_canvas_8cxx_source.html#l01363">GRootCanvas::ShowEditor()</a>.</p>
 
 </div>
 </div>
-<a id="aa3233e34b31b36bef6a457e67dca37d0" name="aa3233e34b31b36bef6a457e67dca37d0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa3233e34b31b36bef6a457e67dca37d0">&#9670;&#160;</a></span>MixingMethod()</h2>
+<a id="a394b7f41a3be2bfd543976f27af52908" name="a394b7f41a3be2bfd543976f27af52908"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a394b7f41a3be2bfd543976f27af52908">&#9670;&#160;</a></span>MixingMethod()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -344,26 +370,36 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>numberOfSteps</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">std::vector&lt; double &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>bestParameters</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::ofstream &amp;</td>          <td class="paramname"><span class="paramname"><em>logFile</em></span>&#160;)</td>
+          <td class="paramtype">std::ofstream &amp;</td>          <td class="paramname"><span class="paramname"><em>logFile</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>pdfFileName</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_angular_correlations_8cxx_source.html#l01041">1041</a> of file <a class="el" href="_angular_correlations_8cxx_source.html">AngularCorrelations.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_angular_correlations_8cxx_source.html#l01149">1149</a> of file <a class="el" href="_angular_correlations_8cxx_source.html">AngularCorrelations.cxx</a>.</p>
 
-<p class="reference">References <a class="el" href="_t_g_r_s_i_functions_8cxx_source.html#l00543">TGRSIFunctions::CalculateA2()</a>, <a class="el" href="_t_g_r_s_i_functions_8cxx_source.html#l00548">TGRSIFunctions::CalculateA4()</a>, <a class="el" href="_angular_correlations_8cxx_source.html#l00989">FindLimits()</a>, <a class="el" href="_angular_correlations_8cxx_source.html#l00029">mixingResult::fMixingAngles</a>, <a class="el" href="_angular_correlations_8cxx_source.html#l00030">mixingResult::fMixingAnglesHistogram</a>, <a class="el" href="_angular_correlations_8cxx_source.html#l00797">Ac::Np()</a>, and <a class="el" href="_angular_correlations_8cxx_source.html#l00828">PlotCanvas()</a>.</p>
+<p class="reference">References <a class="el" href="_t_g_r_s_i_functions_8cxx_source.html#l00543">TGRSIFunctions::CalculateA2()</a>, <a class="el" href="_t_g_r_s_i_functions_8cxx_source.html#l00548">TGRSIFunctions::CalculateA4()</a>, <a class="el" href="_angular_correlations_8cxx_source.html#l00029">mixingResult::fDegreesOfFreedom</a>, <a class="el" href="_angular_correlations_8cxx_source.html#l01090">FindLimits()</a>, <a class="el" href="_angular_correlations_8cxx_source.html#l00030">mixingResult::fMixingAngles</a>, <a class="el" href="_angular_correlations_8cxx_source.html#l00031">mixingResult::fMixingAnglesHistogram</a>, <a class="el" href="_angular_correlations_8cxx_source.html#l00876">Ac::Np()</a>, and <a class="el" href="_angular_correlations_8cxx_source.html#l00935">PlotCanvas()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_angular_correlations_8cxx_source.html#l00064">main()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_angular_correlations_8cxx_source.html#l00065">main()</a>.</p>
 
 </div>
 </div>
-<a id="a00c11f366029b91d8109f4ea4d74c70e" name="a00c11f366029b91d8109f4ea4d74c70e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a00c11f366029b91d8109f4ea4d74c70e">&#9670;&#160;</a></span>PlotCanvas()</h2>
+<a id="af68e39f0d763f0d568805d5468a9a07d" name="af68e39f0d763f0d568805d5468a9a07d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af68e39f0d763f0d568805d5468a9a07d">&#9670;&#160;</a></span>PlotCanvas()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -401,20 +437,20 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>extraText</em></span><span class="paramdefsep"> = </span><span class="paramdefval">nullptr</span>&#160;)</td>
+          <td class="paramtype">const std::vector&lt; const char * &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>extraText</em></span><span class="paramdefsep"> = </span><span class="paramdefval">{}</span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p>This function plots the data with the fit and residuals on the currently active canvas.</p>
 
-<p class="definition">Definition at line <a class="el" href="_angular_correlations_8cxx_source.html#l00828">828</a> of file <a class="el" href="_angular_correlations_8cxx_source.html">AngularCorrelations.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_angular_correlations_8cxx_source.html#l00935">935</a> of file <a class="el" href="_angular_correlations_8cxx_source.html">AngularCorrelations.cxx</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_angular_correlations_8cxx_source.html#l01264">A2a4Method()</a>, and <a class="el" href="_angular_correlations_8cxx_source.html#l01041">MixingMethod()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_angular_correlations_8cxx_source.html#l01383">A2a4Method()</a>, and <a class="el" href="_angular_correlations_8cxx_source.html#l01149">MixingMethod()</a>.</p>
 
 </div>
 </div>
-<a id="af4e44da6b49fb85192661ad471bffd23" name="af4e44da6b49fb85192661ad471bffd23"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af4e44da6b49fb85192661ad471bffd23">&#9670;&#160;</a></span>PlotMixingCanvas()</h2>
+<a id="a0d42cad1bfcd5151427195464fa6f2b6" name="a0d42cad1bfcd5151427195464fa6f2b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d42cad1bfcd5151427195464fa6f2b6">&#9670;&#160;</a></span>PlotMixingCanvas()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -432,7 +468,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const double &amp;</td>          <td class="paramname"><span class="paramname"><em>confidenceLevel</em></span>, </td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>confidenceLevels</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -443,9 +479,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>plots the selected index/mixing angle (should be 0 or 1) on the current canvas</p>
 
-<p class="definition">Definition at line <a class="el" href="_angular_correlations_8cxx_source.html#l00914">914</a> of file <a class="el" href="_angular_correlations_8cxx_source.html">AngularCorrelations.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_angular_correlations_8cxx_source.html#l01011">1011</a> of file <a class="el" href="_angular_correlations_8cxx_source.html">AngularCorrelations.cxx</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_angular_correlations_8cxx_source.html#l00064">main()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_angular_correlations_8cxx_source.html#l00065">main()</a>.</p>
 
 </div>
 </div>
@@ -456,7 +492,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_1d7397b112c23d4eb2fe49dc66ace00a.html">GRSIData</a></li><li class="navelem"><a class="el" href="dir_8965781c9f424dd985c8251b0fe5e6e9.html">util</a></li><li class="navelem"><a class="el" href="_angular_correlations_8cxx.html">AngularCorrelations.cxx</a></li>
-    <li class="footer">GRSISort ("v4.1.1.0") Reference Guide Generated on Fri Oct 16 2026 15:40:54.</li>
+    <li class="footer">GRSISort ("v4.1.1.0") Reference Guide Generated on Mon Nov 9 2026 19:22:15.</li>
   </ul>
 </div>
 </body>

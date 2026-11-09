@@ -39,7 +39,7 @@ var class_t_fipps_hit =
     [ "ClearChannel", "class_t_fipps_hit.html#aeea3aeb84822c4f565bf36659474db15", null ],
     [ "ClearEnergy", "class_t_fipps_hit.html#aa1954926fa95976703a0f7d486c490da", null ],
     [ "ClearTransients", "class_t_fipps_hit.html#a3c925c5bd01fd15d0428d21427e00abf", null ],
-    [ "CompareEnergy", "class_t_fipps_hit.html#aac412bd213790cd3544121d118dc665b", null ],
+    [ "CompareEnergy", "class_t_fipps_hit.html#a3907750ac84cfe9ce431498cd1e80726", null ],
     [ "CompareEnergy", "class_t_fipps_hit.html#a8d8a93df039dbe8c666571f15e15ceb3", null ],
     [ "Copy", "class_t_fipps_hit.html#a25cc1f5eeafbe9d148be544128137381", null ],
     [ "Copy", "class_t_fipps_hit.html#a38da6bef2ab37a189d47529c601f0657", null ],
