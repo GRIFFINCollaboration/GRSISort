@@ -233,7 +233,7 @@ Int_t TDetectorHit::GetCrystal() const
    return -1;
 }
 
-bool TDetectorHit::CompareEnergy(TDetectorHit* lhs, TDetectorHit* rhs)
+bool TDetectorHit::CompareEnergy(const TDetectorHit* lhs, const TDetectorHit* rhs)
 {
    return (lhs->GetEnergy() > rhs->GetEnergy());
 }
