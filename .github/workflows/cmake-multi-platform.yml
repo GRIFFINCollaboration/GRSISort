@@ -18,18 +18,11 @@ jobs:
       # Set fail-fast to false to ensure that feedback is delivered for all matrix combinations. Consider changing this to true when your workflow is stable.
       fail-fast: false
 
-      # Set up a matrix to run the following 3 configurations:
-      # 1. <Windows, Release, latest MSVC compiler toolchain on the default runner image, default generator>
-      # 2. <Linux, Release, latest GCC compiler toolchain on the default runner image, default generator>
-      # 3. <Linux, Release, latest Clang compiler toolchain on the default runner image, default generator>
-      #
-      # To add more build types (Release, Debug, RelWithDebInfo, etc.) customize the build_type list.
-      # cc: "gcc" or c_compiler: gcc? cxx: "g++" or cpp_compiler: g++?
       matrix:
         config:
         - {
-            name: "Ubuntu latest gcc, ROOT 6.30.06", artifact: "UbuntuROOT6.30.06.tar.xz",
-            os: ubuntu-latest, root: "6.30.06",
+            name: "Ubuntu 24.04 gcc, ROOT 6.30.06", artifact: "UbuntuROOT6.30.06.tar.xz",
+            os: ubuntu-24.04, root: "6.30.06",
             build_type: "Release", cc: "gcc", cxx: "g++"
           }
         - {
@@ -66,7 +59,13 @@ jobs:
     - name: Linux - Install packages
       if: ${{runner.os == 'Linux'}}
       run: |
-        sudo apt-get install binutils cmake dpkg-dev g++ gcc libssl-dev git libx11-dev libxext-dev libxft-dev libxpm-dev python3 gfortran libpcre3-dev xlibmesa-glu-dev libglew-dev libftgl-dev libmysqlclient-dev libfftw3-dev libcfitsio-dev graphviz-dev libavahi-compat-libdnssd-dev libldap2-dev python3-dev python3-numpy libxml2-dev libkrb5-dev libgsl0-dev nlohmann-json3-dev
+        sudo apt-get install binutils cmake dpkg-dev g++ gcc libssl-dev git libx11-dev libxext-dev libxft-dev libxpm-dev python3 gfortran xlibmesa-glu-dev libglew-dev libftgl-dev libmysqlclient-dev libfftw3-dev libcfitsio-dev graphviz-dev libavahi-compat-libdnssd-dev libldap2-dev python3-dev python3-numpy libxml2-dev libkrb5-dev libgsl0-dev nlohmann-json3-dev
+
+    - name: Linux - Install libpcre3-dev
+      if: ${{runner.os == 'Linux'}}
+      run: |
+        sudo apt-get install libpcre3-dev 
+      continue-on-error: true
 
     - name: Linux - Download ROOT
       if: ${{steps.cache-root.outputs.cache-hit != 'true' && runner.os == 'Linux'}}
@@ -78,9 +77,9 @@ jobs:
     - name: Linux  - Configure ROOT
       if: ${{steps.cache-root.outputs.cache-hit != 'true' && runner.os == 'Linux'}}
       run: >
+        export CMAKE_POLICY_VERSION_MINIMUM=3.5
         cmake -S root-${{matrix.config.root}} -B root_v${{matrix.config.root}}-build -DCMAKE_INSTALL_PREFIX=root_v${{matrix.config.root}}
-        -Dasimage=ON -Dbuiltin_afterimage=ON -Dbuiltin_clang=ON -Dbuiltin_cling=ON -Dbuiltin_cppzmq=ON -Dbuiltin_davix=ON -Dbuiltin_gl2ps=ON -Dbuiltin_llvm=ON -Dbuiltin_openui5=ON -Dbuiltin_tbb=ON -Dbuiltin_unuran=ON -Dbuiltin_vdt=ON -Dbuiltin_veccore=ON -Dbuiltin_xxhash=ON -Dbuiltin_zeromq=ON -Dcefweb=ON -Ddataframe=ON -Ddavix=ON -Dfftw3=ON -Dfitsio=ON -Dfortran=ON -Dgdml=ON -Dgviz=ON -Dhttp=ON -Dimt=ON -Dmathmore=ON -Dmlp=ON -Dmysql=ON -Dodbc=ON -Dopengl=ON -Dpgsql=ON -Dproof=ON -Dpyroot=ON -Dqt5web=ON -Droofit=ON -Droofit_multiprocess=ON -Dwebgui=ON -Drpath=ON -Druntime_cxxmodules=ON -Dshadowpw=ON -Dshared=ON -Dsqlite=ON -Dssl=ON -Dtmva=ON -Dtmva-cpu=ON -Dtmva-pymva=ON -Dspectrum=ON -Dunuran=ON -Dvdt=ON -Dveccore=ON -Dx11=ON -Dxml=ON
-        -Dbuilin_xrootd=OFF -Dxrootd=OFF -Dclad=OFF
+        -Dasimage=ON -Dbuiltin_afterimage=ON -Dbuiltin_clang=ON -Dbuiltin_cling=ON -Dbuiltin_cppzmq=ON -Dbuiltin_davix=ON -Dbuiltin_gl2ps=ON -Dbuiltin_llvm=ON -Dbuiltin_openui5=ON -Dbuiltin_tbb=ON -Dbuiltin_unuran=ON -Dbuiltin_vdt=ON -Dbuiltin_veccore=ON -Dbuiltin_xxhash=ON -Dbuiltin_zeromq=ON -Dcefweb=ON -Ddataframe=ON -Ddavix=ON -Dfftw3=ON -Dfitsio=ON -Dfortran=ON -Dgdml=ON -Dgviz=ON -Dhttp=ON -Dimt=ON -Dmathmore=ON -Dmlp=ON -Dmysql=ON -Dodbc=ON -Dopengl=ON -Dpgsql=ON -Dproof=ON -Dpyroot=ON -Dqt5web=ON -Droofit=ON -Droofit_multiprocess=ON -Dwebgui=ON -Drpath=ON -Druntime_cxxmodules=ON -Dshadowpw=ON -Dshared=ON -Dsqlite=ON -Dssl=ON -Dtmva=ON -Dtmva-cpu=ON -Dtmva-pymva=ON -Dspectrum=ON -Dunuran=ON -Dvdt=ON -Dveccore=ON -Dx11=ON -Dxml=ON -Dbuilin_xrootd=OFF -Dxrootd=OFF -Dclad=OFF
 
     - name: Linux - Compile ROOT
       if: ${{steps.cache-root.outputs.cache-hit != 'true' && runner.os == 'Linux'}}
