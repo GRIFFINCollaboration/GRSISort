@@ -21,8 +21,8 @@ jobs:
       matrix:
         config:
         - {
-            name: "Ubuntu 24.04 gcc, ROOT 6.30.06", artifact: "UbuntuROOT6.30.06.tar.xz",
-            os: ubuntu-24.04, root: "6.30.06",
+            name: "Ubuntu 26.04 gcc, ROOT 6.30.06", artifact: "UbuntuROOT6.30.06.tar.xz",
+            os: self-hosted, root: "6.30.06",
             build_type: "Release", cc: "gcc", cxx: "g++"
           }
         - {
