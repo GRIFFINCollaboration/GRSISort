@@ -1,6 +1,5 @@
 var NAVTREEINDEX73 =
 {
-"struct_t_pulse_analyzer_1_1_wave_form_par.html#a5cebc48b6067dbd97a1a5184be502447":[8,3,19,4,24],
 "struct_t_pulse_analyzer_1_1_wave_form_par.html#a637d71085eb9aee1429ebcf41184f6ac":[8,3,19,4,38],
 "struct_t_pulse_analyzer_1_1_wave_form_par.html#a6b839e0d0005f5b732d480276ddc4e85":[8,3,19,4,27],
 "struct_t_pulse_analyzer_1_1_wave_form_par.html#a733fb26159e92e8c2b40d37998a920d0":[8,3,19,4,29],
