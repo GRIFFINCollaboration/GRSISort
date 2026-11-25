@@ -21,9 +21,6 @@ Once complete type `make` in the GRSISort directory
 
 See also [Setup Guide](https://github.com/GRIFFINCollaboration/GRSISort/wiki/Setting-up-GRSISort).
 
-For the energy calibration file format, including pre-calibration charge
-corrections, see [Energy calibration](CALIBRATION.md).
-
 -----------------------------------------
 ## Running
 
