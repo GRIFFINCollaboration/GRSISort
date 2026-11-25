@@ -32,4 +32,3 @@ For information on running GRSISort see [Running-GRSISort](https://github.com/GR
 Everybody is welcome to help and expand the [wiki](http://github.com/GRIFFINCollaboration/GRSISort/wiki).
 
 See [Commenting Code for HTML](https://github.com/GRIFFINCollaboration/GRSISort/wiki/Html-How-To) for information about in-code documentation for the doxygen generated [Reference Guide](https://rawgit.com/wiki/GriffinCollaboration/GRSISort/technical-docs/ROOT-Gen-Html/htmldoc/annotated.html).
-
